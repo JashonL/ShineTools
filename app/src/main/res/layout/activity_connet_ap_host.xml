@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/toobar_title" />
+
+
+
+    <TextView
+        android:id="@+id/tv_sub_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_25"
+        android:gravity="center"
+        android:padding="@dimen/dp_5"
+        android:text="@string/android_key2983"
+        android:textColor="@color/color_text_33"
+        android:textSize="@dimen/size_title_sp_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_title" />
+
+
+
+    <View
+        android:id="@+id/view_serial_background"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginEnd="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@drawable/shape_gray_radius_20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sub_title" />
+
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_serialnum"
+        android:layout_width="@dimen/dp_75"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:gravity="center"
+        android:padding="@dimen/dp_5"
+        android:text="@string/android_key1094"
+        android:textColor="@color/color_text_33"
+        android:textSize="@dimen/size_title_sp_14"
+        app:autoSizeMaxTextSize="@dimen/size_title_sp_14"
+        app:autoSizeMinTextSize="10sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@+id/view_serial_background"
+        app:layout_constraintLeft_toLeftOf="@+id/view_serial_background"
+        app:layout_constraintTop_toTopOf="@+id/view_serial_background" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_serialnum_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:gravity="center_vertical"
+        android:padding="@dimen/dp_5"
+        android:textColor="@color/color_text_33"
+        android:textSize="@dimen/size_title_sp_14"
+        app:autoSizeMaxTextSize="@dimen/size_title_sp_14"
+        app:autoSizeMinTextSize="10sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@+id/view_serial_background"
+        app:layout_constraintLeft_toRightOf="@+id/tv_serialnum"
+        app:layout_constraintRight_toRightOf="@+id/view_serial_background"
+        app:layout_constraintTop_toTopOf="@+id/view_serial_background" />
+
+
+
+
+    <View
+        android:id="@+id/view_wifi_background"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginEnd="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_5"
+        android:background="@drawable/shape_gray_radius_20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_serial_background" />
+
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_ssid"
+        android:layout_width="@dimen/dp_75"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:gravity="center"
+        android:text="@string/android_key2966"
+        android:textColor="@color/color_text_33"
+        android:textSize="@dimen/size_title_sp_14"
+        app:autoSizeMaxTextSize="@dimen/size_title_sp_14"
+        app:autoSizeMinTextSize="10sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@+id/view_wifi_background"
+        app:layout_constraintLeft_toLeftOf="@+id/view_wifi_background"
+        app:layout_constraintTop_toTopOf="@+id/view_wifi_background" />
+
+
+
+
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_wifi_ssid"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:gravity="center_vertical"
+        android:padding="@dimen/dp_5"
+        android:text="@string/android_key2259"
+        android:textColor="@color/color_text_33"
+        android:textSize="@dimen/size_content_sp_14"
+        app:autoSizeMaxTextSize="@dimen/size_content_sp_14"
+        app:autoSizeMinTextSize="10sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@+id/view_wifi_background"
+        app:layout_constraintLeft_toRightOf="@+id/tv_ssid"
+        app:layout_constraintRight_toLeftOf="@+id/tv_fresh"
+        app:layout_constraintTop_toTopOf="@+id/view_wifi_background" />
+
+
+    <TextView
+        android:id="@+id/tv_fresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:padding="@dimen/dp_5"
+        android:text="@string/android_key2982"
+        android:textColor="@color/theme_blue_color"
+        android:textSize="@dimen/size_content_sp_14"
+        app:layout_constraintRight_toLeftOf="@+id/tv_arrow"
+        app:layout_constraintTop_toTopOf="@+id/tv_wifi_ssid" />
+
+
+
+
+
+    <TextView
+        android:id="@+id/tv_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:padding="@dimen/dp_5"
+        android:text=">"
+        android:textColor="@color/theme_blue_color"
+        android:textSize="@dimen/size_content_sp_14"
+        app:layout_constraintBottom_toBottomOf="@+id/view_wifi_background"
+        app:layout_constraintRight_toRightOf="@+id/view_wifi_background"
+        app:layout_constraintTop_toTopOf="@+id/view_wifi_background" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_75"
+        android:layout_marginEnd="@dimen/dp_50"
+        android:foreground="@drawable/card_foreground"
+        app:cardBackgroundColor="@color/theme_blue_color"
+        app:cardCornerRadius="@dimen/dp_20"
+        app:cardElevation="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_wifi_background">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            android:text="@string/android_key1854"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_title_sp_16" />
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

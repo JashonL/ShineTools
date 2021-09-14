@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/iphone_background"
+    >
+
+    <include layout="@layout/header_us_tool_main2" android:id="@+id/head1"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_5"
+        >
+        <include layout="@layout/header_usmain2_title1" android:id="@+id/tvTitle1"/>
+        <include layout="@layout/header_maxmain2_content1" android:id="@+id/tvContent1"/>
+        <include layout="@layout/header_maxmain2_title2" android:id="@+id/tvTitle2" android:visibility="gone"/>
+        <include layout="@layout/header_maxmain2_content1" android:id="@+id/tvContent2"/>
+        <include layout="@layout/header_maxmain2_title3" android:id="@+id/tvTitle3"/>
+        <include layout="@layout/header_maxmain2_content2" android:id="@+id/tvContent3"/>
+        <include layout="@layout/header_maxmain2_title34" android:id="@+id/tvTitle34" android:visibility="gone"/>
+        <include layout="@layout/header_maxmain2_content1" android:id="@+id/tvContent34"/>
+        <include layout="@layout/header_maxmain2_title4" android:id="@+id/tvTitle4" android:visibility="gone"/>
+        <include layout="@layout/header_maxmain2_content1" android:id="@+id/tvContent4"/>
+        <include layout="@layout/header_toolmain_title_liwang" android:id="@+id/tvTitleLiwang"/>
+        <include layout="@layout/header_toolmain_title_bdc" android:id="@+id/tvTitleBdc"/>
+        <include layout="@layout/header_toolmain_title_battry" android:id="@+id/tvTitleBattry"/>
+        <include layout="@layout/header_maxmain2_title6" android:id="@+id/tvTitle6"/>
+        <include layout="@layout/header_maxmain2_content2" android:id="@+id/tvContent6"/>
+        <include layout="@layout/header_maxmain2_title5" android:id="@+id/tvTitle5" />
+        <include layout="@layout/header_maxmain2_content2" android:id="@+id/tvContent5"/>
+    </LinearLayout>
+</LinearLayout>

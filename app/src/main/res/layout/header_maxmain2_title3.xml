@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dp_35"
+              android:background="@color/max_main_bg_gray"
+    android:layout_marginTop="@dimen/dp_10"
+    >
+    <TextView
+        android:id="@+id/tvHeadTitle"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:text="@string/m274AC电压频率电流功率"
+        android:textColor="@color/mainColor"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/size_content_sp_12"
+        android:layout_marginLeft="@dimen/dp_5"
+        />
+    <TextView
+        android:id="@+id/tvHeadNote"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textColor="@color/max_main_gray"
+        android:gravity="center_vertical|right"
+        android:textSize="@dimen/size_content_sp_12"
+        />
+    <ImageView
+        android:id="@+id/ivStatus"
+        android:layout_width="@dimen/dp_12"
+        android:layout_height="match_parent"
+        android:src="@drawable/max_down"
+        android:layout_marginRight="@dimen/dp_5"
+        android:layout_marginLeft="@dimen/dp_10"
+        />
+</LinearLayout>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--标题文字标准-->
+    <dimen name="size_title_bar">@dimen/sp_20</dimen><!--头部标题大小-->
+
+    <dimen name="size_title_sp_18">@dimen/sp_18</dimen><!--主标题大小-->
+    <dimen name="size_title_sp_16">@dimen/sp_16</dimen><!--一号标题大小-->
+    <dimen name="size_title_sp_14">@dimen/sp_14</dimen><!--副标题大小-->
+    <dimen name="size_title_sp_12">@dimen/sp_12</dimen><!--小号标题大小-->
+
+    <!--内容尺寸标准-->
+    <dimen name="size_content_sp_16">@dimen/sp_16</dimen>
+    <dimen name="size_content_sp_14">@dimen/sp_14</dimen>
+    <dimen name="size_content_sp_12">@dimen/sp_12</dimen>
+    <dimen name="size_content_sp_10">@dimen/sp_10</dimen>
+    <dimen name="size_content_sp_8">@dimen/sp_8</dimen>
+
+    <!--注释-->
+    <dimen name="size_content_note">@dimen/sp_12</dimen>
+
+
+    <!--新版头部高度-->
+    <dimen name="header_height_v3">@dimen/dp_33</dimen>
+
+</resources>

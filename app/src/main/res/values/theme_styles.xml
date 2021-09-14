@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.App.Theme" parent="@style/Theme.AppCompat.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!--启动界面主题-->
+    <style name="App.Theme.Launch" parent="Base.App.Theme">
+        <!--<item name="android:windowBackground">@mipmap/default_android</item>-->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="Theme.AppCompat.Light">
+        <!-- 设置 显示在toobar上菜单文字的颜色 -->
+        <item name="actionMenuTextColor">@color/color_text_33</item>
+        <!-- 设置toolbar 弹出菜单的字体大小和溢出菜单文字大小-->
+        <item name="android:textSize">14sp</item>
+    </style>
+
+</resources>

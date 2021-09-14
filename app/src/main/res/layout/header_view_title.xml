@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/headerView"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+    android:gravity="center_vertical"
+              android:background="@color/headerView_v3"
+              android:minHeight="?attr/actionBarSize"
+              app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+              app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    >
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/header_height_v3"
+        >
+        <com.growatt.shinetools.widget.AutoFitTextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_25"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tvRight"
+            android:layout_toRightOf="@+id/ivLeft"
+            android:text="Title"
+            android:textColor="@color/headerView_title_v3"
+            android:textSize="@dimen/size_title_bar" />
+
+        <ImageView
+            android:id="@+id/ivLeft"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="match_parent"
+            android:paddingRight="@dimen/dp_25"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10"
+            android:src="@drawable/ov_back"
+            android:background="@drawable/touch_bg_main_v3"
+            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"
+            />
+        <com.growatt.shinetools.widget.AutoFitTextView
+            android:id="@+id/tvRight"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/dp_6"
+            android:paddingBottom="@dimen/dp_6"
+            android:paddingRight="@dimen/dp_5"
+            android:background="@drawable/touch_bg_main_v3"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:textSize="@dimen/size_title_sp_14"
+            android:textColor="@color/headerView"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

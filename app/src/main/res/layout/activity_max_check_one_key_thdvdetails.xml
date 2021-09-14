@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/iphone_background">
+    <include
+        android:id="@+id/headerView"
+        layout="@layout/header_view"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        android:layout_margin="@dimen/dp_10"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/m478谐波次数"
+            android:textColor="@color/content_bg_white"
+            android:textSize="@dimen/dp_12" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvName1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginRight="@dimen/dp_5"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="R"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
+            app:autoSizeMinTextSize="@dimen/size_content_note"
+            android:textColor="@color/content_bg_white"
+            android:textSize="@dimen/dp_12" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvName2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="S"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
+            app:autoSizeMinTextSize="@dimen/size_content_note"
+            android:textColor="@color/content_bg_white"
+            android:textSize="@dimen/dp_12" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvName3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginRight="@dimen/dp_5"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="T"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
+            app:autoSizeMinTextSize="@dimen/size_content_note"
+            android:textColor="@color/content_bg_white"
+            android:textSize="@dimen/dp_12" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:background="@drawable/shape_listview_white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:scrollbars="none"
+        android:dividerHeight="0dp"
+        android:divider="@null"
+        />
+</LinearLayout>

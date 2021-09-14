@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_background">
+
+    <include
+        android:id="@+id/headerView"
+        layout="@layout/header_view" />
+
+
+    <TextView
+        android:id="@+id/tv_choose_type"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_55"
+        android:layout_marginTop="@dimen/dp_15"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dp_10"
+        android:text="@string/选择配网方式"
+        android:textColor="@color/title_1"
+        android:textSize="@dimen/size_title_sp_14"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/ll_type_wifi"
+        app:layout_constraintTop_toBottomOf="@+id/headerView" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_type_wifi"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_55"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_5"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_choose_type"
+        app:layout_constraintLeft_toRightOf="@+id/tv_choose_type"
+        app:layout_constraintRight_toLeftOf="@+id/ll_type_lan"
+        app:layout_constraintTop_toTopOf="@+id/tv_choose_type">
+
+
+        <ImageView
+            android:id="@+id/iv_type_wifi"
+            android:layout_width="@dimen/dp_15"
+            android:layout_height="@dimen/dp_15"
+            android:src="@drawable/shape_circle_gray_ring" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_type_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_6"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:text="WIFI"
+            android:textColor="@color/title_bg_white"
+            android:textSize="@dimen/size_title_sp_14" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_type_lan"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_55"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_5"
+        app:layout_constraintBottom_toBottomOf="@+id/ll_type_wifi"
+        app:layout_constraintLeft_toRightOf="@+id/ll_type_wifi"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ll_type_wifi">
+
+
+        <ImageView
+            android:id="@+id/iv_type_lan"
+            android:layout_width="@dimen/dp_15"
+            android:layout_height="@dimen/dp_15"
+            android:src="@drawable/shape_circle_blue_ring" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_type_lan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_6"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="LAN"
+            android:textColor="@color/title_bg_white"
+            android:textSize="@dimen/size_title_sp_14" />
+
+
+    </LinearLayout>
+
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_router"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="iv_wifi,tv_ssid,iv_switch_wifi,v_line_ssid,iv_password,et_password,iv_switch_password,v_line_password" />
+
+
+    <ImageView
+        android:id="@+id/iv_wifi"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_25"
+        android:layout_marginTop="@dimen/dp_55"
+        android:src="@drawable/icon_wifi"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_choose_type" />
+
+
+    <EditText
+        android:id="@+id/tv_ssid"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:background="@null"
+        android:hint="@string/ahtool_wifi_blank"
+        android:padding="@dimen/dp_5"
+        android:textColor="@color/content_bg_white"
+        android:textSize="@dimen/size_content_sp_14"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_wifi"
+        app:layout_constraintLeft_toRightOf="@+id/iv_wifi"
+        app:layout_constraintRight_toLeftOf="@+id/iv_switch_wifi" />
+
+
+    <ImageView
+        android:id="@+id/iv_switch_wifi"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_17"
+        android:layout_marginRight="@dimen/dp_25"
+        android:src="@drawable/icon_switch"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_wifi"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <View
+        android:id="@+id/v_line_ssid"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/grid_bg_white"
+        app:layout_constraintLeft_toLeftOf="@+id/iv_wifi"
+        app:layout_constraintRight_toRightOf="@+id/iv_switch_wifi"
+        app:layout_constraintTop_toBottomOf="@+id/iv_wifi" />
+
+
+    <ImageView
+        android:id="@+id/iv_password"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_45"
+        android:src="@drawable/password"
+        app:layout_constraintLeft_toLeftOf="@+id/iv_wifi"
+        app:layout_constraintTop_toBottomOf="@+id/v_line_ssid" />
+
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:background="@null"
+        android:hint="@string/ahtool_wifipwd_blank"
+        android:inputType="textPassword"
+        android:padding="@dimen/dp_5"
+        android:textColor="@color/content_bg_white"
+        android:textSize="@dimen/size_content_sp_14"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_password"
+        app:layout_constraintLeft_toRightOf="@+id/iv_password"
+        app:layout_constraintRight_toLeftOf="@+id/iv_switch_password" />
+
+
+    <ImageView
+        android:id="@+id/iv_switch_password"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_25"
+        android:src="@drawable/icon_signin_see"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_password"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <View
+        android:id="@+id/v_line_password"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/grid_bg_white"
+        app:layout_constraintLeft_toLeftOf="@+id/iv_password"
+        app:layout_constraintRight_toRightOf="@+id/iv_switch_password"
+        app:layout_constraintTop_toBottomOf="@+id/iv_password" />
+
+    <EditText
+        android:id="@+id/etIP"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_25"
+        android:background="@null"
+        android:hint=""
+        android:inputType="textPassword"
+        android:padding="@dimen/dp_5"
+        android:textColor="@color/content_bg_white"
+        android:textSize="@dimen/size_content_sp_14"
+        android:visibility="gone"
+        app:layout_constraintLeft_toRightOf="@+id/iv_password"
+        app:layout_constraintRight_toLeftOf="@+id/iv_switch_password"
+        app:layout_constraintTop_toBottomOf="@+id/v_line_password" />
+
+    <View
+        android:id="@+id/vIP"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/grid_bg_white"
+        app:layout_constraintLeft_toLeftOf="@+id/etIP"
+        app:layout_constraintRight_toRightOf="@+id/etIP"
+        app:layout_constraintTop_toBottomOf="@+id/etIP" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_host"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="iv_server_empty,iv_host_empty,etHost,vHost,etServer,vServer,iv_host_pull,iv_server_pull" />
+
+    <ImageView
+        android:id="@+id/iv_host_empty"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/dp_25"
+        app:layout_constraintTop_toTopOf="@+id/etHost"
+        app:layout_constraintBottom_toBottomOf="@+id/etHost"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <EditText
+        android:id="@+id/etHost"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_25"
+        android:background="@null"
+        android:layout_marginStart="@dimen/dp_10"
+        android:hint="@string/请输入Hostname"
+        android:padding="@dimen/dp_5"
+        android:textColor="@color/content_bg_white"
+        android:textSize="@dimen/size_content_sp_14"
+        app:layout_constraintLeft_toRightOf="@+id/iv_host_empty"
+        app:layout_constraintRight_toLeftOf="@+id/iv_host_pull"
+        app:layout_constraintTop_toBottomOf="@+id/vIP" />
+
+
+    <ImageView
+        android:id="@+id/iv_host_pull"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="0dp"
+        android:src="@drawable/icon_pull"
+        android:layout_marginEnd="@dimen/dp_25"
+        app:layout_constraintTop_toTopOf="@+id/etHost"
+        app:layout_constraintBottom_toBottomOf="@+id/etHost"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <View
+        android:id="@+id/vHost"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/grid_bg_white"
+        app:layout_constraintLeft_toLeftOf="@+id/etHost"
+        app:layout_constraintRight_toRightOf="@+id/etHost"
+        app:layout_constraintTop_toBottomOf="@+id/etHost" />
+
+    <ImageView
+        android:id="@+id/iv_server_empty"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginStart="@dimen/dp_25"
+        android:layout_marginTop="@dimen/dp_25"
+        app:layout_constraintTop_toBottomOf="@+id/vHost"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+
+    <EditText
+        android:id="@+id/etServer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_25"
+        android:background="@null"
+        android:hint="@string/请输入Server"
+        android:padding="@dimen/dp_5"
+        android:textColor="@color/content_bg_white"
+        android:textSize="@dimen/size_content_sp_14"
+        app:layout_constraintLeft_toRightOf="@+id/iv_server_empty"
+        app:layout_constraintRight_toLeftOf="@+id/iv_server_pull"
+        app:layout_constraintTop_toBottomOf="@+id/vHost" />
+
+
+    <ImageView
+        android:id="@+id/iv_server_pull"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="0dp"
+        android:src="@drawable/icon_pull"
+        android:layout_marginEnd="@dimen/dp_25"
+        app:layout_constraintTop_toTopOf="@+id/etServer"
+        app:layout_constraintBottom_toBottomOf="@+id/etServer"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+    <View
+        android:id="@+id/vServer"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/grid_bg_white"
+        app:layout_constraintLeft_toLeftOf="@+id/etServer"
+        app:layout_constraintRight_toRightOf="@+id/etServer"
+        app:layout_constraintTop_toBottomOf="@+id/etServer" />
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="@dimen/dp_35"
+        android:layout_marginTop="@dimen/dp_80"
+        android:background="@drawable/selector_circle_btn_blue"
+        android:text="@string/US配网"
+        android:textColor="@color/white1"
+        android:textSize="@dimen/dp_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vServer" />
+
+
+    <TextView
+        android:id="@+id/stutasText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="@dimen/dp_30"
+        android:gravity="center"
+        android:textColor="@color/red"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_next" />
+
+    <com.growatt.shinetools.widget.RippleBackground
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/stutasText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:rb_color="#20d593"
+        app:rb_duration="5000"
+        app:rb_radius="30dp"
+        app:rb_rippleAmount="5"
+        app:rb_scale="4"
+        app:rb_strokeWidth="10dp"
+        app:rb_type="strokeRipple"
+
+        >
+
+        <TextView
+            android:id="@+id/centerImage"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginBottom="@dimen/dp_30"
+            android:gravity="center"
+            android:textColor="@color/title_bg_white"
+            android:textSize="18sp" />
+
+    </com.growatt.shinetools.widget.RippleBackground>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

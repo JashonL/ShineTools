@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/toobar_title" />
+
+    <TextView
+        android:id="@+id/tv_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/app_name"
+        android:textColor="@color/color_text_33"
+        android:textSize="@dimen/size_title_bar"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_title" />
+
+
+    <RadioGroup
+        android:id="@+id/rg_role"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_3"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_20"
+        app:layout_constraintTop_toBottomOf="@+id/tv_version">
+
+        <RadioButton
+            android:id="@+id/radio_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/selector_role_end"
+            android:gravity="center"
+            android:text="@string/android_key3057"
+            android:textColor="@color/color_selector"
+            android:textSize="@dimen/size_title_sp_16" />
+
+        <RadioButton
+            android:id="@+id/radio_maintain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/selector_role_maintain"
+            android:gravity="center"
+            android:text="@string/android_key3058"
+            android:textColor="@color/color_selector"
+            android:textSize="@dimen/size_title_sp_16" />
+
+    </RadioGroup>
+
+
+    <!--运维用户-->
+
+
+    <!--用户名-->
+    <LinearLayout
+        android:id="@+id/ll_user_username"
+        style="@style/style_linearlayout_login_register"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rg_role">
+
+
+        <ImageView
+            style="@style/style_imageview_register_icon"
+            android:src="@drawable/icon_signin_name" />
+
+        <com.growatt.shinetools.widget.EditTextWithDel
+            android:id="@+id/et_username"
+            style="@style/style_edittext_register_item"
+            android:hint="@string/android_key3061"
+            android:inputType="text"
+            android:nextFocusForward="@+id/et_password" />
+
+    </LinearLayout>
+
+
+
+    <!--运维用户密码-->
+    <LinearLayout
+        android:id="@+id/ll_pwd"
+        style="@style/style_linearlayout_login_register"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_user_username">
+
+
+        <ImageView
+            style="@style/style_imageview_register_icon"
+            android:src="@drawable/icon_signin_password" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="@string/android_key1832"
+            android:inputType="textPassword"
+            android:nextFocusForward="@+id/et_password"
+            android:textColor="@color/color_text_00"
+            android:textColorHint="@color/color_text_99"
+            android:textSize="@dimen/size_title_sp_12" />
+
+
+        <LinearLayout
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_password_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_2"
+                android:src="@drawable/icon_signin_conceal" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+    <!--终端用户密码-->
+    <LinearLayout
+        android:id="@+id/ll_end_pwd"
+        style="@style/style_linearlayout_login_register"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_pwd">
+
+
+        <ImageView
+            style="@style/style_imageview_register_icon"
+            android:src="@drawable/icon_signin_password" />
+
+        <EditText
+            android:id="@+id/et_end_password"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="@string/android_key3062"
+            android:inputType="textPassword"
+            android:nextFocusForward="@+id/et_password"
+            android:textColor="@color/color_text_00"
+            android:textColorHint="@color/color_text_99"
+            android:textSize="@dimen/size_title_sp_12" />
+
+
+        <LinearLayout
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_end_password_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_2"
+                android:src="@drawable/icon_signin_conceal" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/cb_auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:checked="true"
+        android:text="@string/android_key3059"
+        android:theme="@style/MyCheckBox"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_login"
+        app:layout_constraintTop_toBottomOf="@+id/ll_end_pwd" />
+
+
+    <TextView
+        android:id="@+id/tv_forgot_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:padding="@dimen/dp_5"
+        android:text="@string/android_key2254"
+        android:textColor="@color/theme_blue_color"
+        android:textSize="@dimen/size_title_sp_12"
+        app:layout_constraintRight_toRightOf="@+id/ll_end_pwd"
+        app:layout_constraintTop_toBottomOf="@+id/ll_end_pwd" />
+
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginEnd="@dimen/dp_40"
+        android:layout_marginBottom="@dimen/dp_64"
+        android:background="@drawable/selector_button_rect"
+        android:minWidth="@dimen/dp_250"
+        android:padding="@dimen/dp_5"
+        android:text="@string/android_key2002"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_title_sp_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cb_auto"
+        app:layout_constraintVertical_bias="0.2" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

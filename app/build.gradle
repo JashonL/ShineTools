@@ -1,0 +1,97 @@
+apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+    defaultConfig {
+        applicationId "com.growatt.shinetools"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+
+    implementation 'androidx.activity:activity:1.3.1'
+    implementation 'androidx.fragment:fragment:1.4.0-alpha06'
+
+
+    //okhttp
+    implementation 'com.squareup.okhttp3:okhttp:4.6.0'
+
+    /*immersionbar*/
+    // 基础依赖包，必须要依赖
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+
+    // fragment快速实现（可选）
+    implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
+
+    /*glide*/
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'jp.wasabeef:glide-transformations:3.0.1'
+
+    /*butterknife*/
+    implementation 'com.jakewharton:butterknife:10.2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+
+    /*gson*/
+    implementation 'com.google.code.gson:gson:2.8.5'
+    /*zxing第三方框架*/
+    implementation 'com.king.zxing:zxing-lite:1.1.9-androidx'
+    /*toastUtils*/
+    implementation 'com.hjq:toast:8.2'
+
+    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+
+    //加载框
+    implementation 'com.wang.avi:library:2.1.3'
+
+    /*BRVAH*/
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
+
+    //权限请求
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
+    implementation 'com.mylhyl:circleDialog:5.2.0'
+
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+
+    implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
+
+    /*eventBus*/
+    implementation 'org.greenrobot:eventbus:3.2.0'
+    implementation 'com.davidecirillo.multichoicerecyclerview:multichoicerecyclerview:2.0.0'
+
+    implementation 'com.contrarywind:Android-PickerView:4.1.9'
+
+
+//    implementation 'androidx.activity:activity:1.4.0-alpha01'
+//    implementation 'androidx.fragment:fragment:1.4.0-alpha08'
+}

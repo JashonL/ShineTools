@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/toobar_title" />
+
+    <TextView
+        android:id="@+id/tv_current_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_100"
+        android:padding="@dimen/dp_5"
+        android:text="@string/android_key1995"
+        android:textColor="@color/color_text_66"
+        android:textSize="@dimen/size_content_sp_14" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_45"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/shape_gray_radius_20"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_wifi_ssid"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:gravity="center_vertical"
+            android:padding="@dimen/dp_5"
+            android:text="@string/android_key2259"
+            android:textColor="@color/color_text_33"
+            android:textSize="@dimen/size_content_sp_14" />
+
+
+        <TextView
+            android:id="@+id/tv_fresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:padding="@dimen/dp_5"
+            android:text="@string/android_key2982"
+            android:textColor="@color/theme_blue_color"
+            android:textSize="@dimen/size_content_sp_14"
+            app:layout_constraintRight_toLeftOf="@+id/tv_arrow"
+            app:layout_constraintTop_toTopOf="@+id/tv_wifi_ssid" />
+
+
+        <TextView
+            android:id="@+id/tv_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:padding="@dimen/dp_5"
+            android:text="&gt;"
+            android:textColor="@color/theme_blue_color"
+            android:textSize="@dimen/size_content_sp_14"
+            app:layout_constraintBottom_toBottomOf="@+id/view_wifi_background"
+            app:layout_constraintRight_toRightOf="@+id/view_wifi_background"
+            app:layout_constraintTop_toTopOf="@+id/view_wifi_background" />
+
+    </LinearLayout>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_75"
+        android:layout_marginEnd="@dimen/dp_50"
+        android:foreground="@drawable/card_foreground"
+        app:cardBackgroundColor="@color/theme_blue_color"
+        app:cardCornerRadius="@dimen/dp_20"
+        app:cardElevation="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_wifi_background">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            android:text="@string/android_key1854"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_title_sp_16" />
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

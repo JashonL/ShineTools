@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:background="@drawable/touch_bg"
+    android:padding="@dimen/dp_10"
+    android:layout_height="@dimen/dp_45">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:maxLines="2"
+        android:text="@string/android_key2"
+        android:textColor="@color/color_text_66"
+        android:textSize="@dimen/size_content_sp_14"
+        app:autoSizeMaxTextSize="@dimen/size_content_sp_14"
+        app:autoSizeMinTextSize="@dimen/sp_8"
+        app:autoSizeTextType="uniform" />
+
+    <Switch
+        android:id="@+id/sw_switch"
+        android:checked="true"
+        android:layout_width="wrap_content"
+        android:theme="@style/MyRadioButton"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

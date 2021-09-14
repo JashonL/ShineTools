@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white1"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_25"
+        android:text="@string/m457电网线路阻抗"
+        android:gravity="center"
+        android:textColor="@color/mainColor"
+        android:textSize="@dimen/size_content_sp_12"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewRST"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_5"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_10"
+        android:background="@color/gray_background"
+        />
+</LinearLayout>
