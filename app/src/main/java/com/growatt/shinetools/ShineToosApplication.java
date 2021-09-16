@@ -18,6 +18,7 @@ import com.growatt.shinetools.okhttp.https.HttpsUtils;
 import com.growatt.shinetools.okhttp.log.LoggerInterceptor;
 import com.growatt.shinetools.utils.Log;
 import com.hjq.toast.ToastUtils;
+import com.xsj.crasheye.Crasheye;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -89,6 +90,9 @@ public class ShineToosApplication extends Application {
                 .build();
         Realm.setDefaultConfiguration(configRealm);
         DATALOGER_UPDATA_DIR = getFilesDir().getPath() + File.separator + "datalog" + File.separator;//
+
+
+        Crasheye.init(context, "aada7e10");
     }
 
 

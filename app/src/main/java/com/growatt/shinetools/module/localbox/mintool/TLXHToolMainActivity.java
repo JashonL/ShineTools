@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.adapter.MaxContentAdapter;
 import com.growatt.shinetools.adapter.MaxControlAdapter;
 import com.growatt.shinetools.adapter.MaxMainChildAdapter;
@@ -30,7 +31,6 @@ import com.growatt.shinetools.adapter.TLXHToolEleAdapter;
 import com.growatt.shinetools.adapter.TLXHToolPowerAdapter;
 import com.growatt.shinetools.base.DemoBase;
 import com.growatt.shinetools.bean.WifiList;
-import com.growatt.shinetools.constant.GlobalConstant;
 import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
@@ -38,7 +38,6 @@ import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.modbusbox.bean.MaxDataBean;
 import com.growatt.shinetools.modbusbox.bean.MaxDataDeviceBean;
 import com.growatt.shinetools.modbusbox.bean.ToolStorageDataBean;
-import com.growatt.shinetools.modbusbox.listeners.OnHandlerStrListener;
 import com.growatt.shinetools.module.localbox.max.MaxChartEnergyActivity;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.module.localbox.max.MaxOssPwdActivity;
@@ -54,8 +53,6 @@ import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.utils.Position;
-import com.growatt.shinetools.utils.SharedPreferencesUnit;
-import com.mylhyl.circledialog.CircleDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,6 +63,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_AUTO_REFRESH;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 
@@ -482,8 +480,23 @@ public class  TLXHToolMainActivity extends DemoBase implements View.OnClickListe
 //                "设置配置","参数设置","智能检测","高级设置"
         };
         int[] mConImgId = new int[]{
-                R.drawable.max_set, R.drawable.max_parameter, R.drawable.tlxh_control_manager,R.drawable.max_intelligent_icon, R.drawable.max_advance_set
+                R.drawable.max_set, R.drawable.max_parameter, R.drawable.tlxh_control_manager,R.drawable.max_intelligent_icon,
+                R.drawable.max_advance_set
         };
+
+
+        if (END_USER == ShineToosApplication.getContext().getUser_type()){
+            mConTitles = new String[]{
+                    getString(R.string.m283设置配置), getString(R.string.m284参数设置),getString(R.string.m充放电管理),
+                    getString(R.string.m285智能检测)
+            };
+            mConImgId = new int[]{
+                    R.drawable.max_set, R.drawable.max_parameter, R.drawable.tlxh_control_manager,R.drawable.max_intelligent_icon
+            };
+            llAutoTest.setVisibility(View.GONE);
+        }
+
+
         for (int i = 0;i<mConTitles.length;i++){
             MaxControlBean bean = new MaxControlBean();
             bean.setTitle(mConTitles[i]);

@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.adapter.MaxContentAdapter;
 import com.growatt.shinetools.adapter.MaxControlAdapter;
 import com.growatt.shinetools.adapter.MaxMainChildAdapter;
@@ -52,6 +53,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_AUTO_REFRESH;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 
@@ -389,7 +391,11 @@ public class MaxMain1500VActivity extends DemoBase implements View.OnClickListen
         cvPower = header1.findViewById(R.id.cvPower);
         cvWarning = header1.findViewById(R.id.cvWarning);
         mControlRecyclerView = (RecyclerView) header1.findViewById(R.id.rvControl);
-        mControlRecyclerView.setLayoutManager(new GridLayoutManager(this,4));
+        int count=4;
+        if (END_USER == ShineToosApplication.getContext().getUser_type()){
+            count=3;
+        }
+        mControlRecyclerView.setLayoutManager(new GridLayoutManager(this,count));
         mControlList = new ArrayList<>();
         String[] mConTitles = new String[]{
                 getString(R.string.m283设置配置), getString(R.string.m284参数设置),
@@ -399,6 +405,20 @@ public class MaxMain1500VActivity extends DemoBase implements View.OnClickListen
         int[] mConImgId = new int[]{
                 R.drawable.max_set, R.drawable.max_parameter, R.drawable.max_intelligent_icon, R.drawable.max_advance_set
         };
+
+
+        if (END_USER == ShineToosApplication.getContext().getUser_type()){
+            mConTitles = new String[]{
+                    getString(R.string.m283设置配置), getString(R.string.m284参数设置),
+                    getString(R.string.m285智能检测)
+//                "设置配置","参数设置","智能检测",
+            };
+            mConImgId = new int[]{
+                    R.drawable.max_set, R.drawable.max_parameter, R.drawable.max_intelligent_icon
+            };
+        }
+
+
         for (int i = 0;i<mConTitles.length;i++){
             MaxControlBean bean = new MaxControlBean();
             bean.setTitle(mConTitles[i]);

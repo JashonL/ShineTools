@@ -11,9 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.base.DemoBase;
 import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
@@ -39,6 +43,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.MAINTEAN_USER;
 
 
 public class TlxFastConfigActivity extends DemoBase {
@@ -69,10 +76,10 @@ public class TlxFastConfigActivity extends DemoBase {
     TextView mTvTitle3;
     @BindView(R.id.checkBox3)
     CheckBox mCheckBox3;
-//    @BindView(R.id.btnSelect3)
+    //    @BindView(R.id.btnSelect3)
 //    Button mBtnSelect3;
     @BindView(R.id.tvTitle4)
-TextView mTvTitle4;
+    TextView mTvTitle4;
     @BindView(R.id.checkBox4)
     CheckBox mCheckBox4;
 
@@ -123,7 +130,19 @@ TextView mTvTitle4;
     @BindView(R.id.btn_lcd_setting)
     Button btnLcdSetting;
 
+
     Calendar mSelectCalendar = Calendar.getInstance();
+    @BindView(R.id.ivLeft)
+    ImageView ivLeft;
+    @BindView(R.id.relativeLayout1)
+    RelativeLayout relativeLayout1;
+    @BindView(R.id.headerView)
+    LinearLayout headerView;
+    @BindView(R.id.tv_national_safetyReg)
+    TextView tvNationalSafetyReg;
+    @BindView(R.id.tv_inveter_time)
+    TextView tvInveterTime;
+
     private String[][] modelToal;
 
     private List<String> select1Models = new ArrayList<>();
@@ -154,6 +173,8 @@ TextView mTvTitle4;
     private int[] seletTypeDTCs = {
             5100, 5200, 5300
     };
+
+
     Handler mHandlerWrite = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -205,16 +226,16 @@ TextView mTvTitle4;
                         boolean isCheck = MaxUtil.checkReceiverFull(bytes);
                         if (isCheck) {
                             String success = "";
-                            if (nowSetPos==0 || nowSetPos==1){
+                            if (nowSetPos == 0 || nowSetPos == 1) {
                                 success = sucNotes[nowSetPos] + " " + getString(R.string.all_success);
-                            }else if (nowSetPos==2){
-                                String[] afciArray={getString(R.string.AFCI使能),getString(R.string.AFCI自检),getString(R.string.AFCI复位)};
-                                if (mPos<afciArray.length){
+                            } else if (nowSetPos == 2) {
+                                String[] afciArray = {getString(R.string.AFCI使能), getString(R.string.AFCI自检), getString(R.string.AFCI复位)};
+                                if (mPos < afciArray.length) {
                                     success = afciArray[mPos] + " " + getString(R.string.all_success);
                                 }
-                            }else if (nowSetPos==3){
-                                String[] antiArray={getString(R.string.防逆流使能),getString(R.string.m防逆流功率百分比),getString(R.string.m防逆流失效后默认功率百分比)};
-                                if (mPos<antiArray.length){
+                            } else if (nowSetPos == 3) {
+                                String[] antiArray = {getString(R.string.防逆流使能), getString(R.string.m防逆流功率百分比), getString(R.string.m防逆流失效后默认功率百分比)};
+                                if (mPos < antiArray.length) {
                                     success = antiArray[mPos] + " " + getString(R.string.all_success);
                                 }
                             }
@@ -442,28 +463,36 @@ TextView mTvTitle4;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tlx_fast_config);
         ButterKnife.bind(this);
+
+
         ModbusUtil.setComAddressOldInv();
         initString();
     }
 
     private void initString() {
-        Intent intent =getIntent();
-        deviceType = intent.getIntExtra("deviceType",0);
+        Intent intent = getIntent();
+        deviceType = intent.getIntExtra("deviceType", 0);
+        int user_type = ShineToosApplication.getContext().getUser_type();
+
+        if ((user_type==MAINTEAN_USER||user_type == END_USER )&& deviceType==0) {
+            CommenUtils.hideAllView(View.GONE,tvNationalSafetyReg,tvInveterTime,tvLcdTitle,mTvTitle1,mTvTitle2,mTvTitle5 );
+        }
+
         comList = new ArrayList<>();
-        for (int i=1;i<100;i++){
+        for (int i = 1; i < 100; i++) {
             comList.add(String.valueOf(i));
         }
         meterList = new ArrayList<>();
         meterList.add("None");
         meterList.add("Meter");
-        if(deviceType==1){
+        if (deviceType == 1) {
             meterList.add("CT");
         }
 
-         antiList = new ArrayList<>();
+        antiList = new ArrayList<>();
         antiList.add("Off");
         antiList.add("On(with Meter)");
-        if(deviceType==1){
+        if (deviceType == 1) {
             antiList.add("On(with CT)");
         }
 
@@ -484,72 +513,69 @@ TextView mTvTitle4;
         };
 
 
-
-
-
 //
 //        };
         modelToal = new String[][]{
-                { "VDE0126","S01"}
-                , {"G99","S02"}
-                , {"AS4777","S03"}
-                , {" CEI0_21","S04"}
-                , {"SPAIN","S05" }
-                , {"GREECE_CONTINENT","S06"}
-                , {"N4105","S07"}
-                , { "G98","S08"}
-                , {"IRELAND","S09"}
-                , {"CQC_2013","S0A"}
-                , {"EN50438","S0B"}
-                , {"HUNGARY","S0C"}
-                , {"BELAGIUM","S0D"}
-                , {"MEA","S0E"}
-                , {"PEA","S0F"}
-                , {"NEWZWALAND","S10"}
-                , {"CQC_PLANT","S11"}
-                , {"INDIA","S12"}
-                , {"DEMARK_DK1","S13"}
-                , {"SWEDEN","S14"}
-                , {" NORWAY","S15"}
-                , {"QUEENSLAND","S16"}
-                , {"FRANCE","S17"}
-                , {"KOREA_60HZ","S18"}
-                , { "BRAZIL","S19"}
-                , {"CEI0_16","S1A"}
-                , {"DEWA","S1B"}
-                , {"CHILE","S1C"}
-                , {"ARGENTINA","S1D"}
-                , {"N4110_BDEW","S1E"}
-                , { "TAIWAN_VPC","S1F"}
-                , {"DEMARK_DK2","S20"}
-                , {"CQC_2018","S21"}
-                , {"DEMARK_TR3_3_1","S22"}
-                , {"PLOAND","S23"}
-                , {"TAIWAN_TPC","S24"}
-                , {"IEEE1547.1","S25"}
-                , {"BRAZIL_240V","S26"}
-                , {"EN50549","S27"}
-                , {"AU_VICTORIA","S28"}
-                , {"AU_WESTERN","S29"}
-                , {"AU_HORIZON ","S2A"}
-                , {"AU_AUSGRID","S2B"}
-                , {"AU_ENDEAVOUR","S2C"}
-                , {"AU_ERGONENERGY","S2D"}
-                , {"AU_ENERGEX","S2E"}
-                , {"AU_SANETWORK","S2F"}
-                , {"US_UL1741","S30"}
-                , {"US_RULE21","S31"}
-                , {"US_RULE14_HECO","S32"}
-                , {"NRS097","S33"}
-                , {"TUNISIA","S34"}
-                , {"PRC_EAST","S35"}
-                , {"PRC_WEST","S36"}
-                , {"PRC_QUEBEC","S37"}
-                , {"AUSTRIA","S38"}
-                , {"ESTONIA","S39"}
-                , {"NI_G98","S3A"}
-                , {"NI_G99","S3B"}
-                , {"INDIA_KERALA","S3C"}
+                {"VDE0126", "S01"}
+                , {"G99", "S02"}
+                , {"AS4777", "S03"}
+                , {" CEI0_21", "S04"}
+                , {"SPAIN", "S05"}
+                , {"GREECE_CONTINENT", "S06"}
+                , {"N4105", "S07"}
+                , {"G98", "S08"}
+                , {"IRELAND", "S09"}
+                , {"CQC_2013", "S0A"}
+                , {"EN50438", "S0B"}
+                , {"HUNGARY", "S0C"}
+                , {"BELAGIUM", "S0D"}
+                , {"MEA", "S0E"}
+                , {"PEA", "S0F"}
+                , {"NEWZWALAND", "S10"}
+                , {"CQC_PLANT", "S11"}
+                , {"INDIA", "S12"}
+                , {"DEMARK_DK1", "S13"}
+                , {"SWEDEN", "S14"}
+                , {" NORWAY", "S15"}
+                , {"QUEENSLAND", "S16"}
+                , {"FRANCE", "S17"}
+                , {"KOREA_60HZ", "S18"}
+                , {"BRAZIL", "S19"}
+                , {"CEI0_16", "S1A"}
+                , {"DEWA", "S1B"}
+                , {"CHILE", "S1C"}
+                , {"ARGENTINA", "S1D"}
+                , {"N4110_BDEW", "S1E"}
+                , {"TAIWAN_VPC", "S1F"}
+                , {"DEMARK_DK2", "S20"}
+                , {"CQC_2018", "S21"}
+                , {"DEMARK_TR3_3_1", "S22"}
+                , {"PLOAND", "S23"}
+                , {"TAIWAN_TPC", "S24"}
+                , {"IEEE1547.1", "S25"}
+                , {"BRAZIL_240V", "S26"}
+                , {"EN50549", "S27"}
+                , {"AU_VICTORIA", "S28"}
+                , {"AU_WESTERN", "S29"}
+                , {"AU_HORIZON ", "S2A"}
+                , {"AU_AUSGRID", "S2B"}
+                , {"AU_ENDEAVOUR", "S2C"}
+                , {"AU_ERGONENERGY", "S2D"}
+                , {"AU_ENERGEX", "S2E"}
+                , {"AU_SANETWORK", "S2F"}
+                , {"US_UL1741", "S30"}
+                , {"US_RULE21", "S31"}
+                , {"US_RULE14_HECO", "S32"}
+                , {"NRS097", "S33"}
+                , {"TUNISIA", "S34"}
+                , {"PRC_EAST", "S35"}
+                , {"PRC_WEST", "S36"}
+                , {"PRC_QUEBEC", "S37"}
+                , {"AUSTRIA", "S38"}
+                , {"ESTONIA", "S39"}
+                , {"NI_G98", "S3A"}
+                , {"NI_G99", "S3B"}
+                , {"INDIA_KERALA", "S3C"}
         };
 
         addressList = new ArrayList<>();
@@ -561,55 +587,55 @@ TextView mTvTitle4;
                 {getString(R.string.意大利), getString(R.string.英语), getString(R.string.德语), getString(R.string.西班牙语), getString(R.string.法语), getString(R.string.匈牙利语), getString(R.string.土耳其语), getString(R.string.波兰语), getString(R.string.葡萄牙语)}
         };
         //设置功能码集合（功能码，寄存器，数据）
-        int powerLimitReg=3000;
-        if (deviceType==0){
-            powerLimitReg=304;
+        int powerLimitReg = 3000;
+        if (deviceType == 0) {
+            powerLimitReg = 304;
         }
         funsSet = new int[][][]{
-                {{6, 118, -1},{6, 119, -1},{6, 120, -1},{6, 121, -1}},//国家安规
+                {{6, 118, -1}, {6, 119, -1}, {6, 120, -1}, {6, 121, -1}},//国家安规
                 {{6, 45, -1}, {6, 46, -1}, {6, 47, -1}, {6, 48, -1}, {6, 49, -1}, {6, 50, -1}},//逆变器时间
                 {{6, 15, -1}},//LCD语言
                 {{6, 30, -1}}// 地址
                 , {{6, 533, -1}}//功率采集器
                 , {{6, 541, -1}, {6, 542, -1}, {6, 543, -1}}//时间
-                , {{6, 122, -1}, {6, 123, -1},{6, powerLimitReg, -1}}//逆变器地址
+                , {{6, 122, -1}, {6, 123, -1}, {6, powerLimitReg, -1}}//逆变器地址
         };
 
 
         for (String[] countryStrings : modelToal) {
-            String modelEn = String.format("%s(%s)", countryStrings[0],countryStrings[1]);
+            String modelEn = String.format("%s(%s)", countryStrings[0], countryStrings[1]);
             select1Models.add(modelEn);//选项卡
             select1ModelValues.add(countryStrings[1]);//model值
         }
     }
 
-   public void selectTheValue(int buttonID){
+    public void selectTheValue(int buttonID) {
 
-       new CircleDialog.Builder()
-               .setWidth(0.7f)
-               .setGravity(Gravity.CENTER)
-               .setMaxHeight(0.5f)
-               .setTitle(getString(R.string.m225请选择))
-               .setNegative(getString(R.string.all_no), null)
-               .setItems(selectOnOrOff, (parent, view1, position, id) -> {
-                   if (buttonID==R.id.btnSelect3){
-                       mbtnSelect3.setText(selectOnOrOff[position]);
-                   }else  if (buttonID==R.id.btnSelect32){
-                       mbtnSelect32.setText(selectOnOrOff[position]);
-                   }else  if (buttonID==R.id.btnSelect33){
-                       mbtnSelect33.setText(selectOnOrOff[position]);
-                   }
+        new CircleDialog.Builder()
+                .setWidth(0.7f)
+                .setGravity(Gravity.CENTER)
+                .setMaxHeight(0.5f)
+                .setTitle(getString(R.string.m225请选择))
+                .setNegative(getString(R.string.all_no), null)
+                .setItems(selectOnOrOff, (parent, view1, position, id) -> {
+                    if (buttonID == R.id.btnSelect3) {
+                        mbtnSelect3.setText(selectOnOrOff[position]);
+                    } else if (buttonID == R.id.btnSelect32) {
+                        mbtnSelect32.setText(selectOnOrOff[position]);
+                    } else if (buttonID == R.id.btnSelect33) {
+                        mbtnSelect33.setText(selectOnOrOff[position]);
+                    }
 
 
-                   return true;
-               })
-               .show(getSupportFragmentManager());
+                    return true;
+                })
+                .show(getSupportFragmentManager());
     }
 
     @OnClick({R.id.ivLeft,
-            R.id.tv_national_safetyReg,R.id.btn_safetyreg,R.id.tv_inveter_time,R.id.btn_inverter_time,
-            R.id.tv_lcd_title,R.id.btn_lcd_setting,
-            R.id.tvRight,R.id.tvTitle1, R.id.btnSelect1, R.id.btnSelect2,R.id.btnSelect32,R.id.btnSelect33, R.id.btnSelect3, R.id.btnSelect4,
+            R.id.tv_national_safetyReg, R.id.btn_safetyreg, R.id.tv_inveter_time, R.id.btn_inverter_time,
+            R.id.tv_lcd_title, R.id.btn_lcd_setting,
+            R.id.tvRight, R.id.tvTitle1, R.id.btnSelect1, R.id.btnSelect2, R.id.btnSelect32, R.id.btnSelect33, R.id.btnSelect3, R.id.btnSelect4,
             R.id.tvTitle2, R.id.tvTitle3, R.id.tvTitle4, R.id.tvTitle5, R.id.btnSelectModel, R.id.btnSelect1Mech, R.id.btnSelect1Type})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -684,62 +710,62 @@ TextView mTvTitle4;
                 }
 
                 if (mCheckBox1.isChecked()) {
-                  String Value1=mBtnSelect1.getText().toString();
-                  if (comList.contains(Value1)){
-                      funsSet[3][0][2]= Integer.parseInt(Value1);
-                  }
+                    String Value1 = mBtnSelect1.getText().toString();
+                    if (comList.contains(Value1)) {
+                        funsSet[3][0][2] = Integer.parseInt(Value1);
+                    }
                 }
                 if (mCheckBox2.isChecked()) {
-                    String Value2=mBtnSelect2.getText().toString();
-                    if (meterList.contains(Value2)){
-                      int valueNum=meterList.indexOf(Value2);
-                      if (valueNum==2){
-                          valueNum=valueNum+1;
-                      }
-                        funsSet[4][0][2]=valueNum;
+                    String Value2 = mBtnSelect2.getText().toString();
+                    if (meterList.contains(Value2)) {
+                        int valueNum = meterList.indexOf(Value2);
+                        if (valueNum == 2) {
+                            valueNum = valueNum + 1;
+                        }
+                        funsSet[4][0][2] = valueNum;
                     }
                 }
 
                 if (mCheckBox3.isChecked()) {
-                    String Value31=mbtnSelect3.getText().toString();
-                    String Value32=mbtnSelect32.getText().toString();
-                    String Value33=mbtnSelect33.getText().toString();
-                    if (Arrays.asList(selectOnOrOff).contains(Value31)){
-                        int valueNum= Arrays.asList(selectOnOrOff).indexOf(Value31);
-                        if (valueNum==0){
-                            valueNum=165;
-                        }else if (valueNum==0){
-                            valueNum=160;
+                    String Value31 = mbtnSelect3.getText().toString();
+                    String Value32 = mbtnSelect32.getText().toString();
+                    String Value33 = mbtnSelect33.getText().toString();
+                    if (Arrays.asList(selectOnOrOff).contains(Value31)) {
+                        int valueNum = Arrays.asList(selectOnOrOff).indexOf(Value31);
+                        if (valueNum == 0) {
+                            valueNum = 165;
+                        } else if (valueNum == 0) {
+                            valueNum = 160;
                         }
-                        funsSet[5][0][2]=valueNum;
+                        funsSet[5][0][2] = valueNum;
                     }
 
-                    if (Arrays.asList(selectOnOrOff).contains(Value32)){
-                        int valueNum= Arrays.asList(selectOnOrOff).indexOf(Value32);
-                        funsSet[5][1][2]=valueNum;
+                    if (Arrays.asList(selectOnOrOff).contains(Value32)) {
+                        int valueNum = Arrays.asList(selectOnOrOff).indexOf(Value32);
+                        funsSet[5][1][2] = valueNum;
                     }
-                    if (Arrays.asList(selectOnOrOff).contains(Value33)){
-                        int valueNum= Arrays.asList(selectOnOrOff).indexOf(Value33);
-                        funsSet[5][2][2]=valueNum;
+                    if (Arrays.asList(selectOnOrOff).contains(Value33)) {
+                        int valueNum = Arrays.asList(selectOnOrOff).indexOf(Value33);
+                        funsSet[5][2][2] = valueNum;
                     }
                 }
 
                 if (mCheckBox4.isChecked()) {
-                    String Value41=mBtnSelect4.getText().toString();
-                    String Value42=mbtnSelect42.getText().toString();
-                    String Value43=mbtnSelect43.getText().toString();
-                    if (antiList.contains(Value41)){
-                        int valueNum=antiList.indexOf(Value41);
-                        if (valueNum==2){
-                            valueNum=valueNum+1;
+                    String Value41 = mBtnSelect4.getText().toString();
+                    String Value42 = mbtnSelect42.getText().toString();
+                    String Value43 = mbtnSelect43.getText().toString();
+                    if (antiList.contains(Value41)) {
+                        int valueNum = antiList.indexOf(Value41);
+                        if (valueNum == 2) {
+                            valueNum = valueNum + 1;
                         }
-                        funsSet[6][0][2]=valueNum;
+                        funsSet[6][0][2] = valueNum;
                     }
-                    if (Value42.length()>0){
-                        funsSet[6][1][2]= Integer.parseInt(Value42);
+                    if (Value42.length() > 0) {
+                        funsSet[6][1][2] = Integer.parseInt(Value42);
                     }
-                    if (Value43.length()>0){
-                        funsSet[6][2][2]= Integer.parseInt(Value43);
+                    if (Value43.length() > 0) {
+                        funsSet[6][2][2] = Integer.parseInt(Value43);
                     }
                 }
 
@@ -754,11 +780,10 @@ TextView mTvTitle4;
                     return;
                 }
 
-                if (cbLcd.isChecked() && language==-1) {
+                if (cbLcd.isChecked() && language == -1) {
                     toast(R.string.m257请选择设置值);
                     return;
                 }
-
 
 
                 if (mCheckBox1.isChecked() && (funsSet[0][0][2] == -1)) {
@@ -770,19 +795,19 @@ TextView mTvTitle4;
                     return;
                 }
                 if (mCheckBox3.isChecked()) {
-                    if((funsSet[2][0][2] == -1)&&(funsSet[2][1][2] == -1)&&(funsSet[2][2][2] == -1)){
+                    if ((funsSet[2][0][2] == -1) && (funsSet[2][1][2] == -1) && (funsSet[2][2][2] == -1)) {
                         toast(R.string.m257请选择设置值);
                         return;
                     }
                 }
-                if (mCheckBox4.isChecked() && (funsSet[3][0][2] == -1)&&(funsSet[3][1][2] == -1)&&(funsSet[3][2][2] == -1)) {
+                if (mCheckBox4.isChecked() && (funsSet[3][0][2] == -1) && (funsSet[3][1][2] == -1) && (funsSet[3][2][2] == -1)) {
                     toast(R.string.m257请选择设置值);
                     return;
                 }
 
 
-                if ((!cbNationalSageReg.isChecked()&&!cbInvetTime.isChecked()&&!cbLcd.isChecked()
-                        &&!mCheckBox1.isChecked())
+                if ((!cbNationalSageReg.isChecked() && !cbInvetTime.isChecked() && !cbLcd.isChecked()
+                        && !mCheckBox1.isChecked())
                         && (!mCheckBox2.isChecked())
                         && (!mCheckBox3.isChecked())
                         && (!mCheckBox4.isChecked())
@@ -792,7 +817,7 @@ TextView mTvTitle4;
                 }
                 //设置值
 
-                nowSetPos=-1;
+                nowSetPos = -1;
                 writeValue(true);
 
 
@@ -800,18 +825,17 @@ TextView mTvTitle4;
             case R.id.btnSelect1:    //地址
 
 
-
-                    new CircleDialog.Builder()
-                            .setWidth(0.7f)
-                            .setGravity(Gravity.CENTER)
-                            .setMaxHeight(0.5f)
-                            .setTitle(getString(R.string.m225请选择))
-                            .setNegative(getString(R.string.all_no), null)
-                            .setItems(comList, (parent, view1, position, id) -> {
-                                mBtnSelect1.setText(comList.get(position));
-                                return true;
-                            })
-                            .show(getSupportFragmentManager());
+                new CircleDialog.Builder()
+                        .setWidth(0.7f)
+                        .setGravity(Gravity.CENTER)
+                        .setMaxHeight(0.5f)
+                        .setTitle(getString(R.string.m225请选择))
+                        .setNegative(getString(R.string.all_no), null)
+                        .setItems(comList, (parent, view1, position, id) -> {
+                            mBtnSelect1.setText(comList.get(position));
+                            return true;
+                        })
+                        .show(getSupportFragmentManager());
 
                 break;
             case R.id.btnSelect2://功率采集器
@@ -831,13 +855,13 @@ TextView mTvTitle4;
 
 
                 break;
-            case R.id.btnSelect3 ://AFCI 1
-            selectTheValue(R.id.btnSelect3);
+            case R.id.btnSelect3://AFCI 1
+                selectTheValue(R.id.btnSelect3);
                 break;
-            case R.id.btnSelect32 ://AFCI 2
+            case R.id.btnSelect32://AFCI 2
                 selectTheValue(R.id.btnSelect32);
                 break;
-            case R.id.btnSelect33 ://AFCI 3
+            case R.id.btnSelect33://AFCI 3
                 selectTheValue(R.id.btnSelect33);
                 break;
             case R.id.btnSelect4:
@@ -862,13 +886,12 @@ TextView mTvTitle4;
                 break;
             case R.id.tvTitle3:
 
-                setCheckShow2(mCheckBox3, mbtn3TextField1,mbtnSelect3,mbtn3TextField2,mbtnSelect32,mbtn3TextField13,mbtnSelect33);
+                setCheckShow2(mCheckBox3, mbtn3TextField1, mbtnSelect3, mbtn3TextField2, mbtnSelect32, mbtn3TextField13, mbtnSelect33);
                 break;
             case R.id.tvTitle4:
 
 
-
-            setCheckShow2(mCheckBox4, mbtn4TextField1,mBtnSelect4,mbtn4TextField2,mbtnSelect42,mbtn4TextField13,mbtnSelect43);
+                setCheckShow2(mCheckBox4, mbtn4TextField1, mBtnSelect4, mbtn4TextField2, mbtnSelect42, mbtn4TextField13, mbtnSelect43);
 
                 break;
             case R.id.tvTitle5:
@@ -887,7 +910,7 @@ TextView mTvTitle4;
                 break;
 
             case R.id.tv_national_safetyReg:
-                setCheckShow(cbNationalSageReg , btnSafeTyReg );
+                setCheckShow(cbNationalSageReg, btnSafeTyReg);
                 break;
             case R.id.btn_safetyreg:
                 if (isFlagModel) {
@@ -980,7 +1003,7 @@ TextView mTvTitle4;
 
 
     private void setNew() {
-        if (TextUtils.isEmpty(mSelectModel))return;
+        if (TextUtils.isEmpty(mSelectModel)) return;
         contents[0] = mSelectModel.substring(1, 3);
         try {
             funsSet[0][0][2] = Integer.parseInt(contents[0] + contents[1], 16);
@@ -996,7 +1019,6 @@ TextView mTvTitle4;
             funsSet[0][3][2] = -1;
         }
     }
-
 
 
     public void setTime() {
@@ -1061,7 +1083,7 @@ TextView mTvTitle4;
         if (checkBox.isChecked()) {
             checkBox.setChecked(false);
 
-                CommenUtils.hideAllView(View.GONE, views);
+            CommenUtils.hideAllView(View.GONE, views);
 
         } else {
             checkBox.setChecked(true);
@@ -1096,7 +1118,7 @@ TextView mTvTitle4;
 
     public void writeValue(boolean isFirst) {
         Mydialog.Show(this);
-        if (cbNationalSageReg.isChecked()&&nowSetPos<0){
+        if (cbNationalSageReg.isChecked() && nowSetPos < 0) {
             nowSetPos = 0;
             if (isFirst) {
                 writeRegisterValue();
@@ -1104,7 +1126,7 @@ TextView mTvTitle4;
                 //继续发送设置命令
                 mHandlerWrite.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
             }
-        }else if (cbInvetTime.isChecked()&&nowSetPos<1){
+        } else if (cbInvetTime.isChecked() && nowSetPos < 1) {
             nowSetPos = 1;
             if (isFirst) {
                 writeRegisterValue();
@@ -1112,7 +1134,7 @@ TextView mTvTitle4;
                 //继续发送设置命令
                 mHandlerWrite.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
             }
-        }else if (cbLcd.isChecked()&&nowSetPos<2){
+        } else if (cbLcd.isChecked() && nowSetPos < 2) {
             nowSetPos = 2;
             if (isFirst) {
                 writeRegisterValue();
@@ -1120,8 +1142,7 @@ TextView mTvTitle4;
                 //继续发送设置命令
                 mHandlerWrite.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
             }
-        }
-       else if (mCheckBox1.isChecked() && nowSetPos < 3) {
+        } else if (mCheckBox1.isChecked() && nowSetPos < 3) {
             nowSetPos = 3;
             if (isFirst) {
                 writeRegisterValue();

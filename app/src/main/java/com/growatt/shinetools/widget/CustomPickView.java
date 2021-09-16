@@ -105,7 +105,7 @@ public class CustomPickView {
     public static void showPickView(final Activity context, final List<String> data, OnOptionsSelectListener listener, String title) {
         OptionsPickerView<String> pvOptions = new OptionsPickerBuilder(context,listener)
                 .setTitleText(title)
-                .setCancelText(ShineToosApplication.getContext().getString(R.string.m427语言))//取消按钮文字
+                .setCancelText(ShineToosApplication.getContext().getString(R.string.all_no))//取消按钮文字
                 .setSubmitText(ShineToosApplication.getContext().getString(R.string.all_ok))//确认按钮文字
                 .setTitleBgColor(ContextCompat.getColor(context,R.color.white_background))
                 .setTitleColor(ContextCompat.getColor(context,R.color.title_2))

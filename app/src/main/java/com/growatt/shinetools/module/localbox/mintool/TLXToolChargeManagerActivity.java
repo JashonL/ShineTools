@@ -82,14 +82,14 @@ public class TLXToolChargeManagerActivity extends DemoBase {
                 ,getString(R.string.m放电停止SOC)
         };
         registers = new String[]{
-                "(3038~3059)"
-                ,"(3030)"
-                ,"(3024)"
-                ,"(3049)"
-                ,"(3047)"
-                ,"(3048)"
-                ,"(3036)"
-                ,"(3037)"
+                ""
+                ,""
+                ,""
+                ,""
+                ,""
+                ,""
+                ,""
+                ,""
         };
     }
 

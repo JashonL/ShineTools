@@ -94,6 +94,7 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
     private USChargePriorityBean setBean = new USChargePriorityBean();
 
     private Button btnNext;
+    private boolean isAllYear;
 
     @Override
     protected int getContentView() {
@@ -129,7 +130,7 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
 
         selectIndex = getIntent().getIntExtra("selectIndex", 0);
         currentPos = getIntent().getIntExtra("currentPos", 0);
-
+         isAllYear = getIntent().getBooleanExtra("isAllYear", false);
         if (selectIndex < 4) {
             titles = new String[]{getString(R.string.android_key3099), getString(R.string.m222时间段),
                     getString(R.string.android_key3100), getString(R.string.m88使能)};
@@ -220,12 +221,16 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
             usParamsetAdapter.getData().get(2).setValue(String.valueOf(isEnableAIndex));
 
             //使能
-            int enableBIndex = bean.getIsEnableBIndex();
-            String isEnableB = bean.getIsEnableB();
-            usParamsetAdapter.getData().get(3).setValue(String.valueOf(enableBIndex));
-            usParamsetAdapter.getData().get(3).setValueStr(isEnableB);
+            if (selectIndex < 4) {
+                int enableBIndex = bean.getIsEnableBIndex();
+                String isEnableB = bean.getIsEnableB();
+                usParamsetAdapter.getData().get(3).setValue(String.valueOf(enableBIndex));
+                usParamsetAdapter.getData().get(3).setValueStr(isEnableB);
 
-            usParamsetAdapter.notifyDataSetChanged();
+                usParamsetAdapter.notifyDataSetChanged();
+            }
+
+
         }
     }
 
@@ -237,6 +242,18 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        if (isAllYear){
+            if (position==0){
+                toast(R.string.android_key3117);
+                return;
+            }
+            if (position==1){
+                toast(R.string.android_key3118);
+                return;
+            }
+        }
+
+
         switch (position) {
             case 0:
                 showSelectDialog(3);
@@ -256,7 +273,7 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
 
     @Override
     public void oncheck(boolean check, int position) {
-        int indexB = check ? 0 : 1;
+        int indexB = check ? 1 : 0;
         setBean.setIsEnableB(isEnbles[1][0]);
         setBean.setIsEnableBIndex(indexB);
     }
@@ -407,7 +424,19 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
                         //检测内容正确性
                         boolean isCheck = MaxUtil.checkReceiverFull10(bytes);
                         if (isCheck) {
-                            toast(R.string.all_success);
+                            //关闭连接
+                            Mydialog.Dismiss();
+                            SocketClientUtil.close(mClientUtilW);
+                            CircleDialogUtils.showCommentDialog(PeriodSettingActivity.this,
+                                    getString(R.string.android_key537),
+                                    getString(R.string.m设置成功), getString(R.string.android_key1935),
+                                    getString(R.string.android_key2152),
+                                    Gravity.CENTER, v -> {
+                                        EventBus.getDefault().post(new UsChargeConfigMsg(selectIndex));
+                                        finish();
+                                    }, null);
+
+
                         } else {
                             String title = getString(R.string.m363设置失败);
                             String text = getString(R.string.android_key3103) + "(" + getString(R.string.android_key3096) + ")";
@@ -423,18 +452,6 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
                         LogUtil.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
-                    } finally {
-                        //关闭连接
-                        SocketClientUtil.close(mClientUtilW);
-                        Mydialog.Dismiss();
-                        this.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                EventBus.getDefault().post(new UsChargeConfigMsg(currentPos));
-                                finish();
-                            }
-                        },500);
-
                     }
                     break;
                 default:
@@ -455,8 +472,8 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         USDebugSettingBean bean = usParamsetAdapter.getData().get(position);
         switch (view.getId()) {
-            case R.id.tvTitle:
-                if (bean.getItemType() == UsSettingConstant.SETTING_TYPE_INPUT_UNIT_EXPLAIN) {
+            case R.id.tv_title:
+                if (bean.getItemType() == UsSettingConstant.SETTING_TYPE_EXPLAIN) {
                     String title = bean.getTitle();
                     String content=getString(R.string.ems_explain);
                     explainDialog = CircleDialogUtils.showExplainDialog(PeriodSettingActivity.this, title,content ,
