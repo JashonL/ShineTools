@@ -159,7 +159,7 @@
         android:gravity="bottom"
         android:paddingLeft="@dimen/dp_5"
         android:textColor="@color/text_note_new"
-        android:textSize="@dimen/size_content_sp_14"
+        android:textSize="@dimen/size_content_sp_10"
         app:autoSizeMaxTextSize="@dimen/size_content_sp_14"
         app:autoSizeMinTextSize="@dimen/size_content_note"
         app:autoSizeTextType="uniform"
@@ -168,7 +168,7 @@
         app:layout_constraintRight_toLeftOf="@+id/tvEnableb"
         app:layout_constraintTop_toTopOf="@+id/tvEnablea" />
 
-    <com.growatt.shinephone.view.AutoFitTextViewTwo
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvEnableReadaStr"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -177,7 +177,7 @@
         android:paddingLeft="@dimen/dp_5"
         android:text="@string/m369读取值"
         android:textColor="@color/text_note_new"
-        android:textSize="@dimen/size_content_sp_14"
+        android:textSize="@dimen/size_content_sp_10"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/tvEnablea"
         app:layout_constraintLeft_toRightOf="@+id/tvEnablea"
@@ -219,13 +219,13 @@
         android:gravity="bottom"
         android:paddingLeft="@dimen/dp_5"
         android:textColor="@color/text_note_new"
-        android:textSize="@dimen/size_content_sp_14"
+        android:textSize="@dimen/size_content_sp_10"
         app:layout_constraintBottom_toTopOf="@+id/tvEnableReadbStr"
         app:layout_constraintLeft_toRightOf="@+id/tvEnableb"
         app:layout_constraintRight_toRightOf="@+id/vBottom"
         app:layout_constraintTop_toTopOf="@+id/tvEnableb" />
 
-    <com.growatt.shinephone.view.AutoFitTextViewTwo
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvEnableReadbStr"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -234,7 +234,7 @@
         android:paddingLeft="@dimen/dp_5"
         android:text="@string/m369读取值"
         android:textColor="@color/text_note_new"
-        android:textSize="@dimen/size_content_sp_14"
+        android:textSize="@dimen/size_content_sp_10"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/tvEnableb"
         app:layout_constraintLeft_toRightOf="@+id/tvEnableb"

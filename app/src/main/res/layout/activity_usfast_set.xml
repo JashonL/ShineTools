@@ -49,7 +49,7 @@
         android:id="@+id/tvConfigWifi"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/viewV"
+        app:layout_constraintLeft_toLeftOf="@+id/viewConfig"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvConfigWifiNote"
         app:layout_constraintBottom_toBottomOf="@+id/tvConfigWifiNote"
@@ -105,7 +105,7 @@
         android:id="@+id/tvDyNamometer1"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/viewV"
+        app:layout_constraintLeft_toLeftOf="@+id/viewDyNamometer"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvDynamometer"
         app:layout_constraintBottom_toBottomOf="@+id/tvDynamometer"
@@ -127,6 +127,7 @@
 
 
     <View
+        android:id="@+id/vCode"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/grid_bg_white"
@@ -173,6 +174,7 @@
         android:textSize="@dimen/size_content_sp_14"
         />
     <ImageView
+        android:id="@+id/ivCodeNext"
         android:layout_width="@dimen/dp_6"
         android:layout_height="0dp"
         android:src="@drawable/max_right"
@@ -205,8 +207,9 @@
         android:id="@+id/tvVol"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/tvCode"
-        app:layout_constraintRight_toRightOf="@+id/tvCode"
+        app:layout_constraintLeft_toLeftOf="@+id/v_vol"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="@dimen/dp_10"
         app:layout_constraintTop_toTopOf="@+id/tvVolNote"
         app:layout_constraintBottom_toBottomOf="@+id/tvVolNote"
         android:gravity="center"
@@ -214,12 +217,14 @@
         android:textSize="@dimen/size_content_sp_14"
         />
     <View
+        android:id="@+id/v_vol"
         android:layout_width="1dp"
         android:layout_height="0dp"
         android:background="@color/content_bg_white"
         app:layout_constraintTop_toTopOf="@+id/tvVolNote"
         app:layout_constraintBottom_toBottomOf="@+id/tvVolNote"
-        app:layout_constraintLeft_toLeftOf="@+id/viewV"
+        app:layout_constraintLeft_toLeftOf="@+id/barrier"
+        android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_5"
         android:layout_marginBottom="@dimen/dp_5"
         />
@@ -248,8 +253,9 @@
         android:id="@+id/tvOutput"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/tvCode"
-        app:layout_constraintRight_toRightOf="@+id/tvCode"
+        app:layout_constraintLeft_toLeftOf="@+id/vOutPut"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="@dimen/dp_10"
         app:layout_constraintTop_toTopOf="@+id/tvOutputNote"
         app:layout_constraintBottom_toBottomOf="@+id/tvOutputNote"
         android:text="@string/android_key3045"
@@ -258,14 +264,16 @@
         android:textSize="@dimen/size_content_sp_14"
         />
     <View
+        android:id="@+id/vOutPut"
         android:layout_width="1dp"
         android:layout_height="0dp"
         android:background="@color/content_bg_white"
         app:layout_constraintTop_toTopOf="@+id/tvOutputNote"
         app:layout_constraintBottom_toBottomOf="@+id/tvOutputNote"
-        app:layout_constraintLeft_toLeftOf="@+id/viewV"
+        app:layout_constraintLeft_toLeftOf="@+id/barrier"
         android:layout_marginTop="@dimen/dp_5"
         android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginLeft="@dimen/dp_10"
         />
 
 
@@ -288,6 +296,8 @@
         app:layout_constraintTop_toBottomOf="@+id/tvOutput"
         app:layout_constraintLeft_toLeftOf="@+id/tvCodeNote"
         android:text="@string/EMS"
+        android:drawableEnd="@drawable/icon_ps"
+        android:paddingEnd="@dimen/dp_5"
         android:gravity="center_vertical"
         android:textColor="@color/content_bg_white"
         android:textSize="@dimen/size_title_sp_14"
@@ -296,8 +306,9 @@
         android:id="@+id/tvEmsInput"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/tvCode"
-        app:layout_constraintRight_toRightOf="@+id/tvCode"
+        app:layout_constraintLeft_toLeftOf="@+id/v_ems"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="@dimen/dp_10"
         app:layout_constraintTop_toTopOf="@+id/tvEms"
         app:layout_constraintBottom_toBottomOf="@+id/tvEms"
         android:text="@string/mSpf5k_电池优先"
@@ -306,14 +317,16 @@
         android:textSize="@dimen/size_content_sp_14"
         />
     <View
+        android:id="@+id/v_ems"
         android:layout_width="1dp"
         android:layout_height="0dp"
         android:background="@color/content_bg_white"
         app:layout_constraintTop_toTopOf="@+id/tvEms"
         app:layout_constraintBottom_toBottomOf="@+id/tvEms"
-        app:layout_constraintLeft_toLeftOf="@+id/tvEmsInput"
+        app:layout_constraintLeft_toLeftOf="@+id/barrier"
         android:layout_marginTop="@dimen/dp_5"
         android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginLeft="@dimen/dp_10"
         />
 
     <!--=======================================================-->
@@ -343,8 +356,9 @@
         android:id="@+id/tvTime"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/tvCode"
-        app:layout_constraintRight_toRightOf="@+id/tvCode"
+        app:layout_constraintLeft_toLeftOf="@+id/v_time"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="@dimen/dp_10"
         app:layout_constraintTop_toTopOf="@+id/tvTimeNote"
         app:layout_constraintBottom_toBottomOf="@+id/tvTimeNote"
         android:gravity="center"
@@ -359,14 +373,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvTime"
         />
     <View
+        android:id="@+id/v_time"
         android:layout_width="1dp"
         android:layout_height="0dp"
         android:background="@color/content_bg_white"
         app:layout_constraintTop_toTopOf="@+id/tvTimeNote"
         app:layout_constraintBottom_toBottomOf="@+id/tvTimeNote"
-        app:layout_constraintLeft_toLeftOf="@+id/viewV"
+        app:layout_constraintLeft_toLeftOf="@+id/barrier"
         android:layout_marginTop="@dimen/dp_5"
         android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginLeft="@dimen/dp_10"
         />
     <View
         android:layout_width="0dp"

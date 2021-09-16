@@ -4182,7 +4182,7 @@
     <string name="m419Qv切入切出高压">Q(v)切入/切出高压</string>
     <string name="m420Qv切入切出低压">Q(v)切入/切出低压</string>
     <string name="m421Qv切入切出功率">Q(v)切入/切出功率</string>
-    <string name="m422无功曲线切入切出电压">无功曲线切入/切出电压</string>
+    <string name="m422无功曲线切入切出电压">PF曲线切入/切出电压</string>
     <string name="m423通信地址">通信地址</string>
     <string name="m424启动电压">并网电压</string>
     <string name="m425启动时间">并网时间</string>

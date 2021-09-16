@@ -46,6 +46,7 @@
                 app:layout_constraintRight_toRightOf="@id/tvTitle1"
                 android:layout_marginRight="@dimen/dp_10"
                 android:theme="@style/MyCheckBox"
+                android:visibility="gone"
                 android:clickable="false"
                 />
             <androidx.appcompat.widget.AppCompatTextView
@@ -143,6 +144,7 @@
                 app:layout_constraintRight_toRightOf="@id/tvTitle2"
                 android:layout_marginRight="@dimen/dp_10"
                 android:theme="@style/MyCheckBox"
+                android:visibility="gone"
                 android:clickable="false"
                 />
             <Button
@@ -185,6 +187,7 @@
                 android:layout_marginRight="@dimen/dp_10"
                 android:theme="@style/MyCheckBox"
                 android:clickable="false"
+                android:visibility="gone"
                 />
             <Button
                 android:id="@+id/btnSelect3"
@@ -226,6 +229,8 @@
                 android:layout_marginRight="@dimen/dp_10"
                 android:theme="@style/MyCheckBox"
                 android:clickable="false"
+                android:visibility="gone"
+
                 />
             <Button
                 android:id="@+id/btnSelect4"
@@ -266,6 +271,7 @@
                 app:layout_constraintRight_toRightOf="@id/tvTitle5"
                 android:layout_marginRight="@dimen/dp_10"
                 android:theme="@style/MyCheckBox"
+                android:visibility="gone"
                 android:clickable="false"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
