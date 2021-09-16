@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.adapter.UsSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.bean.USDebugSettingBean;
@@ -37,6 +38,9 @@ import java.util.UUID;
 
 import butterknife.BindView;
 
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.KEFU_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.MAINTEAN_USER;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 import static com.growatt.shinetools.module.localbox.configtype.usconfig.USConfigTypeAllActivity.KEY_OF_ITEM_SETITEMSINDEX;
 
@@ -67,6 +71,7 @@ public class USPFsettingActivity extends BaseActivity implements BaseQuickAdapte
     private int[][][] funsSet;
     private int[] nowSet;
 
+    private int user_type = KEFU_USER;
 
     @Override
     protected int getContentView() {
@@ -76,7 +81,7 @@ public class USPFsettingActivity extends BaseActivity implements BaseQuickAdapte
     @Override
     protected void initViews() {
         initToobar(toolbar);
-        tvTitle.setText(R.string.android_key3091);
+        tvTitle.setText(R.string.android_key2924);
         toolbar.setOnMenuItemClickListener(this);
 
         rvSystem.setLayoutManager(new LinearLayoutManager(this));
@@ -90,57 +95,86 @@ public class USPFsettingActivity extends BaseActivity implements BaseQuickAdapte
 
     @Override
     protected void initData() {
-        pfSetting = new String[]{getString(R.string.m405运行PF为1), getString(R.string.m402感性PF), getString(R.string.m399感性载率)
-                , getString(R.string.m400容性载率), getString(R.string.m401容性PF), getString(R.string.m默认PF曲线),
-                getString(R.string.m422无功曲线切入切出电压), getString(R.string.m391PF限制负载百分比点) + "1~4", getString(R.string.m392PF限制功率因数) + "1~4"};
-
-
-        pfSettingRegister = new String[]{"(89)", "(5)", "(4)"
-                , "(4)", "(5)", "(89)", "(99/100)", "1~4(110/112/114/116)"
-                , "1~4(111/113/115/117)"};
-
+        user_type = ShineToosApplication.getContext().getUser_type();
 
         List<USDebugSettingBean> newlist = new ArrayList<>();
-        for (int i = 0; i < pfSetting.length; i++) {
-            USDebugSettingBean bean = new USDebugSettingBean();
-            bean.setTitle(pfSetting[i]);
-            int itemType = 0;
-            switch (i) {
-                case 0://运行PF为1
-                case 5://默认PF曲线
-                    itemType = UsSettingConstant.SETTING_TYPE_SWITCH;
-                    break;
-                case 1://感性PF
-                case 2://感性载率
-                case 3://容性载率
-                case 4://容性PF
-                case 6://PF曲线切入/切出电压
-                case 7://PF限制负载百分比点1~4
-                case 8://PF限值1~4
-                    itemType = UsSettingConstant.SETTING_TYPE_NEXT;
-                    break;
+
+        if (user_type==END_USER||user_type==MAINTEAN_USER){
+
+            pfSetting = new String[]{getString(R.string.m392PF限制功率因数) + "1~4"};
+
+            pfSettingRegister = new String[]{
+                    "", "", "", "", "", "", "", "", ""};
+
+            for (int i = 0; i < pfSetting.length; i++) {
+                USDebugSettingBean bean = new USDebugSettingBean();
+                bean.setTitle(pfSetting[i]);
+                int itemType  = UsSettingConstant.SETTING_TYPE_NEXT;
+                bean.setItemType(itemType);
+                bean.setRegister(pfSettingRegister[i]);
+                newlist.add(bean);
             }
 
-            bean.setItemType(itemType);
-            bean.setRegister(pfSettingRegister[i]);
-            newlist.add(bean);
+
+        }else {
+
+            pfSetting = new String[]{getString(R.string.m405运行PF为1), getString(R.string.m402感性PF), getString(R.string.m399感性载率)
+                    , getString(R.string.m400容性载率), getString(R.string.m401容性PF), getString(R.string.m默认PF曲线),
+                    getString(R.string.m422无功曲线切入切出电压), getString(R.string.m391PF限制负载百分比点) + "1~4", getString(R.string.m392PF限制功率因数) + "1~4"};
+
+            pfSettingRegister = new String[]{"", "", ""
+                    , "", "", "", "", ""
+                    , ""};
+
+            for (int i = 0; i < pfSetting.length; i++) {
+                USDebugSettingBean bean = new USDebugSettingBean();
+                bean.setTitle(pfSetting[i]);
+                int itemType = 0;
+                switch (i) {
+                    case 0://运行PF为1
+                    case 5://默认PF曲线
+                        itemType = UsSettingConstant.SETTING_TYPE_SWITCH;
+                        break;
+                    case 1://感性PF
+                    case 2://感性载率
+                    case 3://容性载率
+                    case 4://容性PF
+                    case 6://PF曲线切入/切出电压
+                    case 7://PF限制负载百分比点1~4
+                    case 8://PF限值1~4
+                        itemType = UsSettingConstant.SETTING_TYPE_NEXT;
+                        break;
+                }
+
+                bean.setItemType(itemType);
+                bean.setRegister(pfSettingRegister[i]);
+                newlist.add(bean);
+            }
+
+
+
+            funs = new int[][]{
+                    {3, 89, 89},//开关机0
+                    {3, 89, 89},//PV输入模式
+            };
+
+            //设置功能码集合（功能码，寄存器，数据）
+            funsSet = new int[][][]{
+                    {{6, 89, 0}, {6, 89, 1}}//开关机0
+                    , {{6, 89, 0}, {6, 89, 1}}
+            };
         }
+
+
+
         usParamsetAdapter.replaceData(newlist);
 
 
-        funs = new int[][]{
-                {3, 89, 89},//开关机0
-                {3, 89, 89},//PV输入模式
-        };
+        if (funs==null||funs.length==0){
 
-        //设置功能码集合（功能码，寄存器，数据）
-        funsSet = new int[][][]{
-                {{6, 89, 0}, {6, 89, 1}}//开关机0
-                , {{6, 89, 0}, {6, 89, 1}}
-        };
-
-
-        refresh();
+        }else {
+            refresh();
+        }
     }
 
 
@@ -148,6 +182,7 @@ public class USPFsettingActivity extends BaseActivity implements BaseQuickAdapte
      * 刷新界面
      */
     private void refresh() {
+        Mydialog.Show(this);
         connectSendMsg();
     }
 
@@ -335,29 +370,36 @@ public class USPFsettingActivity extends BaseActivity implements BaseQuickAdapte
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         int type = 0;
-        switch (position) {
-            case 1:
-                type=0;
-                break;
-            case 2:
-                type=1;
-                break;
-            case 3:
-                type=2;
-                break;
-            case 4:
-                type=3;
-                break;
-            case 6:
-                type=4;
-                break;
-            case 7:
-                type=5;
-                break;
-            case 8:
-                type=6;
-                break;
+        if (user_type==END_USER||user_type==MAINTEAN_USER){
+            if (position == 0) {
+                type = 6;
+            }
+        }else {
+            switch (position) {
+                case 1:
+                    type=0;
+                    break;
+                case 2:
+                    type=1;
+                    break;
+                case 3:
+                    type=2;
+                    break;
+                case 4:
+                    type=3;
+                    break;
+                case 6:
+                    type=4;
+                    break;
+                case 7:
+                    type=5;
+                    break;
+                case 8:
+                    type=6;
+                    break;
+            }
         }
+
 
         String title = usParamsetAdapter.getData().get(position).getTitle();
         Intent intent=new Intent(USPFsettingActivity.this,USAllSettingItemActivity.class);

@@ -2,7 +2,6 @@ package com.growatt.shinetools.module.localbox.configtype;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -34,7 +33,6 @@ import com.mylhyl.circledialog.view.listener.OnLvItemClickListener;
 import java.util.Arrays;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -82,13 +80,12 @@ public class ConfigTypeSelectActivity extends BaseActivity implements Toolbar.On
 
     @Override
     protected void initViews() {
-
+        initIntent();
         initHeaderView();
     }
 
     @Override
     protected void initData() {
-        initIntent();
         initString();
     }
 
