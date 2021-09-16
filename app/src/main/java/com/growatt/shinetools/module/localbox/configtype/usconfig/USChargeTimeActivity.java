@@ -55,7 +55,7 @@ import java.util.List;
 import butterknife.BindView;
 
 public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
-        UsSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener, CompoundButton.OnCheckedChangeListener {
+        UsSettingAdapter.OnChildCheckLiseners,USchargePeriodAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener, CompoundButton.OnCheckedChangeListener {
 
 
     @BindView(R.id.status_bar_view)
@@ -94,8 +94,10 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
     private int currenPos = -1;
 
     private int[] nowSet = {0x10, 3125, 3125};
-    private int[][] registerValues = {{0}};
+    private int[][] registerValues = {{0} , {0, 0}};
+    private int[]itemValues={0};
 
+    private boolean isAllyear=false;
 
     private BaseCircleDialog explainDialog;
 
@@ -116,7 +118,7 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
 
 
         rvPriority.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new USchargePeriodAdapter(R.layout.item_us_charge_time);
+        mAdapter = new USchargePeriodAdapter(R.layout.item_us_charge_time,this);
         rvPriority.setAdapter(mAdapter);
 
 
@@ -152,7 +154,9 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
             }
 
             Intent intent = new Intent(USChargeTimeActivity.this, PeriodSettingActivity.class);
+            intent.putExtra("isAllYear",isAllyear);
             intent.putExtra("selectIndex", currenPos);
+            intent.putExtra("currentPos", size);
             ActivityUtils.startActivity(USChargeTimeActivity.this, intent, false);
         };
         tvAdd.setOnClickListener(onClickListener);
@@ -325,6 +329,25 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
             select = currenPos;
         }
 
+        if (select==0){
+            String startTime1 = datalist.get(0).getStartTime();
+            String endTime1 = datalist.get(0).getEndTime();
+            if ("1".equals(startTime1)&&"12".equals(endTime1)){
+                tvAdd.setVisibility(View.GONE);
+                tvAddText.setVisibility(View.GONE);
+                isAllyear=true;
+            }else {
+                isAllyear=false;
+                tvAdd.setVisibility(View.VISIBLE);
+                tvAddText.setVisibility(View.VISIBLE);
+            }
+        }else {
+            isAllyear=false;
+            tvAdd.setVisibility(View.VISIBLE);
+            tvAddText.setVisibility(View.VISIBLE);
+        }
+
+
         USChargePriorityBean selectBean = datalist.get(select);
         String selectStartTime = selectBean.getStartTime();
         String selectEndTime = selectBean.getEndTime();
@@ -412,6 +435,7 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
         String json = new Gson().toJson(bean);
         Intent intent = new Intent(USChargeTimeActivity.this, PeriodSettingActivity.class);
         intent.putExtra(GlobalConstant.KEY_JSON, json);
+        intent.putExtra("isAllYear",isAllyear);
         intent.putExtra("selectIndex", currenPos);
         intent.putExtra("currentPos", position);
         ActivityUtils.startActivity(USChargeTimeActivity.this, intent, false);
@@ -419,6 +443,54 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
 
     @Override
     public void oncheck(boolean check, int position) {
+        USChargePriorityBean bean = mAdapter.getData().get(position-1);
+        int enableBindex=check?1:0;
+        bean.setIsEnableBIndex(enableBindex);
+        bean.setIsEnableB(isEnbles[1][enableBindex]);
+        mAdapter.notifyDataSetChanged();
+
+        //判断并设置寄存器值
+        int value1 = 0;
+        int value2 = 0;
+
+        int enableA = bean.getIsEnableAIndex();//EMS状态
+        int enableB = bean.getIsEnableBIndex();//使能
+        int enableW = bean.getIsEnableWeekIndex();//周末
+        String timePeriod = bean.getTimePeriod();
+        String[] time = timePeriod.split("~");
+        String startTime = time[0];
+        String endTime = time[1];
+
+        String[] start = startTime.split(":");
+        String[] end = endTime.split(":");
+
+
+        int startHour = Integer.parseInt(start[0]);
+        int startMin = Integer.parseInt(start[1]);
+        int endHour = Integer.parseInt(end[0]);
+        int endMin = Integer.parseInt(end[1]);
+        value1 = (startMin & 0b01111111) | ((startHour & 0b00011111) << 7) | ((enableA & 0b111) << 12) | ((enableB & 1) << 15);
+        value2 = (endMin & 0b01111111) | ((endHour & 0b00011111) << 7);
+        if (currenPos < 4) {
+            value2 = value2 | ((enableW & 0b11) << 12);
+        }
+        registerValues[1][0] = value1;
+        registerValues[1][1] = value2;
+        itemValues=registerValues[1];
+        //设置起始寄存器
+        int registPos = -1;
+        if (currenPos < 4) {
+            registPos = 3129 + currenPos * 18 + (position-1) * 2;
+        } else if (currenPos == 4) {
+            registPos = 3202 + (position-1) * 2;
+        } else if (currenPos == 5) {
+            registPos = 3221 + (position-1) * 2;
+        }
+        nowSet[1] = registPos;
+        nowSet[2] = registPos + 1;
+
+
+        connectServerWrite();
 
     }
 
@@ -443,6 +515,7 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
                 value = (endV & 0xFF) | ((startV & 0b1111111) << 8) | ((enableB & 1) << 15);
             }
             registerValues[0][0] = value;
+            itemValues=registerValues[0];
             //设置起始寄存器
             int registPos = -1;
             if (currenPos < 4) {
@@ -492,7 +565,7 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
                 //发送信息
                 case SocketClientUtil.SOCKET_SEND:
                     BtnDelayUtil.sendMessageWrite(this);
-                    sendBytes = SocketClientUtil.sendMsgToServer10(mClientUtilW, nowSet, registerValues[0]);
+                    sendBytes = SocketClientUtil.sendMsgToServer10(mClientUtilW, nowSet, itemValues);
                     LogUtil.i("发送写入" + SocketClientUtil.bytesToHexString(sendBytes));
                     break;
                 //接收字节数组
@@ -518,7 +591,7 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
                         //关闭连接
                         SocketClientUtil.close(mClientUtilW);
                         Mydialog.Dismiss();
-                        readRegisterValue();
+                        this.postDelayed(() -> readRegisterValue(),500);
                     }
                     break;
                 default:

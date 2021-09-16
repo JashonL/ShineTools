@@ -154,7 +154,7 @@ public class USModeSetActivity extends BaseActivity {
     }
 
     private void initHeaderView() {
-        if (TextUtils.isEmpty(mTitle)) {
+        if (!TextUtils.isEmpty(mTitle)) {
             tvTitle.setText(mTitle);
         }
         tvRight.setText(R.string.m370读取);

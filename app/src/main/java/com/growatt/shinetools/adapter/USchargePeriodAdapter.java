@@ -3,26 +3,19 @@ package com.growatt.shinetools.adapter;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.module.localbox.max.bean.USChargePriorityBean;
 
-import java.util.List;
-
 public class USchargePeriodAdapter extends BaseQuickAdapter<USChargePriorityBean, BaseViewHolder> {
-    public USchargePeriodAdapter(int layoutResId, @Nullable List<USChargePriorityBean> data) {
-        super(layoutResId, data);
-    }
+    private OnChildCheckLiseners onChildCheckLiseners;
 
-    public USchargePeriodAdapter(@Nullable List<USChargePriorityBean> data) {
-        super(data);
-    }
 
-    public USchargePeriodAdapter(int layoutResId) {
+    public USchargePeriodAdapter(int layoutResId, OnChildCheckLiseners liseners) {
         super(layoutResId);
+        this.onChildCheckLiseners=liseners;
     }
 
     @Override
@@ -44,5 +37,15 @@ public class USchargePeriodAdapter extends BaseQuickAdapter<USChargePriorityBean
         int isEnableBIndex = item.getIsEnableBIndex();
         helper.setChecked(R.id.sw_enable,1==isEnableBIndex);
 
+        helper.setOnCheckedChangeListener(R.id.sw_enable, (compoundButton, b) -> {
+            if (compoundButton.isPressed()){
+                onChildCheckLiseners.oncheck(b,helper.getAdapterPosition());
+
+            }
+        });
+    }
+
+    public interface OnChildCheckLiseners{
+        void oncheck(boolean check,int position);
     }
 }

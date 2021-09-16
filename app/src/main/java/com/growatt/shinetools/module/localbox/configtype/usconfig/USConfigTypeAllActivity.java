@@ -857,12 +857,20 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
                 }
                 break;
             case 3://离网功能
+                if (position==0)return;
+                List<String> list=new ArrayList<>();
+                if (position==1){
+                    list= Arrays.asList(frequency);
+                }else if (position==2){
+                    list = Arrays.asList(voltage);
+                }
+                List<String> finalList = list;
                 CircleDialogUtils.showCommentItemDialog(this, getString(R.string.android_key1809),
-                        Arrays.asList(voltage), Gravity.CENTER, new OnLvItemClickListener() {
+                        list, Gravity.CENTER, new OnLvItemClickListener() {
                             @Override
                             public boolean onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                                if (voltage != null && voltage.length > pos) {
-                                    String text = voltage[pos];
+                                if (finalList.size() > pos) {
+                                    String text = finalList.get(pos);
                                     usParamsetAdapter.getData().get(position).setValueStr(text);
                                     usParamsetAdapter.getData().get(position).setValue(String.valueOf(pos));
                                     usParamsetAdapter.notifyDataSetChanged();

@@ -3,14 +3,13 @@ package com.growatt.shinetools.module.localbox.afci;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -30,15 +29,12 @@ import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.ChartUtils;
-import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.DialogUtils;
 import com.growatt.shinetools.utils.Log;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.MyToastUtils;
-import com.mylhyl.circledialog.view.listener.OnLvItemClickListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,7 +45,8 @@ import static com.growatt.shinetools.utils.BtnDelayUtil.TIMEOUT_RECEIVE;
 import static com.growatt.shinetools.utils.BtnDelayUtil.refreshFinish;
 
 
-public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, Toolbar.OnMenuItemClickListener {
+public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, Toolbar.OnMenuItemClickListener,
+        CompoundButton.OnCheckedChangeListener {
 
 
     @BindView(R.id.status_bar_view)
@@ -62,24 +59,17 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
     LinearLayout headerTitle;
     @BindView(R.id.tvTitle1)
     TextView tvTitle1;
-    @BindView(R.id.btnSelect1)
-    Button btnSelect1;
+
     @BindView(R.id.barrier)
     Barrier barrier;
-    @BindView(R.id.tvRead1)
-    TextView tvRead1;
-    @BindView(R.id.tvRead2)
-    TextView tvRead2;
-    @BindView(R.id.tvRead3)
-    TextView tvRead3;
+
+
     @BindView(R.id.tvTitle2)
     TextView tvTitle2;
-    @BindView(R.id.btnSelect2)
-    Button btnSelect2;
+
     @BindView(R.id.tvTitle3)
     TextView tvTitle3;
-    @BindView(R.id.btnSelect3)
-    Button btnSelect3;
+
     @BindView(R.id.tvAFCITitle)
     TextView tvAFCITitle;
     @BindView(R.id.rBtn1)
@@ -114,6 +104,12 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
     TextView tvUnit2Note2;
     @BindView(R.id.lineChart2)
     LineChart lineChart2;
+    @BindView(R.id.tvRead1)
+    Switch tvRead1;
+    @BindView(R.id.tvRead2)
+    Switch tvRead2;
+    @BindView(R.id.tvRead3)
+    Switch tvRead3;
     private String[] afciSelect1s;
     private String[] afciSelect2s;
     private String[] afciSelect3s;
@@ -144,9 +140,9 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
     private final int REAL_READ_CHART = 1208;
     private final int REAL_WAIT_TIME = 1209;
     //设置值
-    private int mTypeValue0 = -1;
-    private int mTypeValue1 = -1;
-    private int mTypeValue2 = -1;
+    private int mTypeValue0 = 0;
+    private int mTypeValue1 = 0;
+    private int mTypeValue2 = 0;
     int[] funsAllRead = {3, 541, 543};//无功功率百分比4;
 
     @Override
@@ -157,14 +153,15 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
     @Override
     protected void initViews() {
         radioGroup.setOnCheckedChangeListener(this);
-
+        tvRead3.setOnCheckedChangeListener(this);
+        tvRead2.setOnCheckedChangeListener(this);
+        tvRead1.setOnCheckedChangeListener(this);
     }
 
     @Override
     protected void initData() {
         initString();
         initLineChart();
-
     }
 
 
@@ -199,7 +196,7 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
         MenuItem item = toolbar.getMenu().findItem(R.id.action_mode_setting);
         item.setTitle(R.string.android_key816);
         initToobar(toolbar);
-
+        toolbar.setOnMenuItemClickListener(this);
 
         rBtn1.setText(getString(R.string.android_key2400) + " " + getString(R.string.android_key2402));
         rBtn2.setText(getString(R.string.android_key2401) + " " + getString(R.string.android_key2402));
@@ -289,20 +286,22 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
                                 if (value0 == 0xA0) mTypeValue0 = 0;
                                 if (value0 == 0xA5) mTypeValue0 = 1;
 //                                String text = items[0][mTypeValue0] + "(" + value0 + ")";
-                                String text = items[0][mTypeValue0];
-                                btnSelect1.setText(text);
+                                tvRead1.setChecked(mTypeValue0==1);
+
                             }
                             if (value1 >= 0 && value1 <= 1) {
                                 mTypeValue1 = value1;
 //                                String text = items[1][mTypeValue1] + "(" + mTypeValue1 + ")";
-                                String text = items[1][mTypeValue1];
-                                btnSelect2.setText(text);
+//                                String text = items[1][mTypeValue1];
+//                                btnSelect2.setText(text);
+                                tvRead2.setChecked(mTypeValue1==1);
                             }
                             if (value2 >= 0 && value2 <= 1) {
                                 mTypeValue2 = value2;
 //                                String text = items[2][mTypeValue2] + "(" + mTypeValue2 + ")";
-                                String text = items[2][mTypeValue2];
-                                btnSelect3.setText(text);
+//                                String text = items[2][mTypeValue2];
+//                                btnSelect3.setText(text);
+                                tvRead3.setChecked(mTypeValue2==1);
                             }
                             MyToastUtils.toast(R.string.android_key121);
                         } else {
@@ -325,24 +324,9 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
         }
     };
 
-    @OnClick({R.id.btnSelect1, R.id.btnSelect2, R.id.btnSelect3, R.id.tvReadChart, R.id.tvRead1, R.id.tvRead2, R.id.tvRead3})
+    @OnClick({R.id.tvReadChart})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btnSelect1:
-                mType = 0;
-                nowItems = items[mType];
-                selectItem();
-                break;
-            case R.id.btnSelect2:
-                mType = 1;
-                nowItems = items[mType];
-                selectItem();
-                break;
-            case R.id.btnSelect3:
-                mType = 2;
-                nowItems = items[mType];
-                selectItem();
-                break;
             case R.id.tvReadChart:
                 if (chartType == -1) {
                     MyToastUtils.toast(R.string.android_key499);
@@ -352,7 +336,7 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
                 writeRegisterValue();
 //                showDemoChart();
                 break;
-            case R.id.tvRead1:
+   /*         case R.id.tvRead1:
                 //设置
                 if (mTypeValue0 == -1) {
                     MyToastUtils.toast(R.string.android_key187);
@@ -384,7 +368,7 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
                 nowClick = 2;
                 nowSet3 = funsSet[2][mTypeValue2];
                 connectServerWrite();
-                break;
+                break;*/
         }
     }
 
@@ -462,7 +446,7 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
     private SocketClientUtil mClientUtil;
 
     private void connectServer() {
-       DialogUtils.getInstance().closeLoadingDialog();
+        DialogUtils.getInstance().closeLoadingDialog();
         DialogUtils.getInstance().showLoadingDialog(this);
         mClientUtil = SocketClientUtil.newInstance();
         if (mClientUtil != null) {
@@ -560,7 +544,7 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
                         count = 0;
                         //关闭连接
                         SocketClientUtil.close(mClientUtil);
-                       DialogUtils.getInstance().closeLoadingDialog();
+                        DialogUtils.getInstance().closeLoadingDialog();
                     }
                     break;
                 case TIMEOUT_RECEIVE://接收超时
@@ -643,34 +627,34 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
             }
         }
     }
-
+/*
     private void selectItem() {
         CircleDialogUtils.showCommentItemDialog(this, getString(R.string.android_key1809),
                 Arrays.asList(nowItems), Gravity.CENTER, new OnLvItemClickListener() {
-            @Override
-            public boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (nowItems != null && nowItems.length > position) {
-                    String text = nowItems[position] + "(" + position + ")";
-                    switch (mType) {
-                        case 0:
-                            btnSelect1.setText(text);
-                            mTypeValue0 = position;
-                            break;
-                        case 1:
-                            btnSelect2.setText(text);
-                            mTypeValue1 = position;
-                            break;
-                        case 2:
-                            btnSelect3.setText(text);
-                            mTypeValue2 = position;
-                            break;
+                    @Override
+                    public boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        if (nowItems != null && nowItems.length > position) {
+                            String text = nowItems[position] + "(" + position + ")";
+                            switch (mType) {
+                                case 0:
+                                    btnSelect1.setText(text);
+                                    mTypeValue0 = position;
+                                    break;
+                                case 1:
+                                    btnSelect2.setText(text);
+                                    mTypeValue1 = position;
+                                    break;
+                                case 2:
+                                    btnSelect3.setText(text);
+                                    mTypeValue2 = position;
+                                    break;
+                            }
+                        }
+                        return true;
                     }
-                }
-                return true;
-            }
-        }, null);
+                }, null);
 
-    }
+    }*/
 
     //连接对象:用于写数据
     private SocketClientUtil mClientUtilW;
@@ -736,7 +720,7 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
                     }
                     break;
                 default:
-                    BtnDelayUtil.dealMaxBtnWrite(this, what, AFCIChartActivity.this, btnSelect1, btnSelect2, btnSelect3);
+                    BtnDelayUtil.dealMaxBtnWrite(this, what, AFCIChartActivity.this);
                     break;
             }
         }
@@ -786,7 +770,7 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
                     }
                     break;
                 default:
-                    BtnDelayUtil.dealMaxBtnWrite(this, what, AFCIChartActivity.this, btnSelect1, btnSelect2, btnSelect3);
+                    BtnDelayUtil.dealMaxBtnWrite(this, what, AFCIChartActivity.this);
                     break;
             }
         }
@@ -914,4 +898,33 @@ public class AFCIChartActivity extends BaseActivity implements RadioGroup.OnChec
         }
         return true;
     }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        if (compoundButton.isPressed()) {
+            if (compoundButton ==tvRead1){
+                mTypeValue0=b?1:0;
+                nowClick = 0;
+                nowSet1 = funsSet[0][mTypeValue0];
+                connectServerWrite();
+            }else if (compoundButton==tvRead2){
+                mTypeValue1=b?1:0;
+                nowClick = 1;
+                nowSet2 = funsSet[1][mTypeValue1];
+                if (mTypeValue1 == 1) {
+                    count2 = 0;
+                    connectServerWrite2();
+                } else {
+                    connectServerWrite();
+                }
+            }else if (compoundButton==tvRead3){
+                mTypeValue2=b?1:0;
+                nowClick = 2;
+                nowSet3 = funsSet[2][mTypeValue2];
+                connectServerWrite();
+            }
+
+        }
+    }
+
 }

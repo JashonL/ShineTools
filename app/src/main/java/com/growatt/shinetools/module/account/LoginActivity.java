@@ -32,6 +32,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.KEFU_USER;
 import static com.growatt.shinetools.constant.GlobalConstant.KEY_AUTO_LOGIN;
 import static com.growatt.shinetools.constant.GlobalConstant.KEY_END_USER_PWD;
 import static com.growatt.shinetools.constant.GlobalConstant.KEY_USER_TYPE;
@@ -107,7 +108,7 @@ public class LoginActivity extends BaseNetWorkActivity implements RadioGroup.OnC
                 String password = "oss" + CommenUtils.getNowData(CommenUtils.DataType.YMD);
                 etEndPassword.setText(password);
             }
-        } else if (MAINTEAN_USER == useType) {
+        } else if (MAINTEAN_USER == useType||KEFU_USER==useType) {
             rgRole.check(R.id.radio_maintain);
             User loginUser = loginManager.getLoginUser();
             if (loginUser != null) {
@@ -234,7 +235,20 @@ public class LoginActivity extends BaseNetWorkActivity implements RadioGroup.OnC
                 if (userType != 0) {
                     //登录成功的逻辑
                     MyToastUtils.toast(R.string.android_key665);
-                    loginManager.loginSuccess(MAINTEAN_USER, cbAuto.isChecked(), etUsername.getText().toString(), etPassword.getText().toString());
+
+                    JSONObject jsonObject1 = obj.optJSONObject("user");
+                    int role = jsonObject1.optInt("role", 2);
+
+                    if (role==1||role==2||role==3){//客服
+                        loginManager.loginSuccess(KEFU_USER, cbAuto.isChecked(),
+                                etUsername.getText().toString(), etPassword.getText().toString());
+                    }else if (role==6||role==14||role==7||role==15||role==17||role==18||role==31||role==30){//分销商 安装商
+                        loginManager.loginSuccess(MAINTEAN_USER, cbAuto.isChecked(),
+                                etUsername.getText().toString(), etPassword.getText().toString());
+                    }
+
+
+
                 } else {
                     MyToastUtils.toast(R.string.android_key527);
                 }

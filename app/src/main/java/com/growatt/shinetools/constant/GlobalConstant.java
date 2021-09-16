@@ -7,8 +7,17 @@ public class GlobalConstant {
 
     //终端用户
     public static final int END_USER = 1;
-    //运维用户
+    //分销商
     public static final int MAINTEAN_USER = 2;
+    //内部人员
+    public static final int KEFU_USER= 3;
+
+
+
+
+
+
+
     //终端用户密码
     public static final String KEY_END_USER_PWD = "end_user_pwd_key";
     //自动登录

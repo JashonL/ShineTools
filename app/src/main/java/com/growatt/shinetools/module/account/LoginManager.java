@@ -18,11 +18,10 @@ import com.growatt.shinetools.utils.RequestCallback;
 import com.growatt.shinetools.utils.SharedPreferencesUnit;
 import com.growatt.shinetools.utils.ShineToolsApi;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.KEFU_USER;
 import static com.growatt.shinetools.constant.GlobalConstant.KEY_END_USER_PWD;
 import static com.growatt.shinetools.constant.GlobalConstant.MAINTEAN_USER;
 
@@ -83,7 +82,7 @@ public class LoginManager {
         //保存登录的用户类型
         SharedPreferencesUnit.getInstance(context).putInt(GlobalConstant.KEY_USER_TYPE, userType);
         //运维用户用SQLite保存密码
-        if (MAINTEAN_USER == userType) {
+        if (MAINTEAN_USER == userType||KEFU_USER==userType) {
             dataBaseManager.save(new User("1",username,password));
         }
         //如果是

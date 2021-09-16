@@ -335,7 +335,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                             //接收正确，开始解析
                             parseMax(bytes, count);
                         }
-                        if (count < funs.length - 1) {
+                        if (count < nowReadFuns.length - 1) {
                             count++;
                             mHandler.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
                         } else {
@@ -358,9 +358,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                     text = "socket已连接";
                     break;
                 case SocketClientUtil.SOCKET_SEND:
-                    if (count < funs.length) {
-                        sendMsg(mClientUtil, nowReadFuns[count]);
-                    }
+                    sendMsg(mClientUtil, nowReadFuns[count]);
                     break;
                 case 100://恢复按钮点击
                     String myuuid = (String) msg.obj;
@@ -816,4 +814,12 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
         return value;
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
+        mHandler=null;
+        SocketClientUtil.close(mClientUtilWriter);
+    }
 }

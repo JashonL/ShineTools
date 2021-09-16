@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.adapter.UsSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.bean.USDebugSettingBean;
@@ -58,6 +59,9 @@ import java.util.UUID;
 
 import butterknife.BindView;
 
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.KEFU_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.MAINTEAN_USER;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 import static com.growatt.shinetools.utils.BtnDelayUtil.TIMEOUT_RECEIVE;
 
@@ -125,6 +129,9 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
     private int nowSecond;
     private BaseCircleDialog baseCircleDialog;
 
+    private int user_type = KEFU_USER;
+
+
     @Override
     protected int getContentView() {
         return R.layout.activity_us_param_setting;
@@ -132,10 +139,11 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     protected void initViews() {
+
         initToobar(toolbar);
         tvTitle.setText(R.string.android_key622);
         String title = getIntent().getStringExtra("title");
-        if (TextUtils.isEmpty(title)){
+        if (TextUtils.isEmpty(title)) {
             tvTitle.setText(title);
         }
         toolbar.setOnMenuItemClickListener(this);
@@ -151,56 +159,124 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     protected void initData() {
+        //1.获取用户类型
+        user_type = ShineToosApplication.getContext().getUser_type();
+        //2.根据用户类型初始化列表和读取的寄存器
+        if (user_type == END_USER) {
+            titles = new String[]{getString(R.string.android_key663)};
+            //对应的寄存器
+            registers = new String[]{""};
+            //item的显示类型
+            itemTypes = new int[]{UsSettingConstant.SETTING_TYPE_SELECT,};
+            //读取数据的寄存器
+            funs = new int[][]{{3, 45, 50}};//逆变器时间
 
-        //标题
-        titles = new String[]{
-                getString(R.string.m国家安规),
-                getString(R.string.android_key982),
-                getString(R.string.m404选择通信波特率),
-                getString(R.string.android_key663),
-                getString(R.string.android_key1005),
-                getString(R.string.android_key947),
-                getString(R.string.android_key2395),
-                getString(R.string.android_key259),
-                getString(R.string.android_key1415),
-                getString(R.string.android_key828)
-        };
+        } else if (user_type==MAINTEAN_USER){
+            //去掉6,9
+            //标题
+            titles = new String[]{
+                    getString(R.string.m国家安规),
+                    getString(R.string.android_key982),
+                    getString(R.string.m404选择通信波特率),
+                    getString(R.string.android_key663),
+                    getString(R.string.android_key1005),
+                    getString(R.string.android_key947),
+//                    getString(R.string.android_key2395),
+                    getString(R.string.android_key259),
+                    getString(R.string.android_key1415),
+//                    getString(R.string.android_key828)
+            };
 
-        //对应的寄存器
-        registers = new String[]{
-                "", "30", "22", "45~50",
-                "88", "231", "7147~7148",
-                "32", "33", ""
-        };
+            //对应的寄存器
+            registers = new String[]{
+                    "", "", "", "",
+                    "", "", "",
+                    "", "", ""
+            };
 
-        //item的显示类型
-        itemTypes = new int[]{
-                UsSettingConstant.SETTING_TYPE_SELECT,
-                UsSettingConstant.SETTING_TYPE_INPUT,
-                UsSettingConstant.SETTING_TYPE_SELECT,
-                UsSettingConstant.SETTING_TYPE_SELECT,
-                UsSettingConstant.SETTING_TYPE_ONLYREAD,
-                UsSettingConstant.SETTING_TYPE_SWITCH,
-                UsSettingConstant.SETTING_TYPE_INPUT,
-                UsSettingConstant.SETTING_TYPE_SELECT,
-                UsSettingConstant.SETTING_TYPE_SELECT,
-                UsSettingConstant.SETTING_TYPE_NEXT,
 
-        };
+            //item的显示类型
+            itemTypes = new int[]{
+                    UsSettingConstant.SETTING_TYPE_SELECT,
+                    UsSettingConstant.SETTING_TYPE_INPUT,
+                    UsSettingConstant.SETTING_TYPE_SELECT,
+                    UsSettingConstant.SETTING_TYPE_SELECT,
+                    UsSettingConstant.SETTING_TYPE_ONLYREAD,
+                    UsSettingConstant.SETTING_TYPE_SWITCH,
+//                    UsSettingConstant.SETTING_TYPE_INPUT,
+                    UsSettingConstant.SETTING_TYPE_SELECT,
+                    UsSettingConstant.SETTING_TYPE_SELECT,
+//                    UsSettingConstant.SETTING_TYPE_NEXT,
 
-        //读取数据的寄存器
-        funs = new int[][]{
-                {3, 0, 124},//国家安规
-                {3, 30, 30},//通讯地址
-                {3, 22, 22},//选择通讯波特率
-                {3, 45, 50},//逆变器时间
-                {3, 88, 88},//modbus版本
-                {3, 231, 231},//风扇检查
-                {3, 3051, 3052},//修改总发电量
-                {3, 32, 32},//清除历史数据
-                {3, 33, 33},//恢复出厂设置
+            };
 
-        };
+
+            //读取数据的寄存器
+            funs = new int[][]{
+                    {3, 0, 124},//国家安规
+                    {3, 30, 30},//通讯地址
+                    {3, 22, 22},//选择通讯波特率
+                    {3, 45, 50},//逆变器时间
+                    {3, 88, 88},//modbus版本
+                    {3, 231, 231},//风扇检查
+//                    {3, 3051, 3052},//修改总发电量
+                    {3, 32, 32},//清除历史数据
+                    {3, 33, 33},//恢复出厂设置
+
+            };
+        }else {
+            //标题
+            titles = new String[]{
+                    getString(R.string.m国家安规),
+                    getString(R.string.android_key982),
+                    getString(R.string.m404选择通信波特率),
+                    getString(R.string.android_key663),
+                    getString(R.string.android_key1005),
+                    getString(R.string.android_key947),
+                    getString(R.string.android_key2395),
+                    getString(R.string.android_key259),
+                    getString(R.string.android_key1415),
+                    getString(R.string.android_key828)
+            };
+
+            //对应的寄存器
+            registers = new String[]{
+                    "", "", "", "",
+                    "", "", "",
+                    "", "", ""
+            };
+
+            //item的显示类型
+            itemTypes = new int[]{
+                    UsSettingConstant.SETTING_TYPE_SELECT,
+                    UsSettingConstant.SETTING_TYPE_INPUT,
+                    UsSettingConstant.SETTING_TYPE_SELECT,
+                    UsSettingConstant.SETTING_TYPE_SELECT,
+                    UsSettingConstant.SETTING_TYPE_ONLYREAD,
+                    UsSettingConstant.SETTING_TYPE_SWITCH,
+                    UsSettingConstant.SETTING_TYPE_INPUT,
+                    UsSettingConstant.SETTING_TYPE_SELECT,
+                    UsSettingConstant.SETTING_TYPE_SELECT,
+                    UsSettingConstant.SETTING_TYPE_NEXT,
+
+            };
+            //读取数据的寄存器
+            funs = new int[][]{
+                    {3, 0, 124},//国家安规
+                    {3, 30, 30},//通讯地址
+                    {3, 22, 22},//选择通讯波特率
+                    {3, 45, 50},//逆变器时间
+                    {3, 88, 88},//modbus版本
+                    {3, 231, 231},//风扇检查
+                    {3, 3051, 3052},//修改总发电量
+                    {3, 32, 32},//清除历史数据
+                    {3, 33, 33},//恢复出厂设置
+
+            };
+
+        }
+
+
 
 
 
@@ -218,10 +294,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
 
         };
 
-
         curSet = nowSet[0][0];
-
-
         try {
             mMultiples = new float[]{0.1f, 1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f};
         } catch (Exception e) {
@@ -229,10 +302,12 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
         }
 
         try {
-            mUnits = new String[]{"", "", "%", "%", "%", "%", "%", "%", "%", "%"};
+            mUnits = new String[]{"", "", "", "", "", "", "kWh", "", "", ""};
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
 
         //弹框选择的数据
         items = new String[][]{
@@ -247,6 +322,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                 {getString(R.string.android_key3109), getString(R.string.android_key3110)},//us特殊处理,
                 {""},//us特殊处理,
         };
+
 
    /*     try {
             mMul = mMultiples[mType];
@@ -269,9 +345,11 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                 , {"S37", "PRC-Quebec-208", "5", "208V", "37"}
                 , {"S37", "PRC-Quebec-240", "1", "240V", "37"}
         };
+
+
         models = new ArrayList<>();
-        for (int i = 0; i < modelToal.length; i++) {
-            models.add(modelToal[i][1]);
+        for (String[] strings : modelToal) {
+            models.add(strings[1]);
         }
 
 
@@ -442,145 +520,221 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
     private void parseMax(byte[] bytes, int count) {
         //移除外部协议
         byte[] bs = RegisterParseUtil.removePro17(bytes);
-        //解析int值
-        switch (count) {
-            case 0://国家安规
-                LogUtil.i("接收读取：" + SocketClientUtil.bytesToHexString(bytes));
-                //识别model
-                byte[] valueBs = MaxWifiParseUtil.subBytesFull(bs, 118, 0, 4);
-                registerValues[0][0] = MaxWifiParseUtil.obtainValueOne(bs, 118);
-                registerValues[0][1] = MaxWifiParseUtil.obtainValueOne(bs, 119);
-                registerValues[0][2] = MaxWifiParseUtil.obtainValueOne(bs, 120);
-                registerValues[0][3] = MaxWifiParseUtil.obtainValueOne(bs, 121);
-
-
-                BigInteger big = new BigInteger(1, valueBs);
-                long bigInteger = big.longValue();
-                String modelS = MaxUtil.getDeviceModelSingleNew(bigInteger, 16) + MaxUtil.getDeviceModelSingleNew(bigInteger, 15);
-                String readModel = String.format("S%s", modelS);
-                //电压U位
-                //解析120寄存器  U 电压 0-2bit
-                int readVol = MaxWifiParseUtil.obtainValueOne(bs, 120) & 0x0007;
-                //匹配
-                boolean isFlag = false;
-                for (int i = 0; i < modelToal.length; i++) {
-                    String[] model = modelToal[i];
-                    if (model[0].equals(readModel) && model[2].equals(String.valueOf(readVol))) {
-                        isFlag = true;
-                        modelPos = i;
-                        usParamsetAdapter.getData().get(0).setValueStr(model[1]);
-                        break;
+        if (user_type==END_USER){
+            if (count == 0) {//逆变器时间
+                parserTimeData(bs);
+            }
+        }else if (user_type==MAINTEAN_USER){
+            //解析int值
+            switch (count) {
+                case 0://国家安规
+                    parserNSR(bytes, bs);
+                    break;
+                case 1://通信地址
+                    //解析int值
+                    parserAddress(bs);
+                    break;
+                case 2://选择通信波特率
+                    //解析int值
+                    parserRate(bs, 2);
+                    break;
+                case 3://逆变器时间
+                    //解析int值
+                    parserTimeData(bs);
+                    break;
+                case 4://MODBUS版本号
+                    //解析int值
+                    parserRate(bs, 4);
+                    break;
+                case 5://风扇检查
+                    //解析int值
+                    parserRate(bs, 5);
+                    break;
+                case 6://清除历史数据
+                    //解析int值
+                    int value6 = MaxWifiParseUtil.obtainValueOne(bs);
+                    String s = String.valueOf(value6);
+                    if (value6 < items[7].length) {
+                        s = items[7][value6];
                     }
-                }
-                if (!isFlag) {
-                    modelPos = -1;
-                    usParamsetAdapter.getData().get(0).setValueStr("");
-                    usParamsetAdapter.getData().get(0).setValue("");
-                }
+                    usParamsetAdapter.getData().get(6).setValue(String.valueOf(value6));
+                    usParamsetAdapter.getData().get(6).setValueStr(s);
+                    break;
+                case 7://恢复出厂设置
+                    //解析int值
+                    int value7 = MaxWifiParseUtil.obtainValueOne(bs);
+                    String s1 = String.valueOf(value7);
+                    if (value7 < items[8].length) {
+                        s1 = items[8][value7];
+                    }
 
-                break;
+                    usParamsetAdapter.getData().get(7).setValue(String.valueOf(value7));
+                    usParamsetAdapter.getData().get(7).setValueStr(s1);
+                    break;
+            }
 
-            case 1://通信地址
-                //解析int值
-                int value0 = MaxWifiParseUtil.obtainValueOne(bs);
-                initMul(1);
-                String readValueReal = getReadValueReal(value0, 1);
-                usParamsetAdapter.getData().get(1).setValue(readValueReal);
-                usParamsetAdapter.getData().get(1).setValueStr(readValueReal);
-                break;
+        }else {
+            //解析int值
+            switch (count) {
+                case 0://国家安规
+                    parserNSR(bytes, bs);
+                    break;
+                case 1://通信地址
+                    //解析int值
+                    parserAddress(bs);
+                    break;
 
+                case 2://选择通信波特率
+                    //解析int值
+                    parserRate(bs, 2);
+                    break;
+                case 3://逆变器时间
+                    //解析int值
+                    parserTimeData(bs);
+                    break;
 
-            case 2://选择通信波特率
-                //解析int值
-                int value2 = MaxWifiParseUtil.obtainValueOne(bs);
-                String readResult = getReadResult(value2, 2);
-                usParamsetAdapter.getData().get(2).setValue(String.valueOf(value2));
-                usParamsetAdapter.getData().get(2).setValueStr(readResult);
-                break;
-
-
-            case 3://逆变器时间
-                //解析int值
-                try {
-                    int year = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 0, 0, 1));
-                    int month = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 1, 0, 1));
-                    int day = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 2, 0, 1));
-                    int hour = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 3, 0, 1));
-                    int min = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 4, 0, 1));
-                    int seconds = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 5, 0, 1));
-                    //更新ui
-                    StringBuilder sb = new StringBuilder()
-                            .append(year).append("-")
-                            .append(month).append("-")
-                            .append(day).append(" ")
-                            .append(hour).append(":")
-                            .append(min).append(":")
-                            .append(seconds);
-
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String timeS = sb.toString();
-                    Date date = sdf.parse(timeS);
-                    String timeStr = sdf.format(date);
-
-                    usParamsetAdapter.getData().get(3).setValueStr(timeStr);
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-
-                break;
-
-
-            case 4://MODBUS版本号
-                //解析int值
-                int value4 = MaxWifiParseUtil.obtainValueOne(bs);
-                String readResult4 = getReadResult(value4, 4);
-                usParamsetAdapter.getData().get(4).setValue(String.valueOf(value4));
-                usParamsetAdapter.getData().get(4).setValueStr(readResult4);
-
-                break;
-
-            case 5:
-                //解析int值
-                int value5 = MaxWifiParseUtil.obtainValueOne(bs);
-                //更新ui
-                String readResult5 = getReadResult(value5, 5);
-                usParamsetAdapter.getData().get(5).setValue(String.valueOf(value5));
-                usParamsetAdapter.getData().get(5).setValueStr(readResult5);
-                break;
-            case 6://修改总发电量
-                //解析int值
-                int value6 = MaxWifiParseUtil.obtainValueHAndL(bs);
-                //更新ui
-                initMul(6);
-                String readResult6 = getReadValueReal(value6, 6);
-                usParamsetAdapter.getData().get(6).setValue(String.valueOf(value6));
-                usParamsetAdapter.getData().get(6).setValueStr(readResult6);
-                break;
-
-            case 7://清除历史数据
-                //解析int值
-                int value7 = MaxWifiParseUtil.obtainValueOne(bs);
-                usParamsetAdapter.getData().get(7).setValue(String.valueOf(value7));
-                String s= String.valueOf(value7);
-                if (value7<items[7].length){
-                    s=items[7][value7];
-                }
-                usParamsetAdapter.getData().get(7).setValueStr(s);
-                break;
-            case 8:
-                //解析int值
-                int value8 = MaxWifiParseUtil.obtainValueOne(bs);
-                usParamsetAdapter.getData().get(8).setValue(String.valueOf(value8));
-                String s8= String.valueOf(value8);
-                if (value8<items[8].length){
-                    s8=items[8][value8];
-                }
-                usParamsetAdapter.getData().get(8).setValueStr(s8);
-                break;
+                case 4://MODBUS版本号
+                    //解析int值
+                    parserRate(bs, 4);
+                    break;
+                case 5:
+                    //解析int值
+                    parserRate(bs, 5);
+                    break;
+                case 6://修改总发电量
+                    //解析int值
+                    parserAllCharge(bs);
+                    break;
+                case 7://清除历史数据
+                    //解析int值
+                    parserHistoryData(bs, 7);
+                    break;
+                case 8:
+                    //解析int值
+                    parserHistoryData(bs, 8);
+                    break;
+            }
         }
         usParamsetAdapter.notifyDataSetChanged();
+    }
+
+    private void parserHistoryData(byte[] bs, int i) {
+        int value7 = MaxWifiParseUtil.obtainValueOne(bs);
+        usParamsetAdapter.getData().get(i).setValue(String.valueOf(value7));
+        String s = String.valueOf(value7);
+        if (value7 < items[i].length) {
+            s = items[i][value7];
+        }
+        usParamsetAdapter.getData().get(i).setValueStr(s);
+    }
+
+    private void parserAllCharge(byte[] bs) {
+        int value6 = MaxWifiParseUtil.obtainValueHAndL(bs);
+        //更新ui
+        initMul(6);
+        String readResult6 = getReadValueReal(value6, 6);
+        usParamsetAdapter.getData().get(6).setValue(String.valueOf(value6));
+        usParamsetAdapter.getData().get(6).setValueStr(readResult6);
+    }
+
+    /**
+     *
+     * @param bs
+     * @param i
+     */
+
+    private void parserRate(byte[] bs, int i) {
+        int value2 = MaxWifiParseUtil.obtainValueOne(bs);
+        String readResult = getReadResult(value2, i);
+        usParamsetAdapter.getData().get(i).setValue(String.valueOf(value2));
+        usParamsetAdapter.getData().get(i).setValueStr(readResult);
+    }
+
+    private void parserAddress(byte[] bs) {
+        int value0 = MaxWifiParseUtil.obtainValueOne(bs);
+        initMul(1);
+        String readValueReal = getReadValueReal(value0, 1);
+        usParamsetAdapter.getData().get(1).setValue(readValueReal);
+        usParamsetAdapter.getData().get(1).setValueStr(readValueReal);
+    }
+
+    /**
+     * 解析国家安规
+     * @param bytes
+     * @param bs
+     */
+    private void parserNSR(byte[] bytes, byte[] bs) {
+        LogUtil.i("接收读取：" + SocketClientUtil.bytesToHexString(bytes));
+        //识别model
+        byte[] valueBs = MaxWifiParseUtil.subBytesFull(bs, 118, 0, 4);
+        registerValues[0][0] = MaxWifiParseUtil.obtainValueOne(bs, 118);
+        registerValues[0][1] = MaxWifiParseUtil.obtainValueOne(bs, 119);
+        registerValues[0][2] = MaxWifiParseUtil.obtainValueOne(bs, 120);
+        registerValues[0][3] = MaxWifiParseUtil.obtainValueOne(bs, 121);
+
+
+        BigInteger big = new BigInteger(1, valueBs);
+        long bigInteger = big.longValue();
+        String modelS = MaxUtil.getDeviceModelSingleNew(bigInteger, 16) + MaxUtil.getDeviceModelSingleNew(bigInteger, 15);
+        String readModel = String.format("S%s", modelS);
+        //电压U位
+        //解析120寄存器  U 电压 0-2bit
+        int readVol = MaxWifiParseUtil.obtainValueOne(bs, 120) & 0x0007;
+        //匹配
+        boolean isFlag = false;
+        for (int i = 0; i < modelToal.length; i++) {
+            String[] model = modelToal[i];
+            if (model[0].equals(readModel) && model[2].equals(String.valueOf(readVol))) {
+                isFlag = true;
+                modelPos = i;
+                usParamsetAdapter.getData().get(0).setValueStr(model[1]);
+                break;
+            }
+        }
+        if (!isFlag) {
+            modelPos = -1;
+            usParamsetAdapter.getData().get(0).setValueStr("");
+            usParamsetAdapter.getData().get(0).setValue("");
+        }
+    }
+
+
+    /**
+     * 解析逆变器时间
+     * @param bs
+     */
+    private void parserTimeData(byte[] bs) {
+        try {
+            int year = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 0, 0, 1));
+            int month = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 1, 0, 1));
+            int day = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 2, 0, 1));
+            int hour = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 3, 0, 1));
+            int min = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 4, 0, 1));
+            int seconds = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 5, 0, 1));
+            //更新ui
+            StringBuilder sb = new StringBuilder()
+                    .append(year).append("-")
+                    .append(month).append("-")
+                    .append(day).append(" ")
+                    .append(hour).append(":")
+                    .append(min).append(":")
+                    .append(seconds);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String timeS = sb.toString();
+            Date date = sdf.parse(timeS);
+            String timeStr = sdf.format(date);
+
+            if (user_type==END_USER){
+                usParamsetAdapter.getData().get(0).setValueStr(timeStr);
+            }else {
+                usParamsetAdapter.getData().get(3).setValueStr(timeStr);
+            }
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -712,258 +866,266 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        currentSetPos = position;
-        switch (position) {
-            case 0://国家安规
-                new CircleDialog.Builder()
-                        .setTitle(getString(R.string.android_key499))
-                        .setWidth(0.7f)
-                        .setGravity(Gravity.CENTER)
-                        .setMaxHeight(0.5f)
-                        .setItems(models, (parent, view1, pos, id) -> {
-                            modelPos = pos;
-                            usParamsetAdapter.getData().get(0).setValueStr(models.get(pos));
-                            curSet = nowSet[0][0];
-                            nowRegister = registerValues[0];
-                            connectServerWrite();
-                            return true;
-                        })
-                        .setNegative(getString(R.string.all_no), null)
-                        .show(getSupportFragmentManager());
-                break;
-            case 1://通信地址
-                String title = usParamsetAdapter.getData().get(position).getTitle();
-                String tips = getString(R.string.android_key3048)+":"+"1~254";
-                String unit = "";
-                showInputValueDialog(title, tips, unit, value -> {
-                    double result = Double.parseDouble(value);
-                    String pValue = value;
-                    usParamsetAdapter.getData().get(position).setValueStr(pValue);
-                    usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
-                    usParamsetAdapter.notifyDataSetChanged();
+        if (user_type==END_USER){
+            if (position == 0) {//逆变器时间
+                setInvTime(position);
+            }
 
-                    //设置
-                    curSet = nowSet[1][0];
-                    //获取用户输入值
-                    if (TextUtils.isEmpty(value)) {
-                        toast(R.string.all_blank);
-                    } else {
-                        try {
-                            curSet[2] = getWriteValueReal(Double.parseDouble(value));
-                            connectServerWrite();
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                            toast(getString(R.string.m363设置失败));
-                            curSet[2] = -1;
-                        }
-                    }
+        }else if (user_type==MAINTEAN_USER){
+            switch (position) {
+                case 0://国家安规
+                    setNSR();
+                    break;
+                case 1://通信地址
+                    setCommunicationAddr(position);
+                    break;
+                case 2://通讯波特率
+                    setCommunicateRate(2);
+                    break;
+                case 3://逆变器时间
+                    setInvTime(position);
+                    break;
+                case 4://Modbus版本
+                    break;
+                case 5://风扇检查
+                    break;
+                case 6://清除历史数据
+                    setCommunicateRate(7);
+                    break;
+                case 7://恢复出厂设置
+                    setCommunicateRate(8);
+                    break;
+            }
+        }else {
+            switch (position) {
+                case 0://国家安规
+                    setNSR();
+                    break;
+                case 1://通信地址
+                    setCommunicationAddr(position);
+                    break;
+                case 2://通讯波特率
+                    setCommunicateRate(2);
+                    break;
+                case 3://逆变器时间
+                    setInvTime(position);
+                    break;
+                case 4://Modbus版本
+                    break;
+                case 5://风扇检查
+                    break;
+                case 6://修改总发电量
+                    setAllCharge(position);
+                    break;
+                case 7://清除历史数据
+                    setCommunicateRate(7);
+                    break;
+                case 8://
+                    setCommunicateRate(8);
+                    break;
+                case 9://设置model
+                    toSetModel(position);
+                    break;
 
-                });
-
-                break;
-            case 2://通讯波特率
-                nowItems=items[2];
-                new CircleDialog.Builder()
-                        .setWidth(0.7f)
-                        .setMaxHeight(0.5f)
-                        .setGravity(Gravity.CENTER)
-                        .setTitle(getString(R.string.countryandcity_first_country))
-                        .setItems(nowItems, new OnLvItemClickListener() {
-                            @Override
-                            public boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                if (nowItems != null && nowItems.length > position) {
-                                    try {
-                                        usParamsetAdapter.getData().get(position).setValueStr(nowItems[position]);
-                                        usParamsetAdapter.getData().get(position).setValue(String.valueOf(position));
-
-
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    //设置
-                                    curSet = nowSet[2][0];
-                                    curSet[2]=position;
-                                    connectServerWrite();
-
-                                }
-                                return true;
-                            }
-                        })
-                        .setNegative(getString(R.string.all_no),null)
-                        .show(getSupportFragmentManager());
-                break;
-
-            case 3://逆变器时间
-                Calendar c = Calendar.getInstance();
-                new DatePickerDialog(
-                        mContext
-                        , (view12, year, month, dayOfMonth) -> {
-                            // 创建一个TimePickerDialog实例，并把它显示出来
-                            Calendar c2 = Calendar.getInstance();
-                            new TimePickerDialog(mContext,
-                                    // 绑定监听器
-                                    (view121, hourOfDay, minute) -> {
-                                        if (year > 2000) {
-                                            nowSet[3][0][2]= year - 2000;
-                                        } else {
-                                            nowSet[3][0][2]= year;
-                                        }
-                                        nowSet[3][1][2]=month+1;
-                                        nowSet[3][2][2]=dayOfMonth;
-                                        nowSet[3][3][2]=hourOfDay;
-                                        nowSet[3][4][2]=minute;
-                                        nowSecond = Calendar.getInstance().get(Calendar.SECOND);
-                                        nowSet[3][5][2]=nowSecond;
-                                        //更新ui
-                                        StringBuilder sb = new StringBuilder()
-                                                .append(year).append("-");
-                                        if (month + 1 < 10) {
-                                            sb.append("0");
-                                        }
-                                        sb.append(month + 1).append("-");
-                                        if (dayOfMonth < 10) {
-                                            sb.append("0");
-                                        }
-                                        sb.append(dayOfMonth).append(" ");
-                                        if (hourOfDay < 10) {
-                                            sb.append("0");
-                                        }
-                                        sb.append(hourOfDay).append(":");
-                                        if (minute < 10) {
-                                            sb.append("0");
-                                        }
-                                        sb.append(minute).append(":");
-                                        if (nowSecond < 10) {
-                                            sb.append("0");
-                                        }
-                                        sb.append(nowSecond);
-                                        usParamsetAdapter.getData().get(position).setValueStr(sb.toString());
-
-                                        connectServerWrite();
-
-                                    }
-                                    // 设置初始时间
-                                    , c2.get(Calendar.HOUR_OF_DAY)
-                                    , c2.get(Calendar.MINUTE),
-                                    // true表示采用24小时制
-                                    true).show();
-                        }
-                        , c.get(Calendar.YEAR)
-                        , c.get(Calendar.MONTH)
-                        , c.get(Calendar.DAY_OF_MONTH)
-                ).show();
-                break;
-
-
-            case 4://Modbus版本
-
-
-                break;
-
-            case 5://风扇检查
-                break;
-
-            case 6://修改总发电量
-                String title1 = usParamsetAdapter.getData().get(position).getTitle();
-                String tips1 = "";
-                String unit1 = "";
-                showInputValueDialog(title1, tips1, unit1, value -> {
-                    double result = Double.parseDouble(value);
-                    String pValue = value;
-                    usParamsetAdapter.getData().get(position).setValueStr(pValue);
-                    usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
-                    usParamsetAdapter.notifyDataSetChanged();
-
-
-                    //获取用户输入值
-                    if (TextUtils.isEmpty(value)) {
-                        toast(R.string.all_blank);
-                    } else {
-                        try {
-                            int low = getWriteValueReal(Double.parseDouble(value));
-                            int high = 0;
-                            if (low > 0xffff) {
-                                high = low - 0xffff;
-                                low = 0xffff;
-                            }
-                            nowSet[position][0][2]=high;
-                            nowSet[position][1][2]=low;
-                            connectServerWrite();
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                            toast(getString(R.string.m363设置失败));
-                            nowSet[position][0][2]=-1;
-                            nowSet[position][1][2]=-1;
-                        }
-                    }
-
-                });
-                break;
-            case 7://清除历史数据
-                nowItems=items[7];
-                new CircleDialog.Builder()
-                        .setWidth(0.7f)
-                        .setMaxHeight(0.5f)
-                        .setGravity(Gravity.CENTER)
-                        .setTitle(getString(R.string.countryandcity_first_country))
-                        .setItems(nowItems, new OnLvItemClickListener() {
-                            @Override
-                            public boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                if (nowItems != null && nowItems.length > position) {
-                                    try {
-                                        usParamsetAdapter.getData().get(position).setValueStr(nowItems[position]);
-                                        usParamsetAdapter.getData().get(position).setValue(String.valueOf(position));
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    //设置
-                                    curSet = nowSet[7][0];
-                                    curSet[7]=position;
-                                    connectServerWrite();
-                                }
-                                return true;
-                            }
-                        })
-                        .setNegative(getString(R.string.all_no),null)
-                        .show(getSupportFragmentManager());
-                break;
-            case 8://设置model
-                nowItems=items[8];
-                new CircleDialog.Builder()
-                        .setWidth(0.7f)
-                        .setMaxHeight(0.5f)
-                        .setGravity(Gravity.CENTER)
-                        .setTitle(getString(R.string.countryandcity_first_country))
-                        .setItems(nowItems, new OnLvItemClickListener() {
-                            @Override
-                            public boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                if (nowItems != null && nowItems.length > position) {
-                                    try {
-                                        usParamsetAdapter.getData().get(position).setValueStr(nowItems[position]);
-                                        usParamsetAdapter.getData().get(position).setValue(String.valueOf(position));
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    //设置
-                                    curSet = nowSet[8][0];
-                                    curSet[8]=position;
-                                    connectServerWrite();
-                                }
-                                return true;
-                            }
-                        })
-                        .setNegative(getString(R.string.all_no),null)
-                        .show(getSupportFragmentManager());
-                break;
-
-            case 9://设置model
-                String title9 = usParamsetAdapter.getData().get(position).getTitle();
-                Intent intent= new Intent(USParamsSettingActivity.this,USModeSetActivity.class);
-                intent.putExtra("title",title9);
-                ActivityUtils.startActivity(USParamsSettingActivity.this,intent,false);
-                break;
+            }
 
         }
+
+    }
+
+    private void toSetModel(int position) {
+        String title9 = usParamsetAdapter.getData().get(position).getTitle();
+        Intent intent = new Intent(USParamsSettingActivity.this, USModeSetActivity.class);
+        intent.putExtra("title", title9);
+        ActivityUtils.startActivity(USParamsSettingActivity.this, intent, false);
+    }
+
+    private void setAllCharge(int position) {
+        String title1 = usParamsetAdapter.getData().get(position).getTitle();
+        String tips1 = "";
+        String unit1 = "";
+        showInputValueDialog(title1, tips1, unit1, value -> {
+            double result = Double.parseDouble(value);
+            String pValue = value;
+            usParamsetAdapter.getData().get(position).setValueStr(pValue);
+            usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
+            usParamsetAdapter.notifyDataSetChanged();
+
+            currentSetPos = 6;
+            //获取用户输入值
+            if (TextUtils.isEmpty(value)) {
+                toast(R.string.all_blank);
+            } else {
+                try {
+                    int low = getWriteValueReal(Double.parseDouble(value));
+                    int high = 0;
+                    if (low > 0xffff) {
+                        high = low - 0xffff;
+                        low = 0xffff;
+                    }
+                    nowSet[position][0][2] = high;
+                    nowSet[position][1][2] = low;
+                    connectServerWrite();
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    toast(getString(R.string.m363设置失败));
+                    nowSet[position][0][2] = -1;
+                    nowSet[position][1][2] = -1;
+                }
+            }
+
+        });
+    }
+
+    private void setCommunicateRate(int itemIndex) {
+        nowItems = items[itemIndex];
+        new CircleDialog.Builder()
+                .setWidth(0.7f)
+                .setMaxHeight(0.5f)
+                .setGravity(Gravity.CENTER)
+                .setTitle(getString(R.string.countryandcity_first_country))
+                .setItems(nowItems, new OnLvItemClickListener() {
+                    @Override
+                    public boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        if (nowItems != null && nowItems.length > position) {
+                            try {
+                                usParamsetAdapter.getData().get(position).setValueStr(nowItems[position]);
+                                usParamsetAdapter.getData().get(position).setValue(String.valueOf(position));
+
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            //设置
+                            currentSetPos = itemIndex;
+                            curSet = nowSet[itemIndex][0];
+                            curSet[itemIndex] = position;
+                            connectServerWrite();
+
+                        }
+                        return true;
+                    }
+                })
+                .setNegative(getString(R.string.all_no), null)
+                .show(getSupportFragmentManager());
+    }
+
+    private void setCommunicationAddr(int position) {
+        String title = usParamsetAdapter.getData().get(position).getTitle();
+        String tips = getString(R.string.android_key3048) + ":" + "1~254";
+        String unit = "";
+        showInputValueDialog(title, tips, unit, value -> {
+            double result = Double.parseDouble(value);
+            String pValue = value;
+            usParamsetAdapter.getData().get(position).setValueStr(pValue);
+            usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
+            usParamsetAdapter.notifyDataSetChanged();
+
+
+            currentSetPos = 1;
+            //设置
+            curSet = nowSet[1][0];
+            //获取用户输入值
+            if (TextUtils.isEmpty(value)) {
+                toast(R.string.all_blank);
+            } else {
+                try {
+                    curSet[2] = getWriteValueReal(Double.parseDouble(value));
+                    connectServerWrite();
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    toast(getString(R.string.m363设置失败));
+                    curSet[2] = -1;
+                }
+            }
+
+        });
+    }
+
+    private void setNSR() {
+        new CircleDialog.Builder()
+                .setTitle(getString(R.string.android_key499))
+                .setWidth(0.7f)
+                .setGravity(Gravity.CENTER)
+                .setMaxHeight(0.5f)
+                .setItems(models, (parent, view1, pos, id) -> {
+                    currentSetPos = 0;
+                    modelPos = pos;
+                    usParamsetAdapter.getData().get(0).setValueStr(models.get(pos));
+                    curSet = nowSet[0][0];
+                    nowRegister = registerValues[0];
+                    connectServerWrite();
+                    return true;
+                })
+                .setNegative(getString(R.string.all_no), null)
+                .show(getSupportFragmentManager());
+    }
+
+
+    /**
+     * 设置逆变器时间
+     * @param position
+     */
+    private void setInvTime(int position) {
+        currentSetPos = 3;
+        Calendar c = Calendar.getInstance();
+        new DatePickerDialog(
+                mContext
+                , (view12, year, month, dayOfMonth) -> {
+            // 创建一个TimePickerDialog实例，并把它显示出来
+            Calendar c2 = Calendar.getInstance();
+            new TimePickerDialog(mContext,
+                    // 绑定监听器
+                    (view121, hourOfDay, minute) -> {
+                        if (year > 2000) {
+                            nowSet[3][0][2] = year - 2000;
+                        } else {
+                            nowSet[3][0][2] = year;
+                        }
+                        nowSet[3][1][2] = month + 1;
+                        nowSet[3][2][2] = dayOfMonth;
+                        nowSet[3][3][2] = hourOfDay;
+                        nowSet[3][4][2] = minute;
+                        nowSecond = Calendar.getInstance().get(Calendar.SECOND);
+                        nowSet[3][5][2] = nowSecond;
+                        //更新ui
+                        StringBuilder sb = new StringBuilder()
+                                .append(year).append("-");
+                        if (month + 1 < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(month + 1).append("-");
+                        if (dayOfMonth < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(dayOfMonth).append(" ");
+                        if (hourOfDay < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(hourOfDay).append(":");
+                        if (minute < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(minute).append(":");
+                        if (nowSecond < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(nowSecond);
+                        usParamsetAdapter.getData().get(position).setValueStr(sb.toString());
+
+                        connectServerWrite();
+
+                    }
+                    // 设置初始时间
+                    , c2.get(Calendar.HOUR_OF_DAY)
+                    , c2.get(Calendar.MINUTE),
+                    // true表示采用24小时制
+                    true).show();
+        }
+                , c.get(Calendar.YEAR)
+                , c.get(Calendar.MONTH)
+                , c.get(Calendar.DAY_OF_MONTH)
+        ).show();
     }
 
 
@@ -1021,7 +1183,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                         });
 
                     }
-                },Gravity.CENTER,false);
+                }, Gravity.CENTER, false);
     }
 
 
@@ -1031,7 +1193,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
         if (position == 5) {//风扇检查
             //设置
             curSet = nowSet[5][0];
-            curSet[2]=position;
+            curSet[2] = position;
             connectServerWrite();
         }
 
@@ -1123,10 +1285,13 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                             }
                             break;
                     }
+
                     break;
                 //接收字节数组
                 case SocketClientUtil.SOCKET_RECEIVE_BYTES:
                     BtnDelayUtil.receiveMessage(this);
+
+
                     if (currentSetPos == 0) {//国家安规设置项
                         try {
                             byte[] bytes = (byte[]) msg.obj;
@@ -1147,7 +1312,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                             SocketClientUtil.close(mClientUtilW);
                             Mydialog.Dismiss();
                         }
-                    }else if (currentSetPos==3){
+                    } else if (currentSetPos == 3) {
                         try {
                             byte[] bytes = (byte[]) msg.obj;
                             //检测内容正确性
@@ -1163,7 +1328,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                                 //继续发送设置命令
                                 mHandlerW.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
                             } else {
-                                toast(getString(R.string.android_key3129	));
+                                toast(getString(R.string.android_key3129));
                                 //将内容设置为-1初始值
                                 nowSet[3][0][2] = -1;
                                 //关闭tcp连接
@@ -1177,7 +1342,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                             SocketClientUtil.close(mClientUtilW);
                             BtnDelayUtil.refreshFinish();
                         }
-                    }else if (currentSetPos==6){
+                    } else if (currentSetPos == 6) {
                         try {
                             byte[] bytes = (byte[]) msg.obj;
                             //检测内容正确性
@@ -1207,7 +1372,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                             SocketClientUtil.close(mClientUtilW);
                             BtnDelayUtil.refreshFinish();
                         }
-                    }else {
+                    } else {
                         try {
                             byte[] bytes = (byte[]) msg.obj;
                             //检测内容正确性
@@ -1221,6 +1386,8 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                             BtnDelayUtil.refreshFinish();
                         }
                     }
+
+
                     break;
                 default:
                     BtnDelayUtil.dealTLXBtnWrite(this, what, mContext, toolbar);

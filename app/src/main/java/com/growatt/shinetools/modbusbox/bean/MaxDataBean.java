@@ -64,6 +64,8 @@ public class MaxDataBean {
 
     private String batVersion;//电池版本
 
+    private int bdcNumber;
+
 
     public String getBatVersion() {
         return batVersion;
@@ -468,5 +470,14 @@ public class MaxDataBean {
 
     public void setBdcInfoBean(BDCInfoBean bdcInfoBean) {
         this.bdcInfoBean = bdcInfoBean;
+    }
+
+
+    public int getBdcNumber() {
+        return bdcNumber;
+    }
+
+    public void setBdcNumber(int bdcNumber) {
+        this.bdcNumber = bdcNumber;
     }
 }

@@ -409,6 +409,11 @@ public class RegisterParseUtil {
                 MaxWifiParseUtil.subBytes125(bs, 125, 0, 8)
         );
         deviceBean.setDeviceType(deviceType);
+
+        //解析int值
+        int bdc = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 184, 0, 1));
+        been.setBdcNumber(bdc);
+
     }
 
     /**
@@ -505,9 +510,9 @@ public class RegisterParseUtil {
         been.setDeviceTypeCode(obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3098, 0, 1)));
         String bdcVersion1 = MaxWifiParseUtil.obtainRegistValueAsciiYesNull(MaxWifiParseUtil.subBytes125(bs, 3099, 0, 2));
         int bdcVersion2 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3101, 0, 1));
-        String bdcVersion=String.valueOf(bdcVersion2);
-        if (!TextUtils.isEmpty(bdcVersion1)){
-             bdcVersion = String.format("%s-%d", bdcVersion1, bdcVersion2);
+        String bdcVersion = String.valueOf(bdcVersion2);
+        if (!TextUtils.isEmpty(bdcVersion1)) {
+            bdcVersion = String.format("%s-%d", bdcVersion1, bdcVersion2);
 
         }
         been.setBdcVervison(bdcVersion);
@@ -529,7 +534,7 @@ public class RegisterParseUtil {
         String m3Version1 = MaxWifiParseUtil.obtainRegistValueAsciiYesNull(MaxWifiParseUtil.subBytes(bs, 3096, 0, 2));
         int m3Version2 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3103, 0, 1));
         String m3Version = String.valueOf(m3Version2);
-        if (!TextUtils.isEmpty(m3Version1)){
+        if (!TextUtils.isEmpty(m3Version1)) {
             m3Version = String.format("%s-%d", m3Version1, m3Version2);
         }
 
@@ -544,12 +549,10 @@ public class RegisterParseUtil {
         );*/
 
 
-
         //厂商信息
         String company = MaxWifiParseUtil.obtainRegistValueAscii(
                 MaxWifiParseUtil.subBytes(bs, 3106, 0, 1)
         );
-
 
 
         //电池通信类型
@@ -560,7 +563,7 @@ public class RegisterParseUtil {
 
         int batteryVersion1 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3105, 0, 1));
         int batteryVersion2 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3106, 0, 1));
-        String batVersion=String.valueOf(batteryVersion1)+String.valueOf(batteryVersion2);
+        String batVersion = String.valueOf(batteryVersion1) + String.valueOf(batteryVersion2);
         been.setBatVersion(batVersion);
 
         //解析bdc/电池信息
@@ -1016,7 +1019,7 @@ public class RegisterParseUtil {
         storageBeen.setaChargeMax(obtainValueOne(bytes, 3219));
 
 
-        storageBeen.setaDischargeMax(obtainValueOne(bytes, 3219));
+        storageBeen.setaDischargeMax(obtainValueOne(bytes, 3220));
         //bms2 + 19
         storageBeen.setBmsComType02(obtainValueOne(bytes, 3248));
         storageBeen.setBatteryCompany02(obtainValueOne(bytes, 3243));
@@ -3736,24 +3739,24 @@ public class RegisterParseUtil {
     /**
      * 解析03:3085-3124号寄存器:40个寄存器
      */
-    public static void parseUSHold3085T3124(MaxDataBean been, byte[] bytes,int resRester,int bdcPosition) {
+    public static void parseUSHold3085T3124(MaxDataBean been, byte[] bytes, int resRester, int bdcPosition) {
         //移除外部协议
         byte[] bs = removePro17(bytes);
         Log.i("receive1", SocketClientUtil.bytesToHexString(bs));
         //设备类型
-        been.setDeviceTypeCode(usBdcObtainValueOne(bs,bdc03SrcIndex(resRester,3098,bdcPosition)));
+        been.setDeviceTypeCode(usBdcObtainValueOne(bs, bdc03SrcIndex(resRester, 3098, bdcPosition)));
 
         int srcPos = bdc03SrcIndex(resRester, 3099, bdcPosition);
 
         String bdcVersion1 = MaxWifiParseUtil.obtainRegistValueAsciiYesNull(MaxWifiParseUtil.usbdcParallelRegister(bs, srcPos, 0, 2));
 //        MyToastUtils.toast("解析bdc数据："+"原始位置：3099"+"新的位置："+srcPos+"解析成字符串："+bdcVersion1);
 
-        int bdcVersion2 = usBdcObtainValueOne(bs,bdc03SrcIndex(resRester,3101,bdcPosition));
+        int bdcVersion2 = usBdcObtainValueOne(bs, bdc03SrcIndex(resRester, 3101, bdcPosition));
         String bdcVersion = String.format("%s-%d", bdcVersion1, bdcVersion2);
         been.setBdcVervison(bdcVersion);
 
 
-        been.setDeviceTypeCode(usBdcObtainValueOne(bs,bdc03SrcIndex(resRester,3105,bdcPosition)));
+        been.setDeviceTypeCode(usBdcObtainValueOne(bs, bdc03SrcIndex(resRester, 3105, bdcPosition)));
 
         //sn号
         srcPos = bdc03SrcIndex(resRester, 3087, bdcPosition);
@@ -3762,8 +3765,8 @@ public class RegisterParseUtil {
         );
 
         //mode SxxBxxDxxTxxPxxUxxMxx
-         srcPos = bdc03SrcIndex(resRester, 3108, bdcPosition);
-        byte[] modebs =  MaxWifiParseUtil.usbdcParallelRegister(bs, srcPos, 0, 4);
+        srcPos = bdc03SrcIndex(resRester, 3108, bdcPosition);
+        byte[] modebs = MaxWifiParseUtil.usbdcParallelRegister(bs, srcPos, 0, 4);
 
 
         //解析int值
@@ -3773,12 +3776,12 @@ public class RegisterParseUtil {
 
         //M3版本
         srcPos = bdc03SrcIndex(resRester, 3096, bdcPosition);
-        String m3Version1= MaxWifiParseUtil.obtainRegistValueAsciiYesNull(MaxWifiParseUtil.usbdcParallelRegister(bs, srcPos, 0, 2));
+        String m3Version1 = MaxWifiParseUtil.obtainRegistValueAsciiYesNull(MaxWifiParseUtil.usbdcParallelRegister(bs, srcPos, 0, 2));
 
 
-        int m3Version2 = usBdcObtainValueOne(bs,bdc03SrcIndex(resRester,3103,bdcPosition));
+        int m3Version2 = usBdcObtainValueOne(bs, bdc03SrcIndex(resRester, 3103, bdcPosition));
         String m3Version = String.valueOf(m3Version2);
-        if (!TextUtils.isEmpty(m3Version1)){
+        if (!TextUtils.isEmpty(m3Version1)) {
             m3Version = String.format("%s-%d", m3Version1, m3Version2);
         }
 
@@ -3789,8 +3792,7 @@ public class RegisterParseUtil {
      /*   String bmsVersion = MaxWifiParseUtil.obtainRegistValueAscii(
                 MaxWifiParseUtil.usbdcParallelRegister(bs, srcPos, 0, 1)
         );*/
-        String bmsVersion = String.valueOf(MaxWifiParseUtil.usBdcObtainValueOne(bs,srcPos));
-
+        String bmsVersion = String.valueOf(MaxWifiParseUtil.usBdcObtainValueOne(bs, srcPos));
 
 
         //厂商信息
@@ -3799,8 +3801,6 @@ public class RegisterParseUtil {
         String company = MaxWifiParseUtil.obtainRegistValueAscii(
                 MaxWifiParseUtil.usbdcParallelRegister(bs, srcPos, 0, 1)
         );
-
-
 
 
         //电池通信类型
@@ -3831,7 +3831,7 @@ public class RegisterParseUtil {
     /**
      * 解析04:3165-3233号寄存器:69个寄存器
      */
-    public static void parseUSHold3165T3233(MaxDataBean been, byte[] bs,int resRester,int bdcPosition) {
+    public static void parseUSHold3165T3233(MaxDataBean been, byte[] bs, int resRester, int bdcPosition) {
         //移除外部协议
         byte[] bytes = removePro17(bs);
         Log.i("receive1", SocketClientUtil.bytesToHexString(bytes));
@@ -3841,37 +3841,37 @@ public class RegisterParseUtil {
 
         /*BDC信息*/
         //bdc状态
-        storageBeen.setpChargeBDC1(usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester,3180,bdcPosition)));
-        storageBeen.setpDischargeBDC1(usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester,3178,bdcPosition)));
+        storageBeen.setpChargeBDC1(usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester, 3180, bdcPosition)));
+        storageBeen.setpDischargeBDC1(usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester, 3178, bdcPosition)));
 //        storageBeen.setpChargeBDC2(obtainValueTwo(bytes, 3203));
-        storageBeen.setpDischargeBDC2(usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester,3201,bdcPosition)));
+        storageBeen.setpDischargeBDC2(usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester, 3201, bdcPosition)));
 //        storageBeen.seteChargeToday(usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester,3129,bdcPosition)));
 //        storageBeen.seteDischargeToday(usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester,3125,bdcPosition)));
 //        storageBeen.seteChargeTotal(usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester,3131,bdcPosition)));
 //        storageBeen.seteDischargeTotal(usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester,3127,bdcPosition)));
         //bms1
-        storageBeen.setBmsComType(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3229,bdcPosition)));
-        storageBeen.setBatteryCompany(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3224,bdcPosition)));
-        storageBeen.setBmsWorkType(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3211,bdcPosition)));
-        storageBeen.setBmsStatus(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3212,bdcPosition)));
-        storageBeen.setBmsError(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3213,bdcPosition)));
-        storageBeen.setBmsWarm(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3214,bdcPosition)));
-        storageBeen.setvBms(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3216,bdcPosition)));
-        storageBeen.setaBms(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3217,bdcPosition)));
-        storageBeen.setSoc(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3215,bdcPosition)));
-        storageBeen.setSoh(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3222,bdcPosition)));
-        storageBeen.setTempBms(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3218,bdcPosition)));
-        storageBeen.setvCV(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3223,bdcPosition)));
-        storageBeen.setaChargeMax(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3219,bdcPosition)));
-        storageBeen.setaDischargeMax(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3219,bdcPosition)));
+        storageBeen.setBmsComType(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3229, bdcPosition)));
+        storageBeen.setBatteryCompany(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3224, bdcPosition)));
+        storageBeen.setBmsWorkType(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3211, bdcPosition)));
+        storageBeen.setBmsStatus(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3212, bdcPosition)));
+        storageBeen.setBmsError(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3213, bdcPosition)));
+        storageBeen.setBmsWarm(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3214, bdcPosition)));
+        storageBeen.setvBms(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3216, bdcPosition)));
+        storageBeen.setaBms(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3217, bdcPosition)));
+        storageBeen.setSoc(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3215, bdcPosition)));
+        storageBeen.setSoh(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3222, bdcPosition)));
+        storageBeen.setTempBms(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3218, bdcPosition)));
+        storageBeen.setvCV(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3223, bdcPosition)));
+        storageBeen.setaChargeMax(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3219, bdcPosition)));
+        storageBeen.setaDischargeMax(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3220, bdcPosition)));
 
 
         //bms2 + 19
 //        storageBeen.setBmsComType02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3248,bdcPosition)));
 //        storageBeen.setBatteryCompany02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3243,bdcPosition)));
-        storageBeen.setBmsStatus02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3231,bdcPosition)));
-        storageBeen.setBmsError02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3232,bdcPosition)));
-        storageBeen.setBmsWarm02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3233,bdcPosition)));
+        storageBeen.setBmsStatus02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3231, bdcPosition)));
+        storageBeen.setBmsError02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3232, bdcPosition)));
+        storageBeen.setBmsWarm02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3233, bdcPosition)));
 //        storageBeen.setvBms02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3235,bdcPosition)));
 //        storageBeen.setaBms02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3236,bdcPosition)));
 //        storageBeen.setSoc02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3234,bdcPosition)));
@@ -3895,53 +3895,53 @@ public class RegisterParseUtil {
 
 
         //bdc1相关
-        storageBeen.setStatusBDC(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3166,bdcPosition))& 0b11111111);
-        storageBeen.setWorkModeBDC(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3166,bdcPosition)) >> 8);
-        storageBeen.setvBat(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3169,bdcPosition)));
-        storageBeen.setvBus1(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3172,bdcPosition)));
-        storageBeen.setvBus2(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3173,bdcPosition)));
-        storageBeen.setvBus3(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3188,bdcPosition)));
-        storageBeen.setaBat(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3170,bdcPosition)));
-        storageBeen.setaBB(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3174,bdcPosition)));
-        storageBeen.setaLLC(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3175,bdcPosition)));
-        storageBeen.setTempA(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3176,bdcPosition)));
-        storageBeen.setTempB(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3177,bdcPosition)));
-        storageBeen.setErrorStorage(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3167,bdcPosition)));
-        storageBeen.setWarmStorage(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3168,bdcPosition)));
-        storageBeen.setError2Storage(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3187,bdcPosition))>>12);
-        storageBeen.setWarm2Storage(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3187,bdcPosition)) >> 8 & 0b00001111);
+        storageBeen.setStatusBDC(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3166, bdcPosition)) & 0b11111111);
+        storageBeen.setWorkModeBDC(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3166, bdcPosition)) >> 8);
+        storageBeen.setvBat(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3169, bdcPosition)));
+        storageBeen.setvBus1(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3172, bdcPosition)));
+        storageBeen.setvBus2(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3173, bdcPosition)));
+        storageBeen.setvBus3(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3188, bdcPosition)));
+        storageBeen.setaBat(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3170, bdcPosition)));
+        storageBeen.setaBB(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3174, bdcPosition)));
+        storageBeen.setaLLC(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3175, bdcPosition)));
+        storageBeen.setTempA(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3176, bdcPosition)));
+        storageBeen.setTempB(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3177, bdcPosition)));
+        storageBeen.setErrorStorage(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3167, bdcPosition)));
+        storageBeen.setWarmStorage(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3168, bdcPosition)));
+        storageBeen.setError2Storage(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3187, bdcPosition)) >> 12);
+        storageBeen.setWarm2Storage(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3187, bdcPosition)) >> 8 & 0b00001111);
 
         //bdc1相关 + 23
-        storageBeen.setStatusBDC02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3189,bdcPosition)) & 0b11111111);
-        storageBeen.setWorkModeBDC02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3189,bdcPosition)) >> 8);
-        storageBeen.setvBat02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3192,bdcPosition)));
-        storageBeen.setvBus102(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3195,bdcPosition)));
-        storageBeen.setvBus202(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3196,bdcPosition)));
-        storageBeen.setaBat02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3193,bdcPosition)));
-        storageBeen.setaBB02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3197,bdcPosition)));
-        storageBeen.setaLLC02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3198,bdcPosition)));
-        storageBeen.setTempA02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3199,bdcPosition)));
-        storageBeen.setTempB02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3200,bdcPosition)));
-        storageBeen.setErrorStorage02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3190,bdcPosition)));
-        storageBeen.setWarmStorage02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3191,bdcPosition)));
-        storageBeen.setError2Storage02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3210,bdcPosition))>> 12);
-        storageBeen.setWarm2Storage02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3210,bdcPosition))>> 8 & 0b00001111);
+        storageBeen.setStatusBDC02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3189, bdcPosition)) & 0b11111111);
+        storageBeen.setWorkModeBDC02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3189, bdcPosition)) >> 8);
+        storageBeen.setvBat02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3192, bdcPosition)));
+        storageBeen.setvBus102(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3195, bdcPosition)));
+        storageBeen.setvBus202(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3196, bdcPosition)));
+        storageBeen.setaBat02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3193, bdcPosition)));
+        storageBeen.setaBB02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3197, bdcPosition)));
+        storageBeen.setaLLC02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3198, bdcPosition)));
+        storageBeen.setTempA02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3199, bdcPosition)));
+        storageBeen.setTempB02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3200, bdcPosition)));
+        storageBeen.setErrorStorage02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3190, bdcPosition)));
+        storageBeen.setWarmStorage02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3191, bdcPosition)));
+        storageBeen.setError2Storage02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3210, bdcPosition)) >> 12);
+        storageBeen.setWarm2Storage02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3210, bdcPosition)) >> 8 & 0b00001111);
 
 
         //电池保护信息
-        storageBeen.setBmsProtect1(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3202,bdcPosition)));
+        storageBeen.setBmsProtect1(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3202, bdcPosition)));
         storageBeen.setBmsProtect2(storageBeen.getBmsError());
-        storageBeen.setBmsProtect3(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3226,bdcPosition)));
+        storageBeen.setBmsProtect3(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3226, bdcPosition)));
         //电池告警信息
-        storageBeen.setBmsWarining(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3203,bdcPosition)));
+        storageBeen.setBmsWarining(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3203, bdcPosition)));
         storageBeen.setBmsWarining2(storageBeen.getBmsWarm());
-        storageBeen.setBmsWarining3(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3225,bdcPosition)));
+        storageBeen.setBmsWarining3(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3225, bdcPosition)));
         //电池故障信息
-        storageBeen.setBmsError1(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3204,bdcPosition)));
-        storageBeen.setBmsError2(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3205,bdcPosition)));
+        storageBeen.setBmsError1(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3204, bdcPosition)));
+        storageBeen.setBmsError2(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3205, bdcPosition)));
 
         //降额模式
-        int deratMode = usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester,3165,bdcPosition));
+        int deratMode = usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3165, bdcPosition));
         deviceBean.setDerateMode(deratMode);
 
         //新的bdc信息解析
@@ -3956,13 +3956,13 @@ public class RegisterParseUtil {
         double mul1 = Arith.mul(pDisChargeBDC1 + 0, 1);
         bdcInfoBean.setBattery_dischage_power(String.valueOf(mul1));
         //总充电量3184-3185
-        int allCharge =   usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester,3184,bdcPosition));
+        int allCharge = usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester, 3184, bdcPosition));
 
 
         double mul2 = Arith.mul(allCharge + 0, 0.1);
         bdcInfoBean.setChage_total(String.valueOf(mul2));
         //总放电量3182-3183
-        int allDisCharge =   usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester,3182,bdcPosition));
+        int allDisCharge = usBdcObtainValueTwo(bytes, bdc04SrcIndex(resRester, 3182, bdcPosition));
         double mul3 = Arith.mul(allDisCharge + 0, 0.1);
         bdcInfoBean.setDischarge_total(String.valueOf(mul3));
 
@@ -3978,14 +3978,14 @@ public class RegisterParseUtil {
 
 
     /**
-     *
      * bdc并机获取03数据截取下标
+     *
      * @param resResgister 起始寄存器
      * @param olbRegister  原寄存器地址
      * @param bdcPosition  bdc position
      * @return
      */
-    public static int bdc03SrcIndex(int resResgister, int olbRegister, int bdcPosition){
+    public static int bdc03SrcIndex(int resResgister, int olbRegister, int bdcPosition) {
         //将旧的寄存器对应上新的寄存器
         int newRegister = olbRegister + 1915 + 40 * bdcPosition;
         //根据起始寄存器获取当前处于寄存器的哪个位置
@@ -3993,14 +3993,14 @@ public class RegisterParseUtil {
     }
 
     /**
-     *
      * bdc并机获取04数据截取下标
+     *
      * @param resResgister 起始寄存器
      * @param olbRegister  原寄存器地址
      * @param bdcPosition  bdc position
      * @return
      */
-    public static int bdc04SrcIndex(int resResgister, int olbRegister, int bdcPosition){
+    public static int bdc04SrcIndex(int resResgister, int olbRegister, int bdcPosition) {
         //将旧的寄存器对应上新的寄存器
         int newRegister = olbRegister + 843 + 108 * bdcPosition;
         //根据起始寄存器获取当前处于寄存器的哪个位置
