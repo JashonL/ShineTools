@@ -118,12 +118,14 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
     private byte[] responByte;
     private String[][] isEnbles;
 
-    private int quartely_index = 0;
+//    private int quartely_index = 0;
 
     private int[][][] fullSet = {{{0x10, 3125, 3125}, {0x10, 3125, 3125}}, {{0x10, 3125, 3125}}};
     private int[][] nowSet = {{0x10, 3125, 3125}, {0x10, 3125, 3125}};
     private int[][][] fullValues = {{{0}, {0, 0}}, {{0, 0}}};
     private int[][] registerValues = {{0}, {0, 0}};
+
+    private int[] closeSet = {0x10, 3125, 3125};
 
 
     private int poriotyIndex = 0;
@@ -133,7 +135,18 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
     private String spMonth;
     private String spDate;
 
-    private int setPos = 0;
+    //记录tablayout选中的项
+    private int tabseleted = 0;
+    //记录季度选中的项
+    private int quartely_pos = 0;
+    //特殊日选中的项
+    private int special_pos = 0;
+
+    private int[]itemValues={0};
+
+    private int currenSelect = 0;
+
+    private int currenPos = -1;
 
 
     @Override
@@ -195,6 +208,8 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
 
         //原始数据
         responByte = getIntent().getByteArrayExtra(GlobalConstant.BYTE_SOCKET_RESPON);
+        currenPos = getIntent().getIntExtra("selectIndex",-1);
+
         if (responByte != null) {
             datalist.clear();
             //设置第一个item数据 季度对应寄存器下标
@@ -227,23 +242,25 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
                 bean.setIsEnableB(isEnbles[1][isEnableB]);
                 datalist.add(bean);
             }
-
-
             refreshUI(responByte);
-
-
             //设置Tab选中项
-            int select = 0;//当前显示的是哪个季度(使能为1并且有开始时间和结束时间直接显示)
-            for (int i = 0; i < datalist.size(); i++) {
-                USChargePriorityBean usChargePriorityBean = datalist.get(i);
-                int enable1 = usChargePriorityBean.getIsEnableBIndex();
-                if (enable1 == 1) {
-                    if (!"0".equals(usChargePriorityBean.getStartTime()) && !"0".equals(usChargePriorityBean.getEndTime())) {
-                        select = i;
-                        break;
+            int select = 0;
+            if (currenPos == -1) {
+                for (int i = 0; i < datalist.size(); i++) {
+                    USChargePriorityBean usChargePriorityBean = datalist.get(i);
+                    int enable1 = usChargePriorityBean.getIsEnableBIndex();
+                    if (enable1 == 1) {
+                        if (!"0".equals(usChargePriorityBean.getStartTime()) && !"0".equals(usChargePriorityBean.getEndTime())) {
+                            select = i;
+                            break;
+                        }
                     }
                 }
+                currenPos = select;
+            } else {
+                select = currenPos;
             }
+
             //获取当前显示的bean类
             USChargePriorityBean selectBean = datalist.get(select);
             String selectStartTime = selectBean.getStartTime();
@@ -254,11 +271,14 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
             if (select < 4) {
                 if ("1".equals(selectStartTime) && "12".equals(selectEndTime)) {
                     tabIndex = 0;
+                    tabseleted = 0;
                 } else {
                     tabIndex = 1;
+                    tabseleted = 1;
                 }
             } else {
                 tabIndex = 2;
+                tabseleted = 2;
             }
 
 
@@ -321,42 +341,31 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
         clAll.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
         clQuarterly.setVisibility(position == 1 ? View.VISIBLE : View.GONE);
         clSpecial.setVisibility(position == 2 ? View.VISIBLE : View.GONE);
+        tabseleted = position;
         //根据下标设置数据
         if (datalist.size() > 5) {
             switch (position) {
                 case 0://全年
-                    setPos = 0;
-                    int enableA = 0;
                     if (periodList != null && periodList.size() > 0) {
-                        enableA = periodList.get(0).getIsEnableAIndex();
+                        int enableA = periodList.get(0).getIsEnableAIndex();
+                        int enableBIndex = periodList.get(0).getIsEnableBIndex();
+                        swSwitch.setChecked(1 == enableBIndex);
+                        tvValue.setText(isEnbles[0][enableA]);
                     }
-                    tvValue.setText(isEnbles[0][enableA]);
-                    int enableBIndex = periodList.get(0).getIsEnableBIndex();
-                    swSwitch.setChecked(1 == enableBIndex);
                     break;
-                case 1://季度
-//                    String startTime = datalist.get(quartely_index).getStartTime();
-//                    String endTime = datalist.get(quartely_index).getEndTime();
-                    int enableBIndex1 = datalist.get(quartely_index).getIsEnableBIndex();
-               /*     if (!TextUtils.isEmpty(startTime)) {
-                        etMonthStart.setText(startTime);
+                case 1:
+                    if (datalist.size() > quartely_pos) {
+                        int enableBIndex1 = datalist.get(quartely_pos).getIsEnableBIndex();
+                        swSwitch.setChecked(1 == enableBIndex1);
                     }
-                    if (!TextUtils.isEmpty(endTime)) {
-                        etMonthEnd.setText(endTime);
-                    }*/
-                    swSwitch.setChecked(1 == enableBIndex1);
+                    break;
+                case 2://季度
+                    if (datalist.size() > special_pos) {
+                        int enableBIndex1 = datalist.get(special_pos).getIsEnableBIndex();
+                        swSwitch.setChecked(1 == enableBIndex1);
+                    }
+                    break;
 
-                    break;
-                case 2://特殊日
-                    String startTime2 = datalist.get(quartely_index).getStartTime();
-                    String endTime2 = datalist.get(quartely_index).getEndTime();
-                    int enableBIndex2 = datalist.get(quartely_index).getIsEnableBIndex();
-            /*        if (!TextUtils.isEmpty(startTime2) && !TextUtils.isEmpty(endTime2)) {
-                        String s = startTime2 + "/" + endTime2;
-                        tvDate.setText(s);
-                    }*/
-                    swSwitch.setChecked(1 == enableBIndex2);
-                    break;
             }
         }
 
@@ -409,6 +418,16 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
             periodList.add(item);
         }
 
+        if (periodList.size() > 0) {
+            int isEnableAIndex = periodList.get(0).getIsEnableAIndex();
+            if (isEnableAIndex < 4) {
+                poriotyIndex = isEnableAIndex;
+                String sItem = isEnbles[0][isEnableAIndex];
+                tvValue.setText(sItem);
+            }
+
+        }
+
     }
 
     @Override
@@ -416,22 +435,22 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
         if (radioGroup == rgQuarterly) {
             switch (id) {
                 case R.id.rb_q1:
-                    quartely_index = 0;
+                    quartely_pos = 0;
                     break;
                 case R.id.rb_q2:
-                    quartely_index = 1;
+                    quartely_pos = 1;
                     break;
                 case R.id.rb_q3:
-                    quartely_index = 2;
+                    quartely_pos = 2;
                     break;
                 case R.id.rb_q4:
-                    quartely_index = 3;
+                    quartely_pos = 3;
                     break;
             }
             if (datalist != null && datalist.size() > 0) {
-                String startTime = datalist.get(quartely_index).getStartTime();
-                String endTime = datalist.get(quartely_index).getEndTime();
-                int enableBIndex = datalist.get(quartely_index).getIsEnableBIndex();
+                String startTime = datalist.get(quartely_pos).getStartTime();
+                String endTime = datalist.get(quartely_pos).getEndTime();
+                int enableBIndex = datalist.get(quartely_pos).getIsEnableBIndex();
                 if (!TextUtils.isEmpty(startTime)) {
                     etMonthStart.setText(startTime);
                 }
@@ -444,16 +463,16 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
         } else if (radioGroup == rgSpecial) {
             switch (id) {
                 case R.id.rb_spcial1:
-                    quartely_index = 4;
+                    special_pos = 4;
                     break;
                 case R.id.rb_spcial2:
-                    quartely_index = 5;
+                    special_pos = 5;
                     break;
             }
             if (datalist != null && datalist.size() > 0) {
-                String startTime = datalist.get(quartely_index).getStartTime();
-                String endTime = datalist.get(quartely_index).getEndTime();
-                int enableBIndex = datalist.get(quartely_index).getIsEnableBIndex();
+                String startTime = datalist.get(special_pos).getStartTime();
+                String endTime = datalist.get(special_pos).getEndTime();
+                int enableBIndex = datalist.get(special_pos).getIsEnableBIndex();
                 if (!TextUtils.isEmpty(startTime) && !TextUtils.isEmpty(endTime)) {
                     String s = startTime + "/" + endTime;
                     tvDate.setText(s);
@@ -517,48 +536,10 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
 
             case R.id.btn_save:
                 //头部选中项
-                int selectedTabPosition = tabTitle.getSelectedTabPosition();
-                switch (selectedTabPosition) {
+                switch (tabseleted) {
                     case 0://全年
-                        //设置头部数据
-                        String startTime = "1";
-                        String endTime = "12";
-                        int startV = Integer.parseInt(startTime);
-                        int endV = Integer.parseInt(endTime);
-                        int enableB = swSwitch.isChecked() ? 1 : 0;
-                        int value = (startV & 0xF) | ((endV & 0xF) << 4) | ((enableB & 1) << 8);
-                        registerValues = fullValues[0];
-                        registerValues[0][0] = value;
-                        //设置起始寄存器
-                        int registPos = 3125;
-                        nowSet = fullSet[0];
-                        nowSet[0][1] = nowSet[0][2] = registPos;
-
-
-                        //设置时间段数据
-                        int value01 = 0;
-                        int value02 = 0;
-                        String timePeriod = "00:00~23:59";
-                        String[] split = timePeriod.split(splitStr);
-                        String[] startTime02 = split[0].split(":");
-                        String[] endTime02 = split[1].split(":");
-                        int enableA = poriotyIndex;
-                        int enableB02 = swSwitch.isChecked() ? 1 : 0;
-                        int enableW = 2;//代表全周
-                        int startHour = Integer.parseInt(startTime02[0]);
-                        int startMin = Integer.parseInt(startTime02[1]);
-                        int endHour = Integer.parseInt(endTime02[0]);
-                        int endMin = Integer.parseInt(endTime02[1]);
-                        value01 = (startMin & 0b01111111) | ((startHour & 0b00011111) << 7) | ((enableA & 0b111) << 12) | ((enableB02 & 1) << 15);
-                        value02 = (endMin & 0b01111111) | ((endHour & 0b00011111) << 7);
-                        value02 = value02 | ((enableW & 0b11) << 12);
-                        registerValues[1][0] = value01;
-                        registerValues[1][1] = value02;
-                        //设置起始寄存器
-                        int registPos02 = 3129;
-                        nowSet[1][1] = registPos02;
-                        nowSet[1][2] = registPos02 + 1;
-
+                        setCloseData();
+                        closeOtherWrite();//设置全年  要关闭其他季度的使能
                         break;
                     case 1://季度
                         //设置头部数据
@@ -581,23 +562,32 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
                         //设置起始寄存器
                         //设置起始寄存器
                         int registPos2 = -1;
-                        if (quartely_index < 4) {
-                            registPos2 = 3125 + quartely_index;
-                        }
+                        registPos2 = 3125 + quartely_pos;
                         nowSet = fullSet[1];
                         nowSet[0][1] = nowSet[0][2] = registPos2;
+                        nowPos = 0;
+                        connectServerWrite();
                         break;
                     case 2:
                         //设置头部数据
-                        String startTime2 = spMonth;
-                        String endTime2 = spDate;
-
-                        if (TextUtils.isEmpty(startTime2)
-                                || TextUtils.isEmpty(endTime2)
-                        ) {
+                        String s = tvDate.getText().toString();
+                        if (TextUtils.isEmpty(s)) {
                             toast(R.string.all_blank);
                             return;
                         }
+                        spMonth = String.valueOf(1);
+                        spDate = String.valueOf(1);
+
+                        String startTime2 = spMonth;
+                        String endTime2 = spDate;
+                        try {
+                            String[] split1 = s.split("/");
+                            startTime2 = split1[0];
+                            endTime2 = split1[1];
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
 
                         int startV3 = Integer.parseInt(startTime2);
                         int endV3 = Integer.parseInt(endTime2);
@@ -608,26 +598,181 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
                         registerValues[0][0] = value3;
                         //设置起始寄存器
                         int registPos3 = -1;
-                        if (quartely_index == 4) {
+                        if (special_pos == 4) {
                             registPos3 = 3201;
-                        } else if (quartely_index == 5) {
+                        } else if (special_pos == 5) {
                             registPos3 = 3220;
                         }
                         nowSet = fullSet[1];
                         nowSet[0][1] = nowSet[0][2] = registPos3;
+                        nowPos = 0;
+                        connectServerWrite();
                         break;
                 }
 
-                nowPos = 0;
-                connectServerWrite();
+
 
                 break;
         }
     }
 
+
     /**
-     * 写寄存器handle
+     * 设置全年
      */
+    private void setAllYearData() {
+        //设置头部数据
+        String startTime = "1";
+        String endTime = "12";
+        int startV = Integer.parseInt(startTime);
+        int endV = Integer.parseInt(endTime);
+        int enableB = swSwitch.isChecked() ? 1 : 0;
+        int value = (startV & 0xF) | ((endV & 0xF) << 4) | ((enableB & 1) << 8);
+        registerValues = fullValues[0];
+        registerValues[0][0] = value;
+        //设置起始寄存器
+        int registPos = 3125;
+        nowSet = fullSet[0];
+        nowSet[0][1] = nowSet[0][2] = registPos;
+
+
+        //设置时间段数据
+        int value01 = 0;
+        int value02 = 0;
+        String timePeriod = "00:00~23:59";
+        String[] split = timePeriod.split(splitStr);
+        String[] startTime02 = split[0].split(":");
+        String[] endTime02 = split[1].split(":");
+        int enableA = poriotyIndex;
+        int enableB02 = swSwitch.isChecked() ? 1 : 0;
+        int enableW = 2;//代表全周
+        int startHour = Integer.parseInt(startTime02[0]);
+        int startMin = Integer.parseInt(startTime02[1]);
+        int endHour = Integer.parseInt(endTime02[0]);
+        int endMin = Integer.parseInt(endTime02[1]);
+        value01 = (startMin & 0b01111111) | ((startHour & 0b00011111) << 7) | ((enableA & 0b111) << 12) | ((enableB02 & 1) << 15);
+        value02 = (endMin & 0b01111111) | ((endHour & 0b00011111) << 7);
+        value02 = value02 | ((enableW & 0b11) << 12);
+        registerValues[1][0] = value01;
+        registerValues[1][1] = value02;
+        //设置起始寄存器
+        int registPos02 = 3129;
+        nowSet[1][1] = registPos02;
+        nowSet[1][2] = registPos02 + 1;
+
+        nowPos = 0;
+        connectServerWrite();
+    }
+
+
+    //----------------------
+
+
+    //连接对象:用于写数据
+    private SocketClientUtil otherUtils;
+
+    private void closeOtherWrite() {
+        Mydialog.Show(mContext);
+        otherUtils = SocketClientUtil.connectServer(handlerOther);
+    }
+
+    Handler handlerOther = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int what = msg.what;
+            switch (what) {
+                //发送信息
+                case SocketClientUtil.SOCKET_SEND:
+                    BtnDelayUtil.sendMessageWrite(this);
+                    byte[] bytes1 = SocketClientUtil.sendMsgToServer10(otherUtils, closeSet, itemValues);
+                    LogUtil.i("发送写入：" + SocketClientUtil.bytesToHexString(bytes1));
+                    break;
+                //接收字节数组
+                case SocketClientUtil.SOCKET_RECEIVE_BYTES:
+                    BtnDelayUtil.receiveMessage(this);
+                    try {
+                        byte[] bytes = (byte[]) msg.obj;
+                        //检测内容正确性
+                        boolean isCheck = MaxUtil.checkReceiverFull10(bytes);
+                        if (isCheck) {
+                            if (currenSelect <3){
+                                currenSelect++;
+                                setCloseData();
+                                handlerOther.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
+                            }else {
+                                currenSelect =0;
+                                //关闭tcp连接
+                                SocketClientUtil.close(otherUtils);
+                                BtnDelayUtil.refreshFinish();
+                                this.postDelayed(() -> setAllYearData(),500);
+                            }
+                        } else {
+                            currenSelect =0;
+                            //关闭tcp连接
+                            SocketClientUtil.close(otherUtils);
+                            //无论成功还是失败 都请求设置全年
+                            this.postDelayed(() -> setAllYearData(),500);
+                        }
+
+                        LogUtil.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    BtnDelayUtil.dealTLXBtnWrite(this, what, mContext, toolbar);
+                    break;
+            }
+        }
+    };
+
+
+
+
+
+    private void setCloseData(){
+        USChargePriorityBean bean = datalist.get(currenSelect);
+        //设置头部数据
+        String startTime = bean.getStartTime();
+        String endTime = bean.getEndTime();
+        int startV = Integer.parseInt(startTime);
+        int endV = Integer.parseInt(endTime);
+        int enableB = 0;
+        int value = 0;
+        if (currenSelect < 4) {
+            value = (startV & 0xF) | ((endV & 0xF) << 4) | ((enableB & 1) << 8);
+        } else {
+            value = (endV & 0xFF) | ((startV & 0b1111111) << 8) | ((enableB & 1) << 15);
+        }
+        itemValues[0] = value;
+        //设置起始寄存器
+        int registPos = -1;
+        if (currenSelect < 4) {
+            registPos = 3125 + currenSelect;
+        } else if (currenSelect == 4) {
+            registPos = 3201;
+        } else if (currenSelect == 5) {
+            registPos = 3220;
+        }
+        closeSet[1] = closeSet[2] = registPos;
+
+
+    }
+
+
+    //-------------------
+
+
+
+
+
+
+
+
+
+
+
 
 //连接对象:用于写数据
     private SocketClientUtil mClientUtilW;
@@ -683,7 +828,6 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
                                 mHandlerW.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
                             } else {
                                 this.removeMessages(TIMEOUT_RECEIVE);
-                                toast(R.string.all_success);
                                 //关闭连接
                                 SocketClientUtil.close(mClientUtilW);
                                 BtnDelayUtil.refreshFinish();
@@ -692,7 +836,13 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
                                         getString(R.string.m设置成功), getString(R.string.android_key1935),
                                         getString(R.string.android_key2152),
                                         Gravity.CENTER, v -> {
-                                            EventBus.getDefault().post(new UsChargeConfigMsg(quartely_index));
+                                            int pos = 0;
+                                            if (tabseleted == 1) {
+                                                pos = quartely_pos;
+                                            } else if (tabseleted == 2) {
+                                                pos = special_pos;
+                                            }
+                                            EventBus.getDefault().post(new UsChargeConfigMsg(pos));
                                             finish();
                                         }, null);
                             }
@@ -700,6 +850,8 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
                         } else {
                             nowPos = 0;
                             BtnDelayUtil.refreshFinish();
+                            //关闭tcp连接
+                            SocketClientUtil.close(mClientUtilW);
                             String text = getString(R.string.android_key3103) + "(" + getString(R.string.previous_time_period) + ")";
                             CircleDialogUtils.showCommentDialog(UsChargeManagerSelectDateActivity.this,
                                     getString(R.string.android_key539),
@@ -707,8 +859,7 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
                                     Gravity.CENTER, v -> {
 
                                     }, null);
-                            //关闭tcp连接
-                            SocketClientUtil.close(mClientUtilW);
+
                         }
                         LogUtil.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {

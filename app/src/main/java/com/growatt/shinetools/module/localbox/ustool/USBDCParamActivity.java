@@ -430,7 +430,6 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
                         //检测内容正确性
                         boolean isCheck = ModbusUtil.checkModbus(bytes);
                         if (isCheck) {
-                            toast("数据校验正确");
                             //接收正确，开始解析
                             parseMax(bytes, count);
                         }
@@ -472,7 +471,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
                 case 100://恢复按钮点击
                     String myuuid = (String) msg.obj;
                     if (uuid.equals(myuuid) && !isReceiveSucc) {
-                        toast("接收消息超时，请重试");
+
                     }
                     refreshFinish();
                     break;
@@ -674,9 +673,9 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             double aChargeMax = storageBeen.getaChargeMax();
             if (aChargeMax>32767){
                 double v = aChargeMax - 65535;
-                aChargeMax= Arith.mul(v,100);
+                aChargeMax= Arith.mul(v,0.01);
             }else {
-                aChargeMax= Arith.mul(aChargeMax,100);
+                aChargeMax= Arith.mul(aChargeMax,0.01);
             }
 
             String aChargeMax_str = aChargeMax +"A";
@@ -686,9 +685,9 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             double aDischargeMax = storageBeen.getAdisChargeMax();
             if (aDischargeMax>32767){
                 double v = aDischargeMax - 65535;
-                aDischargeMax= Arith.mul(v,100);
+                aDischargeMax= Arith.mul(v,0.01);
             }else {
-                aDischargeMax= Arith.mul(aDischargeMax,100);
+                aDischargeMax= Arith.mul(aDischargeMax,0.01);
             }
 
             String aDischargeMax_str = aDischargeMax +"A";

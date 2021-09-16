@@ -23,12 +23,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.adapter.MaxMainChildAdapter;
 import com.growatt.shinetools.adapter.TLXHToolEleAdapter;
 import com.growatt.shinetools.adapter.TLXHToolPowerAdapter;
 import com.growatt.shinetools.adapter.UsParamsetAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.modbusbox.MaxUtil;
+import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
@@ -61,10 +63,13 @@ import java.util.UUID;
 
 import butterknife.BindView;
 
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.KEFU_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.MAINTEAN_USER;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_AUTO_REFRESH;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 
-public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMenuItemClickListener, View.OnClickListener ,BaseQuickAdapter.OnItemClickListener{
+public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMenuItemClickListener, View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
     @BindView(R.id.tv_title)
@@ -160,7 +165,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
     private RecyclerView mPowerRecycler;
 
     private CardView cvWarning;
-
+    private int user_type = KEFU_USER;
 
     //提示问题
     private boolean promptWifi = true;//提示连接wifi模块
@@ -178,6 +183,15 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
     //是否需要自动刷新
     private boolean needFresh;
 
+    //bdc的数量
+    private int bdcNumber = 0;
+
+    //BDC数量只有0的时候读取03寄存器
+    private int[][] bdcChargeFuns = {{4, 3165, 3233}};
+    private int[][] bdcDisChargeFuns = {{4, 3165, 3233}};
+    private int[][] bdcAllChargeFuns = {{0, 0, 0}};
+    private int bdcChargePower = 0;
+    private int bdcDisChargePower = 0;
 
     @Override
     protected int getContentView() {
@@ -363,6 +377,8 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
 
     @Override
     protected void initData() {
+
+        user_type= ShineToosApplication.getContext().getUser_type();
         String[] title = new String[]{
                 getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
                 , getString(R.string.m充放电管理), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
@@ -374,6 +390,23 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                 R.drawable.charge_manager, R.drawable.smart_check, R.drawable.param_setting,
                 R.drawable.advan_setting, R.drawable.device_info
         };
+
+        if (user_type == END_USER||user_type==MAINTEAN_USER) {
+            title = new String[]{
+                    getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
+                    , getString(R.string.m充放电管理), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
+                    , getString(R.string.m291设备信息)
+            };
+
+
+            res = new int[]{
+                    R.drawable.quickly, R.drawable.system_config, R.drawable.city_code,
+                    R.drawable.charge_manager, R.drawable.smart_check, R.drawable.param_setting,
+                    R.drawable.device_info
+            };
+
+        }
+
 
         List<UsToolParamBean> usSetItems = new ArrayList<>();
         for (int i = 0; i < title.length; i++) {
@@ -564,8 +597,16 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
 //                            //主界面刷新完成后，刷新设备型号
 //                            //刷新设备型号
 //                            readTypeRegisterValue();
-                            if (needFresh){
+                            if (needFresh) {
                                 autoRefresh(mHandlerReadAuto);
+                            } else {
+                                if (mMaxData.getBdcStatus() != 0&&bdcNumber > 0) {
+                                    //去读取数据
+                                    bdcChargePower = 0;
+                                    bdcDisChargePower = 0;
+                                    readBdcValue();
+                                }
+
                             }
                         }
 //                        else {
@@ -612,6 +653,124 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         }
     };
 
+
+    //读取寄存器的值
+    private void readBdcValue() {
+        toReadBdc();
+    }
+
+
+    //连接对象:用于读取数据
+    private SocketClientUtil mReadBdcUtil;
+
+    private void toReadBdc() {
+        Mydialog.Show(mContext);
+        mReadBdcUtil = SocketClientUtil.connectServer(bdcHadler);
+    }
+
+
+    private int pos = 0;
+    Handler bdcHadler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            int what = msg.what;
+            switch (what) {
+                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
+                    break;
+                case SocketClientUtil.SOCKET_CLOSE:
+                    break;
+                case SocketClientUtil.SOCKET_OPEN:
+                    break;
+                case SocketClientUtil.SOCKET_SEND_MSG:
+                    BtnDelayUtil.sendMessage(this);
+                    //设置接收消息超时时间和唯一标示
+                    uuid = UUID.randomUUID().toString();
+                    Message msgSend = Message.obtain();
+                    msgSend.what = 100;
+                    msgSend.obj = uuid;
+                    bdcHadler.sendEmptyMessageDelayed(100, 3000);
+
+                    String sendMsg = (String) msg.obj;
+                    LogUtil.i("发送消息:" + sendMsg);
+                    break;
+                case SocketClientUtil.SOCKET_RECEIVE_MSG:
+                    break;
+                //接收字节数组
+                case SOCKET_RECEIVE_BYTES:
+                    BtnDelayUtil.receiveMessage(this);
+                    try {
+                        byte[] bytes = (byte[]) msg.obj;
+                        //检测内容正确性
+                        boolean isCheck = ModbusUtil.checkModbus(bytes);
+                        if (isCheck) {
+                            parseBdc(bytes, pos);
+                        }
+
+                        if (pos < bdcAllChargeFuns.length - 1) {
+                            pos++;
+                            bdcHadler.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
+                        } else {
+                            //更新ui
+                            freshPower();
+                            pos = 0;
+                            //关闭连接
+                            SocketClientUtil.close(mReadBdcUtil);
+                            refreshFinish();
+                        }
+
+                        LogUtil.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        pos = 0;
+                        //关闭连接
+                        SocketClientUtil.close(mReadBdcUtil);
+                        Mydialog.Dismiss();
+                    }
+                    break;
+                case SocketClientUtil.SOCKET_CONNECT:
+                    break;
+                case SocketClientUtil.SOCKET_SEND:
+                    if (pos < bdcAllChargeFuns.length) {
+                        sendMsg(mReadBdcUtil, bdcAllChargeFuns[pos]);
+                    }
+                    break;
+                case 100://恢复按钮点击
+                    String myuuid = (String) msg.obj;
+                    if (uuid.equals(myuuid) && !isReceiveSucc) {
+
+                    }
+                    refreshFinish();
+                    break;
+                case 101:
+                    toReadBdc();
+                    break;
+                default:
+                    BtnDelayUtil.dealTLXBtn(this, what, 2500, mContext, toolbar);
+                    break;
+            }
+        }
+    };
+
+
+    private void parseBdc(byte[] bytes, int pos) {
+        //移除外部协议
+        byte[] bs = RegisterParseUtil.removePro17(bytes);
+        int value2 = MaxWifiParseUtil.obtainValueTwo(bs, 0);
+        if (pos < bdcNumber) {//充电功率
+            bdcChargePower += value2;
+        } else {//放电
+            bdcDisChargePower += value2;
+        }
+    }
+
+    private void freshPower() {
+        List<String> powers = new ArrayList<>();
+        powers.add(String.valueOf(mMaxData.getNormalPower()));
+        powers.add(String.valueOf(mMaxData.getTotalPower()));
+        powers.add(String.valueOf(bdcChargePower));
+        powers.add(String.valueOf(bdcDisChargePower));
+        initPowerDatas(powerTitles, powers, mPowerAdapter);
+    }
 
     /**
      * 根据命令以及起始寄存器发送查询命令
@@ -745,6 +904,32 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         tvErrH1.setText(errCodeStr);
         tvWarnH1.setText(warnCodeStr);
 
+        //数量
+        bdcNumber = mMaxData.getBdcNumber();
+        if (mMaxData.getBdcStatus() != 0&&bdcNumber > 0) {
+            bdcChargeFuns = new int[bdcNumber][3];
+            bdcDisChargeFuns = new int[bdcNumber][3];
+            bdcAllChargeFuns = new int[bdcNumber * 2][3];
+            //初始化请求功率的寄存器
+            for (int i = 0; i < bdcNumber; i++) {
+                //充电
+                bdcChargeFuns[i][0] = 4;
+                bdcChargeFuns[i][1] = 3180 + 843 + 108 * i;
+                bdcChargeFuns[i][2] = 3181 + 843 + 108 * i;
+                //放电
+                bdcDisChargeFuns[i][0] = 4;
+                bdcDisChargeFuns[i][1] = 3178 + 843 + 108 * i;
+                bdcDisChargeFuns[i][2] = 3179 + 843 + 108 * i;
+            }
+            //将请求数组合并
+            System.arraycopy(bdcChargeFuns, 0, bdcAllChargeFuns, 0, bdcChargeFuns.length);
+            System.arraycopy(bdcDisChargeFuns, 0, bdcAllChargeFuns, bdcChargeFuns.length, bdcDisChargeFuns.length);
+            //请求数组合并
+            autoFun = new int[][]{{4, 3000, 3124}, {4, 3125, 3249}};
+            System.arraycopy(bdcChargeFuns, 0, autoFun, 2, bdcChargeFuns.length);
+            System.arraycopy(bdcDisChargeFuns, 0, autoFun, bdcChargeFuns.length + 2, bdcDisChargeFuns.length);
+
+        }
 
     }
 
@@ -808,10 +993,11 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                             this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
                         } else {
                             autoCount = 0;
-                            //自动刷新
-                            autoRefresh(this);
                             //更新ui
                             refreshUI();
+                            freshPower();
+                            //自动刷新
+                            autoRefresh(this);
                         }
 //                        else {//错误后重新开始
 //                            autoCount = 0;
@@ -858,6 +1044,16 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
             case 1:
                 RegisterParseUtil.parseInput3125T3249(mMaxData, bytes);
                 break;
+            default:
+                //移除外部协议
+                byte[] bs = RegisterParseUtil.removePro17(bytes);
+                int value2 = MaxWifiParseUtil.obtainValueTwo(bs, 0);
+                if (count < bdcNumber - 2) {//充电功率
+                    bdcChargePower += value2;
+                } else {//放电
+                    bdcDisChargePower += value2;
+                }
+                break;
         }
     }
 
@@ -868,6 +1064,8 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
      * @param handler
      */
     public void autoRefresh(Handler handler) {
+        bdcChargePower = 0;
+        bdcDisChargePower = 0;
         if (handler != null) {
             isAutoRefresh = true;
             item.setTitle(noteStopStr);
@@ -980,7 +1178,6 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
     }
 
 
-
     /**
      * 跳转到故障页面
      */
@@ -992,12 +1189,11 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         int warmCodeSecond = mMaxData.getWarmCodeSecond();
         Intent intent = new Intent(mContext, USFaultDetailActivity.class);
         intent.putExtra(ErrorCode.KEY_US_ERROR, errCode);
-        intent.putExtra(ErrorCode.KEY_US_WARNING ,warmCode);
+        intent.putExtra(ErrorCode.KEY_US_WARNING, warmCode);
         intent.putExtra(ErrorCode.KEY_US_SECOND_ERROR, errCodeSecond);
-        intent.putExtra(ErrorCode.KEY_US_SECOND_WARNING ,warmCodeSecond);
+        intent.putExtra(ErrorCode.KEY_US_SECOND_WARNING, warmCodeSecond);
         ActivityUtils.startActivity(this, intent, false);
     }
-
 
 
     private void initListener() {
@@ -1032,7 +1228,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                 LogUtil.i("是否在自动刷新：" + isAutoRefresh);
                 if (!isAutoRefresh) {
                     Mydialog.Show(mContext);
-                    needFresh=true;
+                    needFresh = true;
                     //读取寄存器的值
                     refresh();
                 } else {
@@ -1046,44 +1242,77 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
 
     @Override
     public void onItemClick(final BaseQuickAdapter adapter, View view, final int position) {
-        if (adapter == usParamsetAdapter){
+        if (adapter == usParamsetAdapter) {
             String title1 = "";
             Class clazz = null;
-            switch (position){
-                case 0:
-                    clazz = USFastSetActivity.class;
-                    break;
-                case 1:
-                    clazz = UsSystemSettingActivity.class;
-                    break;
-                case 2:
-                    clazz = MainsCodeParamSetActivity.class;
-                    break;
-                case 3:
-                    clazz = USChargeActivity.class;
-                    break;
-                case 4:
-                    clazz = MaxCheckActivity.class;
-                    break;
-                case 5:
-                    clazz = USParamsSettingActivity.class;
-                    break;
 
-                case 6:
-                    clazz = USAdvanceSetActivity.class;
-                    title1 = getString(R.string.高级设置);
-                    break;
+            if (user_type==END_USER||user_type==MAINTEAN_USER){
 
-                case 7:
-                    clazz = USDeviceInfoActivity.class;
-                    break;
+                switch (position) {
+                    case 0:
+                        clazz = USFastSetActivity.class;
+                        break;
+                    case 1:
+                        clazz = UsSystemSettingActivity.class;
+                        break;
+                    case 2:
+                        clazz = MainsCodeParamSetActivity.class;
+                        break;
+                    case 3:
+                        clazz = USChargeActivity.class;
+                        break;
+                    case 4:
+                        clazz = MaxCheckActivity.class;
+                        break;
+                    case 5:
+                        clazz = USParamsSettingActivity.class;
+                        break;
+                    case 6:
+                        clazz = USDeviceInfoActivity.class;
+                        break;
+
+                    default:
+                        clazz = null;
+                        break;
+                }
+
+            }else {
+                switch (position) {
+                    case 0:
+                        clazz = USFastSetActivity.class;
+                        break;
+                    case 1:
+                        clazz = UsSystemSettingActivity.class;
+                        break;
+                    case 2:
+                        clazz = MainsCodeParamSetActivity.class;
+                        break;
+                    case 3:
+                        clazz = USChargeActivity.class;
+                        break;
+                    case 4:
+                        clazz = MaxCheckActivity.class;
+                        break;
+                    case 5:
+                        clazz = USParamsSettingActivity.class;
+                        break;
+
+                    case 6:
+                        clazz = USAdvanceSetActivity.class;
+                        title1 = getString(R.string.高级设置);
+                        break;
+
+                    case 7:
+                        clazz = USDeviceInfoActivity.class;
+                        break;
 
 
-
-                default:
-                    clazz = null;
-                    break;
+                    default:
+                        clazz = null;
+                        break;
+                }
             }
+
             try {
                 UsToolParamBean item = usParamsetAdapter.getItem(position);
                 title1 = item.getTitle();
@@ -1091,11 +1320,10 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                 e.printStackTrace();
             }
             final String title = title1;
-            if (clazz==null)return;
+            if (clazz == null) return;
             jumpMaxSet(clazz, title);
         }
     }
-
 
 
     @Override

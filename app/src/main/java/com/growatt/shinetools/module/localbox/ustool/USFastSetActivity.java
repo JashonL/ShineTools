@@ -10,10 +10,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.base.DemoBase;
 import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
@@ -21,8 +23,11 @@ import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.utils.BtnDelayUtil;
+import com.growatt.shinetools.utils.CircleDialogUtils;
+import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
+import com.mylhyl.circledialog.BaseCircleDialog;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.view.listener.OnLvItemClickListener;
 
@@ -39,6 +44,9 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.KEFU_USER;
 
 public class USFastSetActivity extends DemoBase implements CompoundButton.OnCheckedChangeListener {
 
@@ -68,6 +76,12 @@ public class USFastSetActivity extends DemoBase implements CompoundButton.OnChec
     TextView tvEmsInput;
     @BindView(R.id.tvDynamometer)
     TextView tvDyNam;
+    @BindView(R.id.vCode)
+    View vCode;
+    @BindView(R.id.viewV)
+    View viewV;
+    @BindView(R.id.ivCodeNext)
+    ImageView ivCodeNext;
 
 
     //读取命令功能码（功能码，开始寄存器，结束寄存器）
@@ -94,13 +108,20 @@ public class USFastSetActivity extends DemoBase implements CompoundButton.OnChec
     //弹框选择item
     private String[][] items;
 
-
+    private int user_type = KEFU_USER;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usfast_set);
         ButterKnife.bind(this);
+        user_type = ShineToosApplication.getContext().getUser_type();
+
+        if (user_type == END_USER) {
+
+            CommenUtils.hideAllView(View.GONE,vCode,mTvCodeNote,viewV,mTvCode,ivCodeNext);
+        }
+
         initString();
 //        isSetModel = false;
         readRegisterValue();
@@ -146,7 +167,7 @@ public class USFastSetActivity extends DemoBase implements CompoundButton.OnChec
 
         items = new String[][]{{getString(R.string.m657不连接功率采集计), getString(R.string.m电表)},
                 {getString(R.string.m208负载优先), getString(R.string.m209电池优先),
-                        getString(R.string.m210电网优先)}
+                        getString(R.string.m210电网优先), getString(R.string.m防逆流)}
 
         };
 
@@ -154,7 +175,11 @@ public class USFastSetActivity extends DemoBase implements CompoundButton.OnChec
 
     }
 
-    @OnClick({R.id.ivLeft, R.id.tvRight, R.id.tvCode, R.id.tvTime, R.id.btnOK, R.id.tvConfigWifi, R.id.tvDyNamometer1})
+
+    private BaseCircleDialog explainDialog;
+
+
+    @OnClick({R.id.ivLeft, R.id.tvRight, R.id.tvCode, R.id.tvTime, R.id.btnOK, R.id.tvConfigWifi, R.id.tvDyNamometer1,R.id.tvEms})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivLeft:
@@ -258,6 +283,23 @@ public class USFastSetActivity extends DemoBase implements CompoundButton.OnChec
                  setCount=0;
                 connectServerWrite();
                 break;
+
+            case R.id.tvEms:
+                String title = "EMS";
+                String content=getString(R.string.ems_explain);
+                explainDialog = CircleDialogUtils.showExplainDialog(USFastSetActivity.this, title,content ,
+                        new CircleDialogUtils.OndialogClickListeners() {
+                            @Override
+                            public void buttonOk() {
+                                explainDialog.dialogDismiss();
+                            }
+                            @Override
+                            public void buttonCancel() {
+                                explainDialog.dialogDismiss();
+                            }
+                        });
+                break;
+
         }
     }
 
@@ -634,6 +676,9 @@ public class USFastSetActivity extends DemoBase implements CompoundButton.OnChec
                         break;
                     case 2:
                         result = items[1][2];
+                        break;
+                    case 3:
+                        result = items[1][3];
                         break;
                 }
 

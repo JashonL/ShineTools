@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.adapter.UsSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.bean.USDebugSettingBean;
@@ -42,6 +43,8 @@ import java.util.UUID;
 
 import butterknife.BindView;
 
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.KEFU_USER;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 
 public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
@@ -69,6 +72,9 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
     private String[] pvModel;
 
     private MenuItem item;
+
+
+    private int user_type = KEFU_USER;
 
 
     @Override
@@ -99,41 +105,65 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     protected void initData() {
+        //初始化列表数据
         String[] titls = new String[]{getString(R.string.m396开关逆变器), getString(R.string.m398有功功率百分比), getString(R.string.android_key961),
                 getString(R.string.m防逆流设置), getString(R.string.dry_setting), getString(R.string.android_key952), getString(R.string.android_key3111),
                 getString(R.string.AFCI功能)};
 
-        String[] registers = new String[]{"(0)", "(3)", "(399)",
-                "", "", "(533)", "(235)", ""};
+        String[] registers = new String[]{"", "", "",
+                "", "", "", "", ""};
+        //去掉 2，4
+        if (user_type == END_USER) {
+             titls = new String[]{getString(R.string.m396开关逆变器), getString(R.string.m398有功功率百分比),
+                    getString(R.string.m防逆流设置), getString(R.string.android_key952), getString(R.string.android_key3111),
+                    getString(R.string.AFCI功能)};
+
+            registers = new String[]{"", "", "",
+                    "", "", "", "", ""};
+        }
+
+
 
         List<USDebugSettingBean> newlist = new ArrayList<>();
         for (int i = 0; i < titls.length; i++) {
             USDebugSettingBean bean = new USDebugSettingBean();
             bean.setTitle(titls[i]);
-            if (i == 0 || i == 5) {
-                bean.setItemType(UsSettingConstant.SETTING_TYPE_SWITCH);
-            } else {
-                bean.setItemType(UsSettingConstant.SETTING_TYPE_SELECT);
-            }
+            bean.setItemType(UsSettingConstant.SETTING_TYPE_SELECT);
             bean.setRegister(registers[i]);
             newlist.add(bean);
         }
+        newlist.get(0).setItemType(UsSettingConstant.SETTING_TYPE_SWITCH);
+
+        //1.获取用户类型
+        user_type= ShineToosApplication.getContext().getUser_type();
+        //2.根据用户类型初始化
+        if (user_type == END_USER){
+            newlist.get(3).setItemType(UsSettingConstant.SETTING_TYPE_SWITCH);
+            funs = new int[][]{
+                    {3, 0, 0},//开关机0
+//                    {3, 399, 399},//PV输入模式
+                    {3, 235, 235},//N至PE检测功能使能
+            };
+        }else {
+            newlist.get(5).setItemType(UsSettingConstant.SETTING_TYPE_SWITCH);
+            funs = new int[][]{
+                    {3, 0, 0},//开关机0
+                    {3, 399, 399},//PV输入模式
+                    {3, 235, 235},//N至PE检测功能使能
+            };
+
+        }
+
         usParamsetAdapter.replaceData(newlist);
-
-
-        funs = new int[][]{
-                {3, 0, 0},//开关机0
-                {3, 399, 399},//PV输入模式
-                {3, 235, 235},//N至PE检测功能使能
-        };
 
 
         //设置功能码集合（功能码，寄存器，数据）
         funsSet = new int[][][]{
                 {{6, 0, 0}, {6, 0, 1}}//开关机0
-                , {{6, 235, 0}, {6, 235, 1}}
                 , {{6, 399, 0}, {6, 399, 1}, {6, 399, 2}}
+                , {{6, 235, 0}, {6, 235, 1}}
         };
+
 
         pvModel = new String[]{getString(R.string.Independent), getString(R.string.dc_source), getString(R.string.Parallel)};
 
@@ -143,28 +173,51 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         int itemIndex = 0;
-        switch (position) {
-            case 1:
-                itemIndex = 0;
-                break;
-            case 2:
-                setItems();
-                break;
-            case 3:
-                itemIndex = 1;
-                break;
-            case 4:
-                itemIndex = 2;
-                break;
-            case 6:
-                itemIndex = 3;
-                break;
-            case 7:
-                itemIndex = 4;
-                break;
+        if (user_type==END_USER){
+            switch (position) {
+                case 1:
+                    itemIndex = 0;
+                    break;
+                case 2:
+                    itemIndex = 1;
+                    break;
+                case 4:
+                    itemIndex = 3;
+                    break;
+                case 5:
+                    itemIndex = 4;
+                    break;
+            }
+        }else {
+            switch (position) {
+                case 1:
+                    itemIndex = 0;
+                    break;
+                case 2:
+                    setItems();
+                    break;
+                case 3:
+                    itemIndex = 1;
+                    break;
+                case 4:
+                    itemIndex = 2;
+                    break;
+                case 6:
+                    itemIndex = 3;
+                    break;
+                case 7:
+                    itemIndex = 4;
+                    break;
+            }
         }
 
-        if (position==2||position==0)return;
+        if (user_type==END_USER){
+            if (position==3||position==0)return;
+
+        }else {
+            if (position==2||position==0||position==5)return;
+
+        }
         USDebugSettingBean bean = usParamsetAdapter.getData().get(position);
 
         Intent intent = new Intent(this, USConfigTypeAllActivity.class);
@@ -188,7 +241,7 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
                             try {
                                 usParamsetAdapter.getData().get(2).setValue(String.valueOf(position));
                                 usParamsetAdapter.notifyDataSetChanged();
-                                nowSet = funsSet[0][position];
+                                nowSet = funsSet[1][position];
                                 connectServerWrite();
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -205,16 +258,32 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
     @Override
     public void oncheck(boolean check, int position) {
         int value = check ? 1 : 0;
-        switch (position) {
-            case 0://开关逆变器
-                nowSet = funsSet[0][value];
-                connectServerWrite();
-                break;
-            case 5:
-                nowSet = funsSet[2][value];
-                connectServerWrite();
-                break;
+
+        if (user_type==END_USER){
+            switch (position) {
+                case 0://开关逆变器
+                    nowSet = funsSet[0][value];
+                    connectServerWrite();
+                    break;
+                case 3:
+                    nowSet = funsSet[2][value];
+                    connectServerWrite();
+                    break;
+            }
+        }else {
+            switch (position) {
+                case 0://开关逆变器
+                    nowSet = funsSet[0][value];
+                    connectServerWrite();
+                    break;
+                case 5:
+                    nowSet = funsSet[2][value];
+                    connectServerWrite();
+                    break;
+            }
         }
+
+
 
         usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
         usParamsetAdapter.notifyDataSetChanged();
@@ -368,21 +437,32 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
         int value = MaxWifiParseUtil.obtainValueOne(bs);
-        switch (count) {
-            case 0:
-                usParamsetAdapter.getData().get(0).setValue(String.valueOf(value));
-                break;
-            case 1:
-                String str = pvModel[value];
-                usParamsetAdapter.getData().get(2).setValueStr(str);
-                usParamsetAdapter.getData().get(2).setValue(String.valueOf(value));
 
-
-                break;
-            case 2:
-                usParamsetAdapter.getData().get(5).setValue(String.valueOf(value));
-                break;
+        if (user_type==END_USER){
+            switch (count) {
+                case 0:
+                    usParamsetAdapter.getData().get(0).setValue(String.valueOf(value));
+                    break;
+                case 1:
+                    usParamsetAdapter.getData().get(3).setValue(String.valueOf(value));
+                    break;
+            }
+        }else {
+            switch (count) {
+                case 0:
+                    usParamsetAdapter.getData().get(0).setValue(String.valueOf(value));
+                    break;
+                case 1:
+                    String str = pvModel[value];
+                    usParamsetAdapter.getData().get(2).setValueStr(str);
+                    usParamsetAdapter.getData().get(2).setValue(String.valueOf(value));
+                    break;
+                case 2:
+                    usParamsetAdapter.getData().get(5).setValue(String.valueOf(value));
+                    break;
+            }
         }
+
         usParamsetAdapter.notifyDataSetChanged();
     }
 

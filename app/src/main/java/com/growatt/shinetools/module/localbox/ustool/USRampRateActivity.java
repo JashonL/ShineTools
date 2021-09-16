@@ -351,7 +351,7 @@ public class USRampRateActivity extends DemoBase implements UsThroughAdapter.OnC
                 bean.setRegistPos(item.getRegistPos());
                 bean.setVol(item.getVol());
 
-
+                bean.setType(UsSettingConstant.SETTING_TYPE_INPUT_UNIT);
                 int value = MaxWifiParseUtil.obtainValueOne(bs, bean.getRegistPos());
                 bean.setRegistValue(value);
                 bean.setShowValue(String.valueOf(Arith.mul(value, bean.getMuilt(), 2)));

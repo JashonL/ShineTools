@@ -361,7 +361,7 @@ public class USFreThroughActivity extends DemoBase implements UsThroughAdapter.O
                 bean.setMuilt(item.getMuilt());
                 bean.setRegistPos(item.getRegistPos());
                 bean.setVol(item.getVol());
-
+                bean.setType(UsSettingConstant.SETTING_TYPE_INPUT_UNIT);
 
                 int value = MaxWifiParseUtil.obtainValueOne(bs, bean.getRegistPos());
                 bean.setRegistValue(value);

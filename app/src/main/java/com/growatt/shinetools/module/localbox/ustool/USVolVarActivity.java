@@ -431,6 +431,7 @@ public class USVolVarActivity extends DemoBase implements UsThroughAdapter.OnChi
                 bean.setMuilt(item.getMuilt());
                 bean.setRegistPos(item.getRegistPos());
                 bean.setVol(vol);
+                bean.setType(UsSettingConstant.SETTING_TYPE_INPUT_UNIT);
                 //设置Muit
                 if (i % 2 == 0) {
                     bean.setMuilt(Arith.div(10, vol));

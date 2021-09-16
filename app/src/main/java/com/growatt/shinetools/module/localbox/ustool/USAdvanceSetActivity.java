@@ -127,28 +127,25 @@ public class USAdvanceSetActivity extends BaseActivity implements Toolbar.OnMenu
     private void initIntent() {
         Intent mIntent = getIntent();
         if (mIntent != null) {
-            mTitle = mIntent.getStringExtra("title");
-            boolean isShow = mIntent.getBooleanExtra("isShow", false);
             deviceType = mIntent.getStringExtra("deviceType");
-            if (isShow && getLanguage() == 0) {
-                item.setTitle(R.string.保护参数);
-            }
         }
     }
 
     private void initHeaderView() {
 
         initToobar(toolbar);
-        tvTitle.setText(mTitle);
         String title = getIntent().getStringExtra("title");
-        if (TextUtils.isEmpty(title)){
+        if (!TextUtils.isEmpty(title)){
             tvTitle.setText(title);
         }
-//        toolbar.inflateMenu(R.menu.comment_right_menu);
-//        item = toolbar.getMenu().findItem(R.id.right_action);
-//        item.setTitle(R.string.android_key816);
+        toolbar.inflateMenu(R.menu.comment_right_menu);
+        item = toolbar.getMenu().findItem(R.id.right_action);
+        item.setTitle(R.string.android_key816);
         toolbar.setOnMenuItemClickListener(this);
-
+        boolean isShow = getIntent().getBooleanExtra("isShow", false);
+        if (isShow && getLanguage() == 0) {
+            item.setTitle(R.string.保护参数);
+        }
 
     }
 

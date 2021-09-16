@@ -127,6 +127,32 @@ public class USTimeSelectSetActivity extends DemoBase implements CompoundButton.
         initData(mNpChoose2, minutes, "00");
         initData(mNpChoose1End, hours, "00");
         initData(mNpChoose2End, minutes, "00");
+
+
+        mNpChoose1.setOnScrollListener((view, scrollState) -> {
+            if (scrollState== NumberPicker.OnScrollListener.SCROLL_STATE_IDLE){
+                all_switch.setChecked(false);
+            }
+        });
+
+        mNpChoose2.setOnScrollListener((view, scrollState) -> {
+            if (scrollState== NumberPicker.OnScrollListener.SCROLL_STATE_IDLE){
+                all_switch.setChecked(false);
+            }
+        });
+
+        mNpChoose1End.setOnScrollListener((view, scrollState) -> {
+            if (scrollState== NumberPicker.OnScrollListener.SCROLL_STATE_IDLE){
+                all_switch.setChecked(false);
+            }
+        });
+
+        mNpChoose2End.setOnScrollListener((view, scrollState) -> {
+            if (scrollState== NumberPicker.OnScrollListener.SCROLL_STATE_IDLE){
+                all_switch.setChecked(false);
+            }
+        });
+
     }
 
     private static void initData(NumberPicker numberPicker, String[] values, String value) {
