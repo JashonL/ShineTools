@@ -270,7 +270,7 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
                 {{6, 2, 1}, {6, 3, -1}},//有功功率百分比
                 {{6, 122, -1}, {6, 123, -1}, {6, 3000, -1}},//防逆流设置3个选项,后改成2个
                 {{6, 3016, -1}, {6, 3017, -1}, {6, 3019, -1}},//干接点设置3个选项
-                {{6, 3080, -1}, {6, 3080, -1}, {6, 3080, -1}},//离网功能
+                {{6, 3079, -1}, {6, 3081, -1}, {6, 3080, -1}},//离网功能
                 {{6,541,-1},{6, 544, -1}, {6, 545, -1}, {6, 546, -1}, {6, 547, -1}},//AFCI 6项
         };
         nowSet = funsSet[setItemsIndex];
@@ -294,11 +294,11 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
         }
         try {
             mUnits = new String[]{
-                    "%", "%", "", "V", "Hz"
-                    , "", "S", "ms", "%", "V"
-                    , "S", "S", "", "", "V"
-                    , "V", "", "V", "%", "%"
-                    , "%", "", "", "V", "A"
+                    "", "", "", "", ""
+                    , "", "", "", "", ""
+                    , "", "", "", "", ""
+                    , "", "", "", "%", "%"
+                    , "", "", "", "", ""
                     , "", "", "", "", ""
                     , "", ""
                     , "", "", "", ""
@@ -768,8 +768,8 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
                                 public boolean onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                                     if (antiReflux != null && antiReflux.length > pos) {
                                         String text = antiReflux[pos];
-                                        usParamsetAdapter.getData().get(pos).setValueStr(text);
-                                        usParamsetAdapter.getData().get(pos).setValue(String.valueOf(pos));
+                                        usParamsetAdapter.getData().get(position).setValueStr(text);
+                                        usParamsetAdapter.getData().get(position).setValue(String.valueOf(pos));
                                         usParamsetAdapter.notifyDataSetChanged();
                                         //去设置
                                         setItem = nowSet[0];
@@ -898,7 +898,7 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
                     showInputValueDialog(title, tips, unit, value -> {
                         //设置功率百分比
                         double result = Double.parseDouble(value);
-                        String pValue = value + "%";
+                        String pValue = value ;
                         usParamsetAdapter.getData().get(position).setValueStr(pValue);
                         usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
                         usParamsetAdapter.notifyDataSetChanged();
@@ -1097,7 +1097,7 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
         showInputValueDialog(title, tips, unit, value -> {
             //设置功率百分比
             double result = Double.parseDouble(value);
-            String pValue = value + "%";
+            String pValue = value ;
             usParamsetAdapter.getData().get(position).setValueStr(pValue);
             usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
             usParamsetAdapter.notifyDataSetChanged();

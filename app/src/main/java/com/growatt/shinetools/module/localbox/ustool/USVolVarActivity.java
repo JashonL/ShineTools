@@ -404,6 +404,7 @@ public class USVolVarActivity extends DemoBase implements UsThroughAdapter.OnChi
                 bean.setUnit(item.getUnit());
                 bean.setTitle(item.getTitle());
                 bean.setMuilt(item.getMuilt());
+                bean.setType(UsSettingConstant.SETTING_TYPE_INPUT_UNIT);
                 bean.setRegistPos(item.getRegistPos());
                 if (i == list.size()-1){
                     int value = MaxWifiParseUtil.obtainValueOne(bs, bean.getRegistPos());

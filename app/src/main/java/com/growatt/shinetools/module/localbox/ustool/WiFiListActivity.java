@@ -190,10 +190,10 @@ public class WiFiListActivity extends DemoBase implements BaseQuickAdapter.OnIte
                 if (lastWifiInfo != null && lastNetworkInfo != null) {
                     accessPoint.update(lastWifiConfiguration, lastWifiInfo, lastNetworkInfo);
                 }
-           /*     int frequency = accessPoint.frequency;
+                int frequency = accessPoint.frequency;
                 if ((frequency > 4900 && frequency < 5900) || accessPoint.ssid.toUpperCase().endsWith("5G")) {
                     continue;
-                }*/
+                }
                 accessPoints.add(accessPoint);
 
             }

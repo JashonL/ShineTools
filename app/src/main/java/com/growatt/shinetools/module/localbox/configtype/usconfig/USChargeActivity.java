@@ -165,10 +165,10 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
 
         funsSet = new int[][][]{
                 {{6, 3049, 0}},
-                {{3, 3047, -1}},
-                {{3, 3048, -1}},
-                {{3, 3036, -1}},
-                {{3, 3037, -1}}
+                {{6, 3047, -1}},
+                {{6, 3048, -1}},
+                {{6, 3036, -1}},
+                {{6, 3037, -1}}
         };
 
 
@@ -188,13 +188,13 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
 
         try {
             mMultiples = new float[]{
-                    1, 1, 1, 0.1f, 0.01f
-                    , 1, 1, 50, 0.1f, 0.1f
-                    , 1, 1, 1, 1, 0.1f
-                    , 0.1f, 1, 1, 0.1f, 0.1f
-                    , 0.1f, 1, 1, 0.01f, 0.1f
+                    1, 1, 1, 1, 1f
                     , 1, 1, 1, 1, 1
-                    , 0.1f, 1
+                    , 1, 1, 1, 1, 1
+                    , 1, 1, 1, 1, 1
+                    , 1, 1, 1, 1, 1
+                    , 1, 1, 1, 1, 1
+                    , 1, 1
                     , 1, 1, 1, 1
             };
         } catch (Exception e) {
@@ -202,11 +202,11 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
         }
         try {
             mUnits = new String[]{
-                    "%", "%", "", "V", "Hz"
-                    , "", "S", "ms", "%", "V"
-                    , "S", "S", "", "", "V"
-                    , "V", "", "V", "%", "%"
-                    , "%", "", "", "V", "A"
+                    "", "", "", "", ""
+                    , "", "", "", "", ""
+                    , "", "", "", "", ""
+                    , "", "", "", "", ""
+                    , "", "", "", "", ""
                     , "", "", "", "", ""
                     , "", ""
                     , "", "", "", ""
@@ -501,7 +501,12 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                         try {
                             int pos = position - 1;
                             nowSet = funsSet[pos];
-                            nowSet[0][2] = getWriteValueReal(Double.parseDouble(value));
+                            int value1 = getWriteValueReal(Double.parseDouble(value));
+                            nowSet[0][2] = value1;
+                            bean.setValue(String.valueOf(value1));
+                            bean.setValueStr(getReadValueReal(value1));
+                            usParamsetAdapter.notifyDataSetChanged();
+
                             writeRegisterValue();
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
@@ -533,8 +538,11 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
         }
     }
 
+    interface OndialogComfirListener {
+        void comfir(String value);
+    }
 
-    private void showInputValueDialog(String title, String subTitle, String unit, USAllSettingItemActivity.OndialogComfirListener listener) {
+    private void showInputValueDialog(String title, String subTitle, String unit, OndialogComfirListener listener) {
         View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_input_custom, null, false);
         dialogFragment = CircleDialogUtils.showCommentBodyDialog(0.75f,
                 0.8f, contentView, getSupportFragmentManager(), new OnCreateBodyViewListener() {

@@ -99,7 +99,7 @@ public class USPFsettingActivity extends BaseActivity implements BaseQuickAdapte
 
         List<USDebugSettingBean> newlist = new ArrayList<>();
 
-        if (user_type==END_USER||user_type==MAINTEAN_USER){
+        if (user_type == END_USER || user_type == MAINTEAN_USER) {
 
             pfSetting = new String[]{getString(R.string.m392PF限制功率因数) + "1~4"};
 
@@ -109,14 +109,14 @@ public class USPFsettingActivity extends BaseActivity implements BaseQuickAdapte
             for (int i = 0; i < pfSetting.length; i++) {
                 USDebugSettingBean bean = new USDebugSettingBean();
                 bean.setTitle(pfSetting[i]);
-                int itemType  = UsSettingConstant.SETTING_TYPE_NEXT;
+                int itemType = UsSettingConstant.SETTING_TYPE_NEXT;
                 bean.setItemType(itemType);
                 bean.setRegister(pfSettingRegister[i]);
                 newlist.add(bean);
             }
 
 
-        }else {
+        } else {
 
             pfSetting = new String[]{getString(R.string.m405运行PF为1), getString(R.string.m402感性PF), getString(R.string.m399感性载率)
                     , getString(R.string.m400容性载率), getString(R.string.m401容性PF), getString(R.string.m默认PF曲线),
@@ -152,7 +152,6 @@ public class USPFsettingActivity extends BaseActivity implements BaseQuickAdapte
             }
 
 
-
             funs = new int[][]{
                     {3, 89, 89},//开关机0
                     {3, 89, 89},//PV输入模式
@@ -166,13 +165,12 @@ public class USPFsettingActivity extends BaseActivity implements BaseQuickAdapte
         }
 
 
-
         usParamsetAdapter.replaceData(newlist);
 
 
-        if (funs==null||funs.length==0){
+        if (funs == null || funs.length == 0) {
 
-        }else {
+        } else {
             refresh();
         }
     }
@@ -370,42 +368,45 @@ public class USPFsettingActivity extends BaseActivity implements BaseQuickAdapte
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         int type = 0;
-        if (user_type==END_USER||user_type==MAINTEAN_USER){
+        if (user_type == END_USER || user_type == MAINTEAN_USER) {
             if (position == 0) {
                 type = 6;
             }
-        }else {
+        } else {
             switch (position) {
                 case 1:
-                    type=0;
+                    type = 0;
                     break;
                 case 2:
-                    type=1;
+                    type = 1;
                     break;
                 case 3:
-                    type=2;
+                    type = 2;
                     break;
                 case 4:
-                    type=3;
+                    type = 3;
                     break;
                 case 6:
-                    type=4;
+                    type = 4;
                     break;
                 case 7:
-                    type=5;
+                    type = 5;
                     break;
                 case 8:
-                    type=6;
+                    type = 6;
                     break;
             }
         }
 
+        if (user_type != END_USER && user_type != MAINTEAN_USER) {
+            if (position == 0 || position == 5) return;
+        }
 
         String title = usParamsetAdapter.getData().get(position).getTitle();
-        Intent intent=new Intent(USPFsettingActivity.this,USAllSettingItemActivity.class);
-        intent.putExtra(KEY_OF_ITEM_SETITEMSINDEX,type);
-        intent.putExtra("bartitle",title);
-        ActivityUtils.startActivity(USPFsettingActivity.this,intent,false);
+        Intent intent = new Intent(USPFsettingActivity.this, USAllSettingItemActivity.class);
+        intent.putExtra(KEY_OF_ITEM_SETITEMSINDEX, type);
+        intent.putExtra("bartitle", title);
+        ActivityUtils.startActivity(USPFsettingActivity.this, intent, false);
 
     }
 

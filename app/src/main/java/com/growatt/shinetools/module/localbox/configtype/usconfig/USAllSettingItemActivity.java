@@ -194,7 +194,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                     {0.1f, 0.1f},
                     {0.1f, 0.1f},
                     {1, 1},
-                    {0.1f, 0.1f},//pf曲线切入/切出电压
+                    {1, 1},//pf曲线切入/切出电压
                     {1, 1, 1, 1},
                     {1, 1, 1, 1}
 
@@ -518,6 +518,11 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                         toast(R.string.all_blank);
                         return;
                     }
+
+                    usParamsetAdapter.getData().get(position).setValueStr(String.valueOf(value));
+                    usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
+                    usParamsetAdapter.notifyDataSetChanged();
+
                     try {
                         double result = Double.parseDouble(value);
                         result = Arith.add(10000, Arith.mul(result, 10000));
@@ -542,6 +547,9 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                         toast(R.string.all_blank);
                         return;
                     }
+                    usParamsetAdapter.getData().get(position).setValueStr(String.valueOf(value));
+                    usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
+                    usParamsetAdapter.notifyDataSetChanged();
                     try {
                         double result = Double.parseDouble(value);
                         nowSet[1][2] = (int) result;
@@ -566,8 +574,11 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                         return;
                     }
                     try {
-                        double result = Double.parseDouble(value);
-                        nowSet[position][2] = (int) result;
+                        int result = Integer.parseInt(value);
+                        nowSet[position][2] = result;
+                        usParamsetAdapter.getData().get(position).setValueStr(String.valueOf(result));
+                        usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
+                        usParamsetAdapter.notifyDataSetChanged();
                         writeRegisterValue();
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -588,6 +599,9 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                         toast(R.string.all_blank);
                         return;
                     }
+                    usParamsetAdapter.getData().get(position).setValueStr(String.valueOf(value));
+                    usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
+                    usParamsetAdapter.notifyDataSetChanged();
                     try {
                         double result = Double.parseDouble(value);
                         nowSet[position][2] = (int) result;
@@ -611,6 +625,9 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                         toast(R.string.all_blank);
                         return;
                     }
+                    usParamsetAdapter.getData().get(position).setValueStr(String.valueOf(value));
+                    usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
+                    usParamsetAdapter.notifyDataSetChanged();
                     try {
                         double result = Double.parseDouble(value);
                         nowSet[position][2] = (int) result;
@@ -721,25 +738,6 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
             switch (what) {
                 //发送信息
                 case SocketClientUtil.SOCKET_SEND:
-                /*    BtnDelayUtil.sendMessageWrite(this);
-                    if (nowSet != null) {
-                        if (nowPos >= nowSet.length-1) {
-                            nowPos = -1;
-                            //关闭tcp连接
-                            if (mClientUtilWriter != null) {
-                                mClientUtilWriter.closeSocket();
-                                BtnDelayUtil.refreshFinish();
-                                //移除接收超时
-                                this.removeMessages(TIMEOUT_RECEIVE);
-                            }
-                        } else {
-                            nowPos = nowPos + 1;
-                            sendBytes = SocketClientUtil.sendMsgToServer(mClientUtilWriter, nowSet[nowPos]);
-                            LogUtil.i("发送写入" + (nowPos + 1) + ":" + SocketClientUtil.bytesToHexString(sendBytes));
-                        }
-                    }*/
-
-
                     BtnDelayUtil.sendMessageWrite(this);
                     if (nowSet != null) {
                         isWriteFinish = true;

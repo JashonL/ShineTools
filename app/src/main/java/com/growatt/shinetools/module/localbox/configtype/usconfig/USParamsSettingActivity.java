@@ -219,7 +219,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                     {3, 45, 50},//逆变器时间
                     {3, 88, 88},//modbus版本
                     {3, 231, 231},//风扇检查
-//                    {3, 3051, 3052},//修改总发电量
+//                    {4, 3051, 3052},//修改总发电量
                     {3, 32, 32},//清除历史数据
                     {3, 33, 33},//恢复出厂设置
 
@@ -268,7 +268,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                     {3, 45, 50},//逆变器时间
                     {3, 88, 88},//modbus版本
                     {3, 231, 231},//风扇检查
-                    {3, 3051, 3052},//修改总发电量
+                    {4, 3051, 3052},//修改总发电量
                     {3, 32, 32},//清除历史数据
                     {3, 33, 33},//恢复出厂设置
 
@@ -283,8 +283,8 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
         /*设置*/
         nowSet = new int[][][]{
                 {{0x10, 118, 121}},//国家安规
-                {{6, 30, -1}},//感性载率
-                {{6, 22, -1}},//选择通讯波特率
+                {{6, 30, -1}},//通信地址
+                {{6, 22, 4},{6,22,5}},//选择通讯波特率
                 {{6, 45, -1}, {6, 46, -1}, {6, 47, -1}, {6, 48, -1}, {6, 49, -1}, {6, 50, -1}},//逆变器时间
                 {{6, 88, -1}},//modbus版本
                 {{6, 231, -1}},//风扇检查
@@ -489,9 +489,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                     text = "socket已连接";
                     break;
                 case SocketClientUtil.SOCKET_SEND:
-                    if (count < funs.length) {
-                        sendMsg(mClientUtil, funs[count]);
-                    }
+                    sendMsg(mClientUtil, funs[count]);
                     break;
                 case 100://恢复按钮点击
                     String myuuid = (String) msg.obj;
@@ -877,6 +875,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                     setNSR();
                     break;
                 case 1://通信地址
+                    initMul(1);
                     setCommunicationAddr(position);
                     break;
                 case 2://通讯波特率
@@ -890,6 +889,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                 case 5://风扇检查
                     break;
                 case 6://清除历史数据
+//                    initMul(6);
                     setCommunicateRate(7);
                     break;
                 case 7://恢复出厂设置
@@ -902,6 +902,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                     setNSR();
                     break;
                 case 1://通信地址
+                    initMul(1);
                     setCommunicationAddr(position);
                     break;
                 case 2://通讯波特率
@@ -915,6 +916,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                 case 5://风扇检查
                     break;
                 case 6://修改总发电量
+                    initMul(6);
                     setAllCharge(position);
                     break;
                 case 7://清除历史数据
@@ -943,10 +945,10 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
     private void setAllCharge(int position) {
         String title1 = usParamsetAdapter.getData().get(position).getTitle();
         String tips1 = "";
-        String unit1 = "";
+        String unit1 = "kWh";
         showInputValueDialog(title1, tips1, unit1, value -> {
             double result = Double.parseDouble(value);
-            String pValue = value;
+            String pValue = value+"kWh";
             usParamsetAdapter.getData().get(position).setValueStr(pValue);
             usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
             usParamsetAdapter.notifyDataSetChanged();
@@ -989,17 +991,22 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                     public boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         if (nowItems != null && nowItems.length > position) {
                             try {
-                                usParamsetAdapter.getData().get(position).setValueStr(nowItems[position]);
-                                usParamsetAdapter.getData().get(position).setValue(String.valueOf(position));
-
+                                usParamsetAdapter.getData().get(itemIndex).setValueStr(nowItems[position]);
+                                usParamsetAdapter.getData().get(itemIndex).setValue(String.valueOf(position));
+                                usParamsetAdapter.notifyDataSetChanged();
 
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             //设置
                             currentSetPos = itemIndex;
-                            curSet = nowSet[itemIndex][0];
-                            curSet[itemIndex] = position;
+                            if (itemIndex==2){
+                                curSet = nowSet[itemIndex][position];
+                            }else {
+                                curSet = nowSet[itemIndex][0];
+                                curSet[2] = position;
+                            }
+
                             connectServerWrite();
 
                         }
@@ -1051,6 +1058,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                 .setItems(models, (parent, view1, pos, id) -> {
                     currentSetPos = 0;
                     modelPos = pos;
+                    setModelRegistValue();
                     usParamsetAdapter.getData().get(0).setValueStr(models.get(pos));
                     curSet = nowSet[0][0];
                     nowRegister = registerValues[0];
@@ -1059,6 +1067,16 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                 })
                 .setNegative(getString(R.string.all_no), null)
                 .show(getSupportFragmentManager());
+    }
+
+
+    private void setModelRegistValue() {
+        String[] selectModels = modelToal[modelPos];
+        int sModel = Integer.parseInt(selectModels[4], 16) << 8 | (registerValues[0][0] & 0x00FF);
+        int uModel = Integer.parseInt(selectModels[2]) | ((registerValues[0][2] & 0b1111111111111000));
+        registerValues[0][0] = sModel;
+//                        registerValues[1][1] = 0;
+        registerValues[0][2] = uModel;
     }
 
 

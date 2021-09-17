@@ -166,8 +166,7 @@ public class USFastSetActivity extends DemoBase implements CompoundButton.OnChec
         };
 
         items = new String[][]{{getString(R.string.m657不连接功率采集计), getString(R.string.m电表)},
-                {getString(R.string.m208负载优先), getString(R.string.m209电池优先),
-                        getString(R.string.m210电网优先), getString(R.string.m防逆流)}
+                {getString(R.string.m209电池优先),getString(R.string.m208负载优先)}
 
         };
 

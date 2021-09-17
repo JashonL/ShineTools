@@ -342,8 +342,8 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
         String[] end = endTime.split(":");
 
 
-        int start_time = Integer.parseInt(start[0]) + Integer.parseInt(start[1]) * 60;
-        int start_end = Integer.parseInt(end[0]) + Integer.parseInt(end[1]) * 60;
+        int start_time = Integer.parseInt(start[0])* 60 + Integer.parseInt(start[1]) ;
+        int start_end = Integer.parseInt(end[0])  * 60+ Integer.parseInt(end[1]);
 
         if (start_time == 0 && start_end == 0) {
             toast(R.string.android_key3101);
