@@ -2,7 +2,6 @@ package com.growatt.shinetools.module.localbox.configtype;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -30,7 +29,6 @@ import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.growatt.shinetools.utils.BtnDelayUtil.TIMEOUT_RECEIVE;
@@ -97,12 +95,12 @@ public class ConfigType2Activity extends BaseActivity implements Toolbar.OnMenuI
     @Override
     protected void initViews() {
 
-        initHeaderView();
     }
 
     @Override
     protected void initData() {
         initIntent();
+        initHeaderView();
         initString();
     }
 
@@ -135,7 +133,7 @@ public class ConfigType2Activity extends BaseActivity implements Toolbar.OnMenuI
                 , {3, 76, 77}//28  ---------------19
                 , {3, 78, 79}//29
         };
-        registers = new String[][]{
+  /*      registers = new String[][]{
                 {"(20)", "(21)"},
                 {"(93)", "(94)"},
                 {"(95)", "(96)"},
@@ -161,52 +159,41 @@ public class ConfigType2Activity extends BaseActivity implements Toolbar.OnMenuI
 
 
         };
-        //内容标题显示容器
-//        titles = new String[][]{
-//                {getString(R.string.m379电源启动斜率),getString(R.string.m380电源重启斜率)},
-//                {getString(R.string.m381Qv切入高压),getString(R.string.m382Qv切出高压)},
-//                {getString(R.string.m383Qv切入低压),getString(R.string.m384Qv切出低压)},
-//                {getString(R.string.m385Qv切入功率),getString(R.string.m386Qv切出功率)},
-//                {getString(R.string.m387无功曲线切入电压),getString(R.string.m388无功曲线切出电压)},
-//                {getString(R.string.m389检查固件),getString(R.string.m389检查固件)},
-////                {"电源启动斜率(20)", "电源重启斜率(21)"}
-////                , {"Q(v)切入高压(93)", "Q(v)切出高压(94)"}
-////                , {"Q(v)切入低压(95)", "Q(v)切出低压(96)"}
-////                , {"Q(v)切入功率(97)", "Q(v)切出功率(98)"}
-////                , {"无功曲线切入电压(99)", "无功曲线切出电压(100)"}
-////                , {"检查固件1(233)", "检查固件2(234)"}
-//                //参数设置
-//                {getString(R.string.m436逆变器经纬度),getString(R.string.m436逆变器经纬度)},
-//                {String.format("AC1%s",getString(R.string.m437限制电压低高)),String.format("AC1%s",getString(R.string.m437限制电压低高))},
-//                {String.format("AC1%s",getString(R.string.m438频率限制低高)),String.format("AC1%s",getString(R.string.m438频率限制低高))},
-//                {String.format("AC2%s",getString(R.string.m437限制电压低高)),String.format("AC2%s",getString(R.string.m437限制电压低高))},
-//                {String.format("AC2%s",getString(R.string.m438频率限制低高)),String.format("AC2%s",getString(R.string.m438频率限制低高))},
-//                {String.format("AC3%s",getString(R.string.m437限制电压低高)),String.format("AC3%s",getString(R.string.m437限制电压低高))},
-//                {String.format("AC3%s",getString(R.string.m438频率限制低高)),String.format("AC3%s",getString(R.string.m438频率限制低高))},
-//                {getString(R.string.m439并网电压限制低高),getString(R.string.m439并网电压限制低高)},
-//                {getString(R.string.m440并网频率限制低高),getString(R.string.m440并网频率限制低高)},
-//                {String.format("AC%s1%s",getString(R.string.m441电压限制时间),getString(R.string.android_key824)),String.format("AC%s1%s",getString(R.string.m441电压限制时间),getString(R.string.android_key822))},
-//                {String.format("AC%s2%s",getString(R.string.m441电压限制时间),getString(R.string.android_key824)),String.format("AC%s2%s",getString(R.string.m441电压限制时间),getString(R.string.android_key822))},
-//                {String.format("AC%s1%s",getString(R.string.m442频率限制时间),getString(R.string.android_key824)),String.format("AC%s1%s",getString(R.string.m442频率限制时间),getString(R.string.android_key822))},
-//                {String.format("AC%s2%s",getString(R.string.m442频率限制时间),getString(R.string.android_key824)),String.format("AC%s2%s",getString(R.string.m442频率限制时间),getString(R.string.android_key822))},
-//                {String.format("AC%s3%s",getString(R.string.m441电压限制时间),getString(R.string.android_key824)),String.format("AC%s3%s",getString(R.string.m441电压限制时间),getString(R.string.android_key822))},
-//                {String.format("AC%s3%s",getString(R.string.m442频率限制时间),getString(R.string.android_key824)),String.format("AC%s3%s",getString(R.string.m442频率限制时间),getString(R.string.android_key822))}
-////                , {"逆变器经度(122)", "逆变器纬度(123)"}
-////                , {"AC1限制电压低(52)", "AC1限制电压高(53)"}
-////                , {"AC1频率限制低(54)", "AC1频率限制高(55)"}
-////                , {"AC2限制电压低(56)", "AC2限制电压高(57)"}
-////                , {"AC2频率限制低(58)", "AC2频率限制高(59)"}
-////                , {"AC3限制电压低(60)", "AC3限制电压高(61)"}
-////                , {"AC3频率限制低(62)", "AC3频率限制高(63)"}
-////                , {"并网电压限制低(64)", "并网电压限制高(65)"}
-////                , {"并网频率限制低(66)", "并网频率限制高(67)"}
-////                , {"AC电压限制时间1低(68)", "AC电压限制时间1高(69)"}
-////                , {"AC电压限制时间2低(70)", "AC电压限制时间2高(71)"}
-////                , {"AC频率限制时间1低(72)", "AC频率限制时间1高(73)"}
-////                , {"AC频率限制时间2低(74)", "AC频率限制时间2高(75)"}
-////                , {"AC电压限制时间3低(76)", "AC电压限制时间3高(77)"}
-////                , {"AC频率限制时间3低(78)", "AC频率限制时间3高(79)"}
-//        };
+*/
+
+
+
+
+        registers = new String[][]{
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""},
+                {"", ""}
+
+
+        };
+
+
+
+
         titles = new String[][]{
                 {getString(R.string.m379电源启动斜率), getString(R.string.m380电源重启斜率)},
                 {getString(R.string.m381Qv切入高压), getString(R.string.m382Qv切出高压)},

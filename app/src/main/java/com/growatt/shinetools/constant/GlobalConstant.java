@@ -53,6 +53,9 @@ public class GlobalConstant {
 
     public final static String MAX_ONEKEY_LAST_DATA3 = "max_onekey_last_data3";
 
+
+    public final static String SHAREPERFERENCE_IS_SHOWGUIDE="SHOW_GUIDE";
+
     //数据库版本
     public static String getSqliteName(Context context) {
 

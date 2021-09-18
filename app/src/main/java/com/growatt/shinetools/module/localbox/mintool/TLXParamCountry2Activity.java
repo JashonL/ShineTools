@@ -83,8 +83,8 @@ public class TLXParamCountry2Activity extends DemoBase implements BaseQuickAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tlxparam_country2);
         ButterKnife.bind(this);
-        initString();
         initIntent();
+        initString();
         initHeaderView();
         mAdapter = new TLXParamCountryAdapter(R.layout.item_panel_select,new ArrayList<>());
         mAdapter.setOnItemClickListener(this);

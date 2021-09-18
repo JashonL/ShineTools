@@ -1060,6 +1060,7 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
                     modelPos = pos;
                     setModelRegistValue();
                     usParamsetAdapter.getData().get(0).setValueStr(models.get(pos));
+                    usParamsetAdapter.notifyDataSetChanged();
                     curSet = nowSet[0][0];
                     nowRegister = registerValues[0];
                     connectServerWrite();

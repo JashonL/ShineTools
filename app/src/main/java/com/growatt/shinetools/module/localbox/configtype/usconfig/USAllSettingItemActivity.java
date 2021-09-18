@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.adapter.UsSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.bean.USDebugSettingBean;
@@ -47,6 +48,8 @@ import java.util.UUID;
 
 import butterknife.BindView;
 
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.KEFU_USER;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 import static com.growatt.shinetools.module.localbox.configtype.usconfig.USConfigTypeAllActivity.KEY_OF_ITEM_SETITEMSINDEX;
 import static com.growatt.shinetools.utils.BtnDelayUtil.TIMEOUT_RECEIVE;
@@ -92,6 +95,9 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
     private int mType = -1;
     private BaseCircleDialog dialogFragment;
 
+    private int user_type = KEFU_USER;
+    private   MenuItem item;
+
     @Override
     protected int getContentView() {
         return R.layout.activity_us_all_setting_item;
@@ -101,6 +107,10 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
     protected void initViews() {
         initToobar(toolbar);
         tvTitle.setText(R.string.android_key3091);
+        toolbar.setOnMenuItemClickListener(this);
+        toolbar.inflateMenu(R.menu.comment_right_menu);
+        item = toolbar.getMenu().findItem(R.id.right_action);
+        item.setTitle(R.string.android_key816);
         toolbar.setOnMenuItemClickListener(this);
 
         rvSystem.setLayoutManager(new LinearLayoutManager(this));
@@ -114,7 +124,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
 
     @Override
     protected void initData() {
-
+        user_type= ShineToosApplication.getContext().getUser_type();
         //设置项的下标
         mType = getIntent().getIntExtra(KEY_OF_ITEM_SETITEMSINDEX, 0);
 
@@ -236,6 +246,11 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
             bean.setRegister(register[i]);
             newlist.add(bean);
         }
+
+        if (mType==3||mType==0){
+            newlist.get(1).setValue("1");
+        }
+
         usParamsetAdapter.replaceData(newlist);
 
         //读取数据
@@ -498,7 +513,12 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        return false;
+        switch (item.getItemId()){
+            case R.id.right_action:
+                refresh();
+                break;
+        }
+        return true;
     }
 
     @Override
@@ -525,7 +545,11 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
 
                     try {
                         double result = Double.parseDouble(value);
-                        result = Arith.add(10000, Arith.mul(result, 10000));
+                        if (mType==0){
+                            result = Arith.add(10000, Arith.mul(result, 10000));
+                        }else {
+                            result = Arith.sub(10000,Arith.mul(result,10000));
+                        }
                         nowSet[1][2] = (int) result;
                         writeRegisterValue();
                     } catch (NumberFormatException e) {
@@ -615,6 +639,10 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
 
 
             if (mType == 6) {
+                if (user_type==END_USER){
+                    toast(R.string.android_key2099);
+                    return;
+                }
                 String title = bean.getTitle();
                 String tips = getString(R.string.android_key3048) + ":" + "-1~-0.8,0.8~1";
                 String unit = "";
@@ -739,28 +767,49 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                 //发送信息
                 case SocketClientUtil.SOCKET_SEND:
                     BtnDelayUtil.sendMessageWrite(this);
+//                    if (nowSet != null) {
+//                        isWriteFinish = true;
+//                        int len = nowSet.length;
+//                        for (int i = 0;  i < len; i++) {
+//                            if (nowSet[i][2] != -1) {
+//                                nowPos = i;
+//                                isWriteFinish = false;
+//                                sendBytes = SocketClientUtil.sendMsgToServer(mClientUtilWriter, nowSet[i]);
+//                                LogUtil.i("发送写入" + (i + 1) + ":" + SocketClientUtil.bytesToHexString(sendBytes));
+//                                //发送完将值设置为-1
+//                                nowSet[i][2] = -1;
+//                                break;
+//                            }
+//                        }
+//                        //关闭tcp连接;判断是否请求完毕
+//                        if (isWriteFinish) {
+//                            //移除接收超时
+//                            this.removeMessages(TIMEOUT_RECEIVE);
+//                            SocketClientUtil.close(mClientUtilWriter);
+//                            BtnDelayUtil.refreshFinish();
+//                        }
+//                    }
                     if (nowSet != null) {
-                        isWriteFinish = true;
-                        for (int i = 0, len = nowSet.length; i < len; i++) {
-                            if (nowSet[i][2] != -1) {
-                                nowPos = i;
-                                isWriteFinish = false;
-                                sendBytes = SocketClientUtil.sendMsgToServer(mClientUtilWriter, nowSet[i]);
-                                LogUtil.i("发送写入" + (i + 1) + ":" + SocketClientUtil.bytesToHexString(sendBytes));
-                                //发送完将值设置为-1
-                                nowSet[i][2] = -1;
-                                break;
+                        if (nowPos >= nowSet.length-1) {
+                            nowPos = -1;
+                            //关闭tcp连接
+                            if (mClientUtilWriter != null) {
+                                mClientUtilWriter.closeSocket();
+                                BtnDelayUtil.refreshFinish();
+                                //移除接收超时
+                                this.removeMessages(TIMEOUT_RECEIVE);
                             }
-                        }
-                        //关闭tcp连接;判断是否请求完毕
-                        if (isWriteFinish) {
-                            //移除接收超时
-                            this.removeMessages(TIMEOUT_RECEIVE);
-                            SocketClientUtil.close(mClientUtilWriter);
-                            BtnDelayUtil.refreshFinish();
+                        } else {
+                            nowPos = nowPos + 1;
+                            if (nowSet[nowPos][2]==-1){
+                                mHandlerWrite.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
+                            }else {
+                                sendBytes = SocketClientUtil.sendMsgToServer(mClientUtilWriter, nowSet[nowPos]);
+                                LogUtil.i("发送写入" + (nowPos + 1) + ":" + SocketClientUtil.bytesToHexString(sendBytes));
+                            }
+
                         }
                     }
-
 
                     break;
                 //接收字节数组

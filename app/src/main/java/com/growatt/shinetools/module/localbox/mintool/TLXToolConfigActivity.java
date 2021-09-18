@@ -245,22 +245,16 @@ public class TLXToolConfigActivity extends DemoBase {
                         case 17:
                         case 18:
                         case 19:
-                            if (position >= 15 && position <= 19) {
-                                pos = position - 15;
-                            }
+                            pos = position - 15;
                             clazz = TLXConfigType2Activity.class;
                             break;
                         case 20:
-                            if (position == 20) {
-                                pos = 0;
-                            }
+                            pos = 0;
                             clazz = ConfigType6Activity.class;
                             break;
                         case 21:
                         case 22:
-                            if (position >= 21 && position <= 22) {
-                                pos = position - 21;
-                            }
+                            pos = position - 21;
                             clazz = TLXConfigType4Activity.class;
                             break;
                         case 1:

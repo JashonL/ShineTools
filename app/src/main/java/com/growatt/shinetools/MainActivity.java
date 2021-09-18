@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,12 +23,15 @@ import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.module.ConnetTutorialActivity;
 import com.growatt.shinetools.module.UsTutorialActivity;
 import com.growatt.shinetools.utils.MyToastUtils;
+import com.growatt.shinetools.utils.SharedPreferencesUnit;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
+import static com.growatt.shinetools.constant.GlobalConstant.SHAREPERFERENCE_IS_SHOWGUIDE;
 import static com.growatt.shinetools.modbusbox.ModbusUtil.AP_MODE;
 import static com.growatt.shinetools.modbusbox.ModbusUtil.USB_WIFI;
 
@@ -43,6 +47,8 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     LinearLayout headerTitle;
     @BindView(R.id.rlv_mode)
     RecyclerView rlvMode;
+    @BindView(R.id.cl_mask)
+    ConstraintLayout clMask;
 
 
     private DebugTypeAdapter adapter;
@@ -63,6 +69,16 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
         rlvMode.setAdapter(adapter);
 
         adapter.setOnItemClickListener(this);
+
+
+        SharedPreferencesUnit sharedPreferencesUnit = SharedPreferencesUnit.getInstance(ShineToosApplication.getContext());
+        boolean isShow = sharedPreferencesUnit.getBoolean(SHAREPERFERENCE_IS_SHOWGUIDE);
+        if (!isShow){
+            clMask.setVisibility(View.VISIBLE);
+            sharedPreferencesUnit.putBoolean(SHAREPERFERENCE_IS_SHOWGUIDE,true);
+        }else {
+            clMask.setVisibility(View.GONE);
+        }
 
     }
 
@@ -134,5 +150,22 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+
+
+    @OnClick({R.id.tv_know,R.id.cl_mask})
+    public void onViewClicked(View view) {
+        switch (view.getId()){
+            case R.id.tv_know:
+                if (clMask.getVisibility()==View.VISIBLE){
+                    clMask.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.cl_mask:
+
+                break;
+        }
+
     }
 }

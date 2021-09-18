@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.adapter.UsSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.bean.USDebugSettingBean;
@@ -52,6 +53,8 @@ import java.util.UUID;
 
 import butterknife.BindView;
 
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.KEFU_USER;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 
 public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
@@ -145,6 +148,7 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
 
     private int mType = -1;
 
+    private int user_type = KEFU_USER;
 
     @Override
     protected int getContentView() {
@@ -177,6 +181,8 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     protected void initData() {
+        //1.获取用户类型
+        user_type= ShineToosApplication.getContext().getUser_type();
         //设置项的下标
         setItemsIndex = getIntent().getIntExtra(KEY_OF_ITEM_SETITEMSINDEX, 0);
         switch (setItemsIndex) {
@@ -194,9 +200,15 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
                 registers = new String[]{"(3016)", "(3017)", "(3019)"};
                 break;
             case 3://离网功能
-                titls = new String[]{getString(R.string.m离网使能)
-                        , getString(R.string.m离网频率), getString(R.string.m离网电压)};
-                registers = new String[]{"(3079)", "(3081)", "(3080)"};
+                if (user_type == END_USER) {
+                    titls = new String[]{getString(R.string.m离网使能)};
+                    registers = new String[]{"(3079)"};
+                }else {
+                    titls = new String[]{getString(R.string.m离网使能)
+                            , getString(R.string.m离网频率), getString(R.string.m离网电压)};
+                    registers = new String[]{"(3079)", "(3081)", "(3080)"};
+                }
+
                 break;
             case 4://AFCI
                 titls = new String[]{getString(R.string.android_key2396), getString(R.string.AFCI阈值)+1, getString(R.string.AFCI阈值)+2,

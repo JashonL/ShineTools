@@ -169,8 +169,6 @@ public class OldInvConfigActivity extends DemoBase {
         Class clazz = null;
         int type = -1;
         int pos = -1;
-
-
         if (user_type==END_USER){
             switch (position){
                 case 0:type = 0;pos = 0;break;

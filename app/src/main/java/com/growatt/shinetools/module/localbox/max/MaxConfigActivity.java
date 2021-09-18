@@ -90,7 +90,14 @@ public class MaxConfigActivity extends DemoBase {
                     "", "", "",
                     "", "", "",
                     "", "", "",
-                    ""
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
             };
         } else {
             titles = new String[]{
@@ -120,7 +127,15 @@ public class MaxConfigActivity extends DemoBase {
                     "", "", "",
                     "", "", "",
                     "", "", "",
-                    ""
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
+                    "", "", "",
             };
 /*
             registers = new String[]{
@@ -161,36 +176,13 @@ public class MaxConfigActivity extends DemoBase {
                     case 0:
                     case 7:
                     case 13:
-                        if (position == 8) {
-                            pos = 3;
-                        }
-                        if (position == 9) {
+                        if (position == 7) {
                             pos = 4;
                         }
-                        if (position == 15) {
-                            pos = 5;
-                        }
-                        if (position == 16) {
-                            pos = 6;
-                        }
-                        if (position == 17) {
-                            pos = 7;
-                        }
-                        if (position == 18) {
+                        if (position == 13) {
                             pos = 8;
                         }
-                        if (position == 19) {
-                            pos = 9;
-                        }
-                        if (position == 20) {
-                            pos = 10;
-                        }
-                        if (position == 21) {
-                            pos = 11;
-                        }
-                        if (position == 36) {
-                            pos = 24;
-                        }
+
                         clazz = ConfigTypeSelectActivity.class;
                         break;
 //                    case 3: case 4:case 5:
@@ -204,44 +196,36 @@ public class MaxConfigActivity extends DemoBase {
                     case 24:
                     case 25:
                     case 26:
-                        if (position == 3) {
-                            pos = 0;
-                        }
-                        if (position == 4) {
-                            pos = 1;
-                        }
-                        if (position == 5) {
-                            pos = 2;
-                        }
-                        if (position == 7) {
+
+                        if (position == 6) {
                             pos = 3;
                         }
-                        if (position == 10) {
+                        if (position == 8) {
                             pos = 4;
                         }
-                        if (position == 11) {
+                        if (position == 9) {
                             pos = 5;
                         }
-                        if (position == 12) {
+                        if (position == 10) {
                             pos = 6;
                         }
-                        if (position == 13) {
+                        if (position == 11) {
                             pos = 7;
                         }
-                        if (position == 14) {
+                        if (position == 12) {
                             pos = 8;
                         }
 
-                        if (position == 32) {
+                        if (position == 23) {
                             pos = 31;
                         }
-                        if (position == 33) {
+                        if (position == 24) {
                             pos = 32;
                         }
-                        if (position == 34) {
+                        if (position == 25) {
                             pos = 33;
                         }
-                        if (position == 35) {
+                        if (position == 26) {
                             pos = 34;
                         }
                         clazz = ConfigType1Activity.class;
@@ -251,22 +235,16 @@ public class MaxConfigActivity extends DemoBase {
                     case 16:
                     case 17:
                     case 18:
-                        if (position >= 22 && position <= 27) {
-                            pos = position - 22;
-                        }
+                        pos = position - 14;
                         clazz = ConfigType2Activity.class;
                         break;
                     case 19:
-                        if (position == 28) {
-                            pos = 0;
-                        }
+                        pos = 0;
                         clazz = ConfigType6Activity.class;
                         break;
                     case 20:
                     case 21:
-                        if (position >= 29 && position <= 30) {
-                            pos = position - 29;
-                        }
+                        pos = position - 20;
                         clazz = ConfigType4Activity.class;
                         break;
                     case 1:
@@ -274,7 +252,7 @@ public class MaxConfigActivity extends DemoBase {
                     case 3:
                     case 4:
                     case 5:
-                        pos = position - 2;
+                        pos = position - 1;
                         clazz = ConfigType1AndPFActivity.class;
                         break;
                     case 22:

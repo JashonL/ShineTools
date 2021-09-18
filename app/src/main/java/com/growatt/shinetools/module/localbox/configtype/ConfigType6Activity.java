@@ -2,7 +2,6 @@ package com.growatt.shinetools.module.localbox.configtype;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
@@ -30,7 +28,6 @@ import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.growatt.shinetools.utils.BtnDelayUtil.TIMEOUT_RECEIVE;
@@ -107,12 +104,12 @@ public class ConfigType6Activity extends BaseActivity implements Toolbar.OnMenuI
 
     @Override
     protected void initViews() {
-        initHeaderView();
     }
 
     @Override
     protected void initData() {
         initIntent();
+        initHeaderView();
         initString();
     }
 
@@ -130,12 +127,12 @@ public class ConfigType6Activity extends BaseActivity implements Toolbar.OnMenuI
         //内容标题显示容器
         titles = new String[][]{
                 {
-                        String.format("%s%s", getString(R.string.m390PF调整值), "(101)"),
-                        String.format("%s%s", getString(R.string.m390PF调整值), "(102)"),
-                        String.format("%s%s", getString(R.string.m390PF调整值), "(103)"),
-                        String.format("%s%s", getString(R.string.m390PF调整值), "(104)"),
-                        String.format("%s%s", getString(R.string.m390PF调整值), "(105)"),
-                        String.format("%s%s", getString(R.string.m390PF调整值), "(106)"),
+                        String.format("%s%s", getString(R.string.m390PF调整值), ""),
+                        String.format("%s%s", getString(R.string.m390PF调整值), ""),
+                        String.format("%s%s", getString(R.string.m390PF调整值), ""),
+                        String.format("%s%s", getString(R.string.m390PF调整值), ""),
+                        String.format("%s%s", getString(R.string.m390PF调整值), ""),
+                        String.format("%s%s", getString(R.string.m390PF调整值), ""),
                 }
 //                {"PF调整值(101)", "PF调整值(102)", "PF调整值(103)", "PF调整值(104)", "PF调整值(105)", "PF调整值(106)"}
                 //参数设置

@@ -85,12 +85,20 @@ public class ConnetTutorialActivity extends BaseActivity implements EasyPermissi
         if (type == DebugConstant.TYPE_USB_WIFI) {
             titles = new String[]{getString(R.string.android_key267) + " 1/2", getString(R.string.android_key267) + " 2/2"};
             contents = new String[]{getString(R.string.android_key3069), getString(R.string.android_key3070)};
-            pics = new int[]{R.drawable.image01, R.drawable.image02};
+            if (getLanguage()==0){
+                pics = new int[]{R.drawable.image01, R.drawable.image02};
+            }else {
+                pics = new int[]{R.drawable.image01, R.drawable.image02_en};
+            }
         } else {
             titles = new String[]{getString(R.string.android_key267) + " 1/4", getString(R.string.android_key267) + " 2/4",
                     getString(R.string.android_key267) + " 3/4", getString(R.string.android_key267) + " 4/4"};
             contents = new String[]{getString(R.string.android_key3067), getString(R.string.android_key3068), getString(R.string.android_key3069), getString(R.string.android_key3070)};
-            pics = new int[]{R.drawable.image_shinex01, R.drawable.image_shinex02, R.drawable.image_shinex03, R.drawable.image_shinex04};
+            if (getLanguage()==0){
+                pics = new int[]{R.drawable.image_shinex01, R.drawable.image_shinex02, R.drawable.image_shinex03, R.drawable.image_shinex04};
+            }else {
+                pics = new int[]{R.drawable.image_shinex01, R.drawable.image_shinex02, R.drawable.image_shinex03, R.drawable.image02_en};
+            }
         }
 
         List<TutorialBean> list = new ArrayList<>();

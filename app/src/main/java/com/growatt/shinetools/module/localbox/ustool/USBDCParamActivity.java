@@ -121,7 +121,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
     @Override
     protected void initViews() {
         initToobar(toolbar);
-        tvTitle.setText(R.string.android_key227);
+        tvTitle.setText(R.string.android_key1315);
         toolbar.inflateMenu(R.menu.comment_right_menu);
         item = toolbar.getMenu().findItem(R.id.right_action);
         item.setTitle(R.string.android_key816);
@@ -144,6 +144,9 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
         rlvBatterySystem.setLayoutManager(new GridLayoutManager(this, 2));
         mBatteryAdapter = new UsInfoAdapter(R.layout.item_bdc_info, new ArrayList<>());
         rlvBatterySystem.setAdapter(mBatteryAdapter);
+
+        String hint=getString(R.string.android_key1001)+"1";
+        tvBdcName.setText(hint);
     }
 
     @Override
@@ -169,7 +172,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
 
         //状态信息
         String[] batteryInfo = {getString(R.string.电池通信类型), getString(R.string.电池厂商),
-                getString(R.string.电池工作模式), getString(R.string.电池状态),
+//                getString(R.string.电池工作模式), getString(R.string.电池状态),
                 getString(R.string.android_key233), getString(R.string.电池电流),
                 getString(R.string.android_key336), getString(R.string.最大放电电流),
                 "SOC", "SOH",
@@ -319,11 +322,12 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
     //BDC数量
     private void initBdcList(int num) {
         bcdList.clear();
+        String name = getString(R.string.android_key1001)+"1";
         if (num == 0) {
-            bcdList.add("BDC" + 1);
+            bcdList.add(name);
         } else {
             for (int i = 0; i < num; i++) {
-                String name = "BDC" + (i + 1);
+                name = getString(R.string.android_key1001) + (i + 1);
                 bcdList.add(name);
             }
         }
@@ -651,23 +655,23 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             String company = bdcInfoBean.getBattery_company();
             batteryData.get(1).setValue(company);
 
-            //电池工作模式
+       /*     //电池工作模式
             int workType = storageBeen.getBmsWorkType();
             batteryData.get(2).setValue(String.valueOf(workType));
 
             //电池状态
             int bmsStatus = storageBeen.getBmsStatus();
-            batteryData.get(3).setValue(getTextByBatteryStatus(bmsStatus));
+            batteryData.get(3).setValue(getTextByBatteryStatus(bmsStatus));*/
 
             //电池电压
             double vBms = storageBeen.getvBms();
             String s = vBms +"V";
-            batteryData.get(4).setValue(s);
+            batteryData.get(2).setValue(s);
 
             //电池电流
             double aBms = storageBeen.getaBms();
             String aBms_str = aBms +"A";
-            batteryData.get(5).setValue(aBms_str);
+            batteryData.get(3).setValue(aBms_str);
 
             //最大充电电流
             double aChargeMax = storageBeen.getaChargeMax();
@@ -679,7 +683,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             }
 
             String aChargeMax_str = aChargeMax +"A";
-            batteryData.get(6).setValue(aChargeMax_str);
+            batteryData.get(4).setValue(aChargeMax_str);
 
             //最大放电电流
             double aDischargeMax = storageBeen.getAdisChargeMax();
@@ -691,42 +695,42 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             }
 
             String aDischargeMax_str = aDischargeMax +"A";
-            batteryData.get(7).setValue(aDischargeMax_str);
+            batteryData.get(5).setValue(aDischargeMax_str);
             //SOC
             String soc = storageBeen.getSoc();
-            batteryData.get(8).setValue(String.valueOf(soc));
+            batteryData.get(6).setValue(String.valueOf(soc));
 
             //SOH
             int soh = storageBeen.getSoh();
             String soh_str=soh+"%";
-            batteryData.get(9).setValue(soh_str);
+            batteryData.get(7).setValue(soh_str);
 
             //Vcv
             double vCv = storageBeen.getvCV();
             String vCv_str=vCv+"V";
-            batteryData.get(10).setValue(vCv_str);
+            batteryData.get(8).setValue(vCv_str);
             //电池温度
             String tempBms = storageBeen.getTempBms();
-            batteryData.get(11).setValue(tempBms);
+            batteryData.get(9).setValue(tempBms);
 
             //电池故障信息
             int bmsError1 = storageBeen.getBmsError1();
             int bmsError2 = storageBeen.getBmsError2();
             String bmsError = bmsError1 + "-" + bmsError2;
-            batteryData.get(12).setValue(bmsError);
+            batteryData.get(10).setValue(bmsError);
             //电池警告信息
             int bmsWarining = storageBeen.getBmsWarining();
             int bmsWarining2 = storageBeen.getBmsWarining2();
             int bmsWarining3 = storageBeen.getBmsWarining3();
             String bmsWarning = bmsWarining + "-" + bmsWarining2 + "-" + bmsWarining3;
-            batteryData.get(13).setValue(bmsWarning);
+            batteryData.get(11).setValue(bmsWarning);
 
             //电池保护
             int bmsProtect1 = storageBeen.getBmsProtect1();
             int bmsProtect2 = storageBeen.getBmsProtect2();
             int bmsProtect3 = storageBeen.getBmsProtect3();
             String protect = bmsProtect1 + "-" + bmsProtect2 + "-" + bmsProtect3;
-            batteryData.get(14).setValue(protect);
+            batteryData.get(12).setValue(protect);
             mBatteryAdapter.notifyDataSetChanged();
         }
 

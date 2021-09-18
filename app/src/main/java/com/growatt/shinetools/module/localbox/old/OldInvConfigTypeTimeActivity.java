@@ -7,12 +7,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.base.DemoBase;
@@ -24,7 +29,6 @@ import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
-import com.growatt.shinetools.utils.Position;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,20 +44,26 @@ import static com.growatt.shinetools.utils.BtnDelayUtil.TIMEOUT_RECEIVE;
 /**
  * 单个寄存器选择设置
  */
-public class OldInvConfigTypeTimeActivity extends DemoBase {
-    String readStr ;
+public class OldInvConfigTypeTimeActivity extends DemoBase  implements Toolbar.OnMenuItemClickListener {
+    String readStr;
+    @BindView(R.id.status_bar_view)
+    View statusBarView;
+    @BindView(R.id.tv_title)
+    AppCompatTextView tvTitle;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.header_title)
+    LinearLayout headerTitle;
     @BindView(R.id.tvTitle1)
-    TextView mTvTitle1;
+    TextView tvTitle1;
     @BindView(R.id.btnSelect)
-    Button mBtnSelect;
+    Button btnSelect;
     @BindView(R.id.tvContent1)
-    TextView mTvContent1;
+    TextView tvContent1;
     @BindView(R.id.btnSetting)
-    Button mBtnSetting;
-    @BindView(R.id.headerView)
-    View headerView;
-    @BindView(R.id.tvRight)
-    TextView mTvRight;
+    Button btnSetting;
+
+
     private String mTitle;
     private int mType = -1;
     private int nowPos = -1;//当前选择下标
@@ -65,6 +75,7 @@ public class OldInvConfigTypeTimeActivity extends DemoBase {
     //当前秒
     private int nowSecond;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,9 +98,9 @@ public class OldInvConfigTypeTimeActivity extends DemoBase {
         funsSet = new int[][][]{
                 {{6, 45, -1}, {6, 46, -1}, {6, 47, -1}, {6, 48, -1}, {6, 49, -1}, {6, 50, -1}}
         };
-        mTvTitle1.setText(mTitle);
+        tvTitle.setText(mTitle);
         //设置初始化时间
-        mBtnSelect.setText(sdf.format(new Date()));
+        btnSelect.setText(sdf.format(new Date()));
         Calendar c1 = Calendar.getInstance();
         int year = c1.get(Calendar.YEAR);
         int month = c1.get(Calendar.MONTH);
@@ -120,21 +131,11 @@ public class OldInvConfigTypeTimeActivity extends DemoBase {
     }
 
     private void initHeaderView() {
-        setHeaderImage(headerView, R.drawable.icon_return, Position.LEFT, new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        setHeaderTitle(headerView, mTitle);
-        setHeaderTvTitle(headerView, getString(R.string.m370读取), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //读取寄存器的值
-                readRegisterValue();
-            }
-        });
+        initToobar(toolbar);
+        tvTitle.setText(mTitle);
+        toolbar.inflateMenu(R.menu.comment_right_menu);
+        toolbar.getMenu().findItem(R.id.right_action).setTitle(R.string.m370读取);
+        toolbar.setOnMenuItemClickListener(this);
     }
 
     //读取寄存器的值
@@ -228,7 +229,7 @@ public class OldInvConfigTypeTimeActivity extends DemoBase {
                     }
                     break;
                 default:
-                    BtnDelayUtil.dealMaxBtnWrite(this,what,mContext,mBtnSetting,mTvRight);
+                    BtnDelayUtil.dealMaxBtnWrite(this, what, mContext, btnSetting, toolbar);
                     break;
             }
         }
@@ -271,15 +272,15 @@ public class OldInvConfigTypeTimeActivity extends DemoBase {
                                     .append(month).append("-")
                                     .append(day).append(" ")
                                     .append(hour).append(":");
-                                    if (min < 10){
-                                        sb.append("0");
-                                    }
-                                    sb.append(min).append(":");
-                                    if (seconds < 10){
-                                        sb.append("0");
-                                    }
-                                    sb.append(seconds);
-                            mTvContent1.setText(readStr + ":" + sb.toString());
+                            if (min < 10) {
+                                sb.append("0");
+                            }
+                            sb.append(min).append(":");
+                            if (seconds < 10) {
+                                sb.append("0");
+                            }
+                            sb.append(seconds);
+                            tvContent1.setText(readStr + ":" + sb.toString());
                             toast(R.string.all_success);
                         } else {
                             toast(R.string.all_failed);
@@ -293,7 +294,7 @@ public class OldInvConfigTypeTimeActivity extends DemoBase {
                     }
                     break;
                 default:
-                    BtnDelayUtil.dealMaxBtn(this,what,mContext,mBtnSetting,mTvRight);
+                    BtnDelayUtil.dealMaxBtn(this, what, mContext, btnSetting, toolbar);
                     break;
             }
         }
@@ -348,17 +349,27 @@ public class OldInvConfigTypeTimeActivity extends DemoBase {
                                         //更新ui
                                         StringBuilder sb = new StringBuilder()
                                                 .append(year).append("-");
-                                        if (month + 1 < 10){ sb.append("0"); }
+                                        if (month + 1 < 10) {
+                                            sb.append("0");
+                                        }
                                         sb.append(month + 1).append("-");
-                                        if (dayOfMonth < 10){ sb.append("0"); }
+                                        if (dayOfMonth < 10) {
+                                            sb.append("0");
+                                        }
                                         sb.append(dayOfMonth).append(" ");
-                                        if (hourOfDay < 10){ sb.append("0"); }
+                                        if (hourOfDay < 10) {
+                                            sb.append("0");
+                                        }
                                         sb.append(hourOfDay).append(":");
-                                        if (minute < 10){ sb.append("0"); }
+                                        if (minute < 10) {
+                                            sb.append("0");
+                                        }
                                         sb.append(minute).append(":");
-                                        if (nowSecond < 10){ sb.append("0"); }
+                                        if (nowSecond < 10) {
+                                            sb.append("0");
+                                        }
                                         sb.append(nowSecond);
-                                        mBtnSelect.setText(sb.toString());
+                                        btnSelect.setText(sb.toString());
                                     }
                                 }
                                 // 设置初始时间
@@ -382,14 +393,17 @@ public class OldInvConfigTypeTimeActivity extends DemoBase {
                 }
         }
     }
+
     //连接对象:用于读取数据
     private SocketClientUtil mClientUtilReadCom;
-    private int[] funCom = {3,0,40};
+    private int[] funCom = {3, 0, 40};
+
     //读取寄存器的值
     private void readRegisterValueCom() {
         Mydialog.Show(mContext);
         mClientUtilReadCom = SocketClientUtil.connectServer(mHandlerReadCom);
     }
+
     /**
      * 读取寄存器handle
      */
@@ -416,7 +430,7 @@ public class OldInvConfigTypeTimeActivity extends DemoBase {
                             //移除外部协议
                             byte[] bs = RegisterParseUtil.removePro17(bytes);
                             //解析读取值，设置com地址以及model
-                            int comAddress = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes125(bs,30,0,1));
+                            int comAddress = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 30, 0, 1));
                             ModbusUtil.setComAddressOldInv(comAddress);
                             //关闭tcp连接
                             SocketClientUtil.close(mClientUtilReadCom);
@@ -438,9 +452,20 @@ public class OldInvConfigTypeTimeActivity extends DemoBase {
                     }
                     break;
                 default:
-                    BtnDelayUtil.dealTLXBtn(this, what, mContext,  mTvRight);
+                    BtnDelayUtil.dealTLXBtn(this, what, mContext, toolbar);
                     break;
             }
         }
     };
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.right_action:
+                //读取寄存器的值
+                readRegisterValue();
+                break;
+        }
+        return true;
+    }
 }

@@ -111,7 +111,7 @@ public class MixConfigType2Activity extends DemoBase {
                 , {3, 76, 77}//28  ---------------19
                 , {3, 78, 79}//29
         };
-        registers = new String[][]{
+      /*  registers = new String[][]{
                 {"(20)","(21)"},
                 {"(93)","(94)"},
                 {"(95)","(96)"},
@@ -137,7 +137,37 @@ public class MixConfigType2Activity extends DemoBase {
 
 
 
+        };*/
+
+
+        registers = new String[][]{
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""},
+                {"",""}
+
+
+
         };
+
         //内容标题显示容器
 //        titles = new String[][]{
 //                {getString(R.string.m379电源启动斜率),getString(R.string.m380电源重启斜率)},

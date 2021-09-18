@@ -2,7 +2,6 @@ package com.growatt.shinetools.module.localbox.configtype;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -36,7 +35,6 @@ import com.mylhyl.circledialog.view.listener.OnLvItemClickListener;
 import java.util.Arrays;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.growatt.shinetools.utils.BtnDelayUtil.TIMEOUT_RECEIVE;
@@ -91,12 +89,12 @@ public class ConfigType1AndPFActivity extends BaseActivity implements Toolbar.On
     @Override
     protected void initViews() {
         mContext = this;
-        initHeaderView();
     }
 
     @Override
     protected void initData() {
         initIntent();
+        initHeaderView();
         initString();
     }
 
@@ -126,12 +124,12 @@ public class ConfigType1AndPFActivity extends BaseActivity implements Toolbar.On
         };
         //内容标题显示容器
         titles = new String[][]{
-                {String.format("%s(2)", getString(R.string.android_key836)), mTitle},
-                {String.format("%s(2)", getString(R.string.android_key836)), mTitle, ""},
-                {String.format("%s(2)", getString(R.string.android_key836)), mTitle, ""},
-                {String.format("%s(2)", getString(R.string.android_key836)), mTitle, ""},
-                {String.format("%s(2)", getString(R.string.android_key836)), mTitle, ""},
-                {String.format("%s(2)", getString(R.string.android_key836)), mTitle, ""}
+                {getString(R.string.android_key836), mTitle},
+                {getString(R.string.android_key836), mTitle, ""},
+                {getString(R.string.android_key836), mTitle, ""},
+                {getString(R.string.android_key836), mTitle, ""},
+                {getString(R.string.android_key836), mTitle, ""},
+                {getString(R.string.android_key836), mTitle, ""}
         };
         tvTitle1.setText(titles[0][1]);
         tvTitle2.setText(titles[0][0]);

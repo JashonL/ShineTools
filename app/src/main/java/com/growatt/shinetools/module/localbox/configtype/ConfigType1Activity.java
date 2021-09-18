@@ -2,7 +2,6 @@ package com.growatt.shinetools.module.localbox.configtype;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -11,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -30,7 +28,6 @@ import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -78,13 +75,13 @@ public class ConfigType1Activity extends BaseActivity implements Toolbar.OnMenuI
 
     @Override
     protected void initViews() {
-        initHeaderView();
 
     }
 
     @Override
     protected void initData() {
         initIntent();
+        initHeaderView();
         initString();
     }
 

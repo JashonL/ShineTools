@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:padding="@dimen/dp_5"
-            android:text="BDC1"
+            android:text="battery1"
             android:textColor="@color/color_text_66"
             android:textSize="@dimen/size_content_sp_14" />
 

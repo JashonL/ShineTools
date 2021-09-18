@@ -739,7 +739,7 @@
 
     <!--us-->
     <color name="color_fault">#FF881E</color>
-
+    <color name="color_black_66">#66000000</color>
 
 
 </resources>

@@ -2,7 +2,6 @@ package com.growatt.shinetools.module.localbox.configtype;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
@@ -30,7 +28,6 @@ import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.growatt.shinetools.utils.BtnDelayUtil.TIMEOUT_RECEIVE;
@@ -98,12 +95,12 @@ public class ConfigType4Activity extends BaseActivity implements Toolbar.OnMenuI
 
     @Override
     protected void initViews() {
-        initHeaderView();
     }
 
     @Override
     protected void initData() {
         initIntent();
+        initHeaderView();
         initString();
     }
 
@@ -126,25 +123,25 @@ public class ConfigType4Activity extends BaseActivity implements Toolbar.OnMenuI
         };
         //内容标题显示容器
         titles = new String[][]{
-                {String.format("%s%s", getString(R.string.android_key880), "1(110)"),
-                        String.format("%s%s", getString(R.string.android_key880), "2(112)"),
-                        String.format("%s%s", getString(R.string.android_key880), "3(114)"),
-                        String.format("%s%s", getString(R.string.android_key880), "4(116)")
+                {String.format("%s%s", getString(R.string.android_key880), "1"),
+                        String.format("%s%s", getString(R.string.android_key880), "2"),
+                        String.format("%s%s", getString(R.string.android_key880), "3"),
+                        String.format("%s%s", getString(R.string.android_key880), "4")
                 },
-                {String.format("%s%s", getString(R.string.android_key883), "1(111)"),
-                        String.format("%s%s", getString(R.string.android_key883), "2(113)"),
-                        String.format("%s%s", getString(R.string.android_key883), "3(115)"),
-                        String.format("%s%s", getString(R.string.android_key883), "4(117)")
+                {String.format("%s%s", getString(R.string.android_key883), "1"),
+                        String.format("%s%s", getString(R.string.android_key883), "2"),
+                        String.format("%s%s", getString(R.string.android_key883), "3"),
+                        String.format("%s%s", getString(R.string.android_key883), "4")
                 },
-                {String.format("%s%s", getString(R.string.android_key880), "1(90)"),
-                        String.format("%s%s", getString(R.string.android_key880), "2(92)"),
-                        String.format("%s%s", getString(R.string.android_key880), "3(94)"),
-                        String.format("%s%s", getString(R.string.android_key880), "4(96)")
+                {String.format("%s%s", getString(R.string.android_key880), "1"),
+                        String.format("%s%s", getString(R.string.android_key880), "2"),
+                        String.format("%s%s", getString(R.string.android_key880), "3"),
+                        String.format("%s%s", getString(R.string.android_key880), "4")
                 },
-                {String.format("%s%s", getString(R.string.android_key883), "1(91)"),
-                        String.format("%s%s", getString(R.string.android_key883), "2(93)"),
-                        String.format("%s%s", getString(R.string.android_key883), "3(95)"),
-                        String.format("%s%s", getString(R.string.android_key883), "4(97)")
+                {String.format("%s%s", getString(R.string.android_key883), "1"),
+                        String.format("%s%s", getString(R.string.android_key883), "2"),
+                        String.format("%s%s", getString(R.string.android_key883), "3"),
+                        String.format("%s%s", getString(R.string.android_key883), "4")
                 }
 //                {"PF限制负载百分比点1(110)", "PF限制负载百分比点2(112)", "PF限制负载百分比点3(114)", "PF限制负载百分比点4(116)"}
 //                , {"PF限制功率因数1(111)", "PF限制功率因数2(113)", "PF限制功率因数3(115)", "PF限制功率因数4(117)"}

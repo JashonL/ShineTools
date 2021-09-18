@@ -867,6 +867,48 @@
             android:screenOrientation="portrait"
             />
 
+        <activity
+            android:name=".module.localbox.mintool.TLXWarningActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+
+        <activity
+            android:name=".module.localbox.mintool.TLXHAutoTestActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".module.localbox.mintool.TLXConfigType4Activity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".module.localbox.old.OldInvConfigType6Activity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".module.localbox.old.OldInvAdvanceSetActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".module.localbox.mix.MixSPIActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
 
 
         <!--==================================模块页面=========================================-->

@@ -606,7 +606,6 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
         t1H2IvStatus = title1Head2.findViewById(R.id.ivStatus);
         TextView t1h2TvTitle = title1Head2.findViewById(R.id.tvHeadTitle);
         t1h2TvTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
-
         mC1List = new ArrayList<>();
         mC1RecyclerView = content1Head2.findViewById(R.id.recyclerViewC1);
         mC1RecyclerView.setLayoutManager(new GridLayoutManager(this, c1Title2.length + 1, LinearLayoutManager.HORIZONTAL, false));
@@ -723,6 +722,8 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
         tvTitleBdc = header.findViewById(R.id.tvTitleBdc);
         TextView bdcTitle = tvTitleBdc.findViewById(R.id.tvHeadTitle);
         bdcTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
+        bdcTitle.setText(R.string.android_key1315);
+
         tvTitleBattry = header.findViewById(R.id.tvTitleBattry);
         TextView battryTitle = tvTitleBattry.findViewById(R.id.tvHeadTitle);
         battryTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));

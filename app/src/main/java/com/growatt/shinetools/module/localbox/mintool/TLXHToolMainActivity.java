@@ -472,7 +472,11 @@ public class  TLXHToolMainActivity extends DemoBase implements View.OnClickListe
         cvWarning = header1.findViewById(R.id.cvWarning);
         mControlRecyclerView = (RecyclerView) header1.findViewById(R.id.rvControl);
         llAutoTest = header1.findViewById(R.id.llAutoTest);
-        mControlRecyclerView.setLayoutManager(new GridLayoutManager(this,5));
+        int count= 5;
+        if (END_USER == ShineToosApplication.getContext().getUser_type()){
+            count=4;
+        }
+        mControlRecyclerView.setLayoutManager(new GridLayoutManager(this,count));
         mControlList = new ArrayList<>();
         String[] mConTitles = new String[]{
                 getString(R.string.m283设置配置), getString(R.string.m284参数设置),getString(R.string.m充放电管理),

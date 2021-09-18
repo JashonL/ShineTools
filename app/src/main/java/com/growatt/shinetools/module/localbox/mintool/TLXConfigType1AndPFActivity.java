@@ -103,12 +103,12 @@ public class TLXConfigType1AndPFActivity extends DemoBase {
         };
         //内容标题显示容器
         titles = new String[][]{
-                { String.format("%s(2)",getString(R.string.m377记忆使能)),mTitle},
-                { String.format("%s(2)",getString(R.string.m377记忆使能)),mTitle,""},
-                { String.format("%s(2)",getString(R.string.m377记忆使能)),mTitle,""},
-                { String.format("%s(2)",getString(R.string.m377记忆使能)),mTitle,""},
-                {String.format("%s(2)",getString(R.string.m377记忆使能)),mTitle,""},
-                { String.format("%s(2)",getString(R.string.m377记忆使能)),mTitle,""}
+                { getString(R.string.m377记忆使能),mTitle},
+                { getString(R.string.m377记忆使能),mTitle,""},
+                { getString(R.string.m377记忆使能),mTitle,""},
+                { getString(R.string.m377记忆使能),mTitle,""},
+                {getString(R.string.m377记忆使能),mTitle,""},
+                { getString(R.string.m377记忆使能),mTitle,""}
         };
         mTvTitle1.setText(titles[0][1]);
         mTvTitle2.setText(titles[0][0]);

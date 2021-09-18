@@ -3951,7 +3951,7 @@
     <string name="m186在线">Online</string>
     <string name="m187视在功率">Active/apparent power</string>
     <string name="m188暂无数据">No data</string>
-    <string name="m189额定功率">Normal power</string>
+    <string name="m189额定功率">Normal Power</string>
     <string name="m190警告">Warning</string>
     <string name="m191请输入备注信息">Please enter the note information</string>
     <string name="m192第一路PV电压">Voltage of MPTT1</string>

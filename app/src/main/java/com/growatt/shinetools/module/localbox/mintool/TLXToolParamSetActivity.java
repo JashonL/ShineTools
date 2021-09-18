@@ -357,7 +357,7 @@ public class TLXToolParamSetActivity extends DemoBase {
                             pos = 17;
                             break;
 //                    case 31:type = 1;pos = 20;break;
-                        case 31:
+                        case 30:
                             pos = 1;
                             clazz = NewConfigTypeHLActivity.class;
                             break;

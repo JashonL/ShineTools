@@ -1,7 +1,6 @@
 package com.growatt.shinetools.module.localbox.configtype;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -29,7 +28,6 @@ import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -73,13 +71,13 @@ public class NewConfigTypeHLActivity extends BaseActivity  implements Toolbar.On
 
     @Override
     protected void initViews() {
-        initHeaderView();
 
     }
 
     @Override
     protected void initData() {
         initIntent();
+        initHeaderView();
         initString();
     }
 

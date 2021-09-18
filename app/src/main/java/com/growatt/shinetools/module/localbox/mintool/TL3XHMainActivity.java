@@ -285,8 +285,8 @@ public class TL3XHMainActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void initViews() {
-        initString();
         initHeaderView();
+        initString();
 //        initDatas();
 //        initRecyclerView();
         initRecyclerView1();

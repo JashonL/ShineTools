@@ -105,6 +105,8 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     protected void initData() {
+        //1.获取用户类型
+        user_type= ShineToosApplication.getContext().getUser_type();
         //初始化列表数据
         String[] titls = new String[]{getString(R.string.m396开关逆变器), getString(R.string.m398有功功率百分比), getString(R.string.android_key961),
                 getString(R.string.m防逆流设置), getString(R.string.dry_setting), getString(R.string.android_key952), getString(R.string.android_key3111),
@@ -134,8 +136,7 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
         }
         newlist.get(0).setItemType(UsSettingConstant.SETTING_TYPE_SWITCH);
 
-        //1.获取用户类型
-        user_type= ShineToosApplication.getContext().getUser_type();
+
         //2.根据用户类型初始化
         if (user_type == END_USER){
             newlist.get(3).setItemType(UsSettingConstant.SETTING_TYPE_SWITCH);

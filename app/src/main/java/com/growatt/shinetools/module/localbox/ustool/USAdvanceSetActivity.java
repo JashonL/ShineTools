@@ -140,7 +140,7 @@ public class USAdvanceSetActivity extends BaseActivity implements Toolbar.OnMenu
         }
         toolbar.inflateMenu(R.menu.comment_right_menu);
         item = toolbar.getMenu().findItem(R.id.right_action);
-        item.setTitle(R.string.android_key816);
+        item.setTitle("");
         toolbar.setOnMenuItemClickListener(this);
         boolean isShow = getIntent().getBooleanExtra("isShow", false);
         if (isShow && getLanguage() == 0) {
