@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.module.localbox.ustool.USToolMainActivity;
 import com.growatt.shinetools.module.localbox.ustool.USToolsMainActivityV2;
@@ -30,9 +31,14 @@ import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.AppSystemUtils;
 import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.CommenUtils;
+import com.growatt.shinetools.utils.SharedPreferencesUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
+import static com.growatt.shinetools.constant.GlobalConstant.KEY_END_USER_PWD;
+import static com.growatt.shinetools.constant.GlobalConstant.KEY_MODIFY_PWD;
 
 public class UsTutorialActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
     @BindView(R.id.status_bar_view)
@@ -56,6 +62,8 @@ public class UsTutorialActivity extends BaseActivity implements Toolbar.OnMenuIt
 
     private DialogFragment dialogFragment;
     private DialogFragment gpsDialogFragment;
+
+    private int user_type;
 
     @Override
     protected int getContentView() {
@@ -92,11 +100,28 @@ public class UsTutorialActivity extends BaseActivity implements Toolbar.OnMenuIt
         toolbar.setOnMenuItemClickListener(this);
         toolbar.inflateMenu(R.menu.maintain_login_menu);
         toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.tittle_more));
+        user_type = ShineToosApplication.getContext().getUser_type();
     }
 
     @Override
     protected void initData() {
+        if (user_type == END_USER) {
+            //弹出是否要修改密码
+            String pwd = SharedPreferencesUnit.getInstance(this).get(KEY_END_USER_PWD);
+            boolean isShow = SharedPreferencesUnit.getInstance(this).getBoolean(KEY_MODIFY_PWD);
+            if (TextUtils.isEmpty(pwd) && !isShow) {
+                CircleDialogUtils.showCommentDialog(this, getString(R.string.android_key2263),
+                        getString(R.string.android_key3112), getString(R.string.android_key1935),
+                        getString(R.string.android_key2152), Gravity.CENTER, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AppSystemUtils.modifyPwd(UsTutorialActivity.this);
+                            }
 
+                        }, view -> SharedPreferencesUnit.getInstance(UsTutorialActivity.this).putBoolean(KEY_MODIFY_PWD, true));
+
+            }
+        }
     }
 
     @Override

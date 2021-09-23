@@ -187,11 +187,13 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
         setItemsIndex = getIntent().getIntExtra(KEY_OF_ITEM_SETITEMSINDEX, 0);
         switch (setItemsIndex) {
             case 0://有功功率百分比
-                titls = new String[]{getString(R.string.m398有功功率百分比), getString(R.string.m395记忆)};
+                titls = new String[]{getString(R.string.m398有功功率百分比), getString(R.string.android_key836)};
                 registers = new String[]{"(3)", "(3)"};
                 break;
             case 1://防逆流设置
-                titls = new String[]{getString(R.string.m防逆流设置), getString(R.string.m防逆流功率百分比), getString(R.string.android_key748)};
+                titls = new String[]{getString(R.string.m防逆流设置),
+                        getString(R.string.m防逆流功率百分比),
+                        getString(R.string.android_key748)};
                 registers = new String[]{"(122)", "(123)", "(3000)"};
                 break;
             case 2://干接点设置
@@ -201,7 +203,7 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
                 break;
             case 3://离网功能
                 if (user_type == END_USER) {
-                    titls = new String[]{getString(R.string.m离网使能)};
+                    titls = new String[]{getString(R.string.m离网功能使能)};
                     registers = new String[]{"(3079)"};
                 }else {
                     titls = new String[]{getString(R.string.m离网使能)

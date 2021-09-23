@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/dp_35"
-              android:background="@color/white"
-    >
-    <TextView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_35"
+    android:background="@color/white">
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -14,6 +14,9 @@
         android:textColor="@color/theme_blue_color"
         android:maxLines="1"
         android:text="title"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMaxTextSize="@dimen/size_content_sp_14"
+        app:autoSizeMinTextSize="@dimen/sp_6"
         android:paddingLeft="@dimen/dp_20"
         />
     <TextView

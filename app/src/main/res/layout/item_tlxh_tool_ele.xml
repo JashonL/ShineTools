@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_40"
+    android:layout_height="@dimen/dp_45"
     android:orientation="horizontal">
 
     <ImageView
@@ -13,11 +13,10 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitle"
-        android:layout_width="@dimen/dp_135"
+        android:layout_width="@dimen/dp_80"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/dp_10"
         android:gravity="center_vertical"
-        android:maxLines="2"
         android:paddingRight="@dimen/dp_5"
         android:textSize="@dimen/size_content_sp_12"
         app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
@@ -25,15 +24,16 @@
         app:autoSizeTextType="uniform" />
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp_100"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvToday"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:maxLines="2"
             android:text="--"
@@ -45,27 +45,29 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvUnitToday"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:maxLines="2"
             android:paddingTop="@dimen/dp_2"
             android:textColor="@color/note_bg_white"
-            android:textSize="@dimen/size_content_note"
+            android:textSize="@dimen/size_content_sp_12"
             app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
             app:autoSizeMinTextSize="@dimen/sp_6"
             app:autoSizeTextType="uniform" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp_100"
         android:layout_height="match_parent"
-        android:layout_weight="1.2"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTotal"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:maxLines="2"
             android:text="--"
@@ -77,14 +79,17 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvUnitTotal"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:maxLines="2"
             android:paddingTop="@dimen/dp_2"
             android:textColor="@color/note_bg_white"
-            android:textSize="@dimen/size_content_note"
+            android:textSize="@dimen/size_content_sp_12"
             app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
             app:autoSizeMinTextSize="@dimen/sp_6"
             app:autoSizeTextType="uniform" />
     </LinearLayout>
+
+
 </LinearLayout>

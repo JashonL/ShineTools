@@ -26,7 +26,7 @@
         android:textColor="@color/color_text_33"
         android:textSize="@dimen/size_content_sp_14"
         app:autoSizeMaxTextSize="@dimen/size_content_sp_14"
-        app:autoSizeMinTextSize="@dimen/size_content_note"
+        app:autoSizeMinTextSize="@dimen/sp_6"
         app:autoSizeTextType="uniform" />
 
 

@@ -82,14 +82,14 @@ public class MixToolChargeManagerActivity extends DemoBase {
                 ,getString(R.string.m放电停止SOC)
         };
         registers = new String[]{
-                "(1080~1118)"
-                ,"(1007)"
-                ,"(1000)"
-                ,"(1092)"
-                ,"(1045)"
-                ,"(1091)"
-                ,"(1046)"
-                ,"(1071)"
+                ""
+                ,""
+                ,""
+                ,""
+                ,""
+                ,""
+                ,""
+                ,""
         };
     }
 

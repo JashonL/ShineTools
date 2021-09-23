@@ -139,7 +139,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
 
     //设置项
     private UsParamsetAdapter usParamsetAdapter;
-    private List<UsToolParamBean> mSettingList;
+    private List<UsToolParamBean> mSettingList=new ArrayList<>();
     private RecyclerView mRvParamset;
 
 
@@ -301,11 +301,11 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                 , getString(R.string.并机防逆流降载), getString(R.string.单机防逆流降载), getString(R.string.负载优先模式降载), getString(R.string.检测CT错反接降载)
         };
         eleTitles = new String[]{
-                getString(R.string.photovoltaic_generatingcapacity) + "\n" + "(kWh)",
-                getString(R.string.m1261Charged) + "\n(kWh)",
-                getString(R.string.m1260Discharged) + "\n(kWh)",
-                getString(R.string.m并网电量) + "\n(kWh)",
-                getString(R.string.m用户使用电量) + "\n(kWh)",
+                getString(R.string.android_key2019) + "\n" + "(kWh)",
+                getString(R.string.android_key2371) + "\n(kWh)",
+                getString(R.string.android_key2370) + "\n(kWh)",
+                getString(R.string.android_key1319) + "\n(kWh)",
+                getString(R.string.android_key1320) + "\n(kWh)",
         };
         eleResId = new int[]{
                 R.drawable.tlxh_ele_fadian, R.drawable.tlxh_ele_chongdian,
@@ -381,7 +381,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         user_type= ShineToosApplication.getContext().getUser_type();
         String[] title = new String[]{
                 getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
-                , getString(R.string.m充放电管理), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
+                , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
                 , getString(R.string.m286高级设置), getString(R.string.m291设备信息)
         };
 
@@ -394,7 +394,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         if (user_type == END_USER||user_type==MAINTEAN_USER) {
             title = new String[]{
                     getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
-                    , getString(R.string.m充放电管理), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
+                    , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
                     , getString(R.string.m291设备信息)
             };
 

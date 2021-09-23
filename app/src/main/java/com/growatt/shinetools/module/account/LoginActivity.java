@@ -239,13 +239,13 @@ public class LoginActivity extends BaseNetWorkActivity implements RadioGroup.OnC
                     JSONObject jsonObject1 = obj.optJSONObject("user");
                     int role = jsonObject1.optInt("role", 2);
 
-                    if (role==1||role==2||role==3){//客服
-                        loginManager.loginSuccess(KEFU_USER, cbAuto.isChecked(),
-                                etUsername.getText().toString(), etPassword.getText().toString());
-                    }else if (role==6||role==14||role==7||role==15||role==17||role==18||role==31||role==30){//分销商 安装商
+                  if (role==6||role==14||role==7||role==15||role==17||role==18||role==31||role==30||role==34){//分销商 安装商
                         loginManager.loginSuccess(MAINTEAN_USER, cbAuto.isChecked(),
                                 etUsername.getText().toString(), etPassword.getText().toString());
-                    }
+                    }else {
+                      loginManager.loginSuccess(KEFU_USER, cbAuto.isChecked(),
+                              etUsername.getText().toString(), etPassword.getText().toString());
+                  }
 
 
 

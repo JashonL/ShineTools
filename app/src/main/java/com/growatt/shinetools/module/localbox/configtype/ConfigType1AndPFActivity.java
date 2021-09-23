@@ -135,7 +135,7 @@ public class ConfigType1AndPFActivity extends BaseActivity implements Toolbar.On
         tvTitle2.setText(titles[0][0]);
         nowItems = items[0];
         //设置默认使能值
-        btnSelect.setText(nowItems[1] + "(1)");
+        btnSelect.setText(nowItems[1]);
         nowSet[0][2] = 1;
     }
 
@@ -337,7 +337,7 @@ public class ConfigType1AndPFActivity extends BaseActivity implements Toolbar.On
                     @Override
                     public boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         if (nowItems != null && nowItems.length > position) {
-                            btnSelect.setText(nowItems[position] + "(" + position + ")");
+                            btnSelect.setText(nowItems[position]);
                             nowSet[0][2] = position;
                         }
                         return true;

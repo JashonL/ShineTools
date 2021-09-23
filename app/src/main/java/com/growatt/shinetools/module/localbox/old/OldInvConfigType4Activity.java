@@ -108,25 +108,25 @@ public class OldInvConfigType4Activity extends DemoBase {
         };
         //内容标题显示容器
         titles = new String[][]{
-                {String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"1(110)"),
-                        String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"2(112)"),
-                        String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"3(114)"),
-                        String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"4(116)")
+                {String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"1"),
+                        String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"2"),
+                        String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"3"),
+                        String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"4")
                 },
-                {String.format("%s%s",getString(R.string.m392PF限制功率因数),"1(111)"),
-                        String.format("%s%s",getString(R.string.m392PF限制功率因数),"2(113)"),
-                        String.format("%s%s",getString(R.string.m392PF限制功率因数),"3(115)"),
-                        String.format("%s%s",getString(R.string.m392PF限制功率因数),"4(117)")
+                {String.format("%s%s",getString(R.string.m392PF限制功率因数),"1"),
+                        String.format("%s%s",getString(R.string.m392PF限制功率因数),"2"),
+                        String.format("%s%s",getString(R.string.m392PF限制功率因数),"3"),
+                        String.format("%s%s",getString(R.string.m392PF限制功率因数),"4")
                 },
-                {String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"1(90)"),
-                        String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"2(92)"),
-                        String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"3(94)"),
-                        String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"4(96)")
+                {String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"1"),
+                        String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"2"),
+                        String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"3"),
+                        String.format("%s%s",getString(R.string.m391PF限制负载百分比点),"4")
                 },
-                {String.format("%s%s",getString(R.string.m392PF限制功率因数),"1(91)"),
-                        String.format("%s%s",getString(R.string.m392PF限制功率因数),"2(93)"),
-                        String.format("%s%s",getString(R.string.m392PF限制功率因数),"3(95)"),
-                        String.format("%s%s",getString(R.string.m392PF限制功率因数),"4(97)")
+                {String.format("%s%s",getString(R.string.m392PF限制功率因数),"1"),
+                        String.format("%s%s",getString(R.string.m392PF限制功率因数),"2"),
+                        String.format("%s%s",getString(R.string.m392PF限制功率因数),"3"),
+                        String.format("%s%s",getString(R.string.m392PF限制功率因数),"4")
                 }
 //                {"PF限制负载百分比点1(110)", "PF限制负载百分比点2(112)", "PF限制负载百分比点3(114)", "PF限制负载百分比点4(116)"}
 //                , {"PF限制功率因数1(111)", "PF限制功率因数2(113)", "PF限制功率因数3(115)", "PF限制功率因数4(117)"}

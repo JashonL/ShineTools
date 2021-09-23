@@ -19,9 +19,15 @@
         <!-- 设置 显示在toobar上菜单文字的颜色 -->
         <item name="actionMenuTextColor">@color/color_text_33</item>
         <!-- 设置toolbar 弹出菜单的字体大小和溢出菜单文字大小-->
-        <item name="android:textSize">@dimen/size_title_sp_14</item>
+        <item name="android:textSize">@dimen/size_content_sp_12</item>
         <item name="android:textAllCaps">false</item>
 
+    </style>
+
+
+
+    <style name="ButtonTheme" parent="Widget.AppCompat.Button">
+        <item name="textAllCaps">false</item>
     </style>
 
 </resources>

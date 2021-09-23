@@ -34,7 +34,7 @@ public class MaxContentAdapter extends BaseQuickAdapter<MaxContentBean, BaseView
         int resId = 0;
         switch (item.getStatus()){
             case 1://蓝色
-                resId = R.color.mainColor;
+                resId = R.color.theme_blue_color;
                 break;
             case 2://内容颜色
                 resId = R.color.max_main_text_content;
