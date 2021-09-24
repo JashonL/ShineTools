@@ -23,6 +23,9 @@ public class USChargePriorityBean extends TLXHChargePriorityBean{
     private String startTimeNote;
     private String endTimeNote;
 
+    //是否特殊日
+    private boolean isSpecial;
+
 
 
 
@@ -99,5 +102,11 @@ public class USChargePriorityBean extends TLXHChargePriorityBean{
         isAllWeek = allWeek;
     }
 
+    public boolean isSpecial() {
+        return isSpecial;
+    }
 
+    public void setSpecial(boolean special) {
+        isSpecial = special;
+    }
 }

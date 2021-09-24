@@ -3059,7 +3059,7 @@
     <string name="android_key3056">Grid Code Parameter Setting</string>
     <string name="android_key3057">End User</string>
     <string name="android_key3058">O&amp;M User</string>
-    <string name="android_key3059">Remember</string>
+    <string name="android_key3059">Automatic Log-in</string>
     <string name="android_key3060">OSS Account</string>
     <string name="android_key3061">Please enter OSS account</string>
     <string name="android_key3062">Please enter the initial password</string>
@@ -5056,7 +5056,7 @@
     <string name="m657不连接功率采集计">do not connected to power collection</string>
     <string name="m658请确保逆变器正处于等待或待机状态">Make sure the inverter is in a waiting or standby state.</string>
     <string name="m添加电表">Add meter</string>
-    <string name="m设置未保存是否退出">Exit without save the setting?</string>
+    <string name="m设置未保存是否退出">You will disconnect the device for debugging!</string>
     <string name="m设备不能为空">Device cannot be empty</string>
     <string name="m设备暂时未加入场景">The device is temporarily not added to the scene.</string>
     <string name="m系统状态">System status</string>
@@ -6106,7 +6106,7 @@
     <string name="m281电桩断开">Disconnected</string>
     <string name="输入值超出规定长度">The input value exceeds the specified length</string>
     <string name="设置未做任何更改">No changes to settings</string>
-    <string name="退出设置提示">The changed settings are not saved. Do you want to discard the changes and exit</string>
+    <string name="退出设置提示">confirm exit</string>
     <string name="m电桩电子锁">Electric pile electronic lock</string>
     <string name="外部电流采样接线方式">Wiring method of external current sampling</string>
     <string name="m电表设备地址">Meter device address</string>
@@ -6490,7 +6490,7 @@
     <string name="电池警告信息">Battery Warning Message</string>
     <string name="电池保护信息">Battery Protection Information</string>
     <string name="充电电池低温">Low temperature of rechargeable battery</string>
-    <string name="ems_explain">Self-consumption Mode：\nLoad First mode(Self-consumption Mode) :the default mode and could maximize the solar energy and lower the power imported from the grid The solar energy priority is load > battery > grid.When the solar power is sufficient, the solar energy will provide the power to the loads, then the surplus solar energy will charge the battery system, once the battery system is full the surplus solar power will export to the grid.When the solar power is not sufficient, the battery system will discharge to provide the power to the loads, if the power from ESS is not enough, then the grid will take part in. \n\nTOU Battery Charging Mode：\nBattery First Mode(TOU Battery Charging Mode), is used for the multi-step electricity, could store the energy into the battery when the electricity price is low or store the energy before the blackout happens The solar energy priority is Battery > Load > Grid.When the solar power is sufficient, it will charge the battery system first, then the surplus solar power to the loads,When the solar power is insufficient, the hybrid system will draw the power from the grid to charge the battery system with solar power together to reach the setting point \n\nTOU Battery Discharging Mode：\nThe Grid First Mode(TOU Battery Discharging Mode), is used to export the power to the grid in response to the grid scheduling.The solar energy priority is Load > Grid > Battery When the solar power is sufficient, PV will provide the power to the loads and export power to the grid.If the solar power is insufficient, the battery system will provide power with PV to the loads, and export power to the grid.</string>
+    <string name="ems_explain">Self-consumption Mode：\nLoad First mode(Self-consumption Mode) :the default mode and could maximize the solar energy and lower the power imported from the grid The solar energy priority is load > battery > grid.When the solar power is sufficient, the solar energy will provide the power to the loads, then the surplus solar energy will charge the battery system, once the battery system is full the surplus solar power will export to the grid.When the solar power is not sufficient, the battery system will discharge to provide the power to the loads, if the power from ESS is not enough, then the grid will take part in. \n\nTOU Battery Charging Mode：\nBattery First Mode(TOU Battery Charging Mode), is used for the multi-step electricity, could store the energy into the battery when the electricity price is low or store the energy before the blackout happens The solar energy priority is Battery > Load > Grid.When the solar power is sufficient, it will charge the battery system first, then the surplus solar power to the loads,When the solar power is insufficient, the hybrid system will draw the power from the grid to charge the battery system with solar power together to reach the setting point \n\nTOU Battery Discharging Mode：\nThe Grid First Mode(TOU Battery Discharging Mode), is used to export the power to the grid in response to the grid scheduling.The solar energy priority is Load > Grid > Battery When the solar power is sufficient, PV will provide the power to the loads and export power to the grid.If the solar power is insufficient, the battery system will provide power with PV to the loads, and export power to the grid.\nIf the solar power is insufficient, the battery system will provide power with PV to the loads, and export power to the grid.</string>
 
 
 </resources>

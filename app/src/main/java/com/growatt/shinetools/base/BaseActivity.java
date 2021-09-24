@@ -5,18 +5,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.growatt.shinetools.MainActivity;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.ShineToosApplication;
-import com.growatt.shinetools.module.CustomScanActivity;
+import com.growatt.shinetools.WebViewActivity;
 import com.growatt.shinetools.module.account.LoginActivity;
-import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.MyToastUtils;
 import com.gyf.immersionbar.ImmersionBar;
@@ -127,6 +124,7 @@ public abstract class BaseActivity extends SwipeBackActivity {
         //是否允许滑动
         if (this instanceof MainActivity
                 || this instanceof LoginActivity
+                ||this instanceof WebViewActivity
 //                || this instanceof OssJKActivity
 //                || this instanceof MaxMain2Activity
         ) {

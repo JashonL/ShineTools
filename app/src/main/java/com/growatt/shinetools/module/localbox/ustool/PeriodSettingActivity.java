@@ -130,7 +130,7 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
 
         selectIndex = getIntent().getIntExtra("selectIndex", 0);
         currentPos = getIntent().getIntExtra("currentPos", 0);
-         isAllYear = getIntent().getBooleanExtra("isAllYear", false);
+        isAllYear = getIntent().getBooleanExtra("isAllYear", false);
         if (selectIndex < 4) {
             titles = new String[]{getString(R.string.android_key3099), getString(R.string.m222时间段),
                     getString(R.string.android_key3100), getString(R.string.m88使能)};
@@ -164,35 +164,61 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
             bean.setTitle(titles[i]);
             bean.setItemType(itemTypes[i]);
             bean.setUnit("");
-            switch (i) {
-                case 0://周
-                    bean.setValue(String.valueOf(0));
-                    bean.setValueStr(isEnbles[3][0]);
+            if (selectIndex < 4) {
+                switch (i) {
+                    case 0://周
+                        bean.setValue(String.valueOf(0));
+                        bean.setValueStr(isEnbles[3][0]);
 
-                    setBean.setIsEnableWeekIndex(0);
-                    setBean.setIsEnableWeek(isEnbles[3][0]);
-                    break;
-                case 1://时间段
-                    bean.setValue(String.valueOf(0));
-                    bean.setValueStr("00:00~00:00");
+                        setBean.setIsEnableWeekIndex(0);
+                        setBean.setIsEnableWeek(isEnbles[3][0]);
+                        break;
+                    case 1://时间段
+                        bean.setValue(String.valueOf(0));
+                        bean.setValueStr("00:00~00:00");
 
-                    setBean.setTimePeriod("00:00~00:00");
-                    break;
-                case 2://ems状态
-                    bean.setValue(String.valueOf(0));
-                    bean.setValueStr(isEnbles[0][0]);
+                        setBean.setTimePeriod("00:00~00:00");
+                        break;
+                    case 2://ems状态
+                        bean.setValue(String.valueOf(0));
+                        bean.setValueStr(isEnbles[0][0]);
 
-                    setBean.setIsEnableA(isEnbles[0][0]);
-                    setBean.setIsEnableAIndex(0);
-                    break;
-                case 3://使能
-                    bean.setValue(String.valueOf(1));
-                    bean.setValueStr(isEnbles[1][0]);
+                        setBean.setIsEnableA(isEnbles[0][0]);
+                        setBean.setIsEnableAIndex(0);
+                        break;
+                    case 3://使能
+                        bean.setValue(String.valueOf(1));
+                        bean.setValueStr(isEnbles[1][0]);
 
-                    setBean.setIsEnableB(isEnbles[1][0]);
-                    setBean.setIsEnableBIndex(1);
-                    break;
+                        setBean.setIsEnableB(isEnbles[1][0]);
+                        setBean.setIsEnableBIndex(1);
+                        break;
+                }
+            } else {
+                switch (i) {
+                    case 0://时间段
+                        bean.setValue(String.valueOf(0));
+                        bean.setValueStr("00:00~00:00");
+
+                        setBean.setTimePeriod("00:00~00:00");
+                        break;
+                    case 1://ems状态
+                        bean.setValue(String.valueOf(0));
+                        bean.setValueStr(isEnbles[0][0]);
+
+                        setBean.setIsEnableA(isEnbles[0][0]);
+                        setBean.setIsEnableAIndex(0);
+                        break;
+                    case 2://使能
+                        bean.setValue(String.valueOf(1));
+                        bean.setValueStr(isEnbles[1][0]);
+
+                        setBean.setIsEnableB(isEnbles[1][0]);
+                        setBean.setIsEnableBIndex(1);
+                        break;
+                }
             }
+
 
             newlist.add(bean);
         }
@@ -206,26 +232,48 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
             tvTitle.setText(R.string.android_key3094);
             USChargePriorityBean bean = new Gson().fromJson(dataJson, USChargePriorityBean.class);
             setBean = bean;
-            //类型
+
             int isEnableWeekIndex = bean.getIsEnableWeekIndex();
             String isEnableWeek = bean.getIsEnableWeek();
-            usParamsetAdapter.getData().get(0).setValue(String.valueOf(isEnableWeekIndex));
-            usParamsetAdapter.getData().get(0).setValueStr(isEnableWeek);
-            //时间段
+
             String timePeriodRead = bean.getTimePeriod();
-            usParamsetAdapter.getData().get(1).setValueStr(timePeriodRead);
-            //EMS状态
             int isEnableAIndex = bean.getIsEnableAIndex();
             String isEnableA = bean.getIsEnableA();
-            usParamsetAdapter.getData().get(2).setValueStr(isEnableA);
-            usParamsetAdapter.getData().get(2).setValue(String.valueOf(isEnableAIndex));
+            int enableBIndex = bean.getIsEnableBIndex();
+            String isEnableB = bean.getIsEnableB();
 
-            //使能
             if (selectIndex < 4) {
-                int enableBIndex = bean.getIsEnableBIndex();
-                String isEnableB = bean.getIsEnableB();
+                //类型
+
+                usParamsetAdapter.getData().get(0).setValue(String.valueOf(isEnableWeekIndex));
+                usParamsetAdapter.getData().get(0).setValueStr(isEnableWeek);
+                //时间段
+
+                usParamsetAdapter.getData().get(1).setValueStr(timePeriodRead);
+                //EMS状态
+
+                usParamsetAdapter.getData().get(2).setValueStr(isEnableA);
+                usParamsetAdapter.getData().get(2).setValue(String.valueOf(isEnableAIndex));
+
+                //使能
                 usParamsetAdapter.getData().get(3).setValue(String.valueOf(enableBIndex));
                 usParamsetAdapter.getData().get(3).setValueStr(isEnableB);
+
+                usParamsetAdapter.notifyDataSetChanged();
+            } else {
+
+                //时间段
+
+                usParamsetAdapter.getData().get(0).setValueStr(timePeriodRead);
+                //EMS状态
+
+                usParamsetAdapter.getData().get(1).setValueStr(isEnableA);
+                usParamsetAdapter.getData().get(1).setValue(String.valueOf(isEnableAIndex));
+
+                //使能
+
+                usParamsetAdapter.getData().get(2).setValue(String.valueOf(enableBIndex));
+                usParamsetAdapter.getData().get(2).setValueStr(isEnableB);
 
                 usParamsetAdapter.notifyDataSetChanged();
             }
@@ -242,32 +290,45 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        if (isAllYear){
-            if (position==0){
+        if (isAllYear) {
+            if (position == 0) {
                 toast(R.string.android_key3117);
                 return;
             }
-            if (position==1){
+            if (position == 1) {
                 toast(R.string.android_key3118);
                 return;
             }
         }
 
+        if (selectIndex < 4) {
+            switch (position) {
+                case 0:
+                    showSelectDialog(3);
+                    break;
 
-        switch (position) {
-            case 0:
-                showSelectDialog(3);
-                break;
-
-            case 1:
-                EventBus.getDefault().postSticky(setBean);
-                ActivityUtils.gotoActivity(PeriodSettingActivity.this, USTimeSelectSetActivity.class, false);
-                break;
-            case 2:
-                showSelectDialog(0);
-                break;
+                case 1:
+                    EventBus.getDefault().postSticky(setBean);
+                    ActivityUtils.gotoActivity(PeriodSettingActivity.this, USTimeSelectSetActivity.class, false);
+                    break;
+                case 2:
+                    showSelectDialog(0);
+                    break;
 
 
+            }
+        } else {
+            switch (position) {
+                case 0:
+                    EventBus.getDefault().postSticky(setBean);
+                    ActivityUtils.gotoActivity(PeriodSettingActivity.this, USTimeSelectSetActivity.class, false);
+                    break;
+                case 1:
+                    showSelectDialog(0);
+                    break;
+
+
+            }
         }
     }
 
@@ -290,29 +351,34 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
                 .setItems(isEnbles[type], new OnLvItemClickListener() {
                     @Override
                     public boolean onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                        switch (type) {
-                            case 0:
-                                usParamsetAdapter.getData().get(2).setValueStr(isEnbles[type][pos]);
-                                usParamsetAdapter.getData().get(2).setValue(String.valueOf(pos));
 
-                                setBean.setIsEnableA(isEnbles[type][pos]);
-                                setBean.setIsEnableAIndex(pos);
+                        if (selectIndex<4){
+                            switch (type) {
+                                case 0:
+                                    usParamsetAdapter.getData().get(2).setValueStr(isEnbles[type][pos]);
+                                    usParamsetAdapter.getData().get(2).setValue(String.valueOf(pos));
+                                    setBean.setIsEnableA(isEnbles[type][pos]);
+                                    setBean.setIsEnableAIndex(pos);
+                                    break;
+                                case 3:
+                                    usParamsetAdapter.getData().get(0).setValueStr(isEnbles[type][pos]);
+                                    usParamsetAdapter.getData().get(0).setValue(String.valueOf(pos));
 
-                                break;
-                            case 1:
-
-                                break;
-                            case 2:
-
-                                break;
-                            case 3:
-                                usParamsetAdapter.getData().get(0).setValueStr(isEnbles[type][pos]);
-                                usParamsetAdapter.getData().get(0).setValue(String.valueOf(pos));
-
-                                setBean.setIsEnableWeekIndex(pos);
-                                setBean.setIsEnableWeek(isEnbles[type][pos]);
-                                break;
+                                    setBean.setIsEnableWeekIndex(pos);
+                                    setBean.setIsEnableWeek(isEnbles[type][pos]);
+                                    break;
+                            }
+                        }else {
+                            switch (type) {
+                                case 0:
+                                    usParamsetAdapter.getData().get(1).setValueStr(isEnbles[type][pos]);
+                                    usParamsetAdapter.getData().get(1).setValue(String.valueOf(pos));
+                                    setBean.setIsEnableA(isEnbles[type][pos]);
+                                    setBean.setIsEnableAIndex(pos);
+                                    break;
+                            }
                         }
+
                         usParamsetAdapter.notifyDataSetChanged();
                         return true;
                     }
@@ -325,7 +391,14 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventPriorityBean(@NonNull TimeSelectBean eventBean) {
         setBean.setTimePeriod(eventBean.getPeriod());
-        usParamsetAdapter.getData().get(1).setValueStr(eventBean.getPeriod());
+        if (selectIndex<4){
+            usParamsetAdapter.getData().get(1).setValueStr(eventBean.getPeriod());
+
+
+        }else {
+            usParamsetAdapter.getData().get(0).setValueStr(eventBean.getPeriod());
+
+        }
         usParamsetAdapter.notifyDataSetChanged();
     }
 
@@ -333,7 +406,14 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
     private void saveParam() {
         List<USDebugSettingBean> data = usParamsetAdapter.getData();
         //判断时间值
-        String valueStr = data.get(1).getValueStr();
+        String valueStr;
+        if (selectIndex<4){
+             valueStr = data.get(1).getValueStr();
+        }else {
+             valueStr = data.get(0).getValueStr();
+        }
+
+
         String[] time = valueStr.split("~");
         String startTime = time[0];
         String endTime = time[1];
@@ -342,8 +422,8 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
         String[] end = endTime.split(":");
 
 
-        int start_time = Integer.parseInt(start[0])* 60 + Integer.parseInt(start[1]) ;
-        int start_end = Integer.parseInt(end[0])  * 60+ Integer.parseInt(end[1]);
+        int start_time = Integer.parseInt(start[0]) * 60 + Integer.parseInt(start[1]);
+        int start_end = Integer.parseInt(end[0]) * 60 + Integer.parseInt(end[1]);
 
         if (start_time == 0 && start_end == 0) {
             toast(R.string.android_key3101);
@@ -438,6 +518,7 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
 
 
                         } else {
+                            SocketClientUtil.close(mClientUtilW);
                             String title = getString(R.string.m363设置失败);
                             String text = getString(R.string.android_key3103) + "(" + getString(R.string.android_key3096) + ")";
                             CircleDialogUtils.showCommentDialog((FragmentActivity) PeriodSettingActivity.this, title,
@@ -467,7 +548,9 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
     private BaseCircleDialog explainDialog;
+
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         USDebugSettingBean bean = usParamsetAdapter.getData().get(position);
@@ -475,13 +558,14 @@ public class PeriodSettingActivity extends BaseActivity implements BaseQuickAdap
             case R.id.tv_title:
                 if (bean.getItemType() == UsSettingConstant.SETTING_TYPE_EXPLAIN) {
                     String title = bean.getTitle();
-                    String content=getString(R.string.ems_explain);
-                    explainDialog = CircleDialogUtils.showExplainDialog(PeriodSettingActivity.this, title,content ,
+                    String content = getString(R.string.ems_explain);
+                    explainDialog = CircleDialogUtils.showExplainDialog(PeriodSettingActivity.this, title, content,
                             new CircleDialogUtils.OndialogClickListeners() {
                                 @Override
                                 public void buttonOk() {
                                     explainDialog.dialogDismiss();
                                 }
+
                                 @Override
                                 public void buttonCancel() {
                                     explainDialog.dialogDismiss();

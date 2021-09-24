@@ -73,5 +73,4 @@ dependencies {
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
     //    implementation 'androidx.activity:activity:1.4.0-alpha01'
     //    implementation 'androidx.fragment:fragment:1.4.0-alpha08'
-    implementation files('libs/crasheye_v2.2.9.jar')
 }

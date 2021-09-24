@@ -340,9 +340,9 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                 case 100://恢复按钮点击
                     String myuuid = (String) msg.obj;
                     if (uuid.equals(myuuid) && !isReceiveSucc) {
-                        toast("接收消息超时，请重试");
+                        toast(R.string.android_key1134);
                     }
-                    refreshFinish();
+//                    refreshFinish();
                     break;
                 case 101:
                     connectSendMsg();

@@ -32,6 +32,9 @@ public class USchargePeriodAdapter extends BaseQuickAdapter<USChargePriorityBean
         String isEnableWeek = item.getIsEnableWeek();
         String isEnableA = item.getIsEnableA();
         String content=isEnableWeek+"|"+isEnableA;
+        if (item.isSpecial()){
+            content=isEnableA;
+        }
         helper.setText(R.id.tv_period_name,content);
         //使能
         int isEnableBIndex = item.getIsEnableBIndex();

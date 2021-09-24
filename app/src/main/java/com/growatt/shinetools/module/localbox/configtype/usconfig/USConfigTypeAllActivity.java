@@ -450,7 +450,7 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
                     if (uuid.equals(myuuid) && !isReceiveSucc) {
                         toast("接收消息超时，请重试");
                     }
-                    refreshFinish();
+//                    refreshFinish();
                     break;
                 case 101:
                     connectSendMsg();

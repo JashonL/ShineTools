@@ -165,6 +165,7 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
         clChoiseDate.setOnClickListener(view -> {
             Intent intent = new Intent(USChargeTimeActivity.this, UsChargeManagerSelectDateActivity.class);
             intent.putExtra(GlobalConstant.BYTE_SOCKET_RESPON, responByte);
+            intent.putExtra("selectIndex", currenPos);
             ActivityUtils.startActivity(USChargeTimeActivity.this, intent, false);
           /* else {
                 readRegisterValue();
@@ -201,7 +202,6 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
 
     //读取寄存器的值
     private void readRegisterValue() {
-        Mydialog.Show(this);
         connectServer();
     }
 
@@ -368,7 +368,10 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
         }
 
         newList.clear();
-        for (int i = 0; i < 9; i++) {
+
+        int count =9;
+        if (isAllyear)count=1;
+        for (int i = 0; i < count; i++) {
             USChargePriorityBean item = new USChargePriorityBean();
             int value1 = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes125(bs, timerStartR + i * 2, 0, 1));
             int value2 = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes125(bs, timerStartR + i * 2 + 1, 0, 1));
@@ -393,6 +396,8 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
 
             item.setIsEnableWeekIndex(enableWIndex);
             item.setIsEnableWeek(isEnbles[3][enableWIndex]);
+
+            item.setSpecial(select>=4);
             newList.add(item);
         }
         mAdapter.replaceData(newList);
@@ -571,12 +576,16 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
                 //接收字节数组
                 case SocketClientUtil.SOCKET_RECEIVE_BYTES:
                     BtnDelayUtil.receiveMessage(this);
+                    Mydialog.Dismiss();
                     try {
                         byte[] bytes = (byte[]) msg.obj;
                         //检测内容正确性
                         boolean isCheck = MaxUtil.checkReceiverFull10(bytes);
                         if (isCheck) {
                             toast(R.string.all_success);
+                            //关闭连接
+                            SocketClientUtil.close(mClientUtilW);
+                            this.postDelayed(() -> readRegisterValue(),500);
                         } else {
                             toast(R.string.all_failed);
                             //关闭tcp连接
@@ -587,11 +596,6 @@ public class USChargeTimeActivity extends BaseActivity implements BaseQuickAdapt
                         LogUtil.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
-                    } finally {
-                        //关闭连接
-                        SocketClientUtil.close(mClientUtilW);
-                        Mydialog.Dismiss();
-                        this.postDelayed(() -> readRegisterValue(),500);
                     }
                     break;
                 default:

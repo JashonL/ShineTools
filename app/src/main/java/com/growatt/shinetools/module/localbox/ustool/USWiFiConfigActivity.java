@@ -651,9 +651,9 @@ public class USWiFiConfigActivity extends BaseActivity {
                     btnCancel = view.findViewById(R.id.tv_cancel);
                     btnCancel.setText(R.string.all_ok);
                     TextView tvTitle = view.findViewById(R.id.tv_title);
-                    tvTitle.setText(R.string.android_key2116);
+                    tvTitle.setText(R.string.all_success);
                     TextView tvTips = view.findViewById(R.id.loading_tips);
-                    tvTips.setText("");
+                    tvTips.setText(R.string.android_key2994);
                     btnCancel = view.findViewById(R.id.tv_cancel);
                     btnCancel.setOnClickListener(view1 -> {
                         //取消配置
@@ -787,9 +787,9 @@ public class USWiFiConfigActivity extends BaseActivity {
         //取消弹框
         dialogDissmiss();
         //弹出配置失败弹框
-        String text = getString(R.string.android_key3115);
+        String text = getString(R.string.配网失败);
         if (type == 6) {
-            text = getString(R.string.android_key3116);
+            text = getString(R.string.配网失败);
         }
         showCableErrorDialog(text);
     }

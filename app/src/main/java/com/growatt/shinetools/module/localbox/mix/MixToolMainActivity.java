@@ -993,7 +993,7 @@ public class  MixToolMainActivity extends DemoBase implements View.OnClickListen
                     btnClick = true;
                     String myuuid = (String) msg.obj;
                     if (uuid.equals(myuuid) && !isReceiveSucc) {
-                        toast("接收消息超时，请重试");
+                        toast(R.string.android_key1134);
                     }
                     refreshFinish();
                     break;

@@ -477,7 +477,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
                     if (uuid.equals(myuuid) && !isReceiveSucc) {
 
                     }
-                    refreshFinish();
+//                    refreshFinish();
                     break;
                 case 101:
                     toReadBdc();

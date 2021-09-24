@@ -18,7 +18,6 @@ import com.growatt.shinetools.okhttp.https.HttpsUtils;
 import com.growatt.shinetools.okhttp.log.LoggerInterceptor;
 import com.growatt.shinetools.utils.Log;
 import com.hjq.toast.ToastUtils;
-import com.xsj.crasheye.Crasheye;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -51,7 +50,7 @@ public class ShineToosApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = this;
-        Log.isPrint = true;
+        Log.isPrint = false;
 
         ClearableCookieJar cookieJar1 = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(getApplicationContext()));
 
@@ -92,7 +91,7 @@ public class ShineToosApplication extends Application {
         DATALOGER_UPDATA_DIR = getFilesDir().getPath() + File.separator + "datalog" + File.separator;//
 
 
-        Crasheye.init(context, "aada7e10");
+//        Crasheye.init(context, "aada7e10");
     }
 
 

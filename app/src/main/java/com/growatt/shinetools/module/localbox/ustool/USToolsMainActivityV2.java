@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,6 +50,7 @@ import com.growatt.shinetools.module.localbox.mintool.TLXHBattryActivity;
 import com.growatt.shinetools.module.localbox.ustool.errorcode.ErrorCode;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.BtnDelayUtil;
+import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
@@ -203,7 +205,31 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         initString();
 
         //初始化头部
-        initToobar(toolbar);
+//        initToobar(toolbar);
+
+        toolbar.setNavigationIcon(R.drawable.icon_return);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CircleDialogUtils.showCommentDialog(USToolsMainActivityV2.this, getString(R.string.退出设置提示),
+                        getString(R.string.m设置未保存是否退出), getString(R.string.android_key1935),
+                        getString(R.string.android_key2152), Gravity.CENTER, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                finish();
+
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        });
+
+            }
+        });
+
+
         tvTitle.setText(R.string.m240本地调试工具);
         toolbar.inflateMenu(R.menu.comment_right_menu);
         item = toolbar.getMenu().findItem(R.id.right_action);
