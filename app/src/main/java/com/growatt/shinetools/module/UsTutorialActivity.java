@@ -95,10 +95,15 @@ public class UsTutorialActivity extends BaseActivity implements Toolbar.OnMenuIt
 
     @Override
     protected void initViews() {
+        user_type = ShineToosApplication.getContext().getUser_type();
         initToobar(toolbar);
         tvTitle.setText("WLAN");
+        if (user_type == END_USER) {
+            toolbar.inflateMenu(R.menu.end_user_menu);
+        } else {
+            toolbar.inflateMenu(R.menu.maintain_login_menu);
+        }
         toolbar.setOnMenuItemClickListener(this);
-        toolbar.inflateMenu(R.menu.maintain_login_menu);
         toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.tittle_more));
         user_type = ShineToosApplication.getContext().getUser_type();
     }
@@ -229,6 +234,9 @@ public class UsTutorialActivity extends BaseActivity implements Toolbar.OnMenuIt
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_reset:
+                AppSystemUtils.modifyPwd(UsTutorialActivity.this);
+                break;
             case R.id.menu_logout:
                 dialogFragment = CircleDialogUtils.showCommentDialog(this, getString(R.string.android_key2263),
                         getString(R.string.android_key2212), getString(R.string.android_key1935), getString(R.string.android_key2152), Gravity.CENTER, new View.OnClickListener() {

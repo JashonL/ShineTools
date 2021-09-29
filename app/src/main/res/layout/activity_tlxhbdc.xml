@@ -196,7 +196,7 @@
         android:textSize="@dimen/size_content_sp_12"
         android:text="---"
         app:autoSizeTextType="uniform"
-        app:autoSizeMinTextSize="@dimen/size_content_note"
+        app:autoSizeMinTextSize="6sp"
         app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
         app:layout_constraintRight_toRightOf="parent"
         />
@@ -234,7 +234,7 @@
         android:gravity="right|center"
         android:text="---"
         app:autoSizeTextType="uniform"
-        app:autoSizeMinTextSize="@dimen/size_content_note"
+        app:autoSizeMinTextSize="6sp"
         app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
         app:layout_constraintBottom_toBottomOf="@+id/vTemp1"
         android:layout_marginLeft="@dimen/dp_5"

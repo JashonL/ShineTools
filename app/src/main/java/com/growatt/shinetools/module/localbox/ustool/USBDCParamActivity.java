@@ -272,6 +272,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
                             byte[] bs = RegisterParseUtil.removePro17(bytes);
                             //解析int值
                             int value2 = MaxWifiParseUtil.obtainValueOne(bs);
+                            LogUtil.i("bdc个数：" + value2);
                             initBdcList(value2);
                         } else {
                             toast(R.string.all_failed);
@@ -339,7 +340,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
 
     private void setReadFuns(int pos) {
         nowPos = pos;
-        if (bcdList.size() > 0) {
+        if (bcdList.size() > 1) {
             //读取03寄存器
             funs[0][1] = 3085 + 1915 + 40 * pos;
             funs[0][2] = 3124 + 1915 + 40 * pos;
@@ -509,7 +510,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
 
     private void parseMax(byte[] bytes, int count) {
 
-        if (bcdList.size() > 0) {
+        if (bcdList.size() > 1) {
 
             int resRegister_03 = funs[0][1];
             int resRegister_04 = funs[1][1];

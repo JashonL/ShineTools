@@ -14,6 +14,7 @@ import com.growatt.shinetools.R;
 import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.constant.GlobalConstant;
 import com.growatt.shinetools.module.DeviceTypeActivity;
+import com.growatt.shinetools.module.UsTutorialActivity;
 import com.growatt.shinetools.module.account.LoginActivity;
 import com.mylhyl.circledialog.callback.ConfigInput;
 import com.mylhyl.circledialog.view.listener.OnInputClickListener;
@@ -54,7 +55,7 @@ public class AppSystemUtils {
         for (WeakReference<Activity> activity : activityStack) {
             if (activity != null && activity.get() != null) {
                 Activity activity1=activity.get();
-                if (activity1 instanceof DeviceTypeActivity) continue;//这里要忽略掉，要不然会闪屏
+                if (activity1 instanceof DeviceTypeActivity||activity1 instanceof UsTutorialActivity) continue;//这里要忽略掉，要不然会闪屏
                 activity1.finish();
             }
         }

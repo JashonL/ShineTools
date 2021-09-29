@@ -27,7 +27,7 @@
         />
     <ImageView
         android:id="@+id/ivStatus"
-        android:layout_width="@dimen/size_content_sp_12"
+        android:layout_width="@dimen/dp_12"
         android:layout_height="match_parent"
         android:src="@drawable/max_down"
         android:layout_marginRight="@dimen/dp_5"

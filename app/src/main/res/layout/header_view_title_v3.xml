@@ -57,8 +57,8 @@
             android:paddingRight="@dimen/dp_10"
             android:paddingBottom="@dimen/dp_6"
             android:textColor="@color/headerView"
-            android:textSize="@dimen/size_title_sp_14"
-            app:autoSizeMaxTextSize="@dimen/size_content_sp_16"
+            android:textSize="@dimen/size_title_sp_12"
+            app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
             app:autoSizeMinTextSize="@dimen/sp_6"
             app:autoSizeTextType="uniform" />
     </RelativeLayout>

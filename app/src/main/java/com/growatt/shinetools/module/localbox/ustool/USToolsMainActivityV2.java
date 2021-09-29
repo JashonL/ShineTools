@@ -626,10 +626,12 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                             if (needFresh) {
                                 autoRefresh(mHandlerReadAuto);
                             } else {
-                                if (mMaxData.getBdcStatus() != 0&&bdcNumber > 0) {
+                                LogUtil.i("bdcNumber:" + bdcNumber);
+                                if (mMaxData.getBdcStatus() != 0&&bdcNumber > 1) {
                                     //去读取数据
                                     bdcChargePower = 0;
                                     bdcDisChargePower = 0;
+                                    LogUtil.i("开始读取bdc功率");
                                     readBdcValue();
                                 }
 
@@ -932,7 +934,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
 
         //数量
         bdcNumber = mMaxData.getBdcNumber();
-        if (mMaxData.getBdcStatus() != 0&&bdcNumber > 0) {
+        if (mMaxData.getBdcStatus() != 0&&bdcNumber > 1) {
             bdcChargeFuns = new int[bdcNumber][3];
             bdcDisChargeFuns = new int[bdcNumber][3];
             bdcAllChargeFuns = new int[bdcNumber * 2][3];

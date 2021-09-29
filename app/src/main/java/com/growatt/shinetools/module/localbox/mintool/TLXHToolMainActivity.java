@@ -612,6 +612,7 @@ public class  TLXHToolMainActivity extends DemoBase implements View.OnClickListe
     private void initContent2() {
         title2Head2 = header2.findViewById(R.id.tvTitle2);
         content2Head2 = header2.findViewById(R.id.tvContent2);
+        title2Head2.setVisibility(View.GONE);
         t2H2IvStatus = (ImageView) title2Head2.findViewById(R.id.ivStatus);
         mC2List = new ArrayList<>();
         mC2RecyclerView = (RecyclerView) content2Head2.findViewById(R.id.recyclerViewC1);

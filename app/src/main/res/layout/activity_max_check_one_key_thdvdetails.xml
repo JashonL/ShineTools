@@ -37,7 +37,7 @@
             android:text="R"
             app:autoSizeTextType="uniform"
             app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
-            app:autoSizeMinTextSize="@dimen/size_content_note"
+            app:autoSizeMinTextSize="6sp"
             android:textColor="@color/content_bg_white"
             android:textSize="@dimen/dp_12" />
 
@@ -50,7 +50,7 @@
             android:text="S"
             app:autoSizeTextType="uniform"
             app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
-            app:autoSizeMinTextSize="@dimen/size_content_note"
+            app:autoSizeMinTextSize="6sp"
             android:textColor="@color/content_bg_white"
             android:textSize="@dimen/dp_12" />
 
@@ -65,7 +65,7 @@
             android:text="T"
             app:autoSizeTextType="uniform"
             app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
-            app:autoSizeMinTextSize="@dimen/size_content_note"
+            app:autoSizeMinTextSize="6sp"
             android:textColor="@color/content_bg_white"
             android:textSize="@dimen/dp_12" />
     </LinearLayout>
