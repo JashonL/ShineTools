@@ -142,7 +142,7 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
     //特殊日选中的项
     private int special_pos = 0;
 
-    private int[]itemValues={0};
+    private int[] itemValues = {0};
 
     private int currenSelect = 0;
 
@@ -208,9 +208,9 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
 
         //原始数据
         responByte = getIntent().getByteArrayExtra(GlobalConstant.BYTE_SOCKET_RESPON);
-        currenPos = getIntent().getIntExtra("selectIndex",-1);
+        currenPos = getIntent().getIntExtra("selectIndex", -1);
 
-        if (responByte != null) {
+        if (responByte != null && responByte.length > 4) {
             datalist.clear();
             //设置第一个item数据 季度对应寄存器下标
             int startTime = 0;
@@ -611,7 +611,6 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
                 }
 
 
-
                 break;
         }
     }
@@ -696,23 +695,23 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
                         //检测内容正确性
                         boolean isCheck = MaxUtil.checkReceiverFull10(bytes);
                         if (isCheck) {
-                            if (currenSelect <3){
+                            if (currenSelect < 3) {
                                 currenSelect++;
                                 setCloseData();
                                 handlerOther.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
-                            }else {
-                                currenSelect =0;
+                            } else {
+                                currenSelect = 0;
                                 //关闭tcp连接
                                 SocketClientUtil.close(otherUtils);
                                 BtnDelayUtil.refreshFinish();
-                                this.postDelayed(() -> setAllYearData(),500);
+                                this.postDelayed(() -> setAllYearData(), 500);
                             }
                         } else {
-                            currenSelect =0;
+                            currenSelect = 0;
                             //关闭tcp连接
                             SocketClientUtil.close(otherUtils);
                             //无论成功还是失败 都请求设置全年
-                            this.postDelayed(() -> setAllYearData(),500);
+                            this.postDelayed(() -> setAllYearData(), 500);
                         }
 
                         LogUtil.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
@@ -728,10 +727,7 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
     };
 
 
-
-
-
-    private void setCloseData(){
+    private void setCloseData() {
         USChargePriorityBean bean = datalist.get(currenSelect);
         //设置头部数据
         String startTime = bean.getStartTime();
@@ -764,17 +760,7 @@ public class UsChargeManagerSelectDateActivity extends BaseActivity implements B
     //-------------------
 
 
-
-
-
-
-
-
-
-
-
-
-//连接对象:用于写数据
+    //连接对象:用于写数据
     private SocketClientUtil mClientUtilW;
 
     private void connectServerWrite() {

@@ -401,15 +401,14 @@ public class TL3XHMainActivity extends BaseActivity implements View.OnClickListe
                 , getString(R.string.并机防逆流降载), getString(R.string.单机防逆流降载), getString(R.string.负载优先模式降载), getString(R.string.检测CT错反接降载)
         };
         eleTitles = new String[]{
-                getString(R.string.m201电量),
-                getString(R.string.photovoltaic_generatingcapacity),
-                getString(R.string.m1261Charged),
-                getString(R.string.m1260Discharged),
-                getString(R.string.m并网电量),
-                getString(R.string.m用户使用电量),
+                getString(R.string.photovoltaic_generatingcapacity)+ "\n(kWh)",
+                getString(R.string.m1261Charged)+ "\n(kWh)",
+                getString(R.string.m1260Discharged)+ "\n(kWh)",
+                getString(R.string.m并网电量)+ "\n(kWh)",
+                getString(R.string.m用户使用电量)+ "\n(kWh)",
         };
         eleResId = new int[]{
-                -1, R.drawable.tlxh_ele_fadian, R.drawable.tlxh_ele_chongdian,
+                R.drawable.tlxh_ele_fadian, R.drawable.tlxh_ele_chongdian,
                 R.drawable.tlxh_ele_fangdian, R.drawable.tlxh_ele_bingwang, R.drawable.tlxh_ele_yonghushiyong
         };
         powerTitles = new String[]{
@@ -453,7 +452,7 @@ public class TL3XHMainActivity extends BaseActivity implements View.OnClickListe
         menuItem = toolbar.getMenu().findItem(R.id.action_mode_setting);
         tvTitle.setText(R.string.android_key530);
         toolbar.setOnMenuItemClickListener(this);
-
+        menuItem.setTitle(R.string.android_key589);
     }
 
 
@@ -606,24 +605,20 @@ public class TL3XHMainActivity extends BaseActivity implements View.OnClickListe
             String totalEle = "";
             String unit = "";
             int contentColor = -1;
-            if (i == 0) {
-                todayEle = getString(R.string.m182今日收益);
-                totalEle = getString(R.string.m183累计收益);
-                contentColor = R.color.note_bg_white;
+
+            unit = "kWh";
+            contentColor = R.color.title_bg_white;
+            if (todays == null) {
+                todayEle = "--";
             } else {
-                unit = "kWh";
-                contentColor = R.color.title_bg_white;
-                if (todays == null) {
-                    todayEle = "--";
-                } else {
-                    todayEle = todays.get(i - 1);
-                }
-                if (totals == null) {
-                    totalEle = "--";
-                } else {
-                    totalEle = totals.get(i - 1);
-                }
+                todayEle = todays.get(i);
             }
+            if (totals == null) {
+                totalEle = "--";
+            } else {
+                totalEle = totals.get(i);
+            }
+
             bean.setTotalEle(totalEle);
             bean.setTodayEle(todayEle);
             bean.setContentColor(contentColor);

@@ -383,7 +383,7 @@ public class  TLXHToolMainActivity extends DemoBase implements View.OnClickListe
                 getString(R.string.m用户使用电量)+ "\n(kWh)"
         };
         eleResId = new int[]{
-                -1,R.drawable.tlxh_ele_fadian,R.drawable.tlxh_ele_chongdian,
+                R.drawable.tlxh_ele_fadian,R.drawable.tlxh_ele_chongdian,
                 R.drawable.tlxh_ele_fangdian,R.drawable.tlxh_ele_bingwang,R.drawable.tlxh_ele_yonghushiyong
         };
         powerTitles = new String[]{
@@ -575,12 +575,12 @@ public class  TLXHToolMainActivity extends DemoBase implements View.OnClickListe
             if (todays == null){
                 todayEle = "--";
             }else {
-                todayEle = todays.get(i-1);
+                todayEle = todays.get(i);
             }
             if (totals == null){
                 totalEle = "--";
             }else {
-                totalEle = totals.get(i-1);
+                totalEle = totals.get(i);
             }
 
             bean.setTotalEle(totalEle);

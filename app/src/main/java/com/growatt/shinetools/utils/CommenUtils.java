@@ -359,4 +359,14 @@ public class CommenUtils {
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
+
+    /**
+     * 获取时分双位数
+     */
+
+     public static String getDoubleNum(int value){
+         String s=String.format("%02d",value);
+         return s;
+     }
+
 }

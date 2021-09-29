@@ -10,6 +10,7 @@ public class USDebugSettingBean implements MultiItemEntity {
     private String value;
     private String valueStr;
     private String unit;
+    private String hint;
 
     public void setItemType(int itemType) {
         this.itemType = itemType;
@@ -53,6 +54,14 @@ public class USDebugSettingBean implements MultiItemEntity {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public String getHint() {
+        return hint;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
     }
 
     @Override

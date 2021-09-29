@@ -750,7 +750,7 @@
     <string name="android_key747">Grid voltage fault</string>
     <string name="android_key748"> Default Power % after Power Export Limitation Failure </string>
     <string name="android_key749">Grid frequency fault</string>
-    <string name="android_key750">Dry Contact</string>
+    <string name="android_key750">Dry contact function setting</string>
     <string name="android_key751">Fan abnormal</string>
     <string name="android_key752">Power(%) Dry Contact Enable</string>
     <string name="android_key753">DSP and COM firmware version unmatch</string>
@@ -6491,6 +6491,33 @@
     <string name="电池保护信息">Battery Protection Information</string>
     <string name="充电电池低温">Low temperature of rechargeable battery</string>
     <string name="ems_explain">Self-consumption Mode：\nLoad First mode(Self-consumption Mode) :the default mode and could maximize the solar energy and lower the power imported from the grid The solar energy priority is load > battery > grid.When the solar power is sufficient, the solar energy will provide the power to the loads, then the surplus solar energy will charge the battery system, once the battery system is full the surplus solar power will export to the grid.When the solar power is not sufficient, the battery system will discharge to provide the power to the loads, if the power from ESS is not enough, then the grid will take part in. \n\nTOU Battery Charging Mode：\nBattery First Mode(TOU Battery Charging Mode), is used for the multi-step electricity, could store the energy into the battery when the electricity price is low or store the energy before the blackout happens The solar energy priority is Battery > Load > Grid.When the solar power is sufficient, it will charge the battery system first, then the surplus solar power to the loads,When the solar power is insufficient, the hybrid system will draw the power from the grid to charge the battery system with solar power together to reach the setting point \n\nTOU Battery Discharging Mode：\nThe Grid First Mode(TOU Battery Discharging Mode), is used to export the power to the grid in response to the grid scheduling.The solar energy priority is Load > Grid > Battery When the solar power is sufficient, PV will provide the power to the loads and export power to the grid.If the solar power is insufficient, the battery system will provide power with PV to the loads, and export power to the grid.\nIf the solar power is insufficient, the battery system will provide power with PV to the loads, and export power to the grid.</string>
+
+
+    <string name="dry_workmode"> dry contact working mode </string>
+    <string name="water_heater_method"> water heater startup mode </string>
+    <string name="starting_power"> starting power </string>
+    <string name="exit_power"> Exit power </string>
+    <string name="start_extension_time"> start extension time </string>
+    <string name="minimum_running_time"> minimum running time </string>
+    <string name="dry_contact_setting"> dry contact time period setting </string>
+    <string name="diesel_start_mode"> diesel engine start mode </string>
+    <string name="start_soc"> start SOC</string>
+    <string name="close_soc"> close SOC</string>
+    <string name="start_voltage"> start voltage</string>
+    <string name="close_voltage"> close voltage </string>
+    <string name="dry_run_status"> dry contact operating status </string>
+    <string name="init_dry_setting"> initialize dry contact setting parameters </string>
+    <string name="dynamo">Dynamo</string>
+
+    <string name="disable">不使能</string>
+    <string name="out_power">按输出功率</string>
+    <string name="time_period">按时间段</string>
+    <string name="mixed_mode">混合模式</string>
+    <string name="battery_param">按电池参数</string>
+
+    <string name="water_heateing">热水器工作中</string>
+    <string name="generator_working">发电机工作中</string>
+    <string name="function_close">功能关闭</string>
 
 
 </resources>

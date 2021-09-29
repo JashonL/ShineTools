@@ -106,24 +106,23 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
     @Override
     protected void initData() {
         //1.获取用户类型
-        user_type= ShineToosApplication.getContext().getUser_type();
+        user_type = ShineToosApplication.getContext().getUser_type();
         //初始化列表数据
         String[] titls = new String[]{getString(R.string.m396开关逆变器), getString(R.string.m398有功功率百分比), getString(R.string.android_key961),
-                getString(R.string.m防逆流设置), getString(R.string.dry_setting), getString(R.string.android_key952), getString(R.string.android_key3111),
+                getString(R.string.m防逆流设置), getString(R.string.android_key750), getString(R.string.android_key952), getString(R.string.android_key3111),
                 getString(R.string.AFCI功能)};
 
         String[] registers = new String[]{"", "", "",
                 "", "", "", "", ""};
         //去掉 2，4
         if (user_type == END_USER) {
-             titls = new String[]{getString(R.string.m396开关逆变器), getString(R.string.m398有功功率百分比),
+            titls = new String[]{getString(R.string.m396开关逆变器), getString(R.string.m398有功功率百分比),
                     getString(R.string.m防逆流设置), getString(R.string.android_key952), getString(R.string.android_key3111),
                     getString(R.string.AFCI功能)};
 
             registers = new String[]{"", "", "",
                     "", "", "", "", ""};
         }
-
 
 
         List<USDebugSettingBean> newlist = new ArrayList<>();
@@ -138,14 +137,14 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
 
 
         //2.根据用户类型初始化
-        if (user_type == END_USER){
+        if (user_type == END_USER) {
             newlist.get(3).setItemType(UsSettingConstant.SETTING_TYPE_SWITCH);
             funs = new int[][]{
                     {3, 0, 0},//开关机0
 //                    {3, 399, 399},//PV输入模式
                     {3, 235, 235},//N至PE检测功能使能
             };
-        }else {
+        } else {
             newlist.get(5).setItemType(UsSettingConstant.SETTING_TYPE_SWITCH);
             funs = new int[][]{
                     {3, 0, 0},//开关机0
@@ -174,7 +173,7 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         int itemIndex = 0;
-        if (user_type==END_USER){
+        if (user_type == END_USER) {
             switch (position) {
                 case 1:
                     itemIndex = 0;
@@ -189,7 +188,7 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
                     itemIndex = 4;
                     break;
             }
-        }else {
+        } else {
             switch (position) {
                 case 1:
                     itemIndex = 0;
@@ -212,18 +211,29 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
             }
         }
 
-        if (user_type==END_USER){
-            if (position==3||position==0)return;
+        if (user_type == END_USER) {
+            if (position == 3 || position == 0) return;
 
-        }else {
-            if (position==2||position==0||position==5)return;
+        } else {
+            if (position == 2 || position == 0 || position == 5) return;
 
         }
+
+
         USDebugSettingBean bean = usParamsetAdapter.getData().get(position);
 
+
+  /*      if (user_type != END_USER && position == 4) {
+            Intent intent = new Intent(this, DryFunctionActivity.class);
+            intent.putExtra(USConfigTypeAllActivity.KEY_OF_ITEM_SETITEMSINDEX, itemIndex);
+            intent.putExtra("title", bean.getTitle());
+            ActivityUtils.startActivity(this, intent, false);
+            return;
+        }*/
+
         Intent intent = new Intent(this, USConfigTypeAllActivity.class);
-        intent.putExtra(USConfigTypeAllActivity.KEY_OF_ITEM_SETITEMSINDEX,itemIndex);
-        intent.putExtra("title",bean.getTitle());
+        intent.putExtra(USConfigTypeAllActivity.KEY_OF_ITEM_SETITEMSINDEX, itemIndex);
+        intent.putExtra("title", bean.getTitle());
         ActivityUtils.startActivity(this, intent, false);
 
     }
@@ -260,7 +270,7 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
     public void oncheck(boolean check, int position) {
         int value = check ? 1 : 0;
 
-        if (user_type==END_USER){
+        if (user_type == END_USER) {
             switch (position) {
                 case 0://开关逆变器
                     nowSet = funsSet[0][value];
@@ -271,7 +281,7 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
                     connectServerWrite();
                     break;
             }
-        }else {
+        } else {
             switch (position) {
                 case 0://开关逆变器
                     nowSet = funsSet[0][value];
@@ -283,7 +293,6 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
                     break;
             }
         }
-
 
 
         usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
@@ -439,7 +448,7 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
         //解析int值
         int value = MaxWifiParseUtil.obtainValueOne(bs);
 
-        if (user_type==END_USER){
+        if (user_type == END_USER) {
             switch (count) {
                 case 0:
                     usParamsetAdapter.getData().get(0).setValue(String.valueOf(value));
@@ -448,7 +457,7 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
                     usParamsetAdapter.getData().get(3).setValue(String.valueOf(value));
                     break;
             }
-        }else {
+        } else {
             switch (count) {
                 case 0:
                     usParamsetAdapter.getData().get(0).setValue(String.valueOf(value));

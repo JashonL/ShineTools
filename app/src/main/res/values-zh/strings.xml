@@ -751,7 +751,7 @@
     <string name="android_key747">电网过欠压保护</string>
     <string name="android_key748">防逆流失效后默认功率百分比</string>
     <string name="android_key749">电网过欠频保护</string>
-    <string name="android_key750">干接点功能</string>
+    <string name="android_key750">干接点功能设置</string>
     <string name="android_key751">风扇异常</string>
     <string name="android_key752">干接点开通的功率百分比</string>
     <string name="android_key753">DSP与M3版本不一致</string>
@@ -6483,5 +6483,34 @@
     <string name="电池保护信息">电池保护信息</string>
     <string name="充电电池低温">充电电池低温</string>
     <string name="ems_explain">负载优先模式，默认模式，可以最大程度地利用太阳能并降低从电网输入的功率\n优先级是负载>电池>电网。当太阳能充足时，太阳能将为负载提供电力，多余的太阳能将充入电池系统，一旦电池系统充满，多余的太阳能将输出到电网。当太阳能不足时，电池系统将与太阳能一起放电以向负载提供电能; 如果电池的电能不足，则电网将参与其中。\n\n电池优先模式，多用于阶梯电价，可以在电价低时将能量存储到电池中，或者在停电之前存储能量\n供电优先级是电池>负载>电网。因此，当太阳能充足时，它将首先为电池系统充电，然后将多余的太阳能充电至负载，当太阳能不足时，储能系统将从电网汲取电力，以太阳能为电池系统充电，以达到设定点 \n\n电网优先模式用于响应电网调度将能量输出到电网中\n供电优先级：负载>电网>电池\n当太阳能充足时，太阳能将为负载提供电力并向电网输电\n如果太阳能不足，则电池系统将同光伏一起向负载供电，并将多余的电能输给电网。\n防逆流：限制并网功率</string>
+
+
+    <string name="dry_workmode">干接点工作模式</string>
+    <string name="water_heater_method">热水器启动方式</string>
+    <string name="starting_power">启动功率</string>
+    <string name="exit_power">退出功率</string>
+    <string name="start_extension_time">启动延长时间</string>
+    <string name="minimum_running_time">最小运行时间</string>
+    <string name="dry_contact_setting">干接点时间段设置</string>
+    <string name="diesel_start_mode">柴油机启动方式</string>
+    <string name="start_soc">启动SOC</string>
+    <string name="close_soc">关闭SOC</string>
+    <string name="start_voltage">启动电压</string>
+    <string name="close_voltage">关闭电压</string>
+    <string name="dry_run_status">干接点运行状态</string>
+    <string name="init_dry_setting">初始化干接点设置参数</string>
+    <string name="dynamo">发电机</string>
+
+
+    <string name="disable">不使能</string>
+    <string name="out_power">按输出功率</string>
+    <string name="time_period">按时间段</string>
+    <string name="mixed_mode">混合模式</string>
+    <string name="battery_param">按电池参数</string>
+
+    <string name="water_heateing">热水器工作中</string>
+    <string name="generator_working">发电机工作中</string>
+    <string name="function_close">功能关闭</string>
+
 
 </resources>

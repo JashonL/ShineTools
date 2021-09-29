@@ -22,11 +22,16 @@ import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigInput;
 import com.mylhyl.circledialog.callback.ConfigText;
 import com.mylhyl.circledialog.params.TextParams;
+import com.mylhyl.circledialog.res.drawable.CircleDrawable;
+import com.mylhyl.circledialog.res.values.CircleColor;
+import com.mylhyl.circledialog.res.values.CircleDimen;
 import com.mylhyl.circledialog.view.listener.OnCreateBodyViewListener;
 import com.mylhyl.circledialog.view.listener.OnInputClickListener;
 import com.mylhyl.circledialog.view.listener.OnLvItemClickListener;
 
 import java.util.List;
+
+import static com.growatt.shinetools.utils.MyToastUtils.toast;
 
 
 public class CircleDialogUtils {
@@ -37,7 +42,7 @@ public class CircleDialogUtils {
      */
     public static BaseCircleDialog showCommentBodyDialog(float width, float height, View bodyView,
                                                          FragmentManager fragmentManager,
-                                                         OnCreateBodyViewListener listener, int gravity,boolean cancel) {
+                                                         OnCreateBodyViewListener listener, int gravity, boolean cancel) {
         CircleDialog.Builder builder = new CircleDialog.Builder();
         builder.setWidth(width);
         builder.setMaxHeight(height);
@@ -163,7 +168,7 @@ public class CircleDialogUtils {
     }
 
 
-    public static BaseCircleDialog showNotitleDialog(AppCompatActivity context, String text,OndialogClickListeners listeners) {
+    public static BaseCircleDialog showNotitleDialog(AppCompatActivity context, String text, OndialogClickListeners listeners) {
         View bodyView = LayoutInflater.from(context).inflate(R.layout.dialog_text_notitle, null);
         CircleDialog.Builder builder = new CircleDialog.Builder();
         builder.setBodyView(bodyView, view -> {
@@ -185,15 +190,12 @@ public class CircleDialogUtils {
     }
 
 
-
-
-
     /**
      * 公共自定义弹框
      *
      * @return
      */
-    public static BaseCircleDialog showExplainDialog(AppCompatActivity context,String title, String text,OndialogClickListeners listeners) {
+    public static BaseCircleDialog showExplainDialog(AppCompatActivity context, String title, String text, OndialogClickListeners listeners) {
         View bodyView = LayoutInflater.from(context).inflate(R.layout.explain_dialog, null);
         CircleDialog.Builder builder = new CircleDialog.Builder();
         builder.setBodyView(bodyView, view -> {
@@ -213,15 +215,12 @@ public class CircleDialogUtils {
             });
 
         });
-        builder .setYoff(20);
-        builder .setGravity(Gravity.BOTTOM);
+        builder.setYoff(20);
+        builder.setGravity(Gravity.BOTTOM);
         builder.setCancelable(true);
         BaseCircleDialog show = builder.show(context.getSupportFragmentManager());
         return show;
     }
-
-
-
 
 
     /**
@@ -294,7 +293,54 @@ public class CircleDialogUtils {
     }
 
 
-   public interface OndialogClickListeners {
+   public interface OndialogComfirListener {
+        void comfir(String value);
+    }
+
+    public static void showInputValueDialog(FragmentActivity context, String title, String subTitle, String unit, OndialogComfirListener listener) {
+        View contentView = LayoutInflater.from(context).inflate(R.layout.dialog_input_custom, null, false);
+        TextView tvTitle = contentView.findViewById(R.id.tv_title);
+        TextView tvSubTtile = contentView.findViewById(R.id.tv_sub_title);
+        TextView tvUnit = contentView.findViewById(R.id.tv_unit);
+        TextView tvCancel = contentView.findViewById(R.id.tv_button_cancel);
+        TextView tvConfirm = contentView.findViewById(R.id.tv_button_confirm);
+        TextView etInput = contentView.findViewById(R.id.et_input);
+        tvCancel.setText(R.string.mCancel_ios);
+        tvConfirm.setText(R.string.android_key1935);
+
+        CircleDialog.Builder builder = new CircleDialog.Builder();
+        builder.setWidth(0.75f);
+        builder.setMaxHeight(0.8f);
+        builder.setBodyView(contentView, view -> {
+            CircleDrawable bgCircleDrawable = new CircleDrawable(CircleColor.DIALOG_BACKGROUND
+                    , CircleDimen.DIALOG_RADIUS, CircleDimen.DIALOG_RADIUS, CircleDimen.DIALOG_RADIUS, CircleDimen.DIALOG_RADIUS);
+            view.setBackground(bgCircleDrawable);
+        });
+        builder.setGravity(Gravity.CENTER);
+        builder.setCancelable(true);
+        BaseCircleDialog show = builder.show(context.getSupportFragmentManager());
+        tvSubTtile.setText(subTitle);
+        tvUnit.setText(unit);
+        tvTitle.setText(title);
+
+        tvCancel.setOnClickListener(view1 -> {
+            show.dialogDismiss();
+        });
+
+
+        tvConfirm.setOnClickListener(view -> {
+            String value = etInput.getText().toString();
+            if (TextUtils.isEmpty(value)) {
+                toast(R.string.android_key1945);
+                return;
+            }
+            show.dialogDismiss();
+            listener.comfir(value);
+        });
+    }
+
+
+    public interface OndialogClickListeners {
         void buttonOk();
 
         void buttonCancel();
