@@ -637,20 +637,60 @@ public class RegisterParseUtil {
         int vR = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3026, 0, 1));
         int aR = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3027, 0, 1));
         int pR = obtainValueHAndL(MaxWifiParseUtil.subBytes125(bs, 3028, 0, 2));
+
+        int vS = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3030, 0, 1));
+        int aS = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3031, 0, 1));
+        int pS = obtainValueHAndL(MaxWifiParseUtil.subBytes125(bs, 3032, 0, 2));
+
+
+        int vT = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3034, 0, 1));
+        int aT = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3035, 0, 1));
+        int pT = obtainValueHAndL(MaxWifiParseUtil.subBytes125(bs, 3036, 0, 2));
+
+
+
         List<String> acValues = new ArrayList<>();
         acValues.add(Arith.mul(vR, muilt) + "");
         acValues.add(deviceBean.getGridFre());
         acValues.add(Arith.mul(aR, muilt) + "");
         acValues.add(Arith.mul(pR, muilt) + "");
         acValues.add(deviceBean.getIpf());
+
+
+        acValues.add(Arith.mul(vS, muilt) + "");
+        acValues.add(deviceBean.getGridFre());
+        acValues.add(Arith.mul(aS, muilt) + "");
+        acValues.add(Arith.mul(pS, muilt) + "");
+        acValues.add(deviceBean.getIpf());
+
+
+        acValues.add(Arith.mul(vT, muilt) + "");
+        acValues.add(deviceBean.getGridFre());
+        acValues.add(Arith.mul(aT, muilt) + "");
+        acValues.add(Arith.mul(pT, muilt) + "");
+        acValues.add(deviceBean.getIpf());
+
         been.setACList(acValues);
         //pv侧信息
         int vPv1 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3003, 0, 1));
         int vPv2 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3007, 0, 1));
         int vPv3 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3011, 0, 1));
+        int vPv4 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3015, 0, 1));
+        int vPv5 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3019, 0, 1));
+        int vPv6 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3023, 0, 1));
+        int vPv7 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3027, 0, 1));
+        int vPv8 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3030, 0, 1));
+
         int aPv1 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3004, 0, 1));
         int aPv2 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3008, 0, 1));
         int aPv3 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3012, 0, 1));
+        int aPv4 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3016, 0, 1));
+        int aPv5 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3020, 0, 1));
+        int aPv6 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3024, 0, 1));
+        int aPv7 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3028, 0, 1));
+        int aPv8 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3032, 0, 1));
+
+
         //pv值
         List<String> pvValues = new ArrayList<>();
         pvValues.add(Arith.mul(vPv1, muilt) + "");
@@ -659,6 +699,20 @@ public class RegisterParseUtil {
         pvValues.add(Arith.mul(aPv2, muilt) + "");
         pvValues.add(Arith.mul(vPv3, muilt) + "");
         pvValues.add(Arith.mul(aPv3, muilt) + "");
+
+
+        pvValues.add(Arith.mul(vPv4, muilt) + "");
+        pvValues.add(Arith.mul(aPv4, muilt) + "");
+        pvValues.add(Arith.mul(vPv5, muilt) + "");
+        pvValues.add(Arith.mul(aPv5, muilt) + "");
+        pvValues.add(Arith.mul(vPv6, muilt) + "");
+        pvValues.add(Arith.mul(aPv6, muilt) + "");
+
+        pvValues.add(Arith.mul(vPv7, muilt) + "");
+        pvValues.add(Arith.mul(aPv7, muilt) + "");
+        pvValues.add(Arith.mul(vPv8, muilt) + "");
+        pvValues.add(Arith.mul(aPv8, muilt) + "");
+
         been.setPVList(pvValues);
         //内部信息
         //温度

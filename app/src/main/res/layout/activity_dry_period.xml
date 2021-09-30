@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toobar_title" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_period_explain"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_45"
+        android:drawableEnd="@drawable/icon_ps"
+        android:drawablePadding="@dimen/dp_10"
+        android:gravity="center_vertical"
+        android:maxWidth="@dimen/dp_150"
+        android:maxLines="2"
+        android:text="@string/android_key492"
+        android:layout_marginStart="@dimen/dp_10"
+        android:textColor="@color/color_text_66"
+        android:textSize="@dimen/size_content_sp_14"
+        app:autoSizeMaxTextSize="@dimen/size_content_sp_14"
+        app:autoSizeMinTextSize="@dimen/sp_8"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_period"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white" />
+
+</LinearLayout>

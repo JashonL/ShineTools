@@ -973,6 +973,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         SocketClientUtil.close(mClientUtilRead);
         SocketClientUtil.close(mClientUtil);
         SocketClientUtil.close(mClientUtilBDC);
+        SocketClientUtil.close(mReadBdcUtil);
 
     }
 

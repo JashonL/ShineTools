@@ -6518,6 +6518,6 @@
     <string name="water_heateing">热水器工作中</string>
     <string name="generator_working">发电机工作中</string>
     <string name="function_close">功能关闭</string>
-
+    <string name="confirm_init_dry_setting"> confirm the initialization of dry contact setting parameters </string>
 
 </resources>

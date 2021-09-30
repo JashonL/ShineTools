@@ -1,8 +1,10 @@
 package com.growatt.shinetools.module.localbox.ustool;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,12 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.adapter.UsSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.bean.DryStartTimeBean;
 import com.growatt.shinetools.bean.USDebugSettingBean;
 import com.growatt.shinetools.bean.UsSettingConstant;
+import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
@@ -32,14 +36,15 @@ import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.widget.LinearDivider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 
-public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenuItemClickListener,
-        UsSettingAdapter.OnChildCheckLiseners, BaseQuickAdapter.OnItemClickListener{
+public class DryFunctionActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener,
+        UsSettingAdapter.OnChildCheckLiseners, BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
     @BindView(R.id.tv_title)
@@ -60,16 +65,19 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
     private int[] funs;
 
     //干接点工作模式
-    private String [] bCtrlMode;
+    private String[] bCtrlMode;
     //热水器启动模式
-    private String [] bWaterHeaterOnType;
+    private String[] bWaterHeaterOnType;
     //柴油机 启动方式
-    private String [] bGeneratorOntype;
+    private String[] bGeneratorOntype;
     //干接点运行状态
     private String[] bRunStatus;
 
-    private List<DryStartTimeBean>dryTimeList=new ArrayList<>();
+    private List<DryStartTimeBean> dryTimeList = new ArrayList<>();
 
+    private int[][] nowSet;
+
+    private int[] setItem;
 
     @Override
     protected int getContentView() {
@@ -99,14 +107,14 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
 
     @Override
     protected void initData() {
-        bCtrlMode=new String[]{
+        bCtrlMode = new String[]{
                 getString(R.string.android_key1686),//禁止
                 getString(R.string.android_key2157),//热水器
                 getString(R.string.dynamo),//发电机
         };
 
 
-        bWaterHeaterOnType =new String[]{
+        bWaterHeaterOnType = new String[]{
                 getString(R.string.disable),//不使能
                 getString(R.string.out_power),//按输出功率
                 getString(R.string.time_period),//按时间段
@@ -115,14 +123,14 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
         };
 
 
-        bGeneratorOntype=new String[]{
+        bGeneratorOntype = new String[]{
                 getString(R.string.disable),//不使能
                 getString(R.string.android_key2763),//手动
                 getString(R.string.m电池参数),//按电池参数
         };
 
 
-        bRunStatus=new String[]{
+        bRunStatus = new String[]{
                 getString(R.string.android_key839),//等待中
                 getString(R.string.water_heateing),//热水器工作中
                 getString(R.string.generator_working),//发电机工作中
@@ -142,36 +150,56 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
                 getString(R.string.start_soc),//启动SOC
                 getString(R.string.close_soc), //关闭SOC
                 getString(R.string.start_voltage),//启动电压
-                getString(R.string.close_voltage) ,//关闭电压
-                getString(R.string.dry_run_status) ,//干接点运行状态
+                getString(R.string.close_voltage),//关闭电压
+                getString(R.string.dry_run_status),//干接点运行状态
                 getString(R.string.init_dry_setting) //初始化干接点设置参数
 
         };
 
         //item的显示类型
         itemTypes = new int[]{
-                UsSettingConstant.SETTING_TYPE_INPUT,
-                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_SELECT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_SELECT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
-                UsSettingConstant.SETTING_TYPE_INPUT,
-                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_NEXT,
 
         };
 
 
-
         funs = new int[]{3, 700, 725};
 
+        nowSet = new int[][]{
+                {6, 700, -1},//干接点工作模式
+                {6, 701, -1},//热水器启动方式
+                {6, 702, -1},//启动功率
+                {6, 703, -1},//启动延时时间
+                {6, 704, -1},//最小运行时间
+                {6, 705, -1},//退出功率
+                {6, 706, -1},//启动时间点1
+                {6, 707, -1},//退出时间点1
+                {6, 708, -1},//启动时间点2
+                {6, 709, -1},//退出时间点2
+                {6, 710, -1},//启动时间点3
+                {6, 711, -1},//退出时间点3
+                {6, 720, -1},//柴油机启动方式
+                {6, 721, -1},//启动SOC
+                {6, 722, -1},//关闭SOC
+                {6, 723, -1},//启动电压
+                {6, 724, -1},//关闭电压
+                {6, 725, -1},//干接点运行状态
+                {6, 730, -1},//参数保存并生效
 
+        };
 
 
         List<USDebugSettingBean> newlist = new ArrayList<>();
@@ -204,7 +232,6 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
         Mydialog.Show(this);
         connectServer();
     }
-
 
 
     //连接对象
@@ -302,8 +329,6 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
     }
 
 
-
-
     /**
      * 根据传进来的mtype解析数据
      *
@@ -317,9 +342,9 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
         int value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytesFull(bs, 0, 0, 1));
         USDebugSettingBean bean = usParamsetAdapter.getData().get(0);
         bean.setValue(String.valueOf(value));
-        if (value>bCtrlMode.length){
+        if (value > bCtrlMode.length) {
             bean.setValueStr(String.valueOf(value));
-        }else {
+        } else {
             bean.setValueStr(bCtrlMode[value]);
         }
 
@@ -328,9 +353,9 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
         value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytesFull(bs, 1, 0, 1));
         USDebugSettingBean bean1 = usParamsetAdapter.getData().get(1);
         bean1.setValue(String.valueOf(value));
-        if (value> bWaterHeaterOnType.length){
+        if (value > bWaterHeaterOnType.length) {
             bean1.setValueStr(String.valueOf(value));
-        }else {
+        } else {
             bean1.setValueStr(bWaterHeaterOnType[value]);
         }
 
@@ -366,8 +391,12 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
         bean4.setValueStr(s5);
 
 
+        DryStartTimeBean dryStartTimeBean = new DryStartTimeBean();
+
         //启动时间1
         value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytesFull(bs, 6, 0, 1));
+        dryStartTimeBean.setStartHour(value >> 8);
+        dryStartTimeBean.setStartMin(value & 0b11111111);
         //高八位 小时
         String s_hour1 = CommenUtils.getDoubleNum(value >> 8);
         //低八位 分钟
@@ -376,6 +405,8 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
 
         //退出时间1
         value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytesFull(bs, 7, 0, 1));
+        dryStartTimeBean.setEndHour(value >> 8);
+        dryStartTimeBean.setEndMin(value & 0b11111111);
         //高八位 小时
         String e_hour1 = CommenUtils.getDoubleNum(value >> 8);
         //低八位 分钟
@@ -386,21 +417,27 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
         String endTime = e_hour1+":"+e_min1;
         String time=startTime+"-"+endTime;
 
-        DryStartTimeBean dryStartTimeBean = new DryStartTimeBean();
         dryStartTimeBean.setStartTime(startTime);
         dryStartTimeBean.setEndTime(endTime);
         dryStartTimeBean.setTime(time);
 
         dryTimeList.add(dryStartTimeBean);
 
+
+        DryStartTimeBean dryStartTimeBean2 = new DryStartTimeBean();
         //启动时间2
         value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytesFull(bs, 8, 0, 1));
+        dryStartTimeBean2.setStartHour(value >> 8);
+        dryStartTimeBean2.setStartMin(value & 0b11111111);
         //高八位 小时
         String s_hour2 = CommenUtils.getDoubleNum(value >> 8);
         //低八位 分钟
         String s_min2 = CommenUtils.getDoubleNum(value & 0b11111111);
+
         //退出时间2
         value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytesFull(bs, 9, 0, 1));
+        dryStartTimeBean2.setEndHour(value >> 8);
+        dryStartTimeBean2.setEndMin(value & 0b11111111);
         //高八位 小时
         String e_hour2 = CommenUtils.getDoubleNum(value >> 8);
         //低八位 分钟
@@ -411,24 +448,26 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
         String endTime2 = e_hour2+":"+e_min2;
         String time2=startTime2+"-"+endTime2;
 
-        DryStartTimeBean dryStartTimeBean2 = new DryStartTimeBean();
         dryStartTimeBean2.setStartTime(startTime2);
         dryStartTimeBean2.setEndTime(endTime2);
         dryStartTimeBean2.setTime(time2);
         dryTimeList.add(dryStartTimeBean2);
 
 
-
-
+        DryStartTimeBean dryStartTimeBean3 = new DryStartTimeBean();
         //启动时间3
         value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytesFull(bs, 10, 0, 1));
-
+        dryStartTimeBean3.setStartHour(value >> 8);
+        dryStartTimeBean3.setStartMin(value & 0b11111111);
         //高八位 小时
         String s_hour3 = CommenUtils.getDoubleNum(value >> 8);
         //低八位 分钟
         String s_min3 = CommenUtils.getDoubleNum(value & 0b11111111);
+
         //退出时间3
         value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytesFull(bs, 11, 0, 1));
+        dryStartTimeBean3.setEndHour(value >> 8);
+        dryStartTimeBean3.setEndMin(value & 0b11111111);
         //高八位 小时
         String e_hour3 = CommenUtils.getDoubleNum(value >> 8);
         //低八位 分钟
@@ -438,10 +477,10 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
         String endTime3 = e_hour3+":"+e_min3;
         String time3=startTime3+"-"+endTime3;
 
-        DryStartTimeBean dryStartTimeBean3 = new DryStartTimeBean();
         dryStartTimeBean3.setStartTime(startTime3);
         dryStartTimeBean3.setEndTime(endTime3);
         dryStartTimeBean3.setTime(time3);
+
         dryTimeList.add(dryStartTimeBean3);
 
 
@@ -449,9 +488,9 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
         value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytesFull(bs, 20, 0, 1));
         USDebugSettingBean bean12 = usParamsetAdapter.getData().get(12);
         bean12.setValue(String.valueOf(value));
-        if (value>bGeneratorOntype.length){
+        if (value > bGeneratorOntype.length) {
             bean12.setValueStr(String.valueOf(value));
-        }else {
+        } else {
             bean12.setValueStr(bGeneratorOntype[value]);
         }
 
@@ -479,7 +518,6 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
         bean15.setValueStr(s15);
 
 
-
         //关闭电压
         value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytesFull(bs, 24, 0, 1));
         USDebugSettingBean bean16 = usParamsetAdapter.getData().get(16);
@@ -492,16 +530,14 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
         value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytesFull(bs, 25, 0, 1));
         USDebugSettingBean bean17 = usParamsetAdapter.getData().get(17);
         bean17.setValue(String.valueOf(value));
-        if (value> bRunStatus.length){
+        if (value > bRunStatus.length) {
             bean17.setValueStr(String.valueOf(value));
-        }else {
+        } else {
             bean17.setValueStr(bRunStatus[value]);
         }
 
         usParamsetAdapter.notifyDataSetChanged();
     }
-
-
 
 
     @Override
@@ -523,23 +559,228 @@ public class DryFunctionActivity extends BaseActivity implements  Toolbar.OnMenu
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         USDebugSettingBean bean = usParamsetAdapter.getData().get(position);
-
         String title = bean.getTitle();
+        int type = 0;
 
+        switch (position) {
+            case 0:
+            case 1:
+            case 7:
+                type = 0;
+                break;
 
-        switch (position){
-            case 0: case 1:
+            case 6:
+                type = 1;
+                break;
 
+            case 12://干接点运行状态
 
+                break;
 
+            case 13://初始化干接点设置参数
+                type=3;
+                break;
+
+            default:
+                type = 2;
                 break;
         }
 
+        if (type == 0) {
+            List<String> list;
+            if (position == 0) {
+                list = Arrays.asList(bCtrlMode);
+            } else {
+                list = Arrays.asList(bWaterHeaterOnType);
+            }
 
-        CircleDialogUtils.showInputValueDialog(DryFunctionActivity.this, title,
-                "500Hz~600", "%", value -> {
+            List<String> finalList = list;
+            CircleDialogUtils.showCommentItemDialog(this, getString(R.string.android_key1809),
+                    list, Gravity.CENTER, (parent, view1, pos, id) -> {
+                        if (finalList.size() > pos) {
+                            String text = finalList.get(pos);
+                            usParamsetAdapter.getData().get(position).setValueStr(text);
+                            usParamsetAdapter.getData().get(position).setValue(String.valueOf(pos));
+                            usParamsetAdapter.notifyDataSetChanged();
+                            //去设置
+                            setItem = nowSet[position];
+                            setItem[2] = pos;
+                            writeRegisterValue();
+                        }
+                        return true;
+                    }, null);
+        }
 
-                });
+
+        if (type==1){
+            String jsonArray = new Gson().toJson(dryTimeList);
+            Intent intent=new Intent(DryFunctionActivity.this,DryPeriodSettingActivity.class);
+            intent.putExtra("timelist",jsonArray);
+            startActivity(intent);
+
+        }
+
+
+
+        if (type == 2) {
+            String hint = "";
+            String unit = "%";
+            switch (position) {
+                case 2://启动功率
+                    hint = "XE/XH:5~600  7-10k-X: 5~10000";
+                    unit = "W";
+                    break;
+
+                case 3://退出功率
+                    hint = "4000~6000";
+                    unit = "W";
+                    break;
+
+                case 4://启动延时时间
+                    hint = "0~99";
+                    unit = "Min";
+                    break;
+
+                case 5://最小运行时间
+                    hint = "3~500";
+                    unit = "Min";
+                    break;
+
+                case 8://启动SOC
+                    hint = "20~89";
+                    unit = "%";
+                    break;
+                case 9://关闭SOC
+                    hint = "30~99";
+                    unit = "%";
+                    break;
+                case 10://启动电压
+                    hint = "11.5~13.5";
+                    unit = "V";
+                    break;
+                case 11://关闭电压
+                    hint = "13.0~15.0";
+                    unit = "V";
+                    break;
+            }
+
+            CircleDialogUtils.showInputValueDialog(DryFunctionActivity.this, title,
+                    hint, unit, value -> {
+//                        switch (position) {
+//                            case 2://启动功率
+//
+//                                break;
+//                            case 3://退出功率
+//
+//
+//
+//                                break;
+//
+//                            case 4://启动延时时间
+//                                break;
+//
+//                            case 5://最小运行时间
+//                                break;
+//
+//                            case 8://启动SOC
+//                                break;
+//                            case 9://关闭SOC
+//                                break;
+//                            case 10://启动电压
+//                                break;
+//                            case 11://关闭电压
+//                                break;
+//                        }
+
+                        double result = Double.parseDouble(value);
+                        String pValue = value + "";
+                        usParamsetAdapter.getData().get(position).setValueStr(pValue);
+                        usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
+                        usParamsetAdapter.notifyDataSetChanged();
+
+                        //设置
+                        setItem = nowSet[position];
+                        setItem[2] = (int) result;
+                        writeRegisterValue();
+
+                    });
+        }
+
+
+        if (type==3){
+            CircleDialogUtils.showCommentDialog(this, getString(R.string.android_key2263),
+                    getString(R.string.confirm_init_dry_setting), getString(R.string.android_key1935), getString(R.string.android_key2152), Gravity.CENTER, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //设置
+                            setItem = nowSet[position];
+                            setItem[2] = 0xA5;
+                            writeRegisterValue();
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    });
+        }
 
     }
+
+
+    //连接对象:用于设置数据
+    private SocketClientUtil mClientUtilWriter;
+
+    //设置寄存器的值
+    private void writeRegisterValue() {
+        Mydialog.Show(mContext);
+        mClientUtilWriter = SocketClientUtil.connectServer(mHandlerWrite);
+    }
+
+
+    private byte[] sendBytes;
+
+    Handler mHandlerWrite = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int what = msg.what;
+            switch (what) {
+                //发送信息
+                case SocketClientUtil.SOCKET_SEND:
+                    if (setItem != null && setItem[2] != -1) {
+                        BtnDelayUtil.sendMessageWrite(this);
+                        sendBytes = sendMsg(mClientUtilWriter, setItem);
+                        LogUtil.i("发送写入：" + SocketClientUtil.bytesToHexString(sendBytes));
+                    }
+                    break;
+                //接收字节数组
+                case SocketClientUtil.SOCKET_RECEIVE_BYTES:
+                    BtnDelayUtil.receiveMessage(this);
+                    try {
+                        byte[] bytes = (byte[]) msg.obj;
+
+                        LogUtil.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
+                        //检测内容正确性
+                        boolean isCheck = MaxUtil.checkReceiverFull(bytes);
+                        if (isCheck) {
+                            toast(R.string.all_success);
+                        } else {
+                            toast(R.string.all_failed);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        //关闭tcp连接
+                        SocketClientUtil.close(mClientUtilWriter);
+                        BtnDelayUtil.refreshFinish();
+                    }
+                    break;
+                default:
+                    BtnDelayUtil.dealTLXBtnWrite(this, what, mContext, toolbar);
+                    break;
+            }
+        }
+    };
+
+
 }

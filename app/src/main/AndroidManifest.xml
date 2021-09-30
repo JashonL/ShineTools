@@ -918,7 +918,20 @@
             android:screenOrientation="portrait"
             />
 
+        <activity
+            android:name=".module.localbox.ustool.DryPeriodSettingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
 
+
+        <activity
+            android:name=".module.localbox.ustool.DryTimeSelectActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
 
 
         <!--==================================模块页面=========================================-->
