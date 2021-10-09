@@ -42,6 +42,7 @@ import com.mylhyl.circledialog.res.values.CircleDimen;
 import com.mylhyl.circledialog.view.listener.OnCreateBodyViewListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,6 +71,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
     private String[] registers;
     private int[] itemTypes;
 
+    private String [] onkeyBdcStr;
 
     //读取数据
     private int[][] funs;
@@ -120,6 +122,15 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
 
     @Override
     protected void initData() {
+
+        onkeyBdcStr=new String[]{
+                getString(R.string.android_key480),
+                getString(R.string.android_key345),
+                getString(R.string.android_key467),
+                getString(R.string.disable),
+        };
+
+
         //标题
         titles = new String[]{
                 getString(R.string.m设置充放电优先时间段),
@@ -127,7 +138,8 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                 getString(R.string.android_key1346),
                 getString(R.string.m充电停止SOC),
                 getString(R.string.m放电功率百分比),
-                getString(R.string.android_key502)
+                getString(R.string.android_key502),
+                getString(R.string.one_key_set_bdc_mode)
         };
 
         //对应的寄存器
@@ -138,6 +150,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                 "3048",
                 "3036",
                 "3037",
+                "608"
         };
 
 
@@ -150,7 +163,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
-
+                UsSettingConstant.SETTING_TYPE_NEXT,
         };
 
 
@@ -159,7 +172,8 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                 {3, 3047, 3047},
                 {3, 3048, 3048},
                 {3, 3036, 3036},
-                {3, 3037, 3037}
+                {3, 3037, 3037},
+                {3, 608, 608}
         };
 
 
@@ -168,7 +182,8 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                 {{6, 3047, -1}},
                 {{6, 3048, -1}},
                 {{6, 3036, -1}},
-                {{6, 3037, -1}}
+                {{6, 3037, -1}},
+                {{6, 608, -1}},
         };
 
 
@@ -195,7 +210,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                     , 1, 1, 1, 1, 1
                     , 1, 1, 1, 1, 1
                     , 1, 1
-                    , 1, 1, 1, 1
+                    , 1, 1, 1, 1,1
             };
         } catch (Exception e) {
             e.printStackTrace();
@@ -209,7 +224,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                     , "", "", "", "", ""
                     , "", "", "", "", ""
                     , "", ""
-                    , "", "", "", ""
+                    , "", "", "", "",""
             };
         } catch (Exception e) {
             e.printStackTrace();
@@ -410,6 +425,15 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                 usParamsetAdapter.getData().get(5).setValue(String.valueOf(value4));
                 usParamsetAdapter.getData().get(5).setValueStr(getReadValueReal(value4));
                 break;
+            case 5:
+                int value5 = MaxWifiParseUtil.obtainValueOne(bs);
+                String value=String.valueOf(value5);
+                if (value5<onkeyBdcStr.length){
+                    value=onkeyBdcStr[value5];
+                }
+                usParamsetAdapter.getData().get(6).setValue(String.valueOf(value5));
+                usParamsetAdapter.getData().get(6).setValueStr(value);
+                break;
         }
         usParamsetAdapter.notifyDataSetChanged();
     }
@@ -514,6 +538,22 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                         }
                     }
                 });
+                break;
+            case 6:
+                CircleDialogUtils.showCommentItemDialog(this, getString(R.string.android_key1809),
+                        Arrays.asList(onkeyBdcStr), Gravity.CENTER, (parent, view1, pos, id) -> {
+                            if (onkeyBdcStr.length > pos) {
+                                String text = onkeyBdcStr[pos];
+                                usParamsetAdapter.getData().get(position).setValueStr(text);
+                                usParamsetAdapter.getData().get(position).setValue(String.valueOf(pos));
+                                usParamsetAdapter.notifyDataSetChanged();
+                                //去设置
+                                nowSet = funsSet[position];
+                                nowSet[0][2]  = pos;
+                                writeRegisterValue();
+                            }
+                            return true;
+                        }, null);
                 break;
         }
     }

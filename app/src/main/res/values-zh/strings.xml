@@ -6513,6 +6513,7 @@
     <string name="function_close">功能关闭</string>
 
     <string name="confirm_init_dry_setting">确认初始化干接点设置参数</string>
+    <string name="one_key_set_bdc_mode">一键设置电池模式</string>
 
 
 </resources>

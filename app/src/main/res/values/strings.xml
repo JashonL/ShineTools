@@ -1149,7 +1149,7 @@
     <string name="android_key1146">Timing not set</string>
     <string name="android_key1147">eBatChargeMonth</string>
     <string name="android_key1148">Upgrading</string>
-    <string name="android_key1149">Meter</string>
+    <string name="android_key1149">Electric meter</string>
     <string name="android_key1150">eBatDisChargeMonth</string>
     <string name="android_key1151">PVEpvYear</string>
     <string name="android_key1152">Communication status</string>
@@ -1413,7 +1413,7 @@
     <string name="android_key1410">Get wifi</string>
     <string name="android_key1411">Power(%) Dry Contact Disable</string>
     <string name="android_key1412">Power Sensor</string>
-    <string name="android_key1413">Meter</string>
+    <string name="android_key1413">Electric meter</string>
     <string name="android_key1414">Manual Enable Off-Grid Function</string>
     <string name="android_key1415">Reset</string>
     <string name="android_key1416">LCD language</string>
@@ -1427,7 +1427,7 @@
     <string name="android_key1424">The name and password of connected router cannot contain special characters. Please use English letters and numbers</string>
     <string name="android_key1425">Associated meter</string>
     <string name="android_key1426">The meter cannot be transferred</string>
-    <string name="android_key1427">do not connected to power collection</string>
+    <string name="android_key1427">None</string>
     <string name="android_key1428">Make sure the inverter is in a waiting or standby state.</string>
     <string name="android_key1429">Add meter</string>
     <string name="android_key1430">Generation overview</string>
@@ -4886,7 +4886,7 @@
     <string name="m481单路定时">Single channel timing</string>
     <string name="m482未设置定时">Timing not set</string>
     <string name="m483正在升级中">Upgrading</string>
-    <string name="m484电表">Meter</string>
+    <string name="m484电表">Electric meter</string>
     <string name="m485通讯状态">Communication status</string>
     <string name="m486名称">Name</string>
     <string name="m487有功功率">Active power</string>
@@ -5046,14 +5046,14 @@
     <string name="m获取wifi">Get wifi</string>
     <string name="m干接点关闭功率百分比">Power(%) Dry Contact Disable</string>
     <string name="m功率计">Power Sensor</string>
-    <string name="m电表">Meter</string>
+    <string name="m电表">Electric meter</string>
     <string name="m手动离网使能">Manual Enable Off-Grid Function</string>
     <string name="m恢复出厂设置">Reset</string>
     <string name="mLCD语言">LCD language</string>
     <string name="m连接的路由器名称和密码不能包含特殊字符">The name and password of connected router cannot contain special characters. Please use English letters and numbers</string>
     <string name="m655关联电表">Associated meter</string>
     <string name="m656电表不能转移">The meter cannot be transferred</string>
-    <string name="m657不连接功率采集计">do not connected to power collection</string>
+    <string name="m657不连接功率采集计">None</string>
     <string name="m658请确保逆变器正处于等待或待机状态">Make sure the inverter is in a waiting or standby state.</string>
     <string name="m添加电表">Add meter</string>
     <string name="m设置未保存是否退出">You will disconnect the device for debugging!</string>
@@ -5842,7 +5842,7 @@
     <string name="m635检查固件版本更新_ios">Check firmware version update</string>
     <string name="m637重复_ios">Repeat</string>
     <string name="m638单次_ios">Single</string>
-    <string name="m644电表_ios">Meter</string>
+    <string name="m644电表_ios">Electric meter</string>
     <string name="m64累计_ios">Total</string>
     <string name="m650德语_ios">German</string>
     <string name="m651西班牙语_ios">Spanish</string>
@@ -6519,5 +6519,6 @@
     <string name="generator_working">发电机工作中</string>
     <string name="function_close">功能关闭</string>
     <string name="confirm_init_dry_setting"> confirm the initialization of dry contact setting parameters </string>
+    <string name="one_key_set_bdc_mode">一键设置电池模式</string>
 
 </resources>

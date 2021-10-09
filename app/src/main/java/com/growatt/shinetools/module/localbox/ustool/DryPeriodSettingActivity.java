@@ -264,7 +264,9 @@ public class DryPeriodSettingActivity extends BaseActivity implements Toolbar.On
                         //检测内容正确性
                         boolean isCheck = MaxUtil.checkReceiverFull(bytes);
                         if (isCheck) {
-                            toast(R.string.all_success);
+                            if (count>=nowSet.length-1){
+                                toast(R.string.all_success);
+                            }
                         } else {
                             toast(R.string.all_failed);
                         }

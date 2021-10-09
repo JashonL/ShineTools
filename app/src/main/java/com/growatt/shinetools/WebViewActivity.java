@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.KeyEvent;
-import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -23,8 +22,6 @@ import butterknife.BindView;
 
 public class WebViewActivity extends BaseActivity {
 
-    @BindView(R.id.status_bar_view)
-    View statusBarView;
     @BindView(R.id.webview)
     WebView webview;
 
