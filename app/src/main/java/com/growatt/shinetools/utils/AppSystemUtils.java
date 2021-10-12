@@ -31,6 +31,7 @@ public class AppSystemUtils {
 
 
     public static final String KEY_APP_FIRST_INSTALL="key_app_first_install";
+    public static final String KEY_APP_WELCOME="key_app_welcome";
 
     /**
      * 判断是否第一次使用
@@ -104,5 +105,20 @@ public class AppSystemUtils {
                     }
                 });
     }
+
+
+
+
+    /**
+     * 不再提示欢迎页
+     *
+     * @return
+     */
+    public static boolean isFirstWelcome() {
+        SharedPreferencesUnit sharedPreferencesUnit = SharedPreferencesUnit.getInstance(ShineToosApplication.getContext());
+        return sharedPreferencesUnit.getBoolean(KEY_APP_WELCOME);
+    }
+
+
 
 }

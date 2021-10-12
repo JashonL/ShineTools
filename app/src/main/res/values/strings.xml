@@ -6520,5 +6520,8 @@
     <string name="function_close">功能关闭</string>
     <string name="confirm_init_dry_setting"> confirm the initialization of dry contact setting parameters </string>
     <string name="one_key_set_bdc_mode">一键设置电池模式</string>
+    <string name="welcome">欢迎</string>
+    <string name="welcome_content">这个应用程序将帮助您更新激活和启用Growatt设备。 帮助您进行设备版本更新和设备调试等。</string>
+    <string name="no_remind_again">不再提示</string>
 
 </resources>

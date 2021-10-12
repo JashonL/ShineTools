@@ -9,6 +9,8 @@
     <dimen name="size_title_sp_14">@dimen/sp_14</dimen><!--副标题大小-->
     <dimen name="size_title_sp_12">@dimen/sp_12</dimen><!--小号标题大小-->
 
+
+
     <!--内容尺寸标准-->
     <dimen name="size_content_sp_16">@dimen/sp_16</dimen>
     <dimen name="size_content_sp_14">@dimen/sp_14</dimen>
@@ -22,5 +24,10 @@
 
     <!--新版头部高度-->
     <dimen name="header_height_v3">@dimen/dp_33</dimen>
+
+    <!--其他尺寸-->
+    <dimen name="size_title_sp_24">@dimen/sp_24</dimen><!--小号标题大小-->
+
+
 
 </resources>

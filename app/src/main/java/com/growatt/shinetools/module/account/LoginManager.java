@@ -10,7 +10,9 @@ import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.bean.User;
 import com.growatt.shinetools.constant.GlobalConstant;
 import com.growatt.shinetools.db.DataBaseManager;
+import com.growatt.shinetools.module.WelcomeActivity;
 import com.growatt.shinetools.utils.ActivityUtils;
+import com.growatt.shinetools.utils.AppSystemUtils;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.Log;
 import com.growatt.shinetools.utils.MyToastUtils;
@@ -86,7 +88,12 @@ public class LoginManager {
             dataBaseManager.save(new User("1",username,password));
         }
         //如果是
-        ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
+        boolean firstWelcome = AppSystemUtils.isFirstWelcome();
+        if (!firstWelcome){
+            ActivityUtils.gotoActivity((Activity) context, WelcomeActivity.class, true);
+        }else {
+            ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
+        }
     }
 
 

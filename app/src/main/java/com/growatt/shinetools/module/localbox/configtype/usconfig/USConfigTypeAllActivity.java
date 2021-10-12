@@ -308,7 +308,7 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
         }
         try {
             mUnits = new String[]{
-                    "", "", "", "", ""
+                    "", "", "", "%", ""
                     , "", "", "", "", ""
                     , "", "", "", "", ""
                     , "", "", "", "%", "%"
@@ -563,8 +563,8 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
                 } else if (count == 1) {//干接点开通的功率百分比
                     mType = 20;
                     try {
-                        mMul = mMultiples[18];
-                        mUnit = mUnits[18];
+                        mMul = mMultiples[3];
+                        mUnit = mUnits[3];
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -578,8 +578,8 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
                 } else if (count == 2) {//干接点关闭功率百分比
                     mType = 30;
                     try {
-                        mMul = mMultiples[19];
-                        mUnit = mUnits[19];
+                        mMul = mMultiples[3];
+                        mUnit = mUnits[3];
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

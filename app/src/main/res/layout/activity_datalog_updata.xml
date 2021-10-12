@@ -27,7 +27,7 @@
         android:src="@drawable/icon_datalog_updata"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerView" />
+        app:layout_constraintTop_toBottomOf="@+id/header_title" />
 
     <ProgressBar
         android:id="@+id/bp_progress"
