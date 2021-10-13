@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <!--发电量-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:padding="@dimen/dp_5"
+            app:cardBackgroundColor="@color/white1"
+            app:cardCornerRadius="@dimen/dp_5"
+            app:cardElevation="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <FrameLayout
+                android:id="@+id/cvEnergy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvEle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDetial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_32"
+                    android:layout_gravity="right"
+                    android:background="@drawable/touch_bg"
+                    android:gravity="center"
+                    android:maxWidth="@dimen/dp_60"
+                    android:minWidth="@dimen/dp_32"
+                    android:paddingLeft="@dimen/dp_5"
+                    android:paddingRight="@dimen/dp_10"
+                    android:textColor="@color/whitebg_time_value"
+                    android:textSize="@dimen/size_content_sp_12"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/iv_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_chart"
+            android:layout_marginTop="@dimen/dp_30"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--故障告警-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvWarning"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:padding="@dimen/dp_5"
+        app:cardBackgroundColor="@color/white1"
+        app:cardCornerRadius="@dimen/dp_5"
+        app:cardElevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_fault"
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_marginStart="@dimen/dp_10"
+                android:src="@drawable/icon_fault"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_fault"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxWidth="@dimen/dp_60"
+                android:maxLines="2"
+                android:text="@string/android_key316"
+                android:textColor="@color/color_text_33"
+                android:textSize="@dimen/size_content_sp_14"
+                app:autoSizeMaxTextSize="@dimen/size_content_sp_14"
+                app:autoSizeMinTextSize="@dimen/size_content_note"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/iv_fault"
+                app:layout_constraintRight_toLeftOf="@+id/tv_fault_value"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_fault_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxWidth="@dimen/dp_60"
+                android:maxLines="2"
+                android:text="--"
+                android:textColor="@color/color_fault"
+                android:textSize="@dimen/size_content_sp_14"
+                app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
+                app:autoSizeMinTextSize="@dimen/sp_6"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/tv_fault"
+                app:layout_constraintRight_toRightOf="@+id/v_center"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <View
+                android:id="@+id/v_center"
+                android:layout_width="@dimen/dp_1"
+                android:layout_height="match_parent"
+                android:background="@color/none_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/iv_warn"
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_marginStart="@dimen/dp_10"
+                android:src="@drawable/icon_warn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/v_center"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_warn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxWidth="@dimen/dp_60"
+                android:maxLines="2"
+                android:text="@string/android_key424"
+                android:textColor="@color/color_text_33"
+                android:textSize="@dimen/size_content_sp_14"
+                app:autoSizeMaxTextSize="@dimen/size_content_sp_14"
+                app:autoSizeMinTextSize="@dimen/size_content_note"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/iv_warn"
+                app:layout_constraintRight_toLeftOf="@+id/tv_warn_value"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_warn_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxWidth="@dimen/dp_60"
+                android:maxLines="2"
+                android:text="--"
+                android:textColor="@color/color_fault"
+                android:textSize="@dimen/size_content_sp_14"
+                app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
+                app:autoSizeMinTextSize="@dimen/sp_6"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/tv_warn"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+
+</LinearLayout>
