@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             app:elevation="0dp"
             android:layout_height="wrap_content">
-            <include layout="@layout/toobar_title"
+            <include layout="@layout/toobar_image_title"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"

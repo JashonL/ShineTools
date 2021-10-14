@@ -149,7 +149,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.8"
-                android:gravity="center_vertical|right"
+                android:gravity="center"
                 android:text="@string/MessagesActivity_delete"
                 android:textColor="@color/content_bg_white"
                 android:textSize="@dimen/size_content_sp_14" />

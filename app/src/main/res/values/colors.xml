@@ -742,4 +742,11 @@
     <color name="color_black_66">#66000000</color>
 
 
+    <!--状态-->
+    <color name="color_status_wait">#6DD400</color>
+    <color name="color_status_grid">#17CDC7</color>
+    <color name="color_status_offgrid">#FFD256</color>
+    <color name="color_status_fault">#FFA479</color>
+    <color name="color_status_upgrade">#508CEE</color>
+
 </resources>

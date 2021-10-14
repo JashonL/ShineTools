@@ -1,6 +1,7 @@
 package com.growatt.shinetools.module.localbox.ustool;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -82,7 +83,8 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
     LinearLayout headerTitle;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-
+    @BindView(R.id.tv_status)
+    TextView tvStatus;
 
     private TextView tvFluxPower;
     private ImageView ivDryStatus;
@@ -99,6 +101,9 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
     String[] pidStatusStrs;
     //标题状态
     String[] statusTitles;
+    private int [] statusColors;
+    private int [] drawableStatus;
+
     private boolean isReceiveSucc = false;
     private long startTime;
     private boolean btnClick = true;
@@ -230,7 +235,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         });
 
 
-        tvTitle.setText(R.string.m240本地调试工具);
+        tvTitle.setText("TL-XH-US");
         toolbar.inflateMenu(R.menu.comment_right_menu);
         item = toolbar.getMenu().findItem(R.id.right_action);
         item.setTitle(noteStartStr);
@@ -269,9 +274,18 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                 "", getString(R.string.all_Waiting), getString(R.string.all_Normal), getString(R.string.m故障)
         };
         statusTitles = new String[]{
-                getString(R.string.all_Waiting), getString(R.string.all_Normal),
-                getString(R.string.m226升级中), getString(R.string.m故障)
+                getString(R.string.all_Waiting), getString(R.string.m206并网工作中),
+                 getString(R.string.m故障), getString(R.string.m226升级中)
         };
+
+        statusColors=new int[]{
+          R.color.color_status_wait,R.color.color_status_grid,R.color.color_status_fault,R.color.color_status_upgrade
+        };
+
+        drawableStatus=new int[]{
+                R.drawable.circle_wait,R.drawable.circle_grid,R.drawable.circle_fault, R.drawable.circle_upgrade
+        };
+
         c1Title2 = new String[]{
                 String.format("%s(V)", getString(R.string.m318电压)),
                 String.format("%s(A)", getString(R.string.m319电流)),
@@ -338,10 +352,10 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                 R.drawable.tlxh_ele_fangdian, R.drawable.tlxh_ele_bingwang, R.drawable.tlxh_ele_yonghushiyong
         };
         powerTitles = new String[]{
-                getString(R.string.InverterAct_current_power),
-                getString(R.string.m189额定功率),
-                getString(R.string.m265充电功率),
-                getString(R.string.m266放电功率)
+                getString(R.string.android_key1993),
+                getString(R.string.额定功率),
+                getString(R.string.android_key1807),
+                getString(R.string.android_key1824)
         };
         powerResId = new int[]{
                 R.drawable.tlxh_power_dangqian, R.drawable.tlxh_power_eding,
@@ -386,7 +400,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
     private void initRecyclerViewPower() {
         mPowerList = new ArrayList<>();
         mPowerRecycler = header.findViewById(R.id.rvPower);
-        mPowerRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mPowerRecycler.setLayoutManager(new GridLayoutManager(this,powerTitles.length));
         mPowerAdapter = new TLXHToolPowerAdapter(R.layout.item_tlxh_tool_power, mPowerList);
         mPowerRecycler.setAdapter(mPowerAdapter);
         initPowerDatas(powerTitles, null, mPowerAdapter);
@@ -917,13 +931,15 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
             warnCodeStr = String.format("%d(%02d)", warmCode, warmCodeSecond);
         } else {
             if (errCode == 0) {
-                errCodeStr = getString(R.string.m351无故障信息);
+//                errCodeStr = getString(R.string.m351无故障信息);
+                errCodeStr = "--";
             } else {
                 errCode += 99;
                 errCodeStr = String.format("%d(%02d)", errCode, errCodeSecond < 100 ? errCodeSecond : errCodeSecond % 100);
             }
             if (warmCode == 0) {
-                warnCodeStr = getString(R.string.m352无警告信息);
+//                warnCodeStr = getString(R.string.m352无警告信息);
+                warnCodeStr ="--";
             } else {
                 warmCode += 99;
                 warnCodeStr = String.format("%d(%02d)", warmCode, warmCodeSecond < 100 ? warmCodeSecond : warmCodeSecond % 100);
@@ -932,6 +948,57 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         tvErrH1.setText(errCodeStr);
         tvWarnH1.setText(warnCodeStr);
 
+
+        //状态
+        int status = mMaxData.getStatus();
+        int bdcStatus = mMaxData.getBdcStatus();
+        if (bdcStatus!=0){//带电池
+            statusTitles = new String[]{
+                    getString(R.string.all_Waiting), getString(R.string.m206并网工作中),getString(R.string.m207离网工作中),
+                    getString(R.string.m故障), getString(R.string.m226升级中)
+            };
+
+            statusColors=new int[]{
+                    R.color.color_status_wait,R.color.color_status_grid,R.color.color_status_offgrid,
+                    R.color.color_status_fault,R.color.color_status_upgrade
+            };
+
+            drawableStatus=new int[]{
+                    R.drawable.circle_wait,R.drawable.circle_grid,R.drawable.circle_offgrid,R.drawable.circle_fault, R.drawable.circle_upgrade
+            };
+        }else {
+            statusTitles = new String[]{
+                    getString(R.string.all_Waiting), getString(R.string.m206并网工作中),
+                    getString(R.string.m故障), getString(R.string.m226升级中)
+            };
+
+            statusColors=new int[]{
+                    R.color.color_status_wait,R.color.color_status_grid,R.color.color_status_fault,R.color.color_status_upgrade
+            };
+
+            drawableStatus=new int[]{
+                    R.drawable.circle_wait,R.drawable.circle_grid,R.drawable.circle_fault, R.drawable.circle_upgrade
+            };
+        }
+
+
+        String statusStr;
+        int color=R.color.color_text_66;
+        int drawable=R.drawable.circle_wait;
+
+        if (status >= 0 && status < statusTitles.length){
+            statusStr = statusTitles[status];
+            color=statusColors[status];
+            drawable=drawableStatus[status];
+        }else {
+            statusStr = getString(R.string.m505状态)+" "+status;
+        }
+        tvStatus.setVisibility(View.VISIBLE);
+        tvStatus.setText(statusStr);
+        tvStatus.setTextColor(ContextCompat.getColor(USToolsMainActivityV2.this,color));
+        Drawable drawableLeft=getResources().getDrawable(drawable);
+        tvStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableLeft,null,null,null);
+        tvStatus.setCompoundDrawablePadding(4);
         //数量
         bdcNumber = mMaxData.getBdcNumber();
         if (mMaxData.getBdcStatus() != 0&&bdcNumber > 1) {

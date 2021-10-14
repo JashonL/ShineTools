@@ -1,5 +1,6 @@
 package com.growatt.shinetools.module;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -33,14 +35,19 @@ import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.SharedPreferencesUnit;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 import static com.growatt.shinetools.constant.GlobalConstant.KEY_END_USER_PWD;
 import static com.growatt.shinetools.constant.GlobalConstant.KEY_MODIFY_PWD;
+import static com.growatt.shinetools.constant.PermissionConstant.RC_LOCATION;
 
-public class UsTutorialActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
+public class UsTutorialActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener, EasyPermissions.PermissionCallbacks  {
     @BindView(R.id.status_bar_view)
     View statusBarView;
     @BindView(R.id.tv_title)
@@ -133,6 +140,7 @@ public class UsTutorialActivity extends BaseActivity implements Toolbar.OnMenuIt
     public void onStart() {
         super.onStart();
         initWifi();
+        checkCameraPermissions();
     }
 
     /**
@@ -270,6 +278,41 @@ public class UsTutorialActivity extends BaseActivity implements Toolbar.OnMenuIt
             case R.id.tv_arrow:
                 ActivityUtils.toWifiSet(this);
                 break;
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    /**
+     * 检测拍摄权限
+     */
+    @AfterPermissionGranted(RC_LOCATION)
+    private void checkCameraPermissions() {
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+        if (EasyPermissions.hasPermissions(this, perms)) {//有权限
+            checkWifiNetworkStatus();
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this, getString(R.string.android_key3127),
+                    RC_LOCATION, perms);
         }
     }
 }

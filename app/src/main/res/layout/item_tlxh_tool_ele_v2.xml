@@ -51,8 +51,8 @@
             android:maxLines="2"
             android:paddingTop="@dimen/dp_2"
             android:textColor="@color/note_bg_white"
-            android:textSize="@dimen/size_content_sp_12"
-            app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
+            android:textSize="@dimen/size_content_sp_10"
+            app:autoSizeMaxTextSize="@dimen/size_content_sp_10"
             app:autoSizeMinTextSize="@dimen/sp_6"
             app:autoSizeTextType="uniform" />
     </LinearLayout>
@@ -85,8 +85,8 @@
             android:maxLines="2"
             android:paddingTop="@dimen/dp_2"
             android:textColor="@color/note_bg_white"
-            android:textSize="@dimen/size_content_sp_12"
-            app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
+            android:textSize="@dimen/size_content_sp_10"
+            app:autoSizeMaxTextSize="@dimen/size_content_sp_10"
             app:autoSizeMinTextSize="@dimen/sp_6"
             app:autoSizeTextType="uniform" />
     </LinearLayout>

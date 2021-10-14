@@ -3963,8 +3963,8 @@
     <string name="m203保留模式">保留模式</string>
     <string name="m204SysFault模式">SysFault模式</string>
     <string name="m205Flash模式">Flash模式</string>
-    <string name="m206并网工作中">并网工作中</string>
-    <string name="m207离网工作中">离网工作中</string>
+    <string name="m206并网工作中">并网</string>
+    <string name="m207离网工作中">离网</string>
     <string name="m208负载优先">负载优先</string>
     <string name="m209电池优先">电池优先</string>
     <string name="m210电网优先">电网优先</string>
@@ -6511,11 +6511,10 @@
     <string name="water_heateing">热水器工作中</string>
     <string name="generator_working">发电机工作中</string>
     <string name="function_close">功能关闭</string>
-
+    <string name="额定功率">Normal \n Power</string>
     <string name="confirm_init_dry_setting">确认初始化干接点设置参数</string>
     <string name="one_key_set_bdc_mode">一键设置电池模式</string>
     <string name="welcome">欢迎</string>
     <string name="welcome_content">这个应用程序将帮助您更新激活和启用Growatt设备。 帮助您进行设备版本更新和设备调试等。</string>
     <string name="no_remind_again">不再提示</string>
-
 </resources>

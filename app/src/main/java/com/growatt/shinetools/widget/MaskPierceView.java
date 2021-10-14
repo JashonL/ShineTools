@@ -7,13 +7,17 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+
+import com.growatt.shinetools.R;
 
 public class MaskPierceView extends View {
 
@@ -29,6 +33,9 @@ public class MaskPierceView extends View {
     private int mPiercedX, mPiercedY;
     private int mPiercedRadius;
 
+    private Rect mTextRect=new Rect();
+    private String mText = "";
+
     public MaskPierceView(Context context) {
         this(context, null);
     }
@@ -39,6 +46,8 @@ public class MaskPierceView extends View {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         setLayoutParams(layoutParams);
+
+        mText=getResources().getString(R.string.android_key3074);
 
         if (mScreenWidth == 0) {
             DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -92,7 +101,14 @@ public class MaskPierceView extends View {
         Canvas canvcs = new Canvas(bm);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.WHITE);
-        canvcs.drawRoundRect(mScreenWidth-240,35,mScreenWidth-10,130,50,50,paint);
+        paint.setTextSize(43);
+
+        if (TextUtils.isEmpty(mText)){
+            canvcs.drawRoundRect(mScreenWidth-240,35,mScreenWidth-10,130,50,50,paint);
+        }else {
+            paint.getTextBounds(mText,0,mText.length(),mTextRect);
+            canvcs.drawRoundRect(mScreenWidth-mTextRect.width()-10,35,mScreenWidth-10,130,50,50,paint);
+        }
 //        canvcs.drawCircle(mPiercedX, mPiercedY, mPiercedRadius, paint);
         return bm;
     }
@@ -110,6 +126,7 @@ public class MaskPierceView extends View {
         canvcs.drawRect(new RectF(0, 0, mScreenWidth, mScreenHeight), paint);
         return bm;
     }
+
 
 
 }

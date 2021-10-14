@@ -1149,7 +1149,7 @@
     <string name="android_key1146">Timing not set</string>
     <string name="android_key1147">eBatChargeMonth</string>
     <string name="android_key1148">Upgrading</string>
-    <string name="android_key1149">Electric meter</string>
+    <string name="android_key1149">Meter</string>
     <string name="android_key1150">eBatDisChargeMonth</string>
     <string name="android_key1151">PVEpvYear</string>
     <string name="android_key1152">Communication status</string>
@@ -1308,7 +1308,7 @@
     <string name="android_key1305">Off-Grid Power</string>
     <string name="android_key1306">Charge</string>
     <string name="android_key1307"> Load </string>
-    <string name="android_key1308"> Charge and Discharge Management </string>
+    <string name="android_key1308">EMS</string>
     <string name="android_key1309">DisCharge</string>
     <string name="android_key1310">\'Via mobile phone\' only for \'Quick registration\'</string>
     <string name="android_key1311">Grid Code</string>
@@ -1319,8 +1319,8 @@
     <string name="android_key1316">Please re-read or check the device Model</string>
     <string name="android_key1317">Charge power</string>
     <string name="android_key1318">Enter name of router</string>
-    <string name="android_key1319">Energy Exported to the Grid</string>
-    <string name="android_key1320">Energy Consumption from the Load</string>
+    <string name="android_key1319">Export Power</string>
+    <string name="android_key1320">Consumption</string>
     <string name="android_key1321">Export limit ation power setting</string>
     <string name="android_key1322">Please select a product type</string>
     <string name="android_key1323">Dry contact</string>
@@ -1413,7 +1413,7 @@
     <string name="android_key1410">Get wifi</string>
     <string name="android_key1411">Power(%) Dry Contact Disable</string>
     <string name="android_key1412">Power Sensor</string>
-    <string name="android_key1413">Electric meter</string>
+    <string name="android_key1413">Meter</string>
     <string name="android_key1414">Manual Enable Off-Grid Function</string>
     <string name="android_key1415">Reset</string>
     <string name="android_key1416">LCD language</string>
@@ -1807,7 +1807,7 @@
     <string name="android_key1804">Alias</string>
     <string name="android_key1805">Alias is empty!</string>
     <string name="android_key1806">Cancel</string>
-    <string name="android_key1807">Charging Power</string>
+    <string name="android_key1807">Charging\nPower</string>
     <string name="android_key1808">Charging Power</string>
     <string name="android_key1809">Selection/Option</string>
     <string name="android_key1810">CO2 reduced</string>
@@ -1824,7 +1824,7 @@
     <string name="android_key1821">Delete failed</string>
     <string name="android_key1822">Device List</string>
     <string name="android_key1823">Device type</string>
-    <string name="android_key1824">Discharging Power</string>
+    <string name="android_key1824">Discharging\nPower</string>
     <string name="android_key1825">Discharging Power</string>
     <string name="android_key1826">This Month</string>
     <string name="android_key1827">Current(A)</string>
@@ -1993,7 +1993,7 @@
     <string name="android_key1990">current version:</string>
     <string name="android_key1991">Current</string>
     <string name="android_key1992">Voltage</string>
-    <string name="android_key1993">Current Power</string>
+    <string name="android_key1993">Current\nPower</string>
     <string name="android_key1994">Current Power</string>
     <string name="android_key1995">Currently Connected WiFi</string>
     <string name="android_key1996">Setting temperature</string>
@@ -2019,7 +2019,7 @@
     <string name="android_key2016">Port</string>
     <string name="android_key2017">Disconnected</string>
     <string name="android_key2018">Rated power(W)</string>
-    <string name="android_key2019">Power Generation</string>
+    <string name="android_key2019">Generation</string>
     <string name="android_key2020">Email sending failed</string>
     <string name="android_key2021">Back</string>
     <string name="android_key2022">Room temperature</string>
@@ -2370,8 +2370,8 @@
     <string name="android_key2367">Set execution power</string>
     <string name="android_key2368">Device execution time</string>
     <string name="android_key2369">Monthly energy</string>
-    <string name="android_key2370">Energy Discharged from Battery</string>
-    <string name="android_key2371">Energy Charged from Battery</string>
+    <string name="android_key2370">Discharged</string>
+    <string name="android_key2371">Charged</string>
     <string name="android_key2372">Exported to grid</string>
     <string name="android_key2373">Time</string>
     <string name="android_key2374">PV charge</string>
@@ -3056,7 +3056,7 @@
     <string name="android_key3053">The datalogger version is too low</string>
     <string name="android_key3054">Please enter a new password</string>
     <string name="android_key3055">Setting login password</string>
-    <string name="android_key3056">Grid Code Parameter Setting</string>
+    <string name="android_key3056">Grid Code</string>
     <string name="android_key3057">End User</string>
     <string name="android_key3058">O&amp;M User</string>
     <string name="android_key3059">Automatic Log-in</string>
@@ -3075,7 +3075,7 @@
     <string name="android_key3072">Only supports ShineWiFi-S/-X</string>
     <string name="android_key3073">Sign out</string>
     <string name="android_key3074">Installation Manual</string>
-    <string name="android_key3075">Click here to view ”Equipment Installation Manual“</string>
+    <string name="android_key3075">Click here to view ”Installation Manual“</string>
     <string name="android_key3076">I know</string>
     <string name="android_key3077">Only supports datalogger with version 3.0.0.2 / 3.1.0.2 or above</string>
     <string name="android_key3078">The default value is</string>
@@ -3968,8 +3968,8 @@
     <string name="m203保留模式">Retained</string>
     <string name="m204SysFault模式">SysFault</string>
     <string name="m205Flash模式">Flash</string>
-    <string name="m206并网工作中">On-grid operating</string>
-    <string name="m207离网工作中">Off-grid operating</string>
+    <string name="m206并网工作中">On-grid</string>
+    <string name="m207离网工作中">Off-grid</string>
     <string name="m208负载优先">Self Consumption</string>
     <string name="m209电池优先">TOU-Charging</string>
     <string name="m210电网优先">TOU-Discharging</string>
@@ -4886,7 +4886,7 @@
     <string name="m481单路定时">Single channel timing</string>
     <string name="m482未设置定时">Timing not set</string>
     <string name="m483正在升级中">Upgrading</string>
-    <string name="m484电表">Electric meter</string>
+    <string name="m484电表">Meter</string>
     <string name="m485通讯状态">Communication status</string>
     <string name="m486名称">Name</string>
     <string name="m487有功功率">Active power</string>
@@ -4956,7 +4956,7 @@
     <string name="m不强制">Not mandatory</string>
     <string name="m结束时间">End Time</string>
     <string name="m时段设置">Time Slot Setting</string>
-    <string name="m设置充放电优先时间段">Time Slot Priority setting of Charge/Discharge </string>
+    <string name="m设置充放电优先时间段">Time Slot Priority Setting of Charge/Discharge </string>
     <string name="mCV电压">Constant Voltage</string>
     <string name="mCC电流">Constant Current</string>
     <string name="mLV电压">LV voltage</string>
@@ -5046,7 +5046,7 @@
     <string name="m获取wifi">Get wifi</string>
     <string name="m干接点关闭功率百分比">Power(%) Dry Contact Disable</string>
     <string name="m功率计">Power Sensor</string>
-    <string name="m电表">Electric meter</string>
+    <string name="m电表">Meter</string>
     <string name="m手动离网使能">Manual Enable Off-Grid Function</string>
     <string name="m恢复出厂设置">Reset</string>
     <string name="mLCD语言">LCD language</string>
@@ -5842,7 +5842,7 @@
     <string name="m635检查固件版本更新_ios">Check firmware version update</string>
     <string name="m637重复_ios">Repeat</string>
     <string name="m638单次_ios">Single</string>
-    <string name="m644电表_ios">Electric meter</string>
+    <string name="m644电表_ios">Meter</string>
     <string name="m64累计_ios">Total</string>
     <string name="m650德语_ios">German</string>
     <string name="m651西班牙语_ios">Spanish</string>
@@ -6396,7 +6396,7 @@
     <string name="采集器版本过低">The datalogger version is too low</string>
     <string name="请输入新密码">Please enter a new password</string>
     <string name="设置登录密码">Setting login password</string>
-    <string name="市电码参数设置">Grid Code Parameter Setting</string>
+    <string name="市电码参数设置">EMS</string>
     <string name="终端用户">End User</string>
     <string name="运维用户">Operation and Maintenance Users</string>
     <string name="自动登录">Automatic Log-in</string>
@@ -6414,7 +6414,7 @@
     <string name="only_shinewifi_x">Only supports ShineWiFi-S/-X</string>
     <string name="退出登陆">Sign out</string>
     <string name="安装手册">Installation Manual</string>
-    <string name="click_here_to_view">Click here to view &quot;Equipment Installation Manual&quot;</string>
+    <string name="click_here_to_view">Click here to view &quot;Installation Manual&quot;</string>
     <string name="我知道了">I know</string>
     <string name="only_supports_version">Only supports datalogger with version 3.0.0.2 / 3.1.0.2 or above</string>
     <string name="出厂默认值为">The default value is</string>
@@ -6518,10 +6518,10 @@
     <string name="water_heateing">热水器工作中</string>
     <string name="generator_working">发电机工作中</string>
     <string name="function_close">功能关闭</string>
+    <string name="额定功率">Nominal\nPower</string>
     <string name="confirm_init_dry_setting"> confirm the initialization of dry contact setting parameters </string>
     <string name="one_key_set_bdc_mode">一键设置电池模式</string>
     <string name="welcome">欢迎</string>
     <string name="welcome_content">这个应用程序将帮助您更新激活和启用Growatt设备。 帮助您进行设备版本更新和设备调试等。</string>
     <string name="no_remind_again">不再提示</string>
-
 </resources>
