@@ -27,6 +27,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.adapter.MaxMainChildAdapter;
 import com.growatt.shinetools.adapter.TLXHToolEleAdapter;
+import com.growatt.shinetools.adapter.TLXHToolPowerAdapter;
 import com.growatt.shinetools.adapter.UsParamsetAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.modbusbox.MaxUtil;
@@ -97,6 +98,14 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     String[] c4Title1;
 
 
+
+    /**
+     * 功率recyclerview
+     */
+    private TLXHToolPowerAdapter mPowerAdapter;
+    private List<TLXHEleBean> mPowerList;
+    private RecyclerView mPowerRecycler;
+
     private TextView tvErrH1;
     private TextView tvWarnH1;
 
@@ -136,7 +145,6 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
      * 发电量recyclerview
      */
     private String[] eleTitles;
-    private String[] powerTitles;
     private int[] powerResId;
     private int[] eleResId;
     private TLXHToolEleAdapter mEleAdapter;
@@ -211,7 +219,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MaxMainChildAdapter(R.layout.item_max_childrv, mGridList);
-        header = LayoutInflater.from(this).inflate(R.layout.header_us_tool_main_v2, (ViewGroup) recyclerView.getParent(), false);
+        header = LayoutInflater.from(this).inflate(R.layout.header_max_header_view, (ViewGroup) recyclerView.getParent(), false);
         mAdapter.addHeaderView(header);
         recyclerView.setAdapter(mAdapter);
 
@@ -222,6 +230,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         //设置项
         initSettingRecycleView();
 
+        initRecyclerViewPower();
 
         initListener();
 
@@ -307,6 +316,15 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     }
 
 
+
+    private void initRecyclerViewPower() {
+        tvErrH1 = header.findViewById(R.id.tv_fault_value);
+        tvWarnH1 = header.findViewById(R.id.tv_warn_value);
+        cvWarning = header.findViewById(R.id.cvWarning);
+
+    }
+
+
     private void initEleDatas(@NonNull String[] titles, List<String> todays, List<String> totals, TLXHToolEleAdapter adapter) {
         List<TLXHEleBean> newList = new ArrayList<>();
         for (int i = 0; i < titles.length; i++) {
@@ -335,6 +353,23 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
             bean.setTitle(titles[i]);
             bean.setDrawableResId(eleResId[i]);
             bean.setUnit(unit);
+            newList.add(bean);
+        }
+        adapter.replaceData(newList);
+    }
+
+
+    private void initPowerDatas(@NonNull String[] titles, List<String> contents, TLXHToolPowerAdapter adapter) {
+        List<TLXHEleBean> newList = new ArrayList<>();
+        for (int i = 0; i < titles.length; i++) {
+            TLXHEleBean bean = new TLXHEleBean();
+            bean.setDrawableResId(powerResId[i]);
+            bean.setTitle(titles[i]);
+            if (contents == null) {
+                bean.setContent("--");
+            } else {
+                bean.setContent(contents.get(i));
+            }
             newList.add(bean);
         }
         adapter.replaceData(newList);
@@ -404,6 +439,19 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
                 , getString(R.string.fly_cap_volt) + "9", getString(R.string.fly_cap_volt) + "10", getString(R.string.fly_cap_volt) + "11", getString(R.string.fly_cap_volt) + "12",
                 getString(R.string.fly_cap_volt) + "13", getString(R.string.fly_cap_volt) + "14", getString(R.string.fly_cap_volt) + "15", "PID"
         };
+
+
+
+        eleTitles = new String[]{
+                getString(R.string.android_key2019) + "\n" + "(kWh)",
+                getString(R.string.m320功率) + "\n(kWh)",
+        };
+
+
+        eleResId = new int[]{
+                R.drawable.tlxh_ele_fadian, R.drawable.ele_power,
+        };
+
     }
 
 

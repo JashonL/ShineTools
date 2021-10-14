@@ -43,6 +43,7 @@ import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
+import com.growatt.shinetools.utils.MyToastUtils;
 import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.utils.Position;
 
@@ -634,7 +635,7 @@ public class MaxMain1500VActivity extends DemoBase implements View.OnClickListen
     }
     public void toast(String msg, int duration) {
 //        Toast.makeText(this, msg, duration).show();
-        toast(msg);
+        MyToastUtils.toast(msg);
     }
 
     public void toast(String msg) {

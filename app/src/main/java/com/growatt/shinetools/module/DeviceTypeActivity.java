@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.base.BaseActivity;
-import com.growatt.shinetools.module.localbox.max.MaxMain1500VActivity;
+import com.growatt.shinetools.module.localbox.max.Max230KTL3HVToolActivity;
 import com.growatt.shinetools.module.localbox.max.MaxMainActivity;
 import com.growatt.shinetools.module.localbox.max.MaxXMainActivity;
 import com.growatt.shinetools.module.localbox.mintool.TL3XHMainActivity;
@@ -175,7 +175,9 @@ public class DeviceTypeActivity extends BaseActivity implements Toolbar.OnMenuIt
                 ActivityUtils.gotoActivity(DeviceTypeActivity.this, MaxMainActivity.class,false);
                 break;
             case R.id.ll_type_230:
-                ActivityUtils.gotoActivity(DeviceTypeActivity.this, MaxMain1500VActivity.class,false);
+
+//                ActivityUtils.gotoActivity(DeviceTypeActivity.this, MaxMain1500VActivity.class,false);
+                ActivityUtils.gotoActivity(DeviceTypeActivity.this, Max230KTL3HVToolActivity.class,false);
                 break;
             case R.id.ll_type_max_x:
                 ActivityUtils.gotoActivity(DeviceTypeActivity.this, MaxXMainActivity.class,false);
