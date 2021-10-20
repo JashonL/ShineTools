@@ -71,6 +71,7 @@ import static com.growatt.shinetools.constant.GlobalConstant.KEFU_USER;
 import static com.growatt.shinetools.constant.GlobalConstant.MAINTEAN_USER;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_AUTO_REFRESH;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
+import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_SEND;
 
 public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMenuItemClickListener, View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.status_bar_view)
@@ -626,7 +627,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                         }
                         if (count < funs.length - 1) {
                             count++;
-                            mHandler.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
+                            mHandler.sendEmptyMessage(SOCKET_SEND);
                         } else {
                             //更新ui
                             refreshUI();
@@ -669,7 +670,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                 case SocketClientUtil.SOCKET_CONNECT:
                     text = "socket已连接";
                     break;
-                case SocketClientUtil.SOCKET_SEND:
+                case SOCKET_SEND:
                     if (count < funs.length) {
                         sendMsg(mClientUtil, funs[count]);
                     }
@@ -750,7 +751,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
 
                         if (pos < bdcAllChargeFuns.length - 1) {
                             pos++;
-                            bdcHadler.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
+                            bdcHadler.sendEmptyMessage(SOCKET_SEND);
                         } else {
                             //更新ui
                             freshPower();
@@ -771,7 +772,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                     break;
                 case SocketClientUtil.SOCKET_CONNECT:
                     break;
-                case SocketClientUtil.SOCKET_SEND:
+                case SOCKET_SEND:
                     if (pos < bdcAllChargeFuns.length) {
                         sendMsg(mReadBdcUtil, bdcAllChargeFuns[pos]);
                     }
@@ -1036,6 +1037,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         isAutoRefresh = false;
         item.setTitle(noteStartStr);
         mHandlerReadAuto.removeMessages(SOCKET_AUTO_REFRESH);
+        mHandlerReadAuto.removeMessages(SOCKET_SEND);
         //停止刷新；关闭socket
         SocketClientUtil.close(mClientUtilRead);
         SocketClientUtil.close(mClientUtil);
@@ -1068,7 +1070,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
             int what = msg.what;
             switch (what) {
                 //发送信息
-                case SocketClientUtil.SOCKET_SEND:
+                case SOCKET_SEND:
                     if (autoCount < autoFun.length) {
                         byte[] sendBytesR = SocketClientUtil.sendMsgToServer(mClientUtilRead, autoFun[autoCount]);
                         LogUtil.i("发送读取：" + SocketClientUtil.bytesToHexString(sendBytesR));
@@ -1086,14 +1088,15 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                         }
                         if (autoCount < autoFun.length - 1) {
                             autoCount++;
-                            this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
+                            this.sendEmptyMessage(SOCKET_SEND);
                         } else {
                             autoCount = 0;
                             //更新ui
                             refreshUI();
                             freshPower();
                             //自动刷新
-                            autoRefresh(this);
+//                            autoRefresh(this);
+                            this.sendEmptyMessageDelayed(SOCKET_SEND,3000);
                         }
 //                        else {//错误后重新开始
 //                            autoCount = 0;
@@ -1192,7 +1195,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
             int what = msg.what;
             switch (what) {
                 //发送信息
-                case SocketClientUtil.SOCKET_SEND:
+                case SOCKET_SEND:
                     BtnDelayUtil.sendMessage(this);
                     byte[] sendBytesR = sendMsgBDC(mClientUtilBDC, funs[3]);
                     LogUtil.i("发送读取：" + SocketClientUtil.bytesToHexString(sendBytesR));

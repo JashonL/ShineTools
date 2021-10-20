@@ -59,6 +59,7 @@ import butterknife.BindView;
 import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_AUTO_REFRESH;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
+import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_SEND;
 
 public class MaxMainActivity extends BaseActivity implements View.OnClickListener, BaseQuickAdapter.OnItemClickListener, Toolbar.OnMenuItemClickListener{
     //刷新流程：刷新03:0-99---》04:0-99---》04:100-199---》刷新设备型号03:100-132--》自动刷新04:0-124
@@ -337,6 +338,7 @@ public class MaxMainActivity extends BaseActivity implements View.OnClickListene
         isAutoRefresh = false;
         menuItem.setTitle(noteStartStr);
         mHandlerReadAuto.removeMessages(SOCKET_AUTO_REFRESH);
+        mHandlerReadAuto.removeMessages(SOCKET_SEND);
         //停止刷新；关闭socket
         SocketClientUtil.close(mClientUtilRead);
         SocketClientUtil.close(mClientUtilReadType);
@@ -1159,7 +1161,8 @@ public class MaxMainActivity extends BaseActivity implements View.OnClickListene
                         } else {
                             autoCount = 0;
                             //自动刷新
-                            autoRefresh(this);
+//                            autoRefresh(this);
+                            this.sendEmptyMessageDelayed(SOCKET_SEND,3000);
                             //更新ui
                             refreshUI();
                         }

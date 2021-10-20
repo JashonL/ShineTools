@@ -18,7 +18,7 @@ public class DateUtils {
     }
 
 
-    public static void showTotalTime(Context mContext, SeletctTimeListeners listeners ) {
+    public static void showTotalTime(Context mContext, SeletctTimeListeners listeners ) throws Exception {
         final Calendar c = Calendar.getInstance();
         StringBuilder sb = new StringBuilder();
         // 直接创建一个DatePickerDialog对话框实例，并将它显示出来

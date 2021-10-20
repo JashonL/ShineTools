@@ -30,7 +30,6 @@ import com.growatt.shinetools.adapter.TLXHToolEleAdapter;
 import com.growatt.shinetools.adapter.TLXHToolPowerAdapter;
 import com.growatt.shinetools.base.DemoBase;
 import com.growatt.shinetools.bean.WifiList;
-import com.growatt.shinetools.constant.GlobalConstant;
 import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
@@ -38,7 +37,6 @@ import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.modbusbox.bean.MaxDataBean;
 import com.growatt.shinetools.modbusbox.bean.MaxDataDeviceBean;
 import com.growatt.shinetools.modbusbox.bean.ToolStorageDataBean;
-import com.growatt.shinetools.modbusbox.listeners.OnHandlerStrListener;
 import com.growatt.shinetools.module.localbox.max.MaxChartEnergyActivity;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.module.localbox.max.MaxOssPwdActivity;
@@ -57,8 +55,6 @@ import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.utils.Position;
-import com.growatt.shinetools.utils.SharedPreferencesUnit;
-import com.mylhyl.circledialog.CircleDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -71,6 +67,7 @@ import butterknife.ButterKnife;
 
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_AUTO_REFRESH;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
+import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_SEND;
 
 
 public class  USToolMainActivity extends DemoBase implements View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
@@ -397,6 +394,7 @@ public class  USToolMainActivity extends DemoBase implements View.OnClickListene
         isAutoRefresh = false;
         mTvRight.setText(noteStartStr);
         mHandlerReadAuto.removeMessages(SOCKET_AUTO_REFRESH);
+        mHandlerReadAuto.removeMessages(SOCKET_SEND);
         //停止刷新；关闭socket
         SocketClientUtil.close(mClientUtilRead);
         SocketClientUtil.close(mClientUtilReadType);
@@ -1478,7 +1476,8 @@ public class  USToolMainActivity extends DemoBase implements View.OnClickListene
                         } else {
                             autoCount = 0;
                             //自动刷新
-                            autoRefresh(this);
+//                            autoRefresh(this);
+                            this.sendEmptyMessageDelayed(SocketClientUtil.SOCKET_SEND,3000);
                             //更新ui
                             refreshUI();
                         }

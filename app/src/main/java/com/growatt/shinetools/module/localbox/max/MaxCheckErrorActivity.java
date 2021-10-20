@@ -599,7 +599,6 @@ public class MaxCheckErrorActivity extends DemoBase implements BaseQuickAdapter.
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     count = 0;
                     SocketClientUtil.close(mClientUtilWriter);
                     break;
@@ -742,7 +741,6 @@ public class MaxCheckErrorActivity extends DemoBase implements BaseQuickAdapter.
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     count = 0;
                     SocketClientUtil.close(mClientUtil);
                     break;

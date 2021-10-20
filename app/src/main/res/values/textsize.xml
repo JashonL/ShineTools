@@ -12,6 +12,7 @@
 
 
     <!--内容尺寸标准-->
+    <dimen name="size_content_sp_20">@dimen/sp_20</dimen>
     <dimen name="size_content_sp_16">@dimen/sp_16</dimen>
     <dimen name="size_content_sp_14">@dimen/sp_14</dimen>
     <dimen name="size_content_sp_12">@dimen/sp_12</dimen>

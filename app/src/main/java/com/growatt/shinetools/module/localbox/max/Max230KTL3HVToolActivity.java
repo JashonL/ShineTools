@@ -1,6 +1,7 @@
 package com.growatt.shinetools.module.localbox.max;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -42,9 +43,9 @@ import com.growatt.shinetools.module.localbox.configtype.usconfig.USParamsSettin
 import com.growatt.shinetools.module.localbox.max.bean.MaxChildBean;
 import com.growatt.shinetools.module.localbox.max.bean.TLXHEleBean;
 import com.growatt.shinetools.module.localbox.max.bean.UsToolParamBean;
+import com.growatt.shinetools.module.localbox.max.config.MaxQuicksettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.ustool.USDeviceInfoActivity;
-import com.growatt.shinetools.module.localbox.ustool.USFastSetActivity;
 import com.growatt.shinetools.module.localbox.ustool.USFaultDetailActivity;
 import com.growatt.shinetools.module.localbox.ustool.UsSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.errorcode.ErrorCode;
@@ -64,6 +65,7 @@ import butterknife.BindView;
 
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_AUTO_REFRESH;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
+import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_SEND;
 
 public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener,
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener{
@@ -78,7 +80,8 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     LinearLayout headerTitle;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-
+    @BindView(R.id.tv_status)
+    TextView tvStatus;
 
     private int scroolD = 100;
     private String noteStartStr;
@@ -87,6 +90,11 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     String[] pidStatusStrs;
     //标题状态
     String[] statusTitles;
+    private int [] statusColors;
+    private int [] drawableStatus;
+
+
+
 
     private String[] c1Title2;
     String[] c2Title2;
@@ -96,7 +104,6 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     String[] c6Title1;
     String[] c5Title1;
     String[] c4Title1;
-
 
 
     /**
@@ -208,7 +215,8 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         });
 
 
-        tvTitle.setText(R.string.m240本地调试工具);
+//        tvTitle.setText(R.string.m240本地调试工具);
+        tvTitle.setText("MAX 230KTL3 HV");
         toolbar.inflateMenu(R.menu.comment_right_menu);
         item = toolbar.getMenu().findItem(R.id.right_action);
         item.setTitle(noteStartStr);
@@ -227,20 +235,28 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         //发电
         initRecyclerViewEle();
 
+        //告警
+        initRecyclerViewPower();
+
         //设置项
         initSettingRecycleView();
 
-        initRecyclerViewPower();
 
         initListener();
 
-    }
 
+        Mydialog.Show(mContext);
+        //读取寄存器的值
+        refresh();
+    }
 
 
     private void initListener() {
         initOnclick(tvDetial, ivDetail, cvWarning);
     }
+
+
+
 
     private void initOnclick(View... views) {
         if (views != null) {
@@ -259,6 +275,86 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         }
 
     }
+
+
+
+
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.right_action:
+                //读取寄存器的值
+                LogUtil.i("是否在自动刷新：" + isAutoRefresh);
+                if (!isAutoRefresh) {
+                    Mydialog.Show(mContext);
+                    needFresh = true;
+                    //读取寄存器的值
+                    refresh();
+                } else {
+                    stopRefresh();
+                }
+                break;
+        }
+        return false;
+    }
+
+
+
+
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        String title1 = "";
+        Class clazz = null;
+
+        switch (position) {
+            case 0:
+                clazz = MaxQuicksettingActivity.class;
+                break;
+            case 1:
+                clazz = UsSystemSettingActivity.class;
+                break;
+            case 2:
+                clazz = MainsCodeParamSetActivity.class;
+                break;
+            case 3:
+                clazz = USChargeActivity.class;
+                break;
+            case 4:
+                clazz = MaxCheckActivity.class;
+                break;
+            case 5:
+                clazz = USParamsSettingActivity.class;
+                break;
+
+            case 6:
+                clazz = USAdvanceSetActivity.class;
+                title1 = getString(R.string.高级设置);
+                break;
+
+            case 7:
+                clazz = USDeviceInfoActivity.class;
+                break;
+
+
+            default:
+                clazz = null;
+                break;
+        }
+
+        try {
+            UsToolParamBean item = usParamsetAdapter.getItem(position);
+            title1 = item.getTitle();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        final String title = title1;
+        if (clazz == null) return;
+        jumpMaxSet(clazz, title);
+
+    }
+
 
 
 
@@ -313,6 +409,29 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         mRvParamset.addItemDecoration(gridDivider);
         mRvParamset.setAdapter(usParamsetAdapter);
         usParamsetAdapter.setOnItemClickListener(this);
+
+
+
+
+        int[] res = new int[]{
+                R.drawable.quickly, R.drawable.system_config,
+                R.drawable.charge_manager, R.drawable.smart_check, R.drawable.param_setting,
+                R.drawable.advan_setting, R.drawable.device_info
+        };
+        String[] title = new String[]{
+                getString(R.string.快速设置), getString(R.string.basic_setting)
+                , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
+                , getString(R.string.m286高级设置), getString(R.string.m291设备信息)
+        };
+        List<UsToolParamBean> usSetItems = new ArrayList<>();
+        for (int i = 0; i < title.length; i++) {
+            UsToolParamBean bean = new UsToolParamBean();
+            bean.setIcon(res[i]);
+            bean.setTitle(title[i]);
+            usSetItems.add(bean);
+        }
+        usParamsetAdapter.replaceData(usSetItems);
+
     }
 
 
@@ -390,6 +509,17 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
                 getString(R.string.all_Waiting), getString(R.string.all_Normal),
                 getString(R.string.m226升级中), getString(R.string.m故障)
         };
+
+        statusColors=new int[]{
+                R.color.color_status_wait,R.color.color_status_grid,R.color.color_status_fault,R.color.color_status_upgrade
+        };
+
+        drawableStatus=new int[]{
+                R.drawable.circle_wait,R.drawable.circle_grid,R.drawable.circle_fault, R.drawable.circle_upgrade
+        };
+
+
+
         c1Title2 = new String[]{
                 String.format("%s(V)", getString(R.string.m318电压)),
                 String.format("%s(A)", getString(R.string.m319电流))
@@ -455,31 +585,11 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     }
 
 
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.right_action:
-                //读取寄存器的值
-                LogUtil.i("是否在自动刷新：" + isAutoRefresh);
-                if (!isAutoRefresh) {
-                    Mydialog.Show(mContext);
-                    needFresh = true;
-                    //读取寄存器的值
-                    refresh();
-                } else {
-                    stopRefresh();
-                }
-                break;
-        }
-        return false;
-    }
-
 
     /**
      * 刷新界面
      */
     private void refresh() {
-//        handler.sendEmptyMessageDelayed(1,3000);
         connectSendMsg();
     }
 
@@ -488,15 +598,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
      */
     private void connectSendMsg() {
         isReceiveSucc = false;
-        //1.解析输入命令
-//        parseInputCommand(mEtCommand.getText().toString().trim());
-        //2.tcp连接服务器
         connectServer();
-//        //3.发送数据
-//        sendMsg();
-        //清空adapter数据
-//        mSendAdapter.setNewData(new ArrayList<String>());
-//        mReceiverAdapter.setNewData(new ArrayList<String>());
     }
 
 
@@ -519,10 +621,6 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
             String text = "";
             int what = msg.what;
             switch (what) {
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
-                    String message = (String) msg.obj;
-                    text = "异常退出：" + message;
-                    break;
                 case SocketClientUtil.SOCKET_CLOSE:
                     text = "连接关闭";
                     break;
@@ -682,11 +780,16 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
      * 更新ui数据
      */
     private void refreshUI() {
-        //装机功率
-/*        tvTotalPH1.setText(mMaxData.getTotalPower() + "W");
-        tvTodayPH1.setText(mMaxData.getNormalPower() + "W");
-        tvTodayEH1.setText(mMaxData.getTodayEnergy() + "kWh");
-        tvTotalEH1.setText(mMaxData.getTotalEnergy() + "kWh");*/
+        //发电量  功率
+        List<String> todayEle = new ArrayList<>();
+        todayEle.add(String.valueOf(mMaxData.getTodayEnergy()));
+        todayEle.add(String.valueOf(mMaxData.getNormalPower()));
+        List<String> totalEle = new ArrayList<>();
+        totalEle.add(String.valueOf(mMaxData.getTotalEnergy()));
+        totalEle.add(String.valueOf(mMaxData.getTotalPower()));
+        initEleDatas(eleTitles, todayEle, totalEle, mEleAdapter);
+
+
         //故障告警
         int errCode = mMaxData.getErrCode();
         int warmCode = mMaxData.getWarmCode();
@@ -700,14 +803,14 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
             warnCodeStr = String.format("%d(%02d)",warmCode,warmCodeSecond);
         }else {
             if (errCode == 0){
-                errCodeStr = getString(R.string.m351无故障信息);
+                errCodeStr = "--";
             }else {
                 errCode+=99;
 //                errCodeStr = String.format("%d(%02d)",errCode,errCodeSecond<100?errCodeSecond:errCodeSecond%100);
                 errCodeStr = String.valueOf(errCode);
             }
             if (warmCode == 0){
-                warnCodeStr = getString(R.string.m352无警告信息);
+                warnCodeStr ="--";
             }else {
                 warmCode+=99;
 //                warnCodeStr = String.format("%d(%02d)",warmCode,warmCodeSecond<100?warmCodeSecond:warmCodeSecond%100);
@@ -718,13 +821,29 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         tvWarnH1.setText(warnCodeStr);
         //状态
         int status = mMaxData.getStatus();
-        String statusStr = "";
+        String statusStr;
+        int color=R.color.color_text_66;
+        int drawable=R.drawable.circle_wait;
+
         if (status >= 0 && status < statusTitles.length){
             statusStr = statusTitles[status];
+            color=statusColors[status];
+            drawable=drawableStatus[status];
         }else {
-            statusStr = "状态:"+status;
+            statusStr = getString(R.string.m505状态)+" "+status;
         }
-        tvTitle.setText(statusStr);
+        tvStatus.setVisibility(View.VISIBLE);
+        tvStatus.setText(statusStr);
+        tvStatus.setTextColor(ContextCompat.getColor(Max230KTL3HVToolActivity.this,color));
+        Drawable drawableLeft=getResources().getDrawable(drawable);
+        tvStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableLeft,null,null,null);
+        tvStatus.setCompoundDrawablePadding(4);
+
+
+        //-----------------------
+
+
+
         //recycleView:grid:关于本机
         String[] datasAbout = new String[6];
         MaxDataDeviceBean deviceBeen = mMaxData.getDeviceBeen();
@@ -876,7 +995,9 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
                             //更新ui
                             refreshUI();
                             //自动刷新
-                            autoRefresh(this);
+//                            autoRefresh(this);
+                            this.sendEmptyMessageDelayed(SOCKET_SEND,3000);
+
                         }
 //                        else {//错误后重新开始
 //                            autoCount = 0;
@@ -978,64 +1099,13 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         isAutoRefresh = false;
 //        mTvRight.setText(noteStartStr);
         mHandlerReadAuto.removeMessages(SOCKET_AUTO_REFRESH);
+        mHandlerReadAuto.removeMessages(SOCKET_SEND);
         //停止刷新；关闭socket
         SocketClientUtil.close(mClientUtilRead);
         SocketClientUtil.close(mClientUtilReadType);
         SocketClientUtil.close(mClientUtil);
     }
 
-
-    @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        String title1 = "";
-        Class clazz = null;
-
-        switch (position) {
-            case 0:
-                clazz = USFastSetActivity.class;
-                break;
-            case 1:
-                clazz = UsSystemSettingActivity.class;
-                break;
-            case 2:
-                clazz = MainsCodeParamSetActivity.class;
-                break;
-            case 3:
-                clazz = USChargeActivity.class;
-                break;
-            case 4:
-                clazz = MaxCheckActivity.class;
-                break;
-            case 5:
-                clazz = USParamsSettingActivity.class;
-                break;
-
-            case 6:
-                clazz = USAdvanceSetActivity.class;
-                title1 = getString(R.string.高级设置);
-                break;
-
-            case 7:
-                clazz = USDeviceInfoActivity.class;
-                break;
-
-
-            default:
-                clazz = null;
-                break;
-        }
-
-        try {
-            UsToolParamBean item = usParamsetAdapter.getItem(position);
-            title1 = item.getTitle();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        final String title = title1;
-        if (clazz == null) return;
-        jumpMaxSet(clazz, title);
-
-    }
 
 
 

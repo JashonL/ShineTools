@@ -569,17 +569,21 @@ public class OldInvFastConfigActivity extends DemoBase {
      * 弹出时间选择器
      */
     public void showTimePickView() {
-        DateUtils.showTotalTime(this, date -> {
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                time = date;
-                Date sDate = sdf.parse(date);
-                mSelectCalendar.setTime(sDate);
-                mBtnSelect2.setText(time);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        });
+        try {
+            DateUtils.showTotalTime(this, date -> {
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    time = date;
+                    Date sDate = sdf.parse(date);
+                    mSelectCalendar.setTime(sDate);
+                    mBtnSelect2.setText(time);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

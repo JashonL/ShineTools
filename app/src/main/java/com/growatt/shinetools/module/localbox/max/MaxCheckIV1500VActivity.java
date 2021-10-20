@@ -669,7 +669,6 @@ public class MaxCheckIV1500VActivity extends DemoBase implements RadioGroup.OnCh
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     count = 0;
                     SocketClientUtil.close(mClientUtilWriter);
                     break;
@@ -838,7 +837,6 @@ public class MaxCheckIV1500VActivity extends DemoBase implements RadioGroup.OnCh
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     count = 0;
                     SocketClientUtil.close(mClientUtil);
                     break;

@@ -719,7 +719,6 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     countAC = 0;
                     SocketClientUtil.close(mClientUtilWriterAC);
                     break;
@@ -921,7 +920,6 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     countTHDV = 0;
                     SocketClientUtil.close(mClientUtilTHDV);
                     break;
@@ -1198,7 +1196,6 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     countRST = 0;
                     SocketClientUtil.close(mClientUtilRST);
                     break;
@@ -1547,7 +1544,6 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     countISO = 0;
                     SocketClientUtil.close(mClientUtilWriterISO);
                     break;
@@ -1980,7 +1976,6 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     count = 0;
                     SocketClientUtil.close(mClientUtil);
                     break;

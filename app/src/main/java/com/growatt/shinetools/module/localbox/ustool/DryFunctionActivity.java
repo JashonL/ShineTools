@@ -251,8 +251,6 @@ public class DryFunctionActivity extends BaseActivity implements Toolbar.OnMenuI
             String text = "";
             int what = msg.what;
             switch (what) {
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
-                    break;
                 case SocketClientUtil.SOCKET_CLOSE:
                     break;
                 case SocketClientUtil.SOCKET_OPEN:

@@ -695,7 +695,6 @@ public class MaxCheckIVActivity extends DemoBase implements RadioGroup.OnChecked
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     count = 0;
                     SocketClientUtil.close(mClientUtilWriter);
                     break;

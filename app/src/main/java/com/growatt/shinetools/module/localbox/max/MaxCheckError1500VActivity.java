@@ -605,7 +605,6 @@ public class MaxCheckError1500VActivity extends DemoBase implements BaseQuickAda
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     count = 0;
                     SocketClientUtil.close(mClientUtilWriter);
                     break;
@@ -748,7 +747,6 @@ public class MaxCheckError1500VActivity extends DemoBase implements BaseQuickAda
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     count = 0;
                     SocketClientUtil.close(mClientUtil);
                     break;

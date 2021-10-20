@@ -103,12 +103,6 @@ public class ConnetApHostActivity extends BaseActivity {
             String text = "";
             int what = msg.what;
             switch (what) {
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
-                    String message = (String) msg.obj;
-                    if (!activitDisConnect) {
-                        socketEceptionDialog();
-                    }
-                    break;
                 case SocketClientUtil.SOCKET_CLOSE:
                     text = "连接关闭";
                     if (!activitDisConnect) {

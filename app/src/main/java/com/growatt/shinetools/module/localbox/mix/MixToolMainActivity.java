@@ -67,6 +67,7 @@ import butterknife.ButterKnife;
 import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_AUTO_REFRESH;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
+import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_SEND;
 
 
 public class  MixToolMainActivity extends DemoBase implements View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
@@ -459,9 +460,9 @@ public class  MixToolMainActivity extends DemoBase implements View.OnClickListen
         isAutoRefresh = false;
         mTvRight.setText(noteStartStr);
         mHandlerReadAuto.removeMessages(SOCKET_AUTO_REFRESH);
+        mHandlerReadAuto.removeMessages(SOCKET_SEND);
         //停止刷新；关闭socket
         SocketClientUtil.close(mClientUtilRead);
-        SocketClientUtil.close(mClientUtilReadType);
         SocketClientUtil.close(mClientUtil);
         SocketClientUtil.close(mClientUtilBDC);
     }
@@ -896,10 +897,6 @@ public class  MixToolMainActivity extends DemoBase implements View.OnClickListen
             String text = "";
             int what = msg.what;
             switch (what) {
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
-                    String message = (String) msg.obj;
-                    text = "异常退出：" + message;
-                    break;
                 case SocketClientUtil.SOCKET_CLOSE:
                     text = "连接关闭";
                     break;
@@ -1516,7 +1513,8 @@ public class  MixToolMainActivity extends DemoBase implements View.OnClickListen
                         } else {
                             autoCount = 0;
                             //自动刷新
-                            autoRefresh(this);
+//                            autoRefresh(this);
+                            this.sendEmptyMessageDelayed(SOCKET_SEND,3000);
                             //更新ui
                             refreshUI();
                         }
@@ -1559,55 +1557,6 @@ public class  MixToolMainActivity extends DemoBase implements View.OnClickListen
         }
     }
 
-    /**
-     * 用于读取机器型号
-     */
-    //连接对象:用于读取数据
-    private SocketClientUtil mClientUtilReadType;
-    //读取寄存器的值
-    private void readTypeRegisterValue() {
-        mClientUtilReadType = SocketClientUtil.connectServer(mHandlerReadType);
-    }
-    /**
-     * 读取寄存器handle
-     */
-    Handler mHandlerReadType= new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            int what = msg.what;
-            switch (what) {
-                //发送信息
-                case SocketClientUtil.SOCKET_SEND:
-                    byte[] sendBytesR = SocketClientUtil.sendMsgToServer(mClientUtilReadType, deviceTypeFun);
-                    LogUtil.i("发送读取：" + SocketClientUtil.bytesToHexString(sendBytesR));
-                    break;
-                //接收字节数组
-                case SOCKET_RECEIVE_BYTES:
-                    try {
-                        byte[] bytes = (byte[]) msg.obj;
-                        //检测内容正确性
-                        boolean isCheck = ModbusUtil.checkModbus(bytes);
-                        if (isCheck) {
-                            RegisterParseUtil.parseMax3T100T132(mMaxData,bytes);
-                            //更新机器型号
-                            refreshUIAbout();
-//                            toast(R.string.all_success);
-                        }
-                        LogUtil.i("接收读取：" + SocketClientUtil.bytesToHexString(bytes));
-                        //关闭连接
-                        SocketClientUtil.close(mClientUtilReadType);
-                        //设备信号刷新完后：开启自动刷新
-                        autoRefresh(mHandlerReadAuto);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        //关闭连接
-                        SocketClientUtil.close(mClientUtilReadType);
-                    }
-                    break;
-            }
-        }
-    };
 
     private void refreshUIAbout() {
         //recycleView:grid:关于本机

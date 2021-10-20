@@ -57,6 +57,7 @@ import butterknife.ButterKnife;
 import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_AUTO_REFRESH;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
+import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_SEND;
 
 
 public class MaxMain1500VActivity extends DemoBase implements View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
@@ -356,6 +357,7 @@ public class MaxMain1500VActivity extends DemoBase implements View.OnClickListen
         isAutoRefresh = false;
         mTvRight.setText(noteStartStr);
         mHandlerReadAuto.removeMessages(SOCKET_AUTO_REFRESH);
+        mHandlerReadAuto.removeMessages(SOCKET_SEND);
         //停止刷新；关闭socket
         SocketClientUtil.close(mClientUtilRead);
         SocketClientUtil.close(mClientUtilReadType);
@@ -1174,7 +1176,8 @@ public class MaxMain1500VActivity extends DemoBase implements View.OnClickListen
                         } else {
                             autoCount = 0;
                             //自动刷新
-                            autoRefresh(this);
+//                            autoRefresh(this);
+                            this.sendEmptyMessageDelayed(SOCKET_SEND,3000);
                             //更新ui
                             refreshUI();
                         }

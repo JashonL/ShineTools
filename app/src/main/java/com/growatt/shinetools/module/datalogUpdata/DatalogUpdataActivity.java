@@ -1,7 +1,6 @@
 package com.growatt.shinetools.module.datalogUpdata;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -42,7 +41,6 @@ import java.nio.ByteBuffer;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class DatalogUpdataActivity extends BaseActivity {
@@ -126,14 +124,6 @@ public class DatalogUpdataActivity extends BaseActivity {
             String text = "";
             int what = msg.what;
             switch (what) {
-                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
-                    String message = (String) msg.obj;
-                    if (isUpdating) {
-                        gropUpdataError.setVisibility(View.VISIBLE);
-                        gropUpdataing.setVisibility(View.GONE);
-                        gropReseting.setVisibility(View.GONE);
-                    }
-                    break;
                 case SocketClientUtil.SOCKET_CLOSE:
                     text = "连接关闭";
                     if (isUpdating) {
