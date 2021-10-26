@@ -949,7 +949,9 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
                         //关闭连接
                         SocketClientUtil.close(mClientUtilReadType);
                         //设备信号刷新完后：开启自动刷新
-                        autoRefresh(mHandlerReadAuto);
+                        if (needFresh){
+                            autoRefresh(mHandlerReadAuto);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         //关闭连接
@@ -1097,7 +1099,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
      */
     private void stopRefresh() {
         isAutoRefresh = false;
-//        mTvRight.setText(noteStartStr);
+        item.setTitle(noteStartStr);
         mHandlerReadAuto.removeMessages(SOCKET_AUTO_REFRESH);
         mHandlerReadAuto.removeMessages(SOCKET_SEND);
         //停止刷新；关闭socket
@@ -1119,5 +1121,14 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         intent.putExtra("isTlxhus", true);
         ActivityUtils.startActivity(this, intent, false);
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopRefresh();
+    }
+
+
 
 }

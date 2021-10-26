@@ -11,7 +11,7 @@ public interface ConnectHandler {
 
     void connectFail();
 
-    void disconnect();
+    void sendMsgFail();
 
     void sendMessage(String msg);
 

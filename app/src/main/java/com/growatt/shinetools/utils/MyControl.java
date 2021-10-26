@@ -5,6 +5,11 @@ import androidx.fragment.app.FragmentActivity;
 import com.growatt.shinetools.listeners.OnCirclerDialogListener;
 
 public class MyControl {
+
+	public static void showTcpDisConnect(FragmentActivity act, String str, CommenUtils.ITcpDisConnectListener listener){
+		CommenUtils.showTcpDisConnet(act,str,listener);
+	}
+
 	public static void showJumpWifiSet(FragmentActivity act){
 		CommenUtils.showJumpWifiSet(act);
 	}

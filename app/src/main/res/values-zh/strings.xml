@@ -6518,4 +6518,6 @@
     <string name="welcome_content">这个应用程序将帮助您更新激活和启用Growatt设备。 帮助您进行设备版本更新和设备调试等。</string>
     <string name="no_remind_again">不再提示</string>
     <string name="basic_setting">基本设置</string>
+    <string name="disconnet_retry">与当前设备通信已断开，请重试</string>
+
 </resources>

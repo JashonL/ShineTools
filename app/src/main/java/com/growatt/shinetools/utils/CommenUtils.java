@@ -237,6 +237,35 @@ public class CommenUtils {
 
 
 
+    public interface ITcpDisConnectListener{
+        void tryConnect();
+    }
+
+    /**
+     * 提示wifi断开连接是否重连
+     */
+    public static void showTcpDisConnet(final FragmentActivity act, String str,ITcpDisConnectListener listener) {
+        DialogUtils.getInstance().closeLoadingDialog();
+        new CircleDialog.Builder()
+                .setWidth(0.7f)
+                .setTitle(act.getString(R.string.android_key2263))
+                .setText(str)
+                .setNegative(act.getString(R.string.android_key1806), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                    }
+                })
+                .setPositive(act.getString(R.string.重新连接), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.tryConnect();
+                    }
+                })
+                .show(act.getSupportFragmentManager());
+    }
+
+
+
     /**
      * 获取新语言
      *

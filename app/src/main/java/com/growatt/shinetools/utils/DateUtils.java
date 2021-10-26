@@ -14,7 +14,7 @@ public class DateUtils {
 
    public interface SeletctTimeListeners {
         void seleted(String date);
-
+        void ymdHms(int year,int month,int day,int hour,int min,int second);
     }
 
 
@@ -28,7 +28,6 @@ public class DateUtils {
                     sb.append(year).append("-").append((monthOfYear + 1) < 10 ? ("0" + (monthOfYear + 1)) : (monthOfYear + 1))
                             .append("-").append((dayOfMonth < 10 ? ("0" + dayOfMonth) : dayOfMonth));
                     sb.append(" ").append(new SimpleDateFormat("HH:mm:ss").format(new Date()));
-                    listeners.seleted(sb.toString());
                     // 创建一个TimePickerDialog实例，并把它显示出来
                     new TimePickerDialog(mContext,
                             // 绑定监听器
@@ -40,6 +39,7 @@ public class DateUtils {
                                             .append(":").append(minute < 10 ? "0" + minute : minute)
                                             .append(":").append(second < 10 ? "0" + second : second);
                                     listeners.seleted(sb.toString());
+                                    listeners.ymdHms(year,monthOfYear,dayOfMonth,hourOfDay,minute,second);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

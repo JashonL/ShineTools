@@ -56,7 +56,6 @@ public class DryTimeSelectActivity extends BaseActivity{
 
     @Override
     protected void initData() {
-        EventBus.getDefault().register(this);
         initResource();
     }
 
@@ -64,7 +63,6 @@ public class DryTimeSelectActivity extends BaseActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
 

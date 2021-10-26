@@ -960,6 +960,18 @@
             android:screenOrientation="portrait"
             />
 
+        <activity android:name=".module.localbox.max.config.MaxAFCIAcitivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".module.localbox.max.config.MaxSystemConfigActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+
 
         <!--==================================模块页面=========================================-->
 

@@ -1192,15 +1192,23 @@ public class TlxFastConfigActivity extends DemoBase {
      */
     public void showTimePickView() {
         try {
-            DateUtils.showTotalTime(this, date -> {
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    time = date;
-                    Date sDate = sdf.parse(date);
-                    mSelectCalendar.setTime(sDate);
-                    btnInverterTime.setText(time);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+            DateUtils.showTotalTime(this, new DateUtils.SeletctTimeListeners() {
+                @Override
+                public void seleted(String date) {
+                    try {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        time = date;
+                        Date sDate = sdf.parse(date);
+                        mSelectCalendar.setTime(sDate);
+                        btnInverterTime.setText(time);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void ymdHms(int year, int month, int day, int hour, int min, int second) {
+
                 }
             });
         } catch (Exception e) {

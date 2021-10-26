@@ -188,11 +188,30 @@ public class SocketClientUtil {
                     msg.obj = bytesToHexString(sendText);
                     mHandler.sendMessage(msg);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    execptionClose(e.getMessage());
+//                    e.printStackTrace();
                 }
             }
         }).start();
     }
+
+
+
+
+    /**
+     * 异常关闭
+     */
+    public void execptionClose(String exceptionMsg){
+        if (mHandler != null){
+            Message msg = Message.obtain();
+            msg.what = SOCKET_EXCETION_CLOSE;
+            msg.obj = exceptionMsg;
+            mHandler.sendMessage(msg);
+        }
+        closeSocket();
+    }
+
+
 
 
     /**
