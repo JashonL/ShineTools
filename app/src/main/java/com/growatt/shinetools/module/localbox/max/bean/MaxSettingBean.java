@@ -23,11 +23,13 @@ public class MaxSettingBean implements MultiItemEntity {
     //设置该项的寄存器
     private int[] funSet;
     //选项卡
-    private int[] items;
+    private String[] items;
     //数据的倍数
     private float mul;
     //二维设置数组
     private int[][] doubleFunset;
+    //三维数组
+    private int[][][]threeFunSet;
 
 
     public void setItemType(int itemType) {
@@ -106,11 +108,11 @@ public class MaxSettingBean implements MultiItemEntity {
         this.funSet = funSet;
     }
 
-    public int[] getItems() {
+    public String[] getItems() {
         return items;
     }
 
-    public void setItems(int[] items) {
+    public void setItems(String[] items) {
         this.items = items;
     }
 
@@ -120,6 +122,14 @@ public class MaxSettingBean implements MultiItemEntity {
 
     public void setMul(float mul) {
         this.mul = mul;
+    }
+
+    public int[][][] getThreeFunSet() {
+        return threeFunSet;
+    }
+
+    public void setThreeFunSet(int[][][] threeFunSet) {
+        this.threeFunSet = threeFunSet;
     }
 
     @Override

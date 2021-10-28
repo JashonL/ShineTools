@@ -1,6 +1,5 @@
 package com.growatt.shinetools.module.localbox.max.config;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -22,26 +21,21 @@ import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.eventMsg.EventFreshMsg;
-import com.growatt.shinetools.module.localbox.afci.AFCIChartActivity;
 import com.growatt.shinetools.module.localbox.max.bean.MaxSettingBean;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
-import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.widget.GridDivider;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
-public class MaxAFCIAcitivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
+public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
         MaxSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
@@ -59,13 +53,93 @@ public class MaxAFCIAcitivity extends BaseActivity implements BaseQuickAdapter.O
     private int currentPos = 0;//当前请求项
     private int type = 0;//0：读取  1：设置
     private SocketManager manager;
-
     //跳转到其他页面
     private boolean toOhterSetting = false;
 
+
+    private List<int[]> nowSetItem = new ArrayList<>();
+    private int nowIndex = 0;
+
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.right_action) {
+            getData(7);
+        }
+        return true;
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        MaxSettingBean bean = usParamsetAdapter.getData().get(position);
+        String title = bean.getTitle();
+        String hint = bean.getHint();
+        float mul = bean.getMul();
+        switch (position){
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8://10分钟平均AC电压保护值
+            case 9://PV过压保护点
+                setInputValue(position, title, hint, mul);
+                break;
+        }
+    }
+
+
+
+    private void setInputValue(int position, String title, String hint, float mul) {
+        CircleDialogUtils.showInputValueDialog(this, title,
+                hint, "", value -> {
+                    double result = Double.parseDouble(value);
+                    String pValue = value + "";
+                    usParamsetAdapter.getData().get(position).setValueStr(pValue);
+                    usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
+                    usParamsetAdapter.notifyDataSetChanged();
+
+                    List<MaxSettingBean> data = usParamsetAdapter.getData();
+                    if (data.size() > position) {
+                        MaxSettingBean bean = data.get(position);
+                        //设置
+                        type = 1;
+                        int[] funs = bean.getFunSet();
+                        funs[2] = getWriteValueReal(Double.parseDouble(value), mul);
+                        manager.sendMsg(funs);
+                    }
+                });
+    }
+
+
+    public int getWriteValueReal(double write, float mul) {
+        try {
+            return (int) Math.round(Arith.div(write, mul));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return (int) write;
+        }
+    }
+
+    @Override
+    public void oncheck(boolean check, int position) {
+
+    }
+
     @Override
     protected int getContentView() {
-        return R.layout.activity_config_type_all;
+        return R.layout.activity_max_grid_code_setting;
     }
 
     @Override
@@ -92,19 +166,16 @@ public class MaxAFCIAcitivity extends BaseActivity implements BaseQuickAdapter.O
         if (!TextUtils.isEmpty(title)) {
             tvTitle.setText(title);
         }
-
     }
 
     @Override
     protected void initData() {
-        //快速设置项
+        //系统设置项
         List<MaxSettingBean> settingList
-                = MaxConfigControl.getSettingList(MaxConfigControl.MaxSettingEnum.MAX_AFCI_FUNCTION, this);
+                = MaxConfigControl.getSettingList(MaxConfigControl.MaxSettingEnum.MAX_GRID_CODE_PARAMETERS_SETTING, this);
         usParamsetAdapter.replaceData(settingList);
-
         connetSocket();
     }
-
     private void connetSocket() {
         //初始化连接
         manager = new SocketManager(this);
@@ -119,19 +190,19 @@ public class MaxAFCIAcitivity extends BaseActivity implements BaseQuickAdapter.O
     ConnectHandler connectHandler = new ConnectHandler() {
         @Override
         public void connectSuccess() {
-            getInvdate(0);
+            getData(7);
         }
 
         @Override
         public void connectFail() {
             manager.disConnectSocket();
-            MyControl.showJumpWifiSet(MaxAFCIAcitivity.this);
+            MyControl.showJumpWifiSet(MaxGridCodeSettingActivity.this);
         }
 
         @Override
         public void sendMsgFail() {
             manager.disConnectSocket();
-            MyControl.showTcpDisConnect(MaxAFCIAcitivity.this, getString(R.string.disconnet_retry),
+            MyControl.showTcpDisConnect(MaxGridCodeSettingActivity.this, getString(R.string.disconnet_retry),
                     () -> {
                         connetSocket();
                     }
@@ -150,7 +221,6 @@ public class MaxAFCIAcitivity extends BaseActivity implements BaseQuickAdapter.O
 
         @Override
         public void receveByteMessage(byte[] bytes) {
-
             if (type == 0) {
                 //检测内容正确性
                 boolean isCheck = ModbusUtil.checkModbus(bytes);
@@ -158,34 +228,37 @@ public class MaxAFCIAcitivity extends BaseActivity implements BaseQuickAdapter.O
                     //接收正确，开始解析
                     parseMax(bytes);
                 }
-                switch (currentPos) {
-                    case 0:
-                        getInvdate(1);
-                        break;
-                    case 1:
-                        getInvdate(2);
 
+                switch (currentPos) {
+                    case 7:
+                        getData(8);
                         break;
-                    case 2:
-                        getFFTValue();
+                    case 8:
                         Mydialog.Dismiss();
                         break;
                 }
+
+
             } else {//设置
                 //检测内容正确性
                 boolean isCheck = MaxUtil.checkReceiverFull(bytes);
                 if (isCheck) {
-                    toast(R.string.android_key121);
-                    Mydialog.Dismiss();
+                    if (nowIndex < nowSetItem.size() - 1) {
+                        manager.sendMsg(nowSetItem.get(++nowIndex));
+                    } else {
+                        nowSetItem.clear();
+                        Mydialog.Dismiss();
+                        nowIndex = 0;
+                        toast(R.string.android_key121);
+                    }
+
                 } else {
                     Mydialog.Dismiss();
                     toast(R.string.android_key3129);
                 }
             }
-
         }
     };
-
 
     /**
      * 根据传进来的mtype解析数据
@@ -197,38 +270,28 @@ public class MaxAFCIAcitivity extends BaseActivity implements BaseQuickAdapter.O
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
         switch (currentPos) {
-            case 0://AFCI  阈值1
-                LogUtil.i("AFCI阈值1");
-                parser(bs, 0);
-                break;
-            case 1://AFCI  阈值2
+            case 7://10分钟平均AC电压保护值
                 //解析int值
-                LogUtil.i("AFCI阈值2");
-                parser(bs, 1);
+                LogUtil.i("10分钟平均AC电压保护值:");
+                parser(bs, 7);
                 break;
-            case 2://AFCI  阈值3
-                LogUtil.i("AFCI阈值3");
-                parser(bs, 2);
+            case 8://PV过压保护点
+                //解析int值
+                LogUtil.i("10分钟平均AC电压保护值:");
+                parser(bs, 8);
                 break;
-            case 3://FFT值
-                LogUtil.i("FFT值");
-                parser(bs, 3);
-                break;
-
 
         }
         usParamsetAdapter.notifyDataSetChanged();
     }
 
-
     private void parser(byte[] data, int pos) {
         int value1 = MaxWifiParseUtil.obtainValueOne(data);
         MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
         float mul = bean.getMul();
-        String unit = bean.getUnit();
+        String unit = "";
         bean.setValueStr(getReadValueReal(value1, mul, unit));
     }
-
 
     public String getReadValueReal(int read, float mul, String unit) {
         boolean isNum = ((int) mul) == mul;
@@ -242,131 +305,35 @@ public class MaxAFCIAcitivity extends BaseActivity implements BaseQuickAdapter.O
     }
 
 
-    /**
-     * 获取阈值
-     */
-    private void getInvdate(int pos) {
-        LogUtil.i("请求获取阈值");
-        getData(pos);
-    }
-
-
-    /**
-     * 请求获取FFT值
-     */
-    private void getFFTValue() {
-        LogUtil.i("请求获取语言");
-        getData(3);
-    }
-
-
     private void getData(int pos) {
         type = 0;
         currentPos = pos;
         List<MaxSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > pos) {
             MaxSettingBean bean = data.get(pos);
+            LogUtil.i("-------------------请求获取:" + bean.getTitle() + "----------------");
             int[] funs = bean.getFuns();
             manager.sendMsg(funs);
         }
     }
 
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.right_action:
-                getInvdate(0);
-                break;
-        }
-        return true;
-    }
-
-    @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(position);
-        String title = bean.getTitle();
-        String hint = bean.getHint();
-
-        switch (position){
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-                setInputValue(position,title,hint);
-                break;
-            case 4:
-                //断开连接
-                manager.disConnectSocket();
-                toOhterSetting = true;
-                Intent intent = new Intent(mContext, AFCIChartActivity.class);
-                intent.putExtra("type", 36);
-                intent.putExtra("title", String.format("%s%s", getString(R.string.AFCI曲线扫描), ""));
-                ActivityUtils.startActivity(this, intent, false);
-                break;
-        }
-    }
-
-
-
-
-
-
-    private void setInputValue(int position,String title, String hint) {
-        CircleDialogUtils.showInputValueDialog(this, title,
-                hint, "", value -> {
-                    double result = Double.parseDouble(value);
-                    String pValue = value + "";
-                    usParamsetAdapter.getData().get(position).setValueStr(pValue);
-                    usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
-                    usParamsetAdapter.notifyDataSetChanged();
-
-                    List<MaxSettingBean> data = usParamsetAdapter.getData();
-                    if (data.size() > position) {
-                        MaxSettingBean bean = data.get(position);
-                        //设置
-                        type = 1;
-                        int[] funs = bean.getFunSet();
-                        funs[2] = getWriteValueReal(Double.parseDouble(value));
-                        manager.sendMsg(funs);
-                    }
-                });
-    }
-
-
-
-    public int getWriteValueReal(double write){
-        try {
-            return (int) Math.round(Arith.div(write,1));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return (int) write;
-        }
-    }
-
-
-
-
-    @Override
-    public void oncheck(boolean check, int position) {
-
-    }
-
-
     @Override
     protected void onResume() {
         super.onResume();
         if (toOhterSetting) {
+            toOhterSetting = false;
             connetSocket();
         }
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onPause() {
+        super.onPause();
         manager.disConnectSocket();
-        EventBus.getDefault().post(new EventFreshMsg());
-        super.onDestroy();
-
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

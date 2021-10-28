@@ -295,10 +295,9 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
         List<MaxSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > 2) {
             MaxSettingBean bean = data.get(2);
-            int[] items = bean.getItems();
+            String[] items = bean.getItems();
             if (items != null && items.length > value) {
-                int item = items[value];
-                String lcd = getString(item);
+                String lcd = items[value];
                 usParamsetAdapter.getData().get(2).setValueStr(lcd);
             } else {
                 usParamsetAdapter.getData().get(2).setValueStr(String.valueOf(value));
@@ -344,10 +343,8 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.right_action:
-                getInvdate();
-                break;
+        if (item.getItemId() == R.id.right_action) {
+            getInvdate();
         }
         return true;
     }
@@ -472,13 +469,8 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
         List<MaxSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > 2) {
             MaxSettingBean bean = data.get(2);
-            int[] items = bean.getItems();
-            List<String> selects = new ArrayList<>();
-            for (int value : items) {
-                String select = getString(value);
-                selects.add(select);
-            }
-
+            String[] items = bean.getItems();
+            List<String> selects = new ArrayList<>(Arrays.asList(items));
 
             new CircleDialog.Builder()
                     .setTitle(getString(R.string.android_key499))

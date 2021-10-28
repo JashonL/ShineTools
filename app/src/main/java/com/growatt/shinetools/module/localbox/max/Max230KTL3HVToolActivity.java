@@ -37,17 +37,16 @@ import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.modbusbox.bean.MaxDataBean;
 import com.growatt.shinetools.modbusbox.bean.MaxDataDeviceBean;
-import com.growatt.shinetools.module.localbox.configtype.MainsCodeParamSetActivity;
-import com.growatt.shinetools.module.localbox.configtype.usconfig.USChargeActivity;
-import com.growatt.shinetools.module.localbox.configtype.usconfig.USParamsSettingActivity;
 import com.growatt.shinetools.module.localbox.max.bean.MaxChildBean;
 import com.growatt.shinetools.module.localbox.max.bean.TLXHEleBean;
 import com.growatt.shinetools.module.localbox.max.bean.UsToolParamBean;
+import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
+import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxQuicksettingActivity;
+import com.growatt.shinetools.module.localbox.max.config.MaxSystemConfigActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.ustool.USDeviceInfoActivity;
 import com.growatt.shinetools.module.localbox.ustool.USFaultDetailActivity;
-import com.growatt.shinetools.module.localbox.ustool.UsSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.errorcode.ErrorCode;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.BtnDelayUtil;
@@ -313,19 +312,19 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
                 clazz = MaxQuicksettingActivity.class;
                 break;
             case 1:
-                clazz = UsSystemSettingActivity.class;
+                clazz = MaxSystemConfigActivity.class;
                 break;
             case 2:
-                clazz = MainsCodeParamSetActivity.class;
+                clazz = MaxBasicSettingActivity.class;
                 break;
             case 3:
-                clazz = USChargeActivity.class;
+                clazz = MaxCheck1500VActivity.class;
                 break;
             case 4:
-                clazz = MaxCheckActivity.class;
+                clazz = MaxGridCodeSettingActivity.class;
                 break;
             case 5:
-                clazz = USParamsSettingActivity.class;
+                clazz = USAdvanceSetActivity.class;
                 break;
 
             case 6:
@@ -419,8 +418,8 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
                 R.drawable.advan_setting, R.drawable.device_info
         };
         String[] title = new String[]{
-                getString(R.string.快速设置), getString(R.string.basic_setting)
-                , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
+                getString(R.string.快速设置) , getString(R.string.android_key3052), getString(R.string.basic_setting)
+               , getString(R.string.m285智能检测), getString(R.string.m284参数设置)
                 , getString(R.string.m286高级设置), getString(R.string.m291设备信息)
         };
         List<UsToolParamBean> usSetItems = new ArrayList<>();

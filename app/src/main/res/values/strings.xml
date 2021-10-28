@@ -6527,4 +6527,7 @@
     <string name="basic_setting">基本设置</string>
     <string name="disconnet_retry">与当前设备通信已断开，请重试</string>
 
+    <string name="ac_voltage_protect">AC电压保护</string>
+    <string name="ac_frency_protect">AC频率保护</string>
+
 </resources>
