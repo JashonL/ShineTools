@@ -6298,7 +6298,8 @@
     <string name="滞后无功功率2">OverExcited(Capa) Reactive Power(5)</string>
     <string name="QV模式">Q(v)model</string>
     <string name="正负无功值调节">Reactive Power Value</string>
-
+    <string name="static_capacitive_QV_mode"> static capacitive QV mode </string>
+    <string name="static_perceptual_QV_mode"> static perceptual QV mode </string>
 
     ////////////////
     <!--新增-->
@@ -6529,5 +6530,7 @@
 
     <string name="ac_voltage_protect">AC电压保护</string>
     <string name="ac_frency_protect">AC频率保护</string>
+    <string name="grid_connetced_vol_limit">并网电压限制</string>
+    <string name="grid_connetced_frency_limit">并网频率限制</string>
 
 </resources>

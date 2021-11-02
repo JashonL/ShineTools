@@ -443,7 +443,9 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
 
 
                         nowSetItem.clear();
-                        nowSetItem.addAll(Arrays.asList(doubleFunset));
+                        for (int[] ints : doubleFunset) {
+                            nowSetItem.add(ints);
+                        }
                         nowIndex = 0;
 
 

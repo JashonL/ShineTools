@@ -1,5 +1,6 @@
 package com.growatt.shinetools.module.localbox.max.config;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.max.bean.MaxSettingBean;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
+import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
@@ -77,23 +79,21 @@ public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuic
         float mul = bean.getMul();
         switch (position){
             case 0:
-                break;
             case 1:
-                break;
             case 2:
-                break;
             case 3:
-                break;
             case 4:
-                break;
             case 5:
-                break;
             case 6:
+                toOhterSetting=true;
+                manager.disConnectSocket();
+                Intent intent=new Intent(MaxGridCodeSettingActivity.this,MaxGridCodeSecondActivity.class);
+                intent.putExtra("curpos",position);
+                intent.putExtra("title",title);
+                ActivityUtils.startActivity(MaxGridCodeSettingActivity.this,intent,false);
                 break;
-            case 7:
-                break;
-            case 8://10分钟平均AC电压保护值
-            case 9://PV过压保护点
+            case 7://10分钟平均AC电压保护值
+            case 8://PV过压保护点
                 setInputValue(position, title, hint, mul);
                 break;
         }

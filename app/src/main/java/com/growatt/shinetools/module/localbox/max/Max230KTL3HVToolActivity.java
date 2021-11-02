@@ -45,7 +45,6 @@ import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActiv
 import com.growatt.shinetools.module.localbox.max.config.MaxQuicksettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxSystemConfigActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
-import com.growatt.shinetools.module.localbox.ustool.USDeviceInfoActivity;
 import com.growatt.shinetools.module.localbox.ustool.USFaultDetailActivity;
 import com.growatt.shinetools.module.localbox.ustool.errorcode.ErrorCode;
 import com.growatt.shinetools.utils.ActivityUtils;
@@ -325,15 +324,14 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
                 break;
             case 5:
                 clazz = USAdvanceSetActivity.class;
-                break;
-
-            case 6:
-                clazz = USAdvanceSetActivity.class;
                 title1 = getString(R.string.高级设置);
                 break;
 
+            case 6:
+                clazz = Max230Ktl3HvtDeviceInfoActivity.class;
+                break;
+
             case 7:
-                clazz = USDeviceInfoActivity.class;
                 break;
 
 

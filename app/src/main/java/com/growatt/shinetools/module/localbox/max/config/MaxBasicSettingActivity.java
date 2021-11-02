@@ -135,7 +135,9 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
                                 usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
                                 usParamsetAdapter.notifyDataSetChanged();
                                 nowSetItem.clear();
-                                nowSetItem.addAll(Arrays.asList(doubleFunset));
+                                for (int[] ints : doubleFunset) {
+                                    nowSetItem.add(ints);
+                                }
                                 nowIndex = 0;
                                 int[] funs = doubleFunset[0];
                                 manager.sendMsg(funs);

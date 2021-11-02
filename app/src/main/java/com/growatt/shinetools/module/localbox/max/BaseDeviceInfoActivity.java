@@ -1,4 +1,4 @@
-package com.growatt.shinetools.module.localbox.ustool;
+package com.growatt.shinetools.module.localbox.max;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -36,6 +36,7 @@ import com.growatt.shinetools.module.localbox.max.bean.MaxChildBean;
 import com.growatt.shinetools.module.localbox.max.bean.MaxContentBean;
 import com.growatt.shinetools.module.localbox.mintool.TLXHBattryActivity;
 import com.growatt.shinetools.module.localbox.mintool.TLXHLiwangActivity;
+import com.growatt.shinetools.module.localbox.ustool.USBDCParamActivity;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.LogUtil;
@@ -52,7 +53,8 @@ import butterknife.BindView;
 
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 
-public class USDeviceInfoActivity extends BaseActivity implements View.OnClickListener , Toolbar.OnMenuItemClickListener{
+public abstract class BaseDeviceInfoActivity extends BaseActivity implements View.OnClickListener, Toolbar.OnMenuItemClickListener {
+
     @BindView(R.id.status_bar_view)
     View statusBarView;
     @BindView(R.id.tv_title)
@@ -65,12 +67,7 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     RecyclerView mRecyclerView;
 
 
-
-    //其他数据
-    private View tvTitleLiwang;
-    private View tvTitleBdc;
-    private View tvTitleBattry;
-
+    private MenuItem item;
 
 
     //头部2：content1
@@ -81,10 +78,16 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     private View title1Head2;
     private ImageView t1H2IvStatus;
 
-    private String[] c1Title1 = {
-            "PV1", "PV2","PV3", "PV4"
+
+    public String[] c1Title1 = {
+            "PV1", "PV2", "PV3", "PV4"
     };
-    private String[] c1Title2 ;
+    public String[] c1Title2;
+
+    //初始化电压电流功率
+    public abstract void initVolFreCurString();
+
+
     //头部2：content2
     private List<MaxContentBean> mC2List;
     private MaxContentAdapter mC2Adapter;
@@ -97,7 +100,12 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
             "Str9", "Str10", "Str11", "Str12", "Str13", "Str14", "Str15", "Str16"
     };
 
-    String[] c2Title2 ;
+    String[] c2Title2;
+
+    //初始化组串电压电流
+    public abstract void initStringVolCurString();
+
+
     //头部2：content3
     private List<MaxChildBean> mC3List;
     private MaxMainChildAdapter mC3Adapter;
@@ -108,7 +116,12 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     String[] c3Title1 = {
             "R", "S", "T"
     };
-    String[] c3Title2 ;
+    String[] c3Title2;
+
+    //初始化AC电流电压
+    public abstract void initACVolCurString();
+
+
     //头部2：content34:SVG/APF
     private List<MaxContentBean> mC34List;
     private MaxContentAdapter mC34Adapter;
@@ -116,11 +129,17 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     private View content34Head2;
     private View title34Head2;
     private ImageView t34H2IvStatus;
+
     String[] c34Title1 = {
             "R", "S", "T"
     };
 
-    String[] c34Title2 ;
+    String[] c34Title2;
+
+    //初始化SVGAPF
+    public abstract void initSVGAPFString();
+
+
     //头部2：content4
     private List<MaxContentBean> mC4List;
     private MaxContentAdapter mC4Adapter;
@@ -131,7 +150,24 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     String[] c4Title1 = {
             "PID1", "PID2", "PID3", "PID4", "PID5", "PID6", "PID7", "PID8"
     };
-    String[] c4Title2 ;
+    String[] c4Title2;
+
+    //初始化PID
+    public abstract void initPIDString();
+
+
+    //头部关于本机：content5
+    private List<MaxChildBean> mC5List;
+    private MaxMainChildAdapter mC5Adapter;
+    private RecyclerView mC5RecyclerView;
+    private View title5Head2;
+    private ImageView t5H2IvStatus;
+    private View content5Head2;
+    String[] c5Title1;
+
+    //关于设备
+    public abstract void initAboutDeviceString();
+
     //头部2：content6
     private List<MaxChildBean> mC6List;
     private MaxMainChildAdapter mC6Adapter;
@@ -141,24 +177,18 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     private ImageView t6H2IvStatus;
     String[] c6Title1;
 
-    //头部关于本机：content5
-    private List<MaxChildBean> mC5List;
-    private MaxMainChildAdapter mC5Adapter;
-    private RecyclerView mC5RecyclerView;
-    private View title5Head2;
-    private ImageView t5H2IvStatus;
-    private View content5Head2;
-    String[] c5Title1 ;
+    //内部参数
+    public abstract void initInternalParamString();
 
 
     private boolean isReceiveSucc = false;
-    private int[][] funs = {{3, 0, 124},{3, 125, 249},{3, 3000, 3124},{4,3000,3124},{4,3125,3249}};
+    private int[][] funs;
     private int count = 0;
     //所有本地获取数据集合
-    private MaxDataBean mMaxData = new MaxDataBean();
-    //提示问题
-    private boolean promptWifi = true;//提示连接wifi模块
+    public MaxDataBean mMaxData = new MaxDataBean();
 
+    //获取数据的寄存器集合
+    public abstract int[][] initGetDataArray();
 
 
     //是否读取了bdc的值
@@ -167,7 +197,10 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     private int scroolD = 100;
 
 
-    private MenuItem item;
+    //其他数据
+    private View tvTitleLiwang;
+    private View tvTitleBdc;
+    private View tvTitleBattry;
 
 
     //表格列表
@@ -181,6 +214,8 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
      */
     private String[] deratModes;
 
+    public abstract String[] deratModes();
+
 
     @Override
     protected int getContentView() {
@@ -193,7 +228,7 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
         initToobar(toolbar);
         tvTitle.setText(R.string.m291设备信息);
         String title = getIntent().getStringExtra("title");
-        if (TextUtils.isEmpty(title)){
+        if (TextUtils.isEmpty(title)) {
             tvTitle.setText(title);
         }
         toolbar.inflateMenu(R.menu.comment_right_menu);
@@ -227,21 +262,162 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
         initContent6();
         //离网参数/BDC/电池参数
         initOtherView();
-
-
-    /*    if (promptWifi){
-            promptWifi = false;
-            if (!CommenUtils.isWifi(this)){
-                MaxUtil.showJumpWifiSet(this,getString(R.string.m未连接WIFI模块),getString(R.string.m请跳转连接WIFI));
-            }
-        }*/
     }
+
+
+    private void initString() {
+        initVolFreCurString();
+        initStringVolCurString();
+        initACVolCurString();
+        initSVGAPFString();
+        initPIDString();
+        initAboutDeviceString();
+        initInternalParamString();
+        initGetDataArray();
+        deratModes = deratModes();
+
+    }
+
+
+    private void initContent1() {
+        title1Head2 = header.findViewById(R.id.tvTitle1);
+        content1Head2 = header.findViewById(R.id.tvContent1);
+        t1H2IvStatus = title1Head2.findViewById(R.id.ivStatus);
+        TextView t1h2TvTitle = title1Head2.findViewById(R.id.tvHeadTitle);
+        t1h2TvTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+        mC1List = new ArrayList<>();
+        mC1RecyclerView = content1Head2.findViewById(R.id.recyclerViewC1);
+        mC1RecyclerView.setLayoutManager(new GridLayoutManager(this, c1Title2.length + 1, LinearLayoutManager.HORIZONTAL, false));
+        mC1Adapter = new MaxContentAdapter(R.layout.item_grid_textview_max_big_3col, mC1List);
+        mC1RecyclerView.setAdapter(mC1Adapter);
+        initC1Datas(c1Title1, c1Title2, null, mC1Adapter);
+    }
+
+
+    private void initContent2() {
+        title2Head2 = header.findViewById(R.id.tvTitle2);
+        content2Head2 = header.findViewById(R.id.tvContent2);
+        t2H2IvStatus = title2Head2.findViewById(R.id.ivStatus);
+        TextView t2h2TvTitle = title2Head2.findViewById(R.id.tvHeadTitle);
+        t2h2TvTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+        mC2List = new ArrayList<>();
+        mC2RecyclerView = content2Head2.findViewById(R.id.recyclerViewC1);
+        mC2RecyclerView.setLayoutManager(new GridLayoutManager(this, c2Title2.length + 1, LinearLayoutManager.HORIZONTAL, false));
+        mC2Adapter = new MaxContentAdapter(R.layout.item_grid_textview, mC2List);
+        mC2RecyclerView.setAdapter(mC2Adapter);
+        initC1Datas(c2Title1, c2Title2, null, mC2Adapter);
+
+    }
+
+
+    private void initContent3() {
+        title3Head2 = header.findViewById(R.id.tvTitle3);
+        content3Head2 = header.findViewById(R.id.tvContent3);
+        TextView t3h2TvTitle = title3Head2.findViewById(R.id.tvHeadTitle);
+        t3h2TvTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+//        content3Head2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,getResources().getDimensionPixelSize(R.dimen.y130)));
+        t3H2IvStatus = (ImageView) title3Head2.findViewById(R.id.ivStatus);
+        mC3List = new ArrayList<>();
+        mC3RecyclerView = (RecyclerView) content3Head2.findViewById(R.id.recyclerViewC1);
+        int paddingH = getResources().getDimensionPixelOffset(R.dimen.dp_20);
+//        mC3RecyclerView.setPadding(paddingH * 2, paddingH, paddingH * 2, paddingH);
+        mC3RecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mC3Adapter = new MaxMainChildAdapter(R.layout.item_tlx_childrv, mC3List);
+        mC3RecyclerView.setAdapter(mC3Adapter);
+        initGridDateParam(c3Title2, null, mC3Adapter);
+    }
+
+
+    private void initContent34() {
+        title34Head2 = header.findViewById(R.id.tvTitle34);
+        content34Head2 = header.findViewById(R.id.tvContent34);
+        content34Head2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.dp_150)));
+        t34H2IvStatus = (ImageView) title34Head2.findViewById(R.id.ivStatus);
+        TextView t34h2TvTitle = title34Head2.findViewById(R.id.tvHeadTitle);
+        t34h2TvTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+        mC34List = new ArrayList<>();
+        mC34RecyclerView = (RecyclerView) content34Head2.findViewById(R.id.recyclerViewC1);
+        mC34RecyclerView.setLayoutManager(new GridLayoutManager(this, c34Title2.length + 1, LinearLayoutManager.HORIZONTAL, false));
+        mC34Adapter = new MaxContentAdapter(R.layout.item_grid_textview_max_big, mC34List);
+        mC34RecyclerView.setAdapter(mC34Adapter);
+        initC1Datas(c34Title1, c34Title2, null, mC34Adapter);
+    }
+
+
+    private void initContent4() {
+        title4Head2 = header.findViewById(R.id.tvTitle4);
+        title5Head2 = header.findViewById(R.id.tvTitle5);
+        t5H2IvStatus = (ImageView) title5Head2.findViewById(R.id.ivStatus);
+        content5Head2 = header.findViewById(R.id.tvContent5);
+        content4Head2 = header.findViewById(R.id.tvContent4);
+        t4H2IvStatus = (ImageView) title4Head2.findViewById(R.id.ivStatus);
+        TextView t4h2TvTitle = title4Head2.findViewById(R.id.tvHeadTitle);
+        t4h2TvTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+        mC4List = new ArrayList<>();
+        mC4RecyclerView = (RecyclerView) content4Head2.findViewById(R.id.recyclerViewC1);
+        mC4RecyclerView.setLayoutManager(new GridLayoutManager(this, c4Title2.length + 1, LinearLayoutManager.HORIZONTAL, false));
+        mC4Adapter = new MaxContentAdapter(R.layout.item_grid_textview, mC4List);
+        mC4RecyclerView.setAdapter(mC4Adapter);
+        initC1Datas(c4Title1, c4Title2, null, mC4Adapter);
+    }
+
+
+    private void initContent5() {
+        title5Head2 = header.findViewById(R.id.tvTitle5);
+        content5Head2 = header.findViewById(R.id.tvContent5);
+        t5H2IvStatus = (ImageView) title5Head2.findViewById(R.id.ivStatus);
+        TextView t5h2TvTitle = title5Head2.findViewById(R.id.tvHeadTitle);
+        t5h2TvTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+        mC5List = new ArrayList<>();
+        mC5RecyclerView = (RecyclerView) content5Head2.findViewById(R.id.recyclerViewC1);
+        int padding = getResources().getDimensionPixelOffset(R.dimen.dp_10);
+        mC5RecyclerView.setPadding(padding, padding, padding, padding);
+        mC5RecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mC5Adapter = new MaxMainChildAdapter(R.layout.item_tlx_childrv, mC5List);
+        mC5RecyclerView.setAdapter(mC5Adapter);
+        //数据刷新
+        initGridDateParam(c5Title1, null, mC5Adapter);
+    }
+
+
+    private void initContent6() {
+        title6Head2 = header.findViewById(R.id.tvTitle6);
+        content6Head2 = header.findViewById(R.id.tvContent6);
+        t6H2IvStatus = (ImageView) title6Head2.findViewById(R.id.ivStatus);
+        TextView t6h2TvTitle = title6Head2.findViewById(R.id.tvHeadTitle);
+        t6h2TvTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+        mC6List = new ArrayList<>();
+        mC6RecyclerView = (RecyclerView) content6Head2.findViewById(R.id.recyclerViewC1);
+        mC6RecyclerView.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false));
+        mC6Adapter = new MaxMainChildAdapter(R.layout.item_max_childrv, mC6List);
+        mC6RecyclerView.setAdapter(mC6Adapter);
+        //数据刷新
+        initGridDateParam(c6Title1, null, mC6Adapter);
+    }
+
+
+    private void initOtherView() {
+        tvTitleLiwang = header.findViewById(R.id.tvTitleLiwang);
+        TextView tvLiwangTitle = tvTitleLiwang.findViewById(R.id.tvHeadTitle);
+        tvLiwangTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+        tvTitleBdc = header.findViewById(R.id.tvTitleBdc);
+        TextView bdcTitle = tvTitleBdc.findViewById(R.id.tvHeadTitle);
+        bdcTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+        bdcTitle.setText(R.string.android_key1315);
+
+        tvTitleBattry = header.findViewById(R.id.tvTitleBattry);
+        TextView battryTitle = tvTitleBattry.findViewById(R.id.tvHeadTitle);
+        battryTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+    }
+
 
     @Override
     protected void initData() {
+        funs = initGetDataArray();
         initListener();
         //请求数据
         refresh();
+
     }
 
 
@@ -251,7 +427,6 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     private void refresh() {
         connectSendMsg();
     }
-
 
     /**
      * 真正的连接逻辑
@@ -272,6 +447,7 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
             mClientUtil.connect(mHandler);
         }
     }
+
 
     /**
      * 连接处理器
@@ -339,7 +515,7 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
                             count = 0;
                             //关闭连接
                             SocketClientUtil.close(mClientUtil);
-                            refreshFinish();
+                            Mydialog.Dismiss();
                         }
                         LogUtil.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
@@ -379,62 +555,6 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     };
 
 
-
-    /**
-     * 根据命令以及起始寄存器发送查询命令
-     *
-     * @param clientUtil
-     */
-    private void sendMsg(SocketClientUtil clientUtil, int[] sends) {
-        if (clientUtil != null) {
-            clientUtil.sendMsg(ModbusUtil.sendMsg(sends[0], sends[1], sends[2]));
-        } else {
-            connectServer();
-        }
-    }
-
-
-    /**
-     * 刷新完成
-     */
-    private void refreshFinish() {
-        Mydialog.Dismiss();
-    }
-
-
-
-
-    /**
-     * 解析数据
-     *
-     * @param bytes
-     * @param count
-     */
-    private void parseMax(byte[] bytes, int count) {
-        switch (count) {
-            case 0:
-                RegisterParseUtil.parseHold0T124(mMaxData, bytes);
-                break;
-            case 1:
-                RegisterParseUtil.parseHold125T249(mMaxData, bytes);
-                break;
-            case 2:
-                RegisterParseUtil.parseHold3kT3124(mMaxData, bytes);
-
-                break;
-            case 3:
-                RegisterParseUtil.parseInput3kT3124V2(mMaxData, bytes);
-                isBDC = true;
-                break;
-            case 4:
-                RegisterParseUtil.parseInput3125T3249(mMaxData, bytes);
-                break;
-        }
-    }
-
-
-
-
     /**
      * 更新ui数据
      */
@@ -470,7 +590,7 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
         if (deviceBeen.getNewModel() == 0) {
             int model = deviceBeen.getModel();
             datasAbout[3] = MaxUtil.getDeviceModel(model);
-        }else {
+        } else {
             datasAbout[3] = MaxUtil.getDeviceModelNew4(deviceBeen.getNewModel());
         }
 //        datasAbout[4] = deviceBeen.getFirmVersionOut();
@@ -484,28 +604,28 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
         String commSoftVersion = deviceBeen.getCommSoftVersion();
         if (TextUtils.isEmpty(commSoftVersion)) {
             datasAbout[5] = "--";
-        }else {
-            datasAbout[5] = String.format("%s-%04d",commSoftVersion,deviceBeen.getCommSoftVersionValue());
+        } else {
+            datasAbout[5] = String.format("%s-%04d", commSoftVersion, deviceBeen.getCommSoftVersionValue());
         }
-        datasAbout[6]=mMaxData.getBdcVervison();
-        datasAbout[7]=mMaxData.getBatVersion();
+        datasAbout[6] = mMaxData.getBdcVervison();
+        datasAbout[7] = mMaxData.getBatVersion();
 
 
         //grid:内部参数
         String[] datasParams = new String[10];
         datasParams[0] = deviceBeen.getLastTime();
         datasParams[1] = deviceBeen.getRealOPowerPercent();
-        datasParams[2] = String.format("%dkΩ",deviceBeen.getIso());
+        datasParams[2] = String.format("%dkΩ", deviceBeen.getIso());
         datasParams[3] = deviceBeen.getEnvTemp();
         datasParams[4] = deviceBeen.getBoostTemp();
         datasParams[5] = deviceBeen.getDeviceTemp();
         datasParams[6] = deviceBeen.getpBusV();
         datasParams[7] = deviceBeen.getnBusV();
         int deratMode = deviceBeen.getDerateMode2();
-        if (deratMode >=0 && deratMode <=16){
+        if (deratMode >= 0 && deratMode <= 16) {
 //            datasParams[8] = deratModes[deratMode] + "/" + deratMode;
             datasParams[8] = deratModes[deratMode];
-        }else {
+        } else {
             datasParams[8] = String.valueOf(deratMode);
         }
         initGridDate(c5Title1, datasAbout, mC5Adapter);
@@ -524,69 +644,36 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     }
 
 
+    public abstract void parserData(int count, byte[] bytes);
 
 
-
-
-    private void initString() {
-        scroolD = getResources().getDimensionPixelSize(R.dimen.dp_50);
-        c1Title2 = new String[]{
-                String.format("%s(V)",getString(R.string.m318电压)),
-                String.format("%s(A)",getString(R.string.m319电流)),
-                String.format("%s(W)",getString(R.string.m320功率))
-        };
-        c2Title2 = new String[]{
-                String.format("%s(V)",getString(R.string.m318电压)),
-                String.format("%s(A)",getString(R.string.m319电流))
-        };
-        c3Title2 = new String[]{
-                String.format("%s(V)",getString(R.string.m318电压)),
-                String.format("%s(Hz)",getString(R.string.m321频率)),
-                String.format("%s(A)",getString(R.string.m319电流)),
-                String.format("%s(W)",getString(R.string.m320功率)),
-                "PF"
-        };
-        c34Title2 = new String[]{
-                String.format("%s(A)",getString(R.string.mCT侧电流)),
-                String.format("%s(Var)",getString(R.string.mCT侧无功)),
-                String.format("%s(A)",getString(R.string.mCT侧谐波量)),
-                String.format("%s(Var)",getString(R.string.m补偿无功量)),
-                String.format("%s(A)",getString(R.string.m补偿谐波量)),
-                getString(R.string.mSVG工作状态),
-        };
-        c4Title2 = new String[]{
-                String.format("%s(V)",getString(R.string.m318电压)),
-                String.format("%s(mA)",getString(R.string.m319电流))
-        };
-        c6Title1 = new String[]{
-                getString(R.string.m305并网倒计时),  getString(R.string.m306功率百分比),
-                "ISO",
-                getString(R.string.m307内部环境温度),  getString(R.string.m308Boost温度),
-                getString(R.string.m309INV温度),
-                "+Bus", "-Bus"
-                , getString(R.string.m降额模式)
-        };
-        c5Title1 = new String[]{
-                getString(R.string.m312厂商信息),  getString(R.string.m313机器型号),
-                getString(R.string.dataloggers_list_serial),  getString(R.string.m314Model号),
-                getString(R.string.m控制软件版本),  getString(R.string.m通信软件版本),getString(R.string.bdc软件版本),
-                getString(R.string.battery_version)
-        };
-
-        deratModes = new String[]{
-                getString(R.string.m无降额),getString(R.string.PV高压降载),getString(R.string.老化固定功率降载),
-                getString(R.string.电网高压降载),getString(R.string.过频降载),getString(R.string.DC源模式降载),
-                getString(R.string.逆变模块过温降载),getString(R.string.有功设定限载),getString(R.string.m保留),getString(R.string.m保留)
-                ,getString(R.string.内部环境过温降载),getString(R.string.外部环境过温降载),getString(R.string.线路阻抗降载)
-                , getString(R.string.并机防逆流降载),getString(R.string.单机防逆流降载),getString(R.string.负载优先模式降载),getString(R.string.检测CT错反接降载)
-        };
+    /**
+     * 解析数据
+     *
+     * @param bytes
+     * @param count
+     */
+    private void parseMax(byte[] bytes, int count) {
+        parserData(count, bytes);
     }
 
 
+    /**
+     * 根据命令以及起始寄存器发送查询命令
+     *
+     * @param clientUtil
+     */
+    private void sendMsg(SocketClientUtil clientUtil, int[] sends) {
+        if (clientUtil != null) {
+            clientUtil.sendMsg(ModbusUtil.sendMsg(sends[0], sends[1], sends[2]));
+        } else {
+            connectServer();
+        }
+    }
 
     private void initListener() {
         initOnclick(title1Head2, title2Head2, title3Head2, title34Head2, title4Head2,
-                title5Head2,title6Head2,  tvTitleLiwang,tvTitleBdc,tvTitleBattry);
+                title5Head2, title6Head2, tvTitleLiwang, tvTitleBdc, tvTitleBattry);
     }
 
     private void initOnclick(View... views) {
@@ -598,134 +685,27 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     }
 
 
-    private void initContent1() {
-        title1Head2 = header.findViewById(R.id.tvTitle1);
-        content1Head2 = header.findViewById(R.id.tvContent1);
-        t1H2IvStatus = title1Head2.findViewById(R.id.ivStatus);
-        TextView t1h2TvTitle = title1Head2.findViewById(R.id.tvHeadTitle);
-        t1h2TvTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
-        mC1List = new ArrayList<>();
-        mC1RecyclerView = content1Head2.findViewById(R.id.recyclerViewC1);
-        mC1RecyclerView.setLayoutManager(new GridLayoutManager(this, c1Title2.length + 1, LinearLayoutManager.HORIZONTAL, false));
-        mC1Adapter = new MaxContentAdapter(R.layout.item_grid_textview_max_big_3col, mC1List);
-        mC1RecyclerView.setAdapter(mC1Adapter);
-        initC1Datas(c1Title1, c1Title2, null, mC1Adapter);
+    /**
+     * grid数据刷新:关于本机
+     */
+    private void initGridDate(String[] titles, String[] values, MaxMainChildAdapter adapter) {
+        if (titles == null) return;
+        List<MaxChildBean> newList = new ArrayList<>();
+        for (int i = 0; i < titles.length; i++) {
+            MaxChildBean bean = new MaxChildBean();
+            bean.setTitle(titles[i]);
+            if (values != null && values.length > i && values[i] != null) {
+                bean.setContent(values[i]);
+            } else {
+                bean.setContent("");
+            }
+            newList.add(bean);
+        }
+        if (adapter != null) {
+            adapter.replaceData(newList);
+        }
     }
 
-
-    private void initContent2() {
-        title2Head2 = header.findViewById(R.id.tvTitle2);
-        content2Head2 = header.findViewById(R.id.tvContent2);
-        t2H2IvStatus = title2Head2.findViewById(R.id.ivStatus);
-        TextView t2h2TvTitle = title2Head2.findViewById(R.id.tvHeadTitle);
-        t2h2TvTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
-        mC2List = new ArrayList<>();
-        mC2RecyclerView = content2Head2.findViewById(R.id.recyclerViewC1);
-        mC2RecyclerView.setLayoutManager(new GridLayoutManager(this, c2Title2.length + 1, LinearLayoutManager.HORIZONTAL, false));
-        mC2Adapter = new MaxContentAdapter(R.layout.item_grid_textview, mC2List);
-        mC2RecyclerView.setAdapter(mC2Adapter);
-        initC1Datas(c2Title1, c2Title2, null, mC2Adapter);
-
-    }
-
-
-    private void initContent3() {
-        title3Head2 = header.findViewById(R.id.tvTitle3);
-        content3Head2 = header.findViewById(R.id.tvContent3);
-        TextView t3h2TvTitle = title3Head2.findViewById(R.id.tvHeadTitle);
-        t3h2TvTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
-//        content3Head2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,getResources().getDimensionPixelSize(R.dimen.y130)));
-        t3H2IvStatus = (ImageView) title3Head2.findViewById(R.id.ivStatus);
-        mC3List = new ArrayList<>();
-        mC3RecyclerView = (RecyclerView) content3Head2.findViewById(R.id.recyclerViewC1);
-        int paddingH = getResources().getDimensionPixelOffset(R.dimen.dp_20);
-//        mC3RecyclerView.setPadding(paddingH * 2, paddingH, paddingH * 2, paddingH);
-        mC3RecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mC3Adapter = new MaxMainChildAdapter(R.layout.item_tlx_childrv, mC3List);
-        mC3RecyclerView.setAdapter(mC3Adapter);
-        initGridDateParam(c3Title2, null, mC3Adapter);
-    }
-
-
-    private void initContent34() {
-        title34Head2 = header.findViewById(R.id.tvTitle34);
-        content34Head2 = header.findViewById(R.id.tvContent34);
-        content34Head2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.dp_150)));
-        t34H2IvStatus = (ImageView) title34Head2.findViewById(R.id.ivStatus);
-        TextView t34h2TvTitle = title34Head2.findViewById(R.id.tvHeadTitle);
-        t34h2TvTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
-        mC34List = new ArrayList<>();
-        mC34RecyclerView = (RecyclerView) content34Head2.findViewById(R.id.recyclerViewC1);
-        mC34RecyclerView.setLayoutManager(new GridLayoutManager(this, c34Title2.length + 1, LinearLayoutManager.HORIZONTAL, false));
-        mC34Adapter = new MaxContentAdapter(R.layout.item_grid_textview_max_big, mC34List);
-        mC34RecyclerView.setAdapter(mC34Adapter);
-        initC1Datas(c34Title1, c34Title2, null, mC34Adapter);
-    }
-
-
-    private void initContent4() {
-        title4Head2 = header.findViewById(R.id.tvTitle4);
-        title5Head2 = header.findViewById(R.id.tvTitle5);
-        t5H2IvStatus = (ImageView) title5Head2.findViewById(R.id.ivStatus);
-        content5Head2 = header.findViewById(R.id.tvContent5);
-        content4Head2 = header.findViewById(R.id.tvContent4);
-        t4H2IvStatus = (ImageView) title4Head2.findViewById(R.id.ivStatus);
-        TextView t4h2TvTitle = title4Head2.findViewById(R.id.tvHeadTitle);
-        t4h2TvTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
-        mC4List = new ArrayList<>();
-        mC4RecyclerView = (RecyclerView) content4Head2.findViewById(R.id.recyclerViewC1);
-        mC4RecyclerView.setLayoutManager(new GridLayoutManager(this, c4Title2.length + 1, LinearLayoutManager.HORIZONTAL, false));
-        mC4Adapter = new MaxContentAdapter(R.layout.item_grid_textview, mC4List);
-        mC4RecyclerView.setAdapter(mC4Adapter);
-        initC1Datas(c4Title1, c4Title2, null, mC4Adapter);
-    }
-
-    private void initContent5() {
-        title5Head2 = header.findViewById(R.id.tvTitle5);
-        content5Head2 = header.findViewById(R.id.tvContent5);
-        t5H2IvStatus = (ImageView) title5Head2.findViewById(R.id.ivStatus);
-        TextView t5h2TvTitle = title5Head2.findViewById(R.id.tvHeadTitle);
-        t5h2TvTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
-        mC5List = new ArrayList<>();
-        mC5RecyclerView = (RecyclerView) content5Head2.findViewById(R.id.recyclerViewC1);
-        int padding = getResources().getDimensionPixelOffset(R.dimen.dp_10);
-        mC5RecyclerView.setPadding(padding, padding, padding, padding);
-        mC5RecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mC5Adapter = new MaxMainChildAdapter(R.layout.item_tlx_childrv, mC5List);
-        mC5RecyclerView.setAdapter(mC5Adapter);
-        //数据刷新
-        initGridDateParam(c5Title1, null, mC5Adapter);
-    }
-
-    private void initContent6() {
-        title6Head2 = header.findViewById(R.id.tvTitle6);
-        content6Head2 = header.findViewById(R.id.tvContent6);
-        t6H2IvStatus = (ImageView) title6Head2.findViewById(R.id.ivStatus);
-        TextView t6h2TvTitle = title6Head2.findViewById(R.id.tvHeadTitle);
-        t6h2TvTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
-        mC6List = new ArrayList<>();
-        mC6RecyclerView = (RecyclerView) content6Head2.findViewById(R.id.recyclerViewC1);
-        mC6RecyclerView.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false));
-        mC6Adapter = new MaxMainChildAdapter(R.layout.item_max_childrv, mC6List);
-        mC6RecyclerView.setAdapter(mC6Adapter);
-        //数据刷新
-        initGridDateParam(c6Title1, null, mC6Adapter);
-    }
-
-
-    private void initOtherView() {
-        tvTitleLiwang = header.findViewById(R.id.tvTitleLiwang);
-        TextView tvLiwangTitle = tvTitleLiwang.findViewById(R.id.tvHeadTitle);
-        tvLiwangTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
-        tvTitleBdc = header.findViewById(R.id.tvTitleBdc);
-        TextView bdcTitle = tvTitleBdc.findViewById(R.id.tvHeadTitle);
-        bdcTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
-        bdcTitle.setText(R.string.android_key1315);
-
-        tvTitleBattry = header.findViewById(R.id.tvTitleBattry);
-        TextView battryTitle = tvTitleBattry.findViewById(R.id.tvHeadTitle);
-        battryTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
-    }
 
     private void initC1Datas(String[] title1, String[] title2, List<String> c1List, MaxContentAdapter adapter) {
         if (title1 == null || title2 == null) return;
@@ -794,31 +774,9 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     }
 
 
-    /**
-     * grid数据刷新:关于本机
-     */
-    private void initGridDate(String[] titles, String[] values, MaxMainChildAdapter adapter) {
-        if (titles == null) return;
-        List<MaxChildBean> newList = new ArrayList<>();
-        for (int i = 0; i < titles.length; i++) {
-            MaxChildBean bean = new MaxChildBean();
-            bean.setTitle(titles[i]);
-            if (values != null && values.length > i && values[i] != null) {
-                bean.setContent(values[i]);
-            } else {
-                bean.setContent("");
-            }
-            newList.add(bean);
-        }
-        if (adapter != null) {
-            adapter.replaceData(newList);
-        }
-    }
-
-
-
     @Override
     public void onClick(View view) {
+
         if (view == title1Head2) {
             showOrHideView(content1Head2, t1H2IvStatus);
         } else if (view == title2Head2) {
@@ -833,24 +791,21 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
             showOrHideView(content5Head2, t5H2IvStatus);
 //            showOrHideRecycler(mGridAdapter,t5H2IvStatus);
         } else if (view == title6Head2) {
-            showOrHideView(content6Head2,t6H2IvStatus);
+            showOrHideView(content6Head2, t6H2IvStatus);
 //            showOrHideRecyclerParams(mC6Adapter,t6H2IvStatus);
-        }
-        else if (view == tvTitleLiwang) {
+        } else if (view == tvTitleLiwang) {
             EventBus.getDefault().postSticky(mMaxData);
-            jumpMaxSet(TLXHLiwangActivity.class,"");
-        }
-        else if (view == tvTitleBdc) {
+            jumpMaxSet(TLXHLiwangActivity.class, "");
+        } else if (view == tvTitleBdc) {
             bdcType = 0;
-            if (!isBDC){
+            if (!isBDC) {
                 connectServerBDC();
                 return;
             }
             jumpBDC();
-        }
-        else if (view == tvTitleBattry) {
+        } else if (view == tvTitleBattry) {
             bdcType = 1;
-            if (!isBDC){
+            if (!isBDC) {
                 connectServerBDC();
                 return;
             }
@@ -861,10 +816,21 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
 //            intent.putExtra("title", tvPowerStr.getText().toString());
 //            jumpTo(intent, false);
 //        }
-
-
     }
 
+    public void jumpBDC() {
+        if (isBDC && mMaxData.getBdcStatus() == 0) {
+            MyControl.circlerDialog(this, getString(R.string.没有接入BDC), -1, false);
+            return;
+        }
+        if (bdcType == 0) {
+            EventBus.getDefault().postSticky(mMaxData);
+            jumpMaxSet(USBDCParamActivity.class, "");
+        } else if (bdcType == 1) {
+            EventBus.getDefault().postSticky(mMaxData);
+            jumpMaxSet(TLXHBattryActivity.class, "");
+        }
+    }
 
     //连接对象:用于读取数据
     private SocketClientUtil mClientUtilBDC;
@@ -873,7 +839,6 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
         Mydialog.Show(mContext);
         mClientUtilBDC = SocketClientUtil.connectServer(mHandler3124);
     }
-
 
     /**
      * 读取寄存器handle
@@ -915,12 +880,11 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
                     }
                     break;
                 default:
-                    BtnDelayUtil.dealMaxBtn(this,what,mContext,toolbar);
+                    BtnDelayUtil.dealMaxBtn(this, what, mContext, toolbar);
                     break;
             }
         }
     };
-
 
     /**
      * 根据命令以及起始寄存器发送查询命令
@@ -941,33 +905,15 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
     }
 
 
-
-    public void jumpBDC(){
-        if (isBDC && mMaxData.getBdcStatus() == 0){
-            MyControl.circlerDialog(this,getString(R.string.没有接入BDC),-1,false);
-            return;
-        }
-        if (bdcType == 0){
-            EventBus.getDefault().postSticky(mMaxData);
-            jumpMaxSet(USBDCParamActivity.class,"");
-        }else if (bdcType == 1){
-            EventBus.getDefault().postSticky(mMaxData);
-            jumpMaxSet(TLXHBattryActivity.class,"");
-        }
-    }
-
-
     /**
      * 跳转到Max各设置界面
      */
     private void jumpMaxSet(Class clazz, String title) {
         Intent intent = new Intent(mContext, clazz);
         intent.putExtra("title", title);
-        intent.putExtra("isTlxhus",true);
-        ActivityUtils.startActivity(USDeviceInfoActivity.this,intent,false);
+        intent.putExtra("isTlxhus", true);
+        ActivityUtils.startActivity(this, intent, false);
     }
-
-
 
 
     public void showOrHideView(View view, ImageView iv) {
@@ -975,10 +921,10 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
             view.setVisibility(View.VISIBLE);
             iv.setImageResource(R.drawable.max_up);
             try {
-                if (view == content5Head2){
-                    scrollHandle.sendEmptyMessageDelayed(0,40);
-                }else {
-                    mRecyclerView.scrollBy(0,scroolD);
+                if (view == content5Head2) {
+                    scrollHandle.sendEmptyMessageDelayed(0, 40);
+                } else {
+                    mRecyclerView.scrollBy(0, scroolD);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -989,14 +935,15 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
+
     @SuppressLint("HandlerLeak")
-    Handler scrollHandle = new Handler(){
+    Handler scrollHandle = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
-                    mRecyclerView.scrollBy(0,scroolD);
+                    mRecyclerView.scrollBy(0, scroolD);
                     break;
             }
         }

@@ -988,6 +988,23 @@
             android:screenOrientation="portrait"
             />
 
+        <activity android:name=".module.localbox.max.config.MaxGridCodeSecondActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".module.localbox.max.config.MaxGridCodeThirdActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".module.localbox.max.Max230Ktl3HvtDeviceInfoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+
         <!--==================================模块页面=========================================-->
 
         <service android:name=".utils.datalogupdata.DatalogDownloadService" />
