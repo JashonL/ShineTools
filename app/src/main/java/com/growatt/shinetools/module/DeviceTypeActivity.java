@@ -1,5 +1,6 @@
 package com.growatt.shinetools.module;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -16,7 +17,7 @@ import com.growatt.shinetools.R;
 import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.module.localbox.max.Max230KTL3HVToolActivity;
-import com.growatt.shinetools.module.localbox.max.MaxMainActivity;
+import com.growatt.shinetools.module.localbox.max.MaxMacModMidToolActivity;
 import com.growatt.shinetools.module.localbox.max.MaxXMainActivity;
 import com.growatt.shinetools.module.localbox.mintool.TL3XHMainActivity;
 import com.growatt.shinetools.module.localbox.mintool.TLXHToolMainActivity;
@@ -172,7 +173,10 @@ public class DeviceTypeActivity extends BaseActivity implements Toolbar.OnMenuIt
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_type_max:
-                ActivityUtils.gotoActivity(DeviceTypeActivity.this, MaxMainActivity.class,false);
+//                ActivityUtils.gotoActivity(DeviceTypeActivity.this, MaxMainActivity.class,false);
+                Intent intent=new Intent(this,MaxMacModMidToolActivity.class);
+                intent.putExtra("title","MAX/MAC/MOD/MID");
+                ActivityUtils.startActivity(DeviceTypeActivity.this,intent,false);
                 break;
             case R.id.ll_type_230:
 

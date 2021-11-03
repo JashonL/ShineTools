@@ -15,8 +15,8 @@ public class SocketManager {
     private SocketClientUtil mClientUtil;
     private Schedulers mHandler;
 
-    //是否已经断开
-    private boolean isDisConnect = true;
+    //是否已连接
+    private boolean isConnect = true;
 
 
     public SocketManager(Context context) {
@@ -70,11 +70,29 @@ public class SocketManager {
     }
 
 
+    /**
+     * 根据命令以及起始寄存器发送查询命令
+     *
+     * @param sends
+     * @return：返回发送的字节数组
+     */
+    public byte[] sendMsgNoDialog(int[] sends) {
+        if (mClientUtil != null) {
+            byte[] sendBytes = ModbusUtil.sendMsg(sends[0], sends[1], sends[2]);
+            mClientUtil.sendMsg(sendBytes);
+            return sendBytes;
+        } else {
+            connectSocket();
+            return null;
+        }
+    }
+
+
     public boolean isDisConnect() {
-        return isDisConnect;
+        return isConnect;
     }
 
     public void setDisConnect(boolean disConnect) {
-        isDisConnect = disConnect;
+        isConnect = disConnect;
     }
 }

@@ -2,6 +2,7 @@ package com.growatt.shinetools.module.localbox.max;
 
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
+import com.growatt.shinetools.module.localbox.max.base.BaseDeviceInfoActivity;
 
 public class Max230Ktl3HvtDeviceInfoActivity extends BaseDeviceInfoActivity {
 

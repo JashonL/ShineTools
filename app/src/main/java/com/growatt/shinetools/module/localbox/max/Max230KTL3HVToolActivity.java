@@ -28,7 +28,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.adapter.MaxMainChildAdapter;
 import com.growatt.shinetools.adapter.TLXHToolEleAdapter;
-import com.growatt.shinetools.adapter.TLXHToolPowerAdapter;
 import com.growatt.shinetools.adapter.UsParamsetAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.modbusbox.MaxUtil;
@@ -44,9 +43,8 @@ import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity
 import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxQuicksettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxSystemConfigActivity;
+import com.growatt.shinetools.module.localbox.mintool.TLXWarningActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
-import com.growatt.shinetools.module.localbox.ustool.USFaultDetailActivity;
-import com.growatt.shinetools.module.localbox.ustool.errorcode.ErrorCode;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.CircleDialogUtils;
@@ -81,20 +79,17 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     @BindView(R.id.tv_status)
     TextView tvStatus;
 
-    private int scroolD = 100;
+    private TextView tvFault;
     private String noteStartStr;
     private String noteStopStr;
-    private String errNode;
     String[] pidStatusStrs;
     //标题状态
     String[] statusTitles;
     private int [] statusColors;
     private int [] drawableStatus;
+    private String errNode ;
 
 
-
-
-    private String[] c1Title2;
     String[] c2Title2;
     String[] c3Title2;
     String[] c34Title2;
@@ -104,12 +99,6 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     String[] c4Title1;
 
 
-    /**
-     * 功率recyclerview
-     */
-    private TLXHToolPowerAdapter mPowerAdapter;
-    private List<TLXHEleBean> mPowerList;
-    private RecyclerView mPowerRecycler;
 
     private TextView tvErrH1;
     private TextView tvWarnH1;
@@ -122,10 +111,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     private boolean isReceiveSucc = false;
     //连接对象
     private SocketClientUtil mClientUtil;
-    //所有本地获取数据集合
 
-    private long startTime;
-    private boolean btnClick = true;
 
     private MaxDataBean mMaxData = new MaxDataBean();
     private int count = 0;
@@ -150,7 +136,6 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
      * 发电量recyclerview
      */
     private String[] eleTitles;
-    private int[] powerResId;
     private int[] eleResId;
     private TLXHToolEleAdapter mEleAdapter;
     private List<TLXHEleBean> mEleList;
@@ -359,17 +344,21 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
      * 跳转到故障页面
      */
     private void jumpErrorWarnSet() {
-        stopRefresh();
-        int errCode = mMaxData.getErrCode();
-        int warmCode = mMaxData.getWarmCode();
-        int errCodeSecond = mMaxData.getErrCodeSecond();
-        int warmCodeSecond = mMaxData.getWarmCodeSecond();
-        Intent intent = new Intent(mContext, USFaultDetailActivity.class);
-        intent.putExtra(ErrorCode.KEY_US_ERROR, errCode);
-        intent.putExtra(ErrorCode.KEY_US_WARNING, warmCode);
-        intent.putExtra(ErrorCode.KEY_US_SECOND_ERROR, errCodeSecond);
-        intent.putExtra(ErrorCode.KEY_US_SECOND_WARNING, warmCodeSecond);
-        ActivityUtils.startActivity(this, intent, false);
+        if (!TextUtils.isEmpty(tvErrH1.getText().toString())) {
+            stopRefresh();
+            Intent intent = new Intent(mContext, TLXWarningActivity.class);
+            intent.putExtra("title", tvFault.getText().toString());
+            intent.putExtra("errCode", mMaxData.getErrCode());
+            intent.putExtra("warmCode", mMaxData.getWarmCode());
+            intent.putExtra("errCodeSecond", mMaxData.getErrCodeSecond());
+            intent.putExtra("warmCodeSecond", mMaxData.getWarmCodeSecond());
+            intent.putExtra("type", 0);
+            intent.putExtra("error1", mMaxData.getError1());
+            intent.putExtra("error2", mMaxData.getError2());
+            ActivityUtils.startActivity(this,intent,false);
+        } else {
+            toast(errNode);
+        }
     }
 
 
@@ -435,6 +424,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
 
     private void initRecyclerViewPower() {
         tvErrH1 = header.findViewById(R.id.tv_fault_value);
+        tvFault = header.findViewById(R.id.tv_fault);
         tvWarnH1 = header.findViewById(R.id.tv_warn_value);
         cvWarning = header.findViewById(R.id.cvWarning);
 
@@ -475,30 +465,15 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     }
 
 
-    private void initPowerDatas(@NonNull String[] titles, List<String> contents, TLXHToolPowerAdapter adapter) {
-        List<TLXHEleBean> newList = new ArrayList<>();
-        for (int i = 0; i < titles.length; i++) {
-            TLXHEleBean bean = new TLXHEleBean();
-            bean.setDrawableResId(powerResId[i]);
-            bean.setTitle(titles[i]);
-            if (contents == null) {
-                bean.setContent("--");
-            } else {
-                bean.setContent(contents.get(i));
-            }
-            newList.add(bean);
-        }
-        adapter.replaceData(newList);
-    }
+
 
 
 
 
     private void initString() {
-        scroolD = getResources().getDimensionPixelSize(R.dimen.dp_50);
+        errNode =getString(R.string.m290请先读取故障信息);
         noteStartStr = getString(R.string.m268自动刷新);
         noteStopStr = getString(R.string.m280停止刷新);
-        errNode = getString(R.string.m290请先读取故障信息);
         pidStatusStrs = new String[]{
                 "", getString(R.string.all_Waiting), getString(R.string.all_Normal), getString(R.string.m故障)
         };
@@ -516,11 +491,6 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         };
 
 
-
-        c1Title2 = new String[]{
-                String.format("%s(V)", getString(R.string.m318电压)),
-                String.format("%s(A)", getString(R.string.m319电流))
-        };
         c2Title2 = new String[]{
                 String.format("%s(V)", getString(R.string.m318电压)),
                 String.format("%s(A)", getString(R.string.m319电流))
@@ -626,10 +596,6 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
                     break;
                 case SocketClientUtil.SOCKET_SEND_MSG:
                     BtnDelayUtil.sendMessage(this);
-                    //记录请求时间
-                    startTime = System.currentTimeMillis();
-                    //禁用按钮
-                    btnClick = false;
                     //设置接收消息超时时间和唯一标示
                     uuid = UUID.randomUUID().toString();
                     Message msgSend = Message.obtain();
@@ -639,24 +605,15 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
 
                     String sendMsg = (String) msg.obj;
                     LogUtil.i("发送消息:" + sendMsg);
-//                    text = "发送消息成功";
-////                    mEditText.setText("");
-//                    sb.append("Client:<br>")
-//                            .append(sendMsg)
-//                            .append("<br><br>");
                     break;
                 case SocketClientUtil.SOCKET_RECEIVE_MSG:
                     //设置接收消息成功
                     isReceiveSucc = true;
-                    //设置请求按钮可用
-//                    mHandler.sendEmptyMessage(100);
-
                     String recMsg = (String) msg.obj;
-                    text = "接收消息成功";
+
                     sb.append("Server:<br>")
                             .append(recMsg)
                             .append("<br><br>");
-//                    Log.i("receive" ,recMsg);
                     break;
                 //接收字节数组
                 case SOCKET_RECEIVE_BYTES:
@@ -683,12 +640,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
                             //刷新设备型号
                             readTypeRegisterValue();
                         }
-//                        else {
-//                            toast(R.string.all_failed);
-//                            count = 0;
-//                            //关闭连接
-//                            SocketClientUtil.close(mClientUtil);
-//                        }
+
                         LogUtil.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -707,7 +659,6 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
                     }
                     break;
                 case 100://恢复按钮点击
-                    btnClick = true;
                     String myuuid = (String) msg.obj;
                     if (uuid.equals(myuuid) && !isReceiveSucc) {
                         toast(R.string.android_key1134);

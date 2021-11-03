@@ -1,4 +1,4 @@
-package com.growatt.shinetools.module.localbox.max;
+package com.growatt.shinetools.module.localbox.max.base;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -95,12 +95,12 @@ public abstract class BaseDeviceInfoActivity extends BaseActivity implements Vie
     private View content2Head2;
     private View title2Head2;
     private ImageView t2H2IvStatus;
-    String[] c2Title1 = {
+    public String[] c2Title1 = {
             "Str1", "Str2", "Str3", "Str4", "Str5", "Str6", "Str7", "Str8",
             "Str9", "Str10", "Str11", "Str12", "Str13", "Str14", "Str15", "Str16"
     };
 
-    String[] c2Title2;
+    public  String[] c2Title2;
 
     //初始化组串电压电流
     public abstract void initStringVolCurString();
@@ -113,10 +113,10 @@ public abstract class BaseDeviceInfoActivity extends BaseActivity implements Vie
     private View content3Head2;
     private View title3Head2;
     private ImageView t3H2IvStatus;
-    String[] c3Title1 = {
+    public  String[] c3Title1 = {
             "R", "S", "T"
     };
-    String[] c3Title2;
+    public String[] c3Title2;
 
     //初始化AC电流电压
     public abstract void initACVolCurString();
@@ -130,11 +130,11 @@ public abstract class BaseDeviceInfoActivity extends BaseActivity implements Vie
     private View title34Head2;
     private ImageView t34H2IvStatus;
 
-    String[] c34Title1 = {
+    public   String[] c34Title1 = {
             "R", "S", "T"
     };
 
-    String[] c34Title2;
+    public  String[] c34Title2;
 
     //初始化SVGAPF
     public abstract void initSVGAPFString();
@@ -147,10 +147,10 @@ public abstract class BaseDeviceInfoActivity extends BaseActivity implements Vie
     private View content4Head2;
     private View title4Head2;
     private ImageView t4H2IvStatus;
-    String[] c4Title1 = {
+    public  String[] c4Title1 = {
             "PID1", "PID2", "PID3", "PID4", "PID5", "PID6", "PID7", "PID8"
     };
-    String[] c4Title2;
+    public String[] c4Title2;
 
     //初始化PID
     public abstract void initPIDString();
@@ -163,7 +163,7 @@ public abstract class BaseDeviceInfoActivity extends BaseActivity implements Vie
     private View title5Head2;
     private ImageView t5H2IvStatus;
     private View content5Head2;
-    String[] c5Title1;
+    public String[] c5Title1;
 
     //关于设备
     public abstract void initAboutDeviceString();
@@ -175,7 +175,7 @@ public abstract class BaseDeviceInfoActivity extends BaseActivity implements Vie
     private View content6Head2;
     private View title6Head2;
     private ImageView t6H2IvStatus;
-    String[] c6Title1;
+    public String[] c6Title1;
 
     //内部参数
     public abstract void initInternalParamString();

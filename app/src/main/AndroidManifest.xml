@@ -1004,6 +1004,11 @@
             android:screenOrientation="portrait"
             />
 
+        <activity android:name=".module.localbox.max.MaxMacModMidToolActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
 
         <!--==================================模块页面=========================================-->
 
