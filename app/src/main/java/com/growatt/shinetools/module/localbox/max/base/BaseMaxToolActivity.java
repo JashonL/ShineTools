@@ -393,6 +393,7 @@ public abstract class BaseMaxToolActivity extends BaseActivity implements Toolba
      */
     private void jumpErrorWarnSet() {
         if (!TextUtils.isEmpty(tvErrH1.getText().toString())) {
+            toOhterSetting=true;
             stopRefresh();
             Intent intent = new Intent(mContext, TLXWarningActivity.class);
             intent.putExtra("title", tvFault.getText().toString());
@@ -670,6 +671,7 @@ public abstract class BaseMaxToolActivity extends BaseActivity implements Toolba
      * 停止刷新
      */
     private void stopRefresh() {
+        autoFreshSwitch=false;
         item.setTitle(noteStartStr);
     }
 
@@ -678,6 +680,7 @@ public abstract class BaseMaxToolActivity extends BaseActivity implements Toolba
      * 跳转到Max各设置界面
      */
     public void jumpMaxSet(Class clazz, String title) {
+        toOhterSetting=true;
         stopRefresh();
         Intent intent = new Intent(mContext, clazz);
         intent.putExtra("title", title);

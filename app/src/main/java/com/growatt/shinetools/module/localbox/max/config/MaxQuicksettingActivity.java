@@ -354,6 +354,7 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
         MaxSettingBean bean = usParamsetAdapter.getData().get(position);
         switch (position) {
             case 0:
+                manager.disConnectSocket();
                 Intent intent = new Intent(mContext, TLXParamCountry2Activity.class);
                 intent.putExtra("type", 0);
                 intent.putExtra("title", String.format("%s%s", getString(R.string.m国家安规), ""));

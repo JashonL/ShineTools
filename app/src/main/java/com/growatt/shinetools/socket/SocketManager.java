@@ -3,8 +3,10 @@ package com.growatt.shinetools.socket;
 import android.content.Context;
 import android.os.Looper;
 
+import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
+import com.growatt.shinetools.utils.MyToastUtils;
 import com.growatt.shinetools.utils.Mydialog;
 
 public class SocketManager {
@@ -17,7 +19,6 @@ public class SocketManager {
 
     //是否已连接
     private boolean isConnect = true;
-
 
     public SocketManager(Context context) {
         mClientUtil = SocketClientUtil.newInstance();
@@ -64,7 +65,8 @@ public class SocketManager {
             mClientUtil.sendMsg(sendBytes);
             return sendBytes;
         } else {
-            connectSocket();
+            Mydialog.Dismiss();
+            MyToastUtils.toast(R.string.android_key539);
             return null;
         }
     }
@@ -82,7 +84,8 @@ public class SocketManager {
             mClientUtil.sendMsg(sendBytes);
             return sendBytes;
         } else {
-            connectSocket();
+            Mydialog.Dismiss();
+            MyToastUtils.toast(R.string.android_key539);
             return null;
         }
     }

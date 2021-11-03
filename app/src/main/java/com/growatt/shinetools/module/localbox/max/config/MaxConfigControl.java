@@ -12,6 +12,7 @@ import java.util.List;
 public class MaxConfigControl {
 
     public enum MaxSettingEnum {
+        MAX_TLX_QUUICK_SETTING,//TLX快速设置
         MAX_QUICK_SETTING,//快速设置
         MAX_AFCI_FUNCTION,//AFCI设置
         MAX_SYSTEM_SETTING,//系统设置
@@ -41,6 +42,9 @@ public class MaxConfigControl {
     public static List<MaxSettingBean> getSettingList(MaxSettingEnum maxSettingEnum, Context context) {
         List<MaxSettingBean> list = new ArrayList<>();
         switch (maxSettingEnum) {
+            case MAX_TLX_QUUICK_SETTING:
+                list = getTlxQuickSetList(context);
+                break;
             case MAX_QUICK_SETTING:
                 list = getQuickSetList(context);
                 break;
@@ -109,6 +113,132 @@ public class MaxConfigControl {
                 list = getFrencyWattSetting(context);
                 break;
 
+        }
+        return list;
+    }
+
+
+    private static List<MaxSettingBean> getTlxQuickSetList(Context context) {
+        List<MaxSettingBean> list = new ArrayList<>();
+        String[] titls = new String[]{
+                context.getString(R.string.m国家安规),
+                context.getString(R.string.android_key663),
+                context.getString(R.string.android_key1416),
+                context.getString(R.string.m423通信地址),
+                context.getString(R.string.android_key256),
+                "AFCI",
+                context.getString(R.string.android_key746),
+                context.getString(R.string.m自动测试),
+        };
+        String[] hints = new String[]{
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+        };
+        int[] itemTypes = new int[]{
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_INPUT
+        };
+        String[] register = new String[]{
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+        };
+        float[] multiples = new float[]{
+                1, 1, 1, 1, 1, 1, 1, 1
+        };
+        String[] units = new String[]{
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+        };
+        int[][] funs = new int[][]{
+                {3, 0, 124},//国家和安规
+                {3, 45, 50},//逆变器时间
+                {3, 15, 15},//语言
+                {3, 30, 30},//通信地址
+                {3, 533, 533},//通讯地址
+                {3, 541, 543},//AFCI使能
+                {3, 30, 30},
+                {3, 0, 124}
+        };
+        int[][] funset = new int[][]{
+                {0x10, 118, 121},
+                {0x10, 118, 121},
+                {6, 15, 0},
+                {6, 30, 0},
+                {0x10, 118, 121},
+                {6, 15, 0},
+                {6, 30, 0},
+                {0x10, 118, 121},
+        };
+
+        int[][] doubleFunset = new int[][]{
+                {6, 45, -1},
+                {6, 46, -1},
+                {6, 47, -1},
+                {6, 48, -1},
+                {6, 49, -1},
+                {6, 50, -1},
+                {6, 48, -1},
+                {6, 49, -1},
+                {6, 50, -1}
+        };
+
+        String[][] items = new String[][]{
+                {},
+                {},
+                {
+                        context.getString(R.string.android_key1417),
+                        context.getString(R.string.android_key1418),
+                        context.getString(R.string.android_key1420),
+                        context.getString(R.string.android_key1421),
+                        context.getString(R.string.android_key1422),
+                        context.getString(R.string.android_key1423),
+                        context.getString(R.string.android_key186),
+                },
+                {},
+                {},
+                {},
+                {},
+                {}
+
+        };
+
+        for (int i = 0; i < titls.length; i++) {
+            MaxSettingBean bean = new MaxSettingBean();
+            bean.setTitle(titls[i]);
+            bean.setItemType(itemTypes[i]);
+            bean.setRegister(register[i]);
+            bean.setUnit(units[i]);
+            bean.setFuns(funs[i]);
+            bean.setFunSet(funset[i]);
+            bean.setItems(items[i]);
+            bean.setHint(hints[i]);
+            bean.setDoubleFunset(doubleFunset);
+            bean.setMul(multiples[i]);
+            list.add(bean);
         }
         return list;
     }

@@ -7,7 +7,7 @@ import com.growatt.shinetools.module.localbox.max.bean.UsToolParamBean;
 import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxSystemConfigActivity;
-import com.growatt.shinetools.module.localbox.tlx.TlxFastConfigActivity;
+import com.growatt.shinetools.module.localbox.tlx.TLXQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 
 public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
@@ -67,7 +67,8 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
 
         switch (position) {
             case 0:
-                clazz = TlxFastConfigActivity.class;
+//                clazz = TlxFastConfigActivity.class;
+                clazz = TLXQuickSettingActivity.class;
                 break;
             case 1:
                 clazz = MaxSystemConfigActivity.class;
