@@ -261,7 +261,7 @@ public abstract class BaseDeviceInfoActivity extends BaseActivity implements Vie
         //内部参数
         initContent6();
         //离网参数/BDC/电池参数
-        initOtherView();
+//        initOtherView();
     }
 
 
@@ -673,7 +673,7 @@ public abstract class BaseDeviceInfoActivity extends BaseActivity implements Vie
 
     private void initListener() {
         initOnclick(title1Head2, title2Head2, title3Head2, title34Head2, title4Head2,
-                title5Head2, title6Head2, tvTitleLiwang, tvTitleBdc, tvTitleBattry);
+                title5Head2, title6Head2);
     }
 
     private void initOnclick(View... views) {

@@ -5,76 +5,19 @@
     android:padding="@dimen/dp_10"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/tvTitle1"
-        layout="@layout/header_usmain2_title1" />
-
-    <include
-        android:id="@+id/tvContent1"
-        layout="@layout/header_maxmain2_content1" />
-
-    <include
-        android:id="@+id/tvTitle2"
-        layout="@layout/header_maxmain2_title2"
-        android:visibility="gone" />
-
-    <include
-        android:id="@+id/tvContent2"
-        layout="@layout/header_maxmain2_content1" />
-
-    <include
-        android:id="@+id/tvTitle3"
-        layout="@layout/header_maxmain2_title3" />
-
-    <include
-        android:id="@+id/tvContent3"
-        layout="@layout/header_maxmain2_content2" />
-
-    <include
-        android:id="@+id/tvTitle34"
-        layout="@layout/header_maxmain2_title34"
-        android:visibility="gone" />
-
-    <include
-        android:id="@+id/tvContent34"
-        layout="@layout/header_maxmain2_content1" />
-
-    <include
-        android:id="@+id/tvTitle4"
-        layout="@layout/header_maxmain2_title4"
-        android:visibility="gone" />
-
-    <include
-        android:id="@+id/tvContent4"
-        layout="@layout/header_maxmain2_content1" />
-
-    <include
-        android:id="@+id/tvTitleLiwang"
-        layout="@layout/header_toolmain_title_liwang" />
-
-    <include
-        android:id="@+id/tvTitleBdc"
-        layout="@layout/header_toolmain_title_bdc" />
-
-    <include
-        android:id="@+id/tvTitleBattry"
-        android:visibility="gone"
-        layout="@layout/header_toolmain_title_battry" />
-
-    <include
-        android:id="@+id/tvTitle6"
-        layout="@layout/header_maxmain2_title6" />
-
-    <include
-        android:id="@+id/tvContent6"
-        layout="@layout/header_maxmain2_content2" />
-
-    <include
-        android:id="@+id/tvTitle5"
-        layout="@layout/header_maxmain2_title5" />
-
-    <include
-        android:id="@+id/tvContent5"
-        layout="@layout/header_maxmain2_content2" />
+    <include layout="@layout/header_maxmain2_title1" android:id="@+id/tvTitle1"/>
+    <include layout="@layout/header_maxmain2_content1" android:id="@+id/tvContent1"/>
+    <include layout="@layout/header_maxmain2_title2" android:id="@+id/tvTitle2"/>
+    <include layout="@layout/header_maxmain2_content1" android:id="@+id/tvContent2"/>
+    <include layout="@layout/header_maxmain2_title3" android:id="@+id/tvTitle3"/>
+    <include layout="@layout/header_maxmain2_content1" android:id="@+id/tvContent3"/>
+    <include layout="@layout/header_maxmain2_title34" android:id="@+id/tvTitle34" android:visibility="gone"/>
+    <include layout="@layout/header_maxmain2_content1" android:id="@+id/tvContent34"/>
+    <include layout="@layout/header_maxmain2_title4" android:id="@+id/tvTitle4"/>
+    <include layout="@layout/header_maxmain2_content1" android:id="@+id/tvContent4"/>
+    <include layout="@layout/header_maxmain2_title6" android:id="@+id/tvTitle6"/>
+    <include layout="@layout/header_maxmain2_content2" android:id="@+id/tvContent6"/>
+    <include layout="@layout/header_maxmain2_title5" android:id="@+id/tvTitle5" />
+    <include layout="@layout/header_maxmain2_content2" android:id="@+id/tvContent5"/>
 
 </LinearLayout>

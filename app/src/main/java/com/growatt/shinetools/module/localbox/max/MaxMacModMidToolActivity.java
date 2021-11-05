@@ -77,7 +77,7 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
                 clazz = MaxBasicSettingActivity.class;
                 break;
             case 3:
-                clazz = MaxCheck1500VActivity.class;
+                clazz = MaxCheckActivity.class;
                 break;
             case 4:
                 clazz = MaxGridCodeSettingActivity.class;

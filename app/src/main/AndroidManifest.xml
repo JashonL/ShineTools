@@ -1016,6 +1016,19 @@
             android:screenOrientation="portrait"
             />
 
+        <activity android:name=".module.localbox.tlx.QuickSettingSecondActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity android:name=".module.localbox.max.MaxMacModMidDeviceInfoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+
 
         <!--==================================模块页面=========================================-->
 

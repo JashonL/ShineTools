@@ -153,7 +153,7 @@ public class ConnetTutorialActivity extends BaseActivity implements EasyPermissi
     private void toScanSerial(){
         Intent intent =new Intent(this,CustomScanActivity.class);
         intent.putExtra(DebugConstant.KEY_WIFI_TYPE,type);
-        ActivityUtils.startActivity(this,intent,false);
+        ActivityUtils.startActivity(this,intent,true);
     }
 
 }

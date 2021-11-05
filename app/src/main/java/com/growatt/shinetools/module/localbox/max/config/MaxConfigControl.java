@@ -133,7 +133,7 @@ public class MaxConfigControl {
         String[] hints = new String[]{
                 "",
                 "",
-                "",
+                "1~99",
                 "",
                 "",
                 "",
@@ -144,11 +144,11 @@ public class MaxConfigControl {
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_SELECT,
-                UsSettingConstant.SETTING_TYPE_SELECT,
-                UsSettingConstant.SETTING_TYPE_SELECT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
-                UsSettingConstant.SETTING_TYPE_INPUT,
-                UsSettingConstant.SETTING_TYPE_INPUT
+                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_NEXT
         };
         String[] register = new String[]{
                 "",
@@ -210,16 +210,18 @@ public class MaxConfigControl {
                 {},
                 {},
                 {
-                        context.getString(R.string.android_key1417),
-                        context.getString(R.string.android_key1418),
-                        context.getString(R.string.android_key1420),
-                        context.getString(R.string.android_key1421),
-                        context.getString(R.string.android_key1422),
-                        context.getString(R.string.android_key1423),
-                        context.getString(R.string.android_key186),
+                        context.getString(R.string.意大利),
+                        context.getString(R.string.英语),
+                        context.getString(R.string.德语),
+                        context.getString(R.string.西班牙语),
+                        context.getString(R.string.法语),
+                        context.getString(R.string.匈牙利语),
+                        context.getString(R.string.土耳其语),
+                        context.getString(R.string.波兰语),
+                        context.getString(R.string.葡萄牙语)
                 },
                 {},
-                {},
+                {context.getString(R.string.android_key1427),context.getString(R.string.m484电表)},
                 {},
                 {},
                 {}
