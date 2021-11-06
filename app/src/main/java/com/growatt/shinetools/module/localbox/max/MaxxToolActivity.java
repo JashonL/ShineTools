@@ -6,18 +6,17 @@ import com.growatt.shinetools.module.localbox.max.base.BaseMaxToolActivity;
 import com.growatt.shinetools.module.localbox.max.bean.UsToolParamBean;
 import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
+import com.growatt.shinetools.module.localbox.max.config.MaxQuicksettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxSystemConfigActivity;
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
-import com.growatt.shinetools.module.localbox.tlx.TLXQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 
-public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
+public class MaxxToolActivity extends BaseMaxToolActivity {
     @Override
     public void initStatusRes() {
+
         pidStatusStrs = new String[]{
-                "",getString(R.string.all_Waiting),
-                getString(R.string.all_Normal),
-                getString(R.string.m故障)
+                "", getString(R.string.all_Waiting), getString(R.string.all_Normal), getString(R.string.m故障)
         };
         statusTitles = new String[]{
                 getString(R.string.all_Waiting), getString(R.string.all_Normal),
@@ -25,17 +24,11 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
         };
 
         statusColors=new int[]{
-                R.color.color_status_wait,
-                R.color.color_status_grid,
-                R.color.color_status_fault,
-                R.color.color_status_upgrade
+                R.color.color_status_wait,R.color.color_status_grid,R.color.color_status_fault,R.color.color_status_upgrade
         };
 
         drawableStatus=new int[]{
-                R.drawable.circle_wait,
-                R.drawable.circle_grid,
-                R.drawable.circle_fault,
-                R.drawable.circle_upgrade
+                R.drawable.circle_wait,R.drawable.circle_grid,R.drawable.circle_fault, R.drawable.circle_upgrade
         };
     }
 
@@ -50,31 +43,29 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
         eleResId = new int[]{
                 R.drawable.tlxh_ele_fadian, R.drawable.ele_power,
         };
-
     }
 
     @Override
     public void initDeviceType() {
-        deviceType= DeviceConstant.MAX_INDEX;
+        deviceType= DeviceConstant.MAX_MAX_X_INDEX;
     }
 
     @Override
     public void initGetDataArray() {
+
         funs=new int[][] {{3, 0, 124}, {4, 0, 99}, {4, 100, 199}, {4, 875, 999}};
-        autoFun=new int[][]{{4, 0, 124}, {4, 125, 249}, {4, 875, 999}};
+        autoFun=new int[][] {{4,0,124},{4,125,249}, {4, 875, 999}};
         deviceTypeFun=new int[]{3,125,249};
     }
 
     @Override
     public void toSettingActivity(int position) {
-
         String title1 = "";
         Class clazz = null;
 
         switch (position) {
             case 0:
-//                clazz = TlxFastConfigActivity.class;
-                clazz = TLXQuickSettingActivity.class;
+                clazz = MaxQuicksettingActivity.class;
                 break;
             case 1:
                 clazz = MaxSystemConfigActivity.class;
@@ -83,7 +74,7 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
                 clazz = MaxBasicSettingActivity.class;
                 break;
             case 3:
-                clazz = MaxCheckActivity.class;
+                clazz = MaxCheck1500VActivity.class;
                 break;
             case 4:
                 clazz = MaxGridCodeSettingActivity.class;
@@ -96,6 +87,11 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
             case 6:
                 clazz = Max230Ktl3HvtDeviceInfoActivity.class;
                 break;
+
+            case 7:
+                break;
+
+
             default:
                 clazz = null;
                 break;
@@ -111,11 +107,6 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
         if (clazz == null) return;
         jumpMaxSet(clazz, title);
     }
-
-
-
-
-
 
     @Override
     public void parserData(int count, byte[] bytes) {

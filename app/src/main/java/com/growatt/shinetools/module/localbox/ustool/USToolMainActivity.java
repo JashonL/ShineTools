@@ -316,51 +316,101 @@ public class  USToolMainActivity extends DemoBase implements View.OnClickListene
         tvTitleBdc = header2.findViewById(R.id.tvTitleBdc);
         tvTitleBattry = header2.findViewById(R.id.tvTitleBattry);
     }
-    /**
-     * 读取寄存器handle
-     */
-    Handler mHandler3124 = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            int what = msg.what;
-            switch (what) {
-                //发送信息
-                case SocketClientUtil.SOCKET_SEND:
-                    BtnDelayUtil.sendMessage(this);
-                    byte[] sendBytesR = sendMsgBDC(mClientUtilBDC, funs[3]);
-                    LogUtil.i("发送读取：" + SocketClientUtil.bytesToHexString(sendBytesR));
-                    break;
-                //接收字节数组
-                case SOCKET_RECEIVE_BYTES:
-                    BtnDelayUtil.receiveMessage(this);
-                    try {
-                        byte[] bytes = (byte[]) msg.obj;
-                        //检测内容正确性
-                        boolean isCheck = ModbusUtil.checkModbus(bytes);
-                        if (isCheck) {
-                            toast(R.string.all_success);
-                            RegisterParseUtil.parseInput3kT3124V2(mMaxData, bytes);
-                            isBDC = true;
-                            jumpBDC();
-                        } else {
-                            toast(R.string.all_failed);
-                        }
-                        LogUtil.i("接收读取：" + SocketClientUtil.bytesToHexString(bytes));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        //关闭tcp连接
-                        SocketClientUtil.close(mClientUtilBDC);
-                        BtnDelayUtil.refreshFinish();
-                    }
-                    break;
-                default:
-                    BtnDelayUtil.dealMaxBtn(this,what,mContext);
-                    break;
-            }
-        }
-    };
+
+
+
+    private void initString() {
+        scroolD = getResources().getDimensionPixelSize(R.dimen.dp_50);
+        noteStartStr = getString(R.string.m268自动刷新);
+        noteStopStr = getString(R.string.m280停止刷新);
+        errNode =getString(R.string.m290请先读取故障信息);
+        pidStatusStrs = new String[]{
+                "",getString(R.string.all_Waiting),getString(R.string.all_Normal),getString(R.string.m故障)
+        };
+        statusTitles = new String[]{
+                getString(R.string.all_Waiting), getString(R.string.all_Normal),
+                getString(R.string.m226升级中), getString(R.string.m故障)
+        };
+        c1Title2 = new String[]{
+                String.format("%s(V)",getString(R.string.m318电压)),
+                String.format("%s(A)",getString(R.string.m319电流)),
+                String.format("%s(W)",getString(R.string.m320功率))
+        };
+        c2Title2 = new String[]{
+                String.format("%s(V)",getString(R.string.m318电压)),
+                String.format("%s(A)",getString(R.string.m319电流))
+        };
+        c3Title2 = new String[]{
+                String.format("%s(V)",getString(R.string.m318电压)),
+                String.format("%s(Hz)",getString(R.string.m321频率)),
+                String.format("%s(A)",getString(R.string.m319电流)),
+                String.format("%s(W)",getString(R.string.m320功率)),
+                "PF"
+        };
+        c34Title2 = new String[]{
+                String.format("%s(A)",getString(R.string.mCT侧电流)),
+                String.format("%s(Var)",getString(R.string.mCT侧无功)),
+                String.format("%s(A)",getString(R.string.mCT侧谐波量)),
+                String.format("%s(Var)",getString(R.string.m补偿无功量)),
+                String.format("%s(A)",getString(R.string.m补偿谐波量)),
+                getString(R.string.mSVG工作状态),
+        };
+        c4Title2 = new String[]{
+                String.format("%s(V)",getString(R.string.m318电压)),
+                String.format("%s(mA)",getString(R.string.m319电流))
+        };
+        c6Title1 = new String[]{
+                getString(R.string.m305并网倒计时),  getString(R.string.m306功率百分比),
+                "ISO",
+                getString(R.string.m307内部环境温度),  getString(R.string.m308Boost温度),
+                getString(R.string.m309INV温度),
+                "+Bus", "-Bus"
+                , getString(R.string.m降额模式)
+        };
+        c5Title1 = new String[]{
+                getString(R.string.m312厂商信息),  getString(R.string.m313机器型号),
+                getString(R.string.dataloggers_list_serial),  getString(R.string.m314Model号),
+                getString(R.string.m控制软件版本),  getString(R.string.m通信软件版本),getString(R.string.bdc软件版本),
+                getString(R.string.battery_version)
+        };
+//        deratModes = new String[]{
+//                getString(R.string.m无降额),getString(R.string.m面板),getString(R.string.m保留),
+//                getString(R.string.m电网电压),getString(R.string.m电网频率),getString(R.string.mBoost温度),
+//                getString(R.string.m逆变温度),getString(R.string.m手动控制),getString(R.string.m保留),getString(R.string.m定时恢复)
+//        };
+        deratModes = new String[]{
+                getString(R.string.m无降额),getString(R.string.PV高压降载),getString(R.string.老化固定功率降载),
+                getString(R.string.电网高压降载),getString(R.string.过频降载),getString(R.string.DC源模式降载),
+                getString(R.string.逆变模块过温降载),getString(R.string.有功设定限载),getString(R.string.m保留),getString(R.string.m保留)
+                ,getString(R.string.内部环境过温降载),getString(R.string.外部环境过温降载),getString(R.string.线路阻抗降载)
+                , getString(R.string.并机防逆流降载),getString(R.string.单机防逆流降载),getString(R.string.负载优先模式降载),getString(R.string.检测CT错反接降载)
+        };
+        eleTitles = new String[]{
+                getString(R.string.m201电量),
+                getString(R.string.photovoltaic_generatingcapacity),
+                getString(R.string.m1261Charged),
+                getString(R.string.m1260Discharged),
+                getString(R.string.m并网电量),
+                getString(R.string.m用户使用电量),
+        };
+        eleResId = new int[]{
+                -1,R.drawable.tlxh_ele_fadian,R.drawable.tlxh_ele_chongdian,
+                R.drawable.tlxh_ele_fangdian,R.drawable.tlxh_ele_bingwang,R.drawable.tlxh_ele_yonghushiyong
+        };
+        powerTitles = new String[]{
+                getString(R.string.InverterAct_current_power),
+                getString(R.string.m189额定功率),
+                getString(R.string.m265充电功率),
+                getString(R.string.m266放电功率)
+        };
+        powerResId = new int[]{
+                R.drawable.tlxh_power_dangqian,R.drawable.tlxh_power_eding,
+                R.drawable.tlxh_power_chongdian,R.drawable.tlxh_power_fangdian
+        };
+    }
+
+
+
 
     private void initHeaderView() {
         setHeaderImage(mHeaderView, -1, Position.LEFT, new View.OnClickListener() {
@@ -387,6 +437,8 @@ public class  USToolMainActivity extends DemoBase implements View.OnClickListene
     }
 
 
+
+
     /**
      * 停止刷新
      */
@@ -408,6 +460,9 @@ public class  USToolMainActivity extends DemoBase implements View.OnClickListene
         super.onDestroy();
         stopRefresh();
     }
+
+
+
     private RecyclerView mControlRecyclerView;
     private MaxControlAdapter mControlAdapter;
     private List<MaxControlBean> mControlList;
@@ -928,95 +983,56 @@ public class  USToolMainActivity extends DemoBase implements View.OnClickListene
         }
     };
 
-    private void initString() {
-        scroolD = getResources().getDimensionPixelSize(R.dimen.dp_50);
-        noteStartStr = getString(R.string.m268自动刷新);
-        noteStopStr = getString(R.string.m280停止刷新);
-        errNode =getString(R.string.m290请先读取故障信息);
-        pidStatusStrs = new String[]{
-                "",getString(R.string.all_Waiting),getString(R.string.all_Normal),getString(R.string.m故障)
-        };
-        statusTitles = new String[]{
-                getString(R.string.all_Waiting), getString(R.string.all_Normal),
-                getString(R.string.m226升级中), getString(R.string.m故障)
-        };
-        c1Title2 = new String[]{
-                String.format("%s(V)",getString(R.string.m318电压)),
-                String.format("%s(A)",getString(R.string.m319电流)),
-                String.format("%s(W)",getString(R.string.m320功率))
-        };
-        c2Title2 = new String[]{
-                String.format("%s(V)",getString(R.string.m318电压)),
-                String.format("%s(A)",getString(R.string.m319电流))
-        };
-        c3Title2 = new String[]{
-                String.format("%s(V)",getString(R.string.m318电压)),
-                String.format("%s(Hz)",getString(R.string.m321频率)),
-                String.format("%s(A)",getString(R.string.m319电流)),
-                String.format("%s(W)",getString(R.string.m320功率)),
-                "PF"
-        };
-        c34Title2 = new String[]{
-                String.format("%s(A)",getString(R.string.mCT侧电流)),
-                String.format("%s(Var)",getString(R.string.mCT侧无功)),
-                String.format("%s(A)",getString(R.string.mCT侧谐波量)),
-                String.format("%s(Var)",getString(R.string.m补偿无功量)),
-                String.format("%s(A)",getString(R.string.m补偿谐波量)),
-                getString(R.string.mSVG工作状态),
-        };
-        c4Title2 = new String[]{
-                String.format("%s(V)",getString(R.string.m318电压)),
-                String.format("%s(mA)",getString(R.string.m319电流))
-        };
-        c6Title1 = new String[]{
-                getString(R.string.m305并网倒计时),  getString(R.string.m306功率百分比),
-                "ISO",
-                getString(R.string.m307内部环境温度),  getString(R.string.m308Boost温度),
-                getString(R.string.m309INV温度),
-                "+Bus", "-Bus"
-                , getString(R.string.m降额模式)
-        };
-        c5Title1 = new String[]{
-                getString(R.string.m312厂商信息),  getString(R.string.m313机器型号),
-                getString(R.string.dataloggers_list_serial),  getString(R.string.m314Model号),
-                getString(R.string.m控制软件版本),  getString(R.string.m通信软件版本),getString(R.string.bdc软件版本),
-                getString(R.string.battery_version)
-        };
-//        deratModes = new String[]{
-//                getString(R.string.m无降额),getString(R.string.m面板),getString(R.string.m保留),
-//                getString(R.string.m电网电压),getString(R.string.m电网频率),getString(R.string.mBoost温度),
-//                getString(R.string.m逆变温度),getString(R.string.m手动控制),getString(R.string.m保留),getString(R.string.m定时恢复)
-//        };
-        deratModes = new String[]{
-                getString(R.string.m无降额),getString(R.string.PV高压降载),getString(R.string.老化固定功率降载),
-                getString(R.string.电网高压降载),getString(R.string.过频降载),getString(R.string.DC源模式降载),
-                getString(R.string.逆变模块过温降载),getString(R.string.有功设定限载),getString(R.string.m保留),getString(R.string.m保留)
-                ,getString(R.string.内部环境过温降载),getString(R.string.外部环境过温降载),getString(R.string.线路阻抗降载)
-                , getString(R.string.并机防逆流降载),getString(R.string.单机防逆流降载),getString(R.string.负载优先模式降载),getString(R.string.检测CT错反接降载)
-        };
-        eleTitles = new String[]{
-                getString(R.string.m201电量),
-                getString(R.string.photovoltaic_generatingcapacity),
-                getString(R.string.m1261Charged),
-                getString(R.string.m1260Discharged),
-                getString(R.string.m并网电量),
-                getString(R.string.m用户使用电量),
-        };
-        eleResId = new int[]{
-                -1,R.drawable.tlxh_ele_fadian,R.drawable.tlxh_ele_chongdian,
-                R.drawable.tlxh_ele_fangdian,R.drawable.tlxh_ele_bingwang,R.drawable.tlxh_ele_yonghushiyong
-        };
-        powerTitles = new String[]{
-                getString(R.string.InverterAct_current_power),
-                getString(R.string.m189额定功率),
-                getString(R.string.m265充电功率),
-                getString(R.string.m266放电功率)
-        };
-        powerResId = new int[]{
-                R.drawable.tlxh_power_dangqian,R.drawable.tlxh_power_eding,
-                R.drawable.tlxh_power_chongdian,R.drawable.tlxh_power_fangdian
-        };
-    }
+
+
+    /**
+     * 读取寄存器handle
+     */
+    Handler mHandler3124 = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int what = msg.what;
+            switch (what) {
+                //发送信息
+                case SocketClientUtil.SOCKET_SEND:
+                    BtnDelayUtil.sendMessage(this);
+                    byte[] sendBytesR = sendMsgBDC(mClientUtilBDC, funs[3]);
+                    LogUtil.i("发送读取：" + SocketClientUtil.bytesToHexString(sendBytesR));
+                    break;
+                //接收字节数组
+                case SOCKET_RECEIVE_BYTES:
+                    BtnDelayUtil.receiveMessage(this);
+                    try {
+                        byte[] bytes = (byte[]) msg.obj;
+                        //检测内容正确性
+                        boolean isCheck = ModbusUtil.checkModbus(bytes);
+                        if (isCheck) {
+                            toast(R.string.all_success);
+                            RegisterParseUtil.parseInput3kT3124V2(mMaxData, bytes);
+                            isBDC = true;
+                            jumpBDC();
+                        } else {
+                            toast(R.string.all_failed);
+                        }
+                        LogUtil.i("接收读取：" + SocketClientUtil.bytesToHexString(bytes));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        //关闭tcp连接
+                        SocketClientUtil.close(mClientUtilBDC);
+                        BtnDelayUtil.refreshFinish();
+                    }
+                    break;
+                default:
+                    BtnDelayUtil.dealMaxBtn(this,what,mContext);
+                    break;
+            }
+        }
+    };
+
+
+
     /**
      * 根据命令以及起始寄存器发送查询命令
      *

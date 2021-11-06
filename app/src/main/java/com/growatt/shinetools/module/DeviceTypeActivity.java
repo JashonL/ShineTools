@@ -18,7 +18,7 @@ import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.module.localbox.max.Max230KTL3HVToolActivity;
 import com.growatt.shinetools.module.localbox.max.MaxMacModMidToolActivity;
-import com.growatt.shinetools.module.localbox.max.MaxXMainActivity;
+import com.growatt.shinetools.module.localbox.max.MaxxToolActivity;
 import com.growatt.shinetools.module.localbox.mintool.TL3XHMainActivity;
 import com.growatt.shinetools.module.localbox.mintool.TLXHToolMainActivity;
 import com.growatt.shinetools.module.localbox.mintool.TLXToolMainActivity;
@@ -181,10 +181,15 @@ public class DeviceTypeActivity extends BaseActivity implements Toolbar.OnMenuIt
             case R.id.ll_type_230:
 
 //                ActivityUtils.gotoActivity(DeviceTypeActivity.this, MaxMain1500VActivity.class,false);
-                ActivityUtils.gotoActivity(DeviceTypeActivity.this, Max230KTL3HVToolActivity.class,false);
+                Intent intent1=new Intent(this,Max230KTL3HVToolActivity.class);
+                intent1.putExtra("title","MAX 230KTL3 HV");
+                ActivityUtils.startActivity(DeviceTypeActivity.this,intent1,false);
                 break;
             case R.id.ll_type_max_x:
-                ActivityUtils.gotoActivity(DeviceTypeActivity.this, MaxXMainActivity.class,false);
+//                ActivityUtils.gotoActivity(DeviceTypeActivity.this, MaxXMainActivity.class,false);
+                Intent intent2=new Intent(this,MaxxToolActivity.class);
+                intent2.putExtra("title","MAX 230KTL3 HV");
+                ActivityUtils.startActivity(DeviceTypeActivity.this,intent2,false);
                 break;
             case R.id.ll_type_tl3_xh:
                 ActivityUtils.gotoActivity(DeviceTypeActivity.this, TL3XHMainActivity.class,false);

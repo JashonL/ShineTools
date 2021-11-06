@@ -82,6 +82,12 @@ public class  TLXHToolMainActivity extends DemoBase implements View.OnClickListe
     RecyclerView mRecyclerView;
     @BindView(R.id.headerView)
     View mHeaderView;
+
+
+    private TextView tvStepTitle;
+
+
+
     //gird布局
     private MaxMainChildAdapter mGridAdapter;
     private GridLayoutManager mGridLayoutManager;
@@ -94,7 +100,6 @@ public class  TLXHToolMainActivity extends DemoBase implements View.OnClickListe
     //标题状态
     String[] statusTitles ;
 
-    private TextView tvStepTitle;
     //头部
     private View header1;
     private View header2;

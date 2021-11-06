@@ -36,6 +36,7 @@ import com.growatt.shinetools.modbusbox.bean.MaxDataDeviceBean;
 import com.growatt.shinetools.module.localbox.max.MaxChartEnergyActivity;
 import com.growatt.shinetools.module.localbox.max.bean.TLXHEleBean;
 import com.growatt.shinetools.module.localbox.max.bean.UsToolParamBean;
+import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
 import com.growatt.shinetools.module.localbox.mintool.TLXWarningActivity;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
@@ -124,6 +125,10 @@ public abstract class BaseMaxToolActivity extends BaseActivity implements Toolba
     public int[][] autoFun = {{4, 0, 124}, {4, 125, 249}, {4, 875, 999}};
     //读机器型号功能码
     public int[] deviceTypeFun = {3, 125, 249};
+
+    public int deviceType = 0;
+    //初始化设备类型
+    public abstract void initDeviceType();
 
     //获取数据的寄存器集合
     public abstract void initGetDataArray();
@@ -234,16 +239,16 @@ public abstract class BaseMaxToolActivity extends BaseActivity implements Toolba
                 //检测内容正确性
                 boolean isCheck = ModbusUtil.checkModbus(bytes);
                 if (isCheck) {
-                    if (currenRead==0) {
+                    if (currenRead == 0) {
                         parseMax(bytes, count);
                     } else {
                         //接收正确，开始解析
                         parseMaxAuto(bytes, count);
                     }
 
-                    if (currenRead==0){
+                    if (currenRead == 0) {
                         getNextData();
-                    }else {
+                    } else {
                         autoGetNextData();
                     }
 
@@ -393,7 +398,7 @@ public abstract class BaseMaxToolActivity extends BaseActivity implements Toolba
      */
     private void jumpErrorWarnSet() {
         if (!TextUtils.isEmpty(tvErrH1.getText().toString())) {
-            toOhterSetting=true;
+            toOhterSetting = true;
             stopRefresh();
             Intent intent = new Intent(mContext, TLXWarningActivity.class);
             intent.putExtra("title", tvFault.getText().toString());
@@ -516,6 +521,7 @@ public abstract class BaseMaxToolActivity extends BaseActivity implements Toolba
         initStatusRes();
         initEleRes();
         initGetDataArray();
+        initDeviceType();
     }
 
 
@@ -671,7 +677,7 @@ public abstract class BaseMaxToolActivity extends BaseActivity implements Toolba
      * 停止刷新
      */
     private void stopRefresh() {
-        autoFreshSwitch=false;
+        autoFreshSwitch = false;
         item.setTitle(noteStartStr);
     }
 
@@ -680,12 +686,13 @@ public abstract class BaseMaxToolActivity extends BaseActivity implements Toolba
      * 跳转到Max各设置界面
      */
     public void jumpMaxSet(Class clazz, String title) {
-        toOhterSetting=true;
+        toOhterSetting = true;
         stopRefresh();
         Intent intent = new Intent(mContext, clazz);
         intent.putExtra("title", title);
         intent.putExtra("isTlxhus", true);
         intent.putExtra("deviceType", 0);
+        intent.putExtra(DeviceConstant.KEY_DEVICE_TYPE,deviceType);
         ActivityUtils.startActivity(this, intent, false);
     }
 

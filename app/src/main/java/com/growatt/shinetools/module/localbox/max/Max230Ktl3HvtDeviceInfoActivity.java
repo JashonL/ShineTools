@@ -112,6 +112,11 @@ public class Max230Ktl3HvtDeviceInfoActivity extends BaseDeviceInfoActivity {
     }
 
     @Override
+    public int getHeaderView() {
+        return R.layout.header_max_device_info;
+    }
+
+    @Override
     public void parserData(int count, byte[] bytes) {
         switch (count) {
             case 0:

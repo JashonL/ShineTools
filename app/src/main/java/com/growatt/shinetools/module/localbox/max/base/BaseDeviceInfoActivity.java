@@ -217,6 +217,9 @@ public abstract class BaseDeviceInfoActivity extends BaseActivity implements Vie
     public abstract String[] deratModes();
 
 
+    public abstract int getHeaderView();
+    private int rvHeaderView;
+
     @Override
     protected int getContentView() {
         return R.layout.activity_us_device_info;
@@ -241,7 +244,8 @@ public abstract class BaseDeviceInfoActivity extends BaseActivity implements Vie
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MaxMainChildAdapter(R.layout.item_max_childrv, mGridList);
-        header = LayoutInflater.from(this).inflate(R.layout.header_us_device_info, (ViewGroup) mRecyclerView.getParent(), false);
+        rvHeaderView=getHeaderView();
+        header = LayoutInflater.from(this).inflate(rvHeaderView, (ViewGroup) mRecyclerView.getParent(), false);
         mAdapter.addHeaderView(header);
         mRecyclerView.setAdapter(mAdapter);
         //头部初始化
