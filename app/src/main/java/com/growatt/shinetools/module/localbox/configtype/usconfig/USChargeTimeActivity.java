@@ -32,7 +32,7 @@ import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
-import com.growatt.shinetools.module.localbox.max.bean.USChargePriorityBean;
+import com.growatt.shinetools.module.localbox.ustool.bean.USChargePriorityBean;
 import com.growatt.shinetools.module.localbox.ustool.PeriodSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.UsChargeManagerSelectDateActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsChargeConfigMsg;

@@ -29,7 +29,7 @@ import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.module.TimerSetActivity;
-import com.growatt.shinetools.module.localbox.max.bean.USChargePriorityBean;
+import com.growatt.shinetools.module.localbox.ustool.bean.USChargePriorityBean;
 import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;

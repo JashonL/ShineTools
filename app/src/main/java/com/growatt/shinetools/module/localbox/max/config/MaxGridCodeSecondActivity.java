@@ -16,14 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
-import com.growatt.shinetools.adapter.MaxSettingAdapter;
+import com.growatt.shinetools.adapter.DeviceSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.modbusbox.Arith;
 import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.max.bean.MaxSettingBean;
+import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
 import com.growatt.shinetools.utils.ActivityUtils;
@@ -46,7 +46,7 @@ import butterknife.BindView;
  */
 
 public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
-        MaxSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
+        DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
 
 
     @BindView(R.id.status_bar_view)
@@ -61,7 +61,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
     RecyclerView rvSystem;
 
 
-    private MaxSettingAdapter usParamsetAdapter;
+    private DeviceSettingAdapter usParamsetAdapter;
     private MenuItem item;
     private int currentPos = 0;//当前请求项
     private int type = 0;//0：读取  1：设置
@@ -93,7 +93,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
 
 
         rvSystem.setLayoutManager(new LinearLayoutManager(this));
-        usParamsetAdapter = new MaxSettingAdapter(new ArrayList<>(), this);
+        usParamsetAdapter = new DeviceSettingAdapter(new ArrayList<>(), this);
         int div = (int) getResources().getDimension(R.dimen.dp_1);
         GridDivider gridDivider = new GridDivider(ContextCompat.getColor(this, R.color.white), div, div);
         rvSystem.addItemDecoration(gridDivider);
@@ -135,7 +135,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
                 break;
         }
         //系统设置项
-        List<MaxSettingBean> settingList
+        List<ALLSettingBean> settingList
                 = MaxConfigControl.getSettingList(enum_item, this);
         usParamsetAdapter.replaceData(settingList);
         connetSocket();
@@ -303,7 +303,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
      * 频率有功
      */
     private void parserFrencyWatt(byte[] bytes) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(currentPos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(currentPos);
         //解析int值
         LogUtil.i("--------------解析:"+bean.getTitle()+"------------------");
         parser(bytes, currentPos);
@@ -330,12 +330,12 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
         int value1 = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bytes, 1, 0, 1));
 
 
-        MaxSettingBean bean = usParamsetAdapter.getData().get(0);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(0);
         float mul = bean.getMul();
         String unit = "";
         bean.setValueStr(getReadValueReal(value0, mul, unit));
 
-        MaxSettingBean bean1 = usParamsetAdapter.getData().get(1);
+        ALLSettingBean bean1 = usParamsetAdapter.getData().get(1);
         float mul1 = bean1.getMul();
         String unit1 = "";
         bean1.setValueStr(getReadValueReal(value1, mul1, unit1));
@@ -375,7 +375,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
 
 
     private void parserItems(byte[] data, int pos){
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         int value1 = MaxWifiParseUtil.obtainValueOne(data);
         String[] items = bean.getItems();
         if (value1<items.length){
@@ -392,7 +392,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
 
     private void parser(byte[] data, int pos) {
         int value1 = MaxWifiParseUtil.obtainValueOne(data);
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         float mul = bean.getMul();
         String unit = "";
         bean.setValueStr(getReadValueReal(value1, mul, unit));
@@ -414,9 +414,9 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
     private void getData(int pos) {
         type = 0;
         currentPos = pos;
-        List<MaxSettingBean> data = usParamsetAdapter.getData();
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > pos) {
-            MaxSettingBean bean = data.get(pos);
+            ALLSettingBean bean = data.get(pos);
             LogUtil.i("-------------------请求获取:" + bean.getTitle() + "----------------");
             int[] funs = bean.getFuns();
             manager.sendMsg(funs);
@@ -485,7 +485,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
      */
 
     private void pfSetting(int pos){
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         if (pos == 0) {
             setSelectItem(pos, title);
@@ -505,7 +505,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
      */
 
     private void setFrencyWatt(int pos) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
@@ -521,7 +521,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
      */
 
     private void setVoltage(int pos) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
@@ -537,7 +537,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
      */
 
     private void setRisingSlope(int pos) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
@@ -552,7 +552,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
      */
 
     private void setACVoltageProtect(int pos) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
@@ -567,7 +567,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
      */
 
     private void setACFrencyProtect(int pos) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
@@ -582,7 +582,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
      */
 
     private void setGridConnected(int pos) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
@@ -608,9 +608,9 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
                     usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
                     usParamsetAdapter.notifyDataSetChanged();
 
-                    List<MaxSettingBean> data = usParamsetAdapter.getData();
+                    List<ALLSettingBean> data = usParamsetAdapter.getData();
                     if (data.size() > position) {
-                        MaxSettingBean bean = data.get(position);
+                        ALLSettingBean bean = data.get(position);
                         //设置
                         type = 1;
                         int[] funs = bean.getFunSet();
@@ -632,9 +632,9 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
 
 
     private void setSelectItem(int pos,String title) {
-        List<MaxSettingBean> data = usParamsetAdapter.getData();
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > pos) {
-            MaxSettingBean bean = data.get(pos);
+            ALLSettingBean bean = data.get(pos);
             String[] items = bean.getItems();
             List<String> selects = new ArrayList<>(Arrays.asList(items));
 

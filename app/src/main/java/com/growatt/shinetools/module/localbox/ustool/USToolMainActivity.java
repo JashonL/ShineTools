@@ -44,7 +44,7 @@ import com.growatt.shinetools.module.localbox.max.bean.MaxChildBean;
 import com.growatt.shinetools.module.localbox.max.bean.MaxContentBean;
 import com.growatt.shinetools.module.localbox.max.bean.MaxControlBean;
 import com.growatt.shinetools.module.localbox.max.bean.MaxMainMuiltBean;
-import com.growatt.shinetools.module.localbox.max.bean.TLXHEleBean;
+import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHEleBean;
 import com.growatt.shinetools.module.localbox.mintool.TLXHAutoTestActivity;
 import com.growatt.shinetools.module.localbox.mintool.TLXHBDCActivity;
 import com.growatt.shinetools.module.localbox.mintool.TLXHBattryActivity;

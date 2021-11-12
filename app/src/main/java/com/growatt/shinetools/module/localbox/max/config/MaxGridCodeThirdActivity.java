@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
-import com.growatt.shinetools.adapter.MaxSettingAdapter;
+import com.growatt.shinetools.adapter.DeviceSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.modbusbox.Arith;
 import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.max.bean.MaxSettingBean;
+import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
 import com.growatt.shinetools.utils.CircleDialogUtils;
@@ -36,7 +36,7 @@ import java.util.List;
 import butterknife.BindView;
 
 public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
-        MaxSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
+        DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
     @BindView(R.id.tv_title)
@@ -49,7 +49,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
     RecyclerView rvSystem;
 
 
-    private MaxSettingAdapter usParamsetAdapter;
+    private DeviceSettingAdapter usParamsetAdapter;
     private MenuItem item;
     private int currentPos = 0;//当前请求项
     private int type = 0;//0：读取  1：设置
@@ -78,7 +78,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
 
 
         rvSystem.setLayoutManager(new LinearLayoutManager(this));
-        usParamsetAdapter = new MaxSettingAdapter(new ArrayList<>(), this);
+        usParamsetAdapter = new DeviceSettingAdapter(new ArrayList<>(), this);
         int div = (int) getResources().getDimension(R.dimen.dp_1);
         GridDivider gridDivider = new GridDivider(ContextCompat.getColor(this, R.color.white), div, div);
         rvSystem.addItemDecoration(gridDivider);
@@ -123,7 +123,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
                 break;
         }
         //系统设置项
-        List<MaxSettingBean> settingList
+        List<ALLSettingBean> settingList
                 = MaxConfigControl.getSettingList(enum_item, this);
         usParamsetAdapter.replaceData(settingList);
         connetSocket();
@@ -321,13 +321,13 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
         //解析int值
         int value0 = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bytes, 0, 0, 1));
         int value1 = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bytes, 1, 0, 1));
-        MaxSettingBean bean = usParamsetAdapter.getData().get(0);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(0);
 
         float mul = bean.getMul();
         String unit = "";
         bean.setValueStr(getReadValueReal(value0, mul, unit));
 
-        MaxSettingBean bean1 = usParamsetAdapter.getData().get(1);
+        ALLSettingBean bean1 = usParamsetAdapter.getData().get(1);
         float mul1 = bean1.getMul();
         String unit1 = "";
         bean1.setValueStr(getReadValueReal(value1, mul1, unit1));
@@ -346,7 +346,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
         int[] values = new int[]{value1, value2, value3, value4, value5, value6};
 
         for (int i = 0; i < 6; i++) {
-            MaxSettingBean bean = usParamsetAdapter.getData().get(i);
+            ALLSettingBean bean = usParamsetAdapter.getData().get(i);
             bean.setValue(String.valueOf(values[i]));
             bean.setValueStr(String.valueOf(values[i]));
 
@@ -362,7 +362,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
         int[] values = new int[]{value1, value2, value3, value4};
 
         for (int i = 0; i < 4; i++) {
-            MaxSettingBean bean = usParamsetAdapter.getData().get(i);
+            ALLSettingBean bean = usParamsetAdapter.getData().get(i);
             bean.setValue(String.valueOf(values[i]));
             bean.setValueStr(String.valueOf(values[i]));
 
@@ -381,7 +381,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
         int[] values = new int[]{value1, value2, value3, value4};
 
         for (int i = 0; i < 4; i++) {
-            MaxSettingBean bean = usParamsetAdapter.getData().get(i);
+            ALLSettingBean bean = usParamsetAdapter.getData().get(i);
             bean.setValue(String.valueOf(values[i]));
             bean.setValueStr(String.valueOf(values[i]));
 
@@ -404,7 +404,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
 
 
     private void parserItems(byte[] data, int pos) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         int value1 = MaxWifiParseUtil.obtainValueOne(data);
         bean.setValueStr(String.valueOf(value1));
         bean.setValue(String.valueOf(value1));
@@ -414,9 +414,9 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
     private void getData(int pos) {
         type = 0;
         currentPos = pos;
-        List<MaxSettingBean> data = usParamsetAdapter.getData();
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > pos) {
-            MaxSettingBean bean = data.get(pos);
+            ALLSettingBean bean = data.get(pos);
             LogUtil.i("-------------------请求获取:" + bean.getTitle() + "----------------");
             int[] funs = bean.getFuns();
             manager.sendMsg(funs);
@@ -482,7 +482,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
 
 
     private void inDuctiveReactive(int pos) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
@@ -503,10 +503,10 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
                     usParamsetAdapter.getData().get(pos).setValue(String.valueOf(result));
                     usParamsetAdapter.notifyDataSetChanged();
 
-                    List<MaxSettingBean> data = usParamsetAdapter.getData();
+                    List<ALLSettingBean> data = usParamsetAdapter.getData();
                     if (data.size() > pos) {
-                        MaxSettingBean bean = data.get(pos);
-                        MaxSettingBean bean1 = data.get(1);
+                        ALLSettingBean bean = data.get(pos);
+                        ALLSettingBean bean1 = data.get(1);
                         String value1 = bean1.getValue();
                         int remember = "1".equals(value1) ? 1 : 0;
 
@@ -533,7 +533,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
 
 
     private void setCueTVAC(int pos) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
@@ -544,7 +544,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
 
 
     private void setCabarlation(int pos) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
@@ -554,7 +554,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
 
 
     private void setLimitPointOFload(int pos) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
@@ -564,7 +564,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
 
 
     private void setLimitValue(int pos) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
@@ -582,9 +582,9 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
                     usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
                     usParamsetAdapter.notifyDataSetChanged();
 
-                    List<MaxSettingBean> data = usParamsetAdapter.getData();
+                    List<ALLSettingBean> data = usParamsetAdapter.getData();
                     if (data.size() > position) {
-                        MaxSettingBean bean = data.get(position);
+                        ALLSettingBean bean = data.get(position);
                         //设置
                         type = 1;
                         int[] funs = bean.getFunSet();
@@ -620,7 +620,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
 
     //感性载率
     private void inductiveOncheck(boolean check, int position) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(position);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
         int value = check ? 1 : 0;
         usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
         usParamsetAdapter.notifyDataSetChanged();
@@ -632,7 +632,7 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
         funSet[2] = value;
 
 
-        MaxSettingBean bean1 = usParamsetAdapter.getData().get(0);
+        ALLSettingBean bean1 = usParamsetAdapter.getData().get(0);
         String value1 = bean1.getValue();
         float mul = bean1.getMul();
         double v;

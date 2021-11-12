@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.bean.UsSettingConstant;
-import com.growatt.shinetools.module.localbox.max.bean.MaxSettingBean;
+import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +39,8 @@ public class MaxConfigControl {
     }
 
 
-    public static List<MaxSettingBean> getSettingList(MaxSettingEnum maxSettingEnum, Context context) {
-        List<MaxSettingBean> list = new ArrayList<>();
+    public static List<ALLSettingBean> getSettingList(MaxSettingEnum maxSettingEnum, Context context) {
+        List<ALLSettingBean> list = new ArrayList<>();
         switch (maxSettingEnum) {
             case MAX_TLX_QUUICK_SETTING:
                 list = getTlxQuickSetList(context);
@@ -118,8 +118,8 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getTlxQuickSetList(Context context) {
-        List<MaxSettingBean> list = new ArrayList<>();
+    private static List<ALLSettingBean> getTlxQuickSetList(Context context) {
+        List<ALLSettingBean> list = new ArrayList<>();
         String[] titls = new String[]{
                 context.getString(R.string.m国家安规),
                 context.getString(R.string.android_key663),
@@ -229,7 +229,7 @@ public class MaxConfigControl {
         };
 
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -246,8 +246,8 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getQuickSetList(Context context) {
-        List<MaxSettingBean> list = new ArrayList<>();
+    private static List<ALLSettingBean> getQuickSetList(Context context) {
+        List<ALLSettingBean> list = new ArrayList<>();
         String[] titls = new String[]{
                 context.getString(R.string.m国家安规),
                 context.getString(R.string.android_key663),
@@ -321,7 +321,7 @@ public class MaxConfigControl {
         };
 
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -338,8 +338,8 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getAFCISetList(Context context) {
-        List<MaxSettingBean> list = new ArrayList<>();
+    private static List<ALLSettingBean> getAFCISetList(Context context) {
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -389,7 +389,7 @@ public class MaxConfigControl {
         };
         int[][] doubleFunset = new int[0][];
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -406,8 +406,8 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getMaxSystemSetList(Context context) {
-        List<MaxSettingBean> list = new ArrayList<>();
+    private static List<ALLSettingBean> getMaxSystemSetList(Context context) {
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -515,7 +515,7 @@ public class MaxConfigControl {
                 {{6, 233, -1}, {6, 234, -1}},//检查固件
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -533,8 +533,8 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getMaxActivePowerList(Context context) {
-        List<MaxSettingBean> list = new ArrayList<>();
+    private static List<ALLSettingBean> getMaxActivePowerList(Context context) {
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -580,7 +580,7 @@ public class MaxConfigControl {
                 {{6, 233, -1}, {6, 234, -1}}//检查固件
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -598,9 +598,9 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getMaxBasicSettingList(Context context) {
+    private static List<ALLSettingBean> getMaxBasicSettingList(Context context) {
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -675,7 +675,7 @@ public class MaxConfigControl {
                 {{6, 233, -1}, {6, 234, -1}}//检查固件
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -693,9 +693,9 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getMaxGridCodeSettingList(Context context) {
+    private static List<ALLSettingBean> getMaxGridCodeSettingList(Context context) {
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -781,7 +781,7 @@ public class MaxConfigControl {
                 {{6, 233, -1}, {6, 234, -1}}//检查固件
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -799,9 +799,9 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getMaxGridSecondPfSettingList(Context context) {
+    private static List<ALLSettingBean> getMaxGridSecondPfSettingList(Context context) {
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -894,7 +894,7 @@ public class MaxConfigControl {
                 {{6, 233, -1}, {6, 234, -1}}//检查固件
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -911,9 +911,9 @@ public class MaxConfigControl {
         return list;
     }
 
-    private static List<MaxSettingBean> getMaxFrencyWattSettingList(Context context) {
+    private static List<ALLSettingBean> getMaxFrencyWattSettingList(Context context) {
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -979,7 +979,7 @@ public class MaxConfigControl {
                 {{6, 233, -1}, {6, 234, -1}}//检查固件
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -997,9 +997,9 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getMaxVoltageSettingList(Context context) {
+    private static List<ALLSettingBean> getMaxVoltageSettingList(Context context) {
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -1092,7 +1092,7 @@ public class MaxConfigControl {
                 {{6, 233, -1}, {6, 234, -1}}//检查固件
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -1110,9 +1110,9 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getThirdInductiveReactiveSettingList(Context context, MaxSettingEnum
+    private static List<ALLSettingBean> getThirdInductiveReactiveSettingList(Context context, MaxSettingEnum
             maxSettingEnum) {
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -1180,7 +1180,7 @@ public class MaxConfigControl {
                 }
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -1198,9 +1198,9 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getCapacitivePf(Context context) {
+    private static List<ALLSettingBean> getCapacitivePf(Context context) {
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -1253,7 +1253,7 @@ public class MaxConfigControl {
                 }
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -1271,9 +1271,9 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getCuveInouTVAC(Context context) {
+    private static List<ALLSettingBean> getCuveInouTVAC(Context context) {
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -1325,7 +1325,7 @@ public class MaxConfigControl {
                 }
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -1343,9 +1343,9 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getPfCalibaFactor(Context context) {
+    private static List<ALLSettingBean> getPfCalibaFactor(Context context) {
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -1417,7 +1417,7 @@ public class MaxConfigControl {
                 }
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -1435,10 +1435,10 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getLimitPointOFload(Context context) {
+    private static List<ALLSettingBean> getLimitPointOFload(Context context) {
 
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -1500,7 +1500,7 @@ public class MaxConfigControl {
                 }
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -1519,10 +1519,10 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getPFLimitValue(Context context) {
+    private static List<ALLSettingBean> getPFLimitValue(Context context) {
 
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -1585,7 +1585,7 @@ public class MaxConfigControl {
                 }
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -1604,10 +1604,10 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getFrencyWattSetting(Context context) {
+    private static List<ALLSettingBean> getFrencyWattSetting(Context context) {
 
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -1660,7 +1660,7 @@ public class MaxConfigControl {
                 }
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -1679,10 +1679,10 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getACVoltageSetting(Context context) {
+    private static List<ALLSettingBean> getACVoltageSetting(Context context) {
 
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -1788,7 +1788,7 @@ public class MaxConfigControl {
                 }
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -1807,10 +1807,10 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getACFrencySetting(Context context) {
+    private static List<ALLSettingBean> getACFrencySetting(Context context) {
 
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -1917,7 +1917,7 @@ public class MaxConfigControl {
                 }
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);
@@ -1936,10 +1936,10 @@ public class MaxConfigControl {
     }
 
 
-    private static List<MaxSettingBean> getGridConnectSetting(Context context) {
+    private static List<ALLSettingBean> getGridConnectSetting(Context context) {
 
 
-        List<MaxSettingBean> list = new ArrayList<>();
+        List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
                 + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
@@ -2017,7 +2017,7 @@ public class MaxConfigControl {
                 }
         };
         for (int i = 0; i < titls.length; i++) {
-            MaxSettingBean bean = new MaxSettingBean();
+            ALLSettingBean bean = new ALLSettingBean();
             bean.setTitle(titls[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(register[i]);

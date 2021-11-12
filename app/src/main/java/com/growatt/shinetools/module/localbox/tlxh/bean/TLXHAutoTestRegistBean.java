@@ -1,4 +1,4 @@
-package com.growatt.shinetools.module.localbox.max.bean;
+package com.growatt.shinetools.module.localbox.tlxh.bean;
 
 /**
  * Created：2019/7/19 on 17:45

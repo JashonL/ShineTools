@@ -3,7 +3,7 @@ package com.growatt.shinetools.adapter;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.growatt.shinetools.R;
-import com.growatt.shinetools.module.localbox.max.bean.TLXHLiwangBean;
+import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHLiwangBean;
 
 import java.util.List;
 

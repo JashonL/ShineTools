@@ -1,4 +1,4 @@
-package com.growatt.shinetools.module.localbox.max.bean;
+package com.growatt.shinetools.module.localbox.ustool.bean;
 
 public class UsToolParamBean {
 

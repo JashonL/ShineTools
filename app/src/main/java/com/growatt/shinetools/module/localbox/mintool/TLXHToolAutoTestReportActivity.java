@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.adapter.TLXHAutoTestReportAdapter;
 import com.growatt.shinetools.base.DemoBase;
-import com.growatt.shinetools.module.localbox.max.bean.TLXHAutoTestReportBean;
-import com.growatt.shinetools.module.localbox.max.bean.TLXHToolAutoTestBean;
+import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHAutoTestReportBean;
+import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHToolAutoTestBean;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

@@ -1,4 +1,4 @@
-package com.growatt.shinetools.module.localbox.max.config;
+package com.growatt.shinetools.module.localbox.tlxh.config;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -23,12 +23,13 @@ import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.configtype.ConfigType2Activity;
 import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
+import com.growatt.shinetools.module.localbox.max.config.MaxActivePowerActivity;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.CircleDialogUtils;
+import com.growatt.shinetools.utils.DateUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.Mydialog;
@@ -41,7 +42,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
+public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
         DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
@@ -51,21 +52,30 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
     Toolbar toolbar;
     @BindView(R.id.header_title)
     LinearLayout headerTitle;
-    @BindView(R.id.rv_system)
-    RecyclerView rvSystem;
+    @BindView(R.id.rv_setting)
+    RecyclerView rvSetting;
 
-    private DeviceSettingAdapter usParamsetAdapter;
+
     private MenuItem item;
-    private int currentPos = 0;//当前请求项
-    private int type = 0;//0：读取  1：设置
+    private DeviceSettingAdapter usParamsetAdapter;
     private SocketManager manager;
+    private int currentPos = 1;//当前请求项
+    private int type = 0;//0：读取  1：设置
+    private List<int[]> nowSetItem = new ArrayList<int[]>();
+    private int nowIndex = 0;
+    private int deviceType;
+
 
     //跳转到其他页面
     private boolean toOhterSetting = false;
+    private String[] frequency;//离网频率
+    private String[] voltage;//离网电压
+    private String[] ctselect;//CT选择
+    private String[] batterySelect;//电池选择
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_max_system_config;
+        return R.layout.activity_tlx_quick_set;
     }
 
     @Override
@@ -77,32 +87,34 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
         item = toolbar.getMenu().findItem(R.id.right_action);
         item.setTitle(R.string.android_key816);
         toolbar.setOnMenuItemClickListener(this);
+        String title = getIntent().getStringExtra("title");
+        if (!TextUtils.isEmpty(title)){
+            tvTitle.setText(title);
+        }
 
-
-        rvSystem.setLayoutManager(new LinearLayoutManager(this));
+        rvSetting.setLayoutManager(new LinearLayoutManager(this));
         usParamsetAdapter = new DeviceSettingAdapter(new ArrayList<>(), this);
         int div = (int) getResources().getDimension(R.dimen.dp_1);
         GridDivider gridDivider = new GridDivider(ContextCompat.getColor(this, R.color.white), div, div);
-        rvSystem.addItemDecoration(gridDivider);
-        rvSystem.setAdapter(usParamsetAdapter);
+        rvSetting.addItemDecoration(gridDivider);
+        rvSetting.setAdapter(usParamsetAdapter);
         usParamsetAdapter.setOnItemClickListener(this);
-
-
-        String title = getIntent().getStringExtra("title");
-        if (!TextUtils.isEmpty(title)) {
-            tvTitle.setText(title);
-        }
     }
 
     @Override
     protected void initData() {
-        //系统设置项
+        deviceType=getIntent().getIntExtra("deviceType",0);
+        //快速设置项
         List<ALLSettingBean> settingList
-                = MaxConfigControl.getSettingList(MaxConfigControl.MaxSettingEnum.MAX_SYSTEM_SETTING, this);
+                = TLXHConfigControl.getSettingList(TLXHConfigControl.TlxSettingEnum.TLXH_SYSTEM_SETTING, this);
         usParamsetAdapter.replaceData(settingList);
-
+        frequency = new String[]{"50Hz", "60Hz"};
+        voltage = new String[]{"230V", "208V", "240V"};
+        ctselect=new String[]{"cWiredCT","cWirelessCT","METER"};
+        batterySelect=new String[]{"Lithium","Lead-acid","other"};
         connetSocket();
     }
+
 
 
     private void connetSocket() {
@@ -112,7 +124,7 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
         manager.onConect(connectHandler);
         //开始连接TCP
         //延迟一下避免频繁操作
-        new Handler().postDelayed(() -> manager.connectSocket(), 100);
+        new Handler().postDelayed(() -> manager.connectSocket(),100);
     }
 
 
@@ -125,13 +137,13 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
         @Override
         public void connectFail() {
             manager.disConnectSocket();
-            MyControl.showJumpWifiSet(MaxSystemConfigActivity.this);
+            MyControl.showJumpWifiSet(TLXHSystemSettingActivity.this);
         }
 
         @Override
         public void sendMsgFail() {
             manager.disConnectSocket();
-            MyControl.showTcpDisConnect(MaxSystemConfigActivity.this, getString(R.string.disconnet_retry),
+            MyControl.showTcpDisConnect(TLXHSystemSettingActivity.this, getString(R.string.disconnet_retry),
                     () -> {
                         connetSocket();
                     }
@@ -178,6 +190,7 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
     };
 
 
+
     /**
      * 根据传进来的mtype解析数据
      *
@@ -194,99 +207,111 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
                 LogUtil.i("解析开关逆变器:"+value);
                 usParamsetAdapter.getData().get(0).setValue(String.valueOf(value));
                 break;
-            case 1://安规功能使能
-                //解析int值
-                int value0 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析安规功能使能:"+value0);
-                parserSafetyEnable(value0);
-                break;
-            case 2://有功功率百分比
+            case 1://有功功率百分比
                 //解析int值
                 int content1 = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3, 0, 1));
                 LogUtil.i("解析有功功率百分比:"+content1);
                 parserActiviPercent(content1);
                 break;
-            case 3://ISlland使能
-                //解析int值
-                int value3 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析ISlland使能:"+value3);
-                usParamsetAdapter.getData().get(3).setValue(String.valueOf(value3));
+            case 2://PV输入模式
+                int value2 = MaxWifiParseUtil.obtainValueOne(bs);
+                LogUtil.i("解析pv设置模式:"+value2);
+                ALLSettingBean bean2 = usParamsetAdapter.getData().get(2);
+                bean2.setValue(String.valueOf(value2));
+                bean2.setValueStr(getReadValueReal(2,value2));
                 break;
-            case 4://风扇检查
+            case 3://干接点设置
+
+                break;
+            case 4://N至PE检测功能使能
                 //解析int值
                 int value4 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析风扇检查:"+value4);
+                LogUtil.i("解析N至PE检测功能使能:"+value4);
                 usParamsetAdapter.getData().get(4).setValue(String.valueOf(value4));
                 break;
-            case 5://电网N线使能
+            case 5://宽电网电压
                 //解析int值
                 int value5 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析电网N线使能:"+value5);
-                usParamsetAdapter.getData().get(5).setValue(String.valueOf(value5));
+                LogUtil.i("解析宽电网电压范围使能:"+value5);
+                ALLSettingBean bean5 = usParamsetAdapter.getData().get(5);
+                bean5.setValue(String.valueOf(value5));
+                bean5.setValueStr(getReadValueReal(5,value5));
                 break;
-            case 6://N至PE检测功能使能
+            case 6://安规功能使能
                 //解析int值
                 int value6 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析N至PE检测功能使能:"+value6);
-                usParamsetAdapter.getData().get(6).setValue(String.valueOf(value6));
+                LogUtil.i("解析安规功能使能:"+value6);
+                parserSafetyEnable(value6);
                 break;
-            case 7://宽电网电压范围使能
+            case 7://电网N线使能
                 //解析int值
                 int value7 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析宽电网电压范围使能:"+value7);
-                ALLSettingBean bean7 = usParamsetAdapter.getData().get(7);
-                bean7.setValue(String.valueOf(value7));
-                bean7.setValueStr(getReadValueReal(7,value7));
+                LogUtil.i("解析电网N线使能:"+value7);
+                usParamsetAdapter.getData().get(7).setValue(String.valueOf(value7));
                 break;
-            case 8://指定规格设置使能
+            case 8://指定的规格设置使能
                 int value8 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("解析指定规格设置使能:"+value8);
                 usParamsetAdapter.getData().get(8).setValue(String.valueOf(value8));
                 break;
-            case 9://pv设置模式
-                int value9 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析pv设置模式:"+value9);
-                ALLSettingBean bean9 = usParamsetAdapter.getData().get(9);
-                bean9.setValue(String.valueOf(value9));
-                bean9.setValueStr(getReadValueReal(9,value9));
-                break;
-            case 10://检查固件
-                LogUtil.i("解析检查固件");
-                break;
-            case 11://GPRS/4G/PLC状态
-                int value11 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析GPRS/4G/PLC状态:"+value11);
-                usParamsetAdapter.getData().get(11).setValue(String.valueOf(value11));
-                usParamsetAdapter.getData().get(11).setValueStr(String.valueOf(value11));
-                break;
-            case 12://夜间SVG功能使能
-                int value12 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("夜间SVG功能使能:"+value12);
-                ALLSettingBean bean12 = usParamsetAdapter.getData().get(12);
-                bean12.setValue(String.valueOf(bean12));
-                bean12.setValueStr(getReadValueReal(12,value12));
-                break;
-            case 13://PID工作模式
-                int value13 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析PID工作模式:"+value13);
-                ALLSettingBean bean13 = usParamsetAdapter.getData().get(13);
-                bean13.setValue(String.valueOf(bean13));
-                bean13.setValueStr(getReadValueReal(13,value13));
-                break;
-            case 14://PID开关
-                int value14 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析PID开关:"+value14);
-                usParamsetAdapter.getData().get(14).setValue(String.valueOf(value14));
-                break;
-            case 15://PID工作电压选择
+            case 9://ISLand使能
                 //解析int值
-                int value15 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析PID工作电压选择:"+value15);
-                paserPidVoltgeSelect(value15);
+                int value9 = MaxWifiParseUtil.obtainValueOne(bs);
+                LogUtil.i("解析ISlland使能:"+value9);
+                usParamsetAdapter.getData().get(9).setValue(String.valueOf(value9));
                 break;
+            case 10://离网功能使能
+                int value10 = MaxWifiParseUtil.obtainValueOne(bs);
+                LogUtil.i("离网功能使能:"+value10);
+                usParamsetAdapter.getData().get(10).setValue(String.valueOf(value10));
+                break;
+            case 11://离网频率
+                //解析int值
+                int value11 = MaxWifiParseUtil.obtainValueOne(bs);
+                usParamsetAdapter.getData().get(11).setValue(String.valueOf(value11));
+
+                String sValue = String.valueOf(value11);
+                if (frequency.length > value11) {
+                    sValue = frequency[value11];
+                }
+                usParamsetAdapter.getData().get(11).setValueStr(sValue);
+                break;
+            case 12://离网电压
+                //解析int值
+                int value12 = MaxWifiParseUtil.obtainValueOne(bs);
+                usParamsetAdapter.getData().get(12).setValue(String.valueOf(value12));
+                String sValue12 = String.valueOf(value12);
+                if (voltage.length > value12) {
+                    sValue12 = voltage[value12];
+                }
+                usParamsetAdapter.getData().get(12).setValueStr(sValue12);
+                break;
+            case 13://CT选择
+                //解析int值
+                int value13 = MaxWifiParseUtil.obtainValueOne(bs);
+                usParamsetAdapter.getData().get(13).setValue(String.valueOf(value13));
+                String sValue13 = String.valueOf(value13);
+                if (ctselect.length > value13) {
+                    sValue13 = ctselect[value13];
+                }
+                usParamsetAdapter.getData().get(13).setValueStr(sValue13);
+                break;
+
+            case 14://电池选择
+                //解析int值
+                int value14 = MaxWifiParseUtil.obtainValueOne(bs);
+                usParamsetAdapter.getData().get(14).setValue(String.valueOf(value14));
+                String sValue14 = String.valueOf(value14);
+                if (ctselect.length > value14) {
+                    sValue14 = batterySelect[value14];
+                }
+                usParamsetAdapter.getData().get(14).setValueStr(sValue14);
+                break;
+
         }
         usParamsetAdapter.notifyDataSetChanged();
     }
+
 
     /**
      * 请求获取逆变器的时间
@@ -296,27 +321,18 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
     }
 
 
-    private void getData(int pos) {
-        type = 0;
-        currentPos = pos;
-        List<ALLSettingBean> data = usParamsetAdapter.getData();
-        if (data.size() > pos) {
-            ALLSettingBean bean = data.get(pos);
-            LogUtil.i("-------------------请求获取:"+bean.getTitle()+"----------------");
-            int[] funs = bean.getFuns();
-            manager.sendMsg(funs);
-        }
-    }
 
 
     public void parserSafetyEnable(int read) {
-        ALLSettingBean bean = usParamsetAdapter.getData().get(1);
-        bean.setValueStr(getReadValueReal(1,read));
+        ALLSettingBean bean = usParamsetAdapter.getData().get(6);
+        bean.setValueStr(getReadValueReal(6,read));
 
     }
 
+
+
     public void parserActiviPercent(int read) {
-        ALLSettingBean bean = usParamsetAdapter.getData().get(2);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(1);
         bean.setValueStr(String.valueOf(read));
     }
 
@@ -325,6 +341,8 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
         ALLSettingBean bean = usParamsetAdapter.getData().get(15);
         bean.setValueStr(String.valueOf(read));
     }
+
+
 
 
     public String getReadValueReal(int position,int read) {
@@ -353,6 +371,20 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
     }
 
 
+
+    private void getData(int pos) {
+        type = 0;
+        currentPos = pos;
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
+        if (data.size() > pos) {
+            ALLSettingBean bean = data.get(pos);
+            int[] funs = bean.getFuns();
+            manager.sendMsg(funs);
+        }
+    }
+
+
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.right_action) {
@@ -367,35 +399,138 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
         String title = bean.getTitle();
         String hint = bean.getHint();
         switch (position){
-            case 10:
-                toOhterSetting=true;
-                manager.disConnectSocket();
-                Intent intent = new Intent(mContext, ConfigType2Activity.class);
-                intent.putExtra("type", 5);
-                intent.putExtra("title", String.format("%s%s",title,"233~234"));
-                startActivity(intent);
-                break;
-            case 11:
-
-                break;
-
-            case 1: case 15:
-                setInputValue(position,title,hint);
-                break;
-            case 7: case 9: case 12: case 13:
-                setSelectItem(position,title);
-                break;
-
-            case 2:
+            case 1://有功功率百分比
                 toOhterSetting=true;
                 manager.disConnectSocket();
                 Intent intent1 = new Intent(this, MaxActivePowerActivity.class);
                 intent1.putExtra("title", bean.getTitle());
                 ActivityUtils.startActivity(this, intent1, false);
                 break;
+            case 2://PV输入模式
+                setSelectItem(position,title);
+                break;
+            case 3://干接点设置
+                toOhterSetting=true;
+                manager.disConnectSocket();
+                Intent intent2 = new Intent(this, TLXHDryContactActivity.class);
+                intent2.putExtra("title", bean.getTitle());
+                ActivityUtils.startActivity(this, intent2, false);
+
+                break;
+
+            case 5://宽电网电压范围使能
+                setSelectItem(position,title);
+                break;
+            case 6://安规功能使能
+                setInputValue(position,title,hint);
+                break;
+            case 11:
+                setInputValue(position,title,hint);
+                break;
+            case 12:
+                setInputValue(position,title,hint);
+                break;
+            case 13:
+                setSelectItem(position,title);
+                break;
+            case 14:
+                setSelectItem(position,title);
+                break;
 
         }
     }
+
+    @Override
+    public void oncheck(boolean check, int position) {
+        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
+        int value = check ? 1 : 0;
+        usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
+        usParamsetAdapter.notifyDataSetChanged();
+        type = 1;
+        LogUtil.i("-------------------设置"+bean.getTitle()+"----------------");
+        int[] funSet = bean.getFunSet();
+        funSet[2]=value;
+        manager.sendMsg(funSet);
+    }
+
+
+    /**
+     * 设置逆变器时间
+     */
+    private void setInvTime() {
+        try {
+            DateUtils.showTotalTime(this, new DateUtils.SeletctTimeListeners() {
+                @Override
+                public void seleted(String date) {
+
+                }
+
+                @Override
+                public void ymdHms(int year, int month, int day, int hour, int min, int second) {
+
+                    List<ALLSettingBean> data = usParamsetAdapter.getData();
+                    if (data.size() > 1) {
+                        ALLSettingBean bean = data.get(1);
+                        type = 1;
+                        int[][] doubleFunset = bean.getDoubleFunset();
+                        if (year > 2000) {
+                            doubleFunset[0][2] = year - 2000;
+                        } else {
+                            doubleFunset[0][2] = year;
+                        }
+                        doubleFunset[1][2] = month + 1;
+                        doubleFunset[2][2] = day;
+                        doubleFunset[3][2] = hour;
+                        doubleFunset[4][2] = min;
+                        doubleFunset[5][2] = second;
+                        //更新ui
+                        StringBuilder sb = new StringBuilder()
+                                .append(year).append("-");
+                        if (month + 1 < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(month + 1).append("-");
+                        if (day < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(day).append(" ");
+                        if (hour < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(hour).append(":");
+                        if (min < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(min).append(":");
+                        if (second < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(second);
+                        usParamsetAdapter.getData().get(1).setValueStr(sb.toString());
+                        usParamsetAdapter.notifyDataSetChanged();
+
+
+                        nowSetItem.clear();
+                        for (int[] ints : doubleFunset) {
+                            nowSetItem.add(ints);
+                        }
+                        nowIndex = 0;
+
+
+                        type = 1;
+                        int[] funs = doubleFunset[0];
+                        manager.sendMsg(funs);
+
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 
 
@@ -462,25 +597,12 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
     }
 
 
-    @Override
-    public void oncheck(boolean check, int position) {
-        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
-        int value = check ? 1 : 0;
-        usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
-        usParamsetAdapter.notifyDataSetChanged();
-        type = 1;
-        LogUtil.i("-------------------设置"+bean.getTitle()+"----------------");
-        int[] funSet = bean.getFunSet();
-        funSet[2]=value;
-        manager.sendMsg(funSet);
-
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (toOhterSetting){
-            toOhterSetting=false;
+        if (toOhterSetting) {
+            toOhterSetting = false;
             connetSocket();
         }
     }
@@ -495,4 +617,5 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }

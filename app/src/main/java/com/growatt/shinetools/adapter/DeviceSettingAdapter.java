@@ -6,11 +6,11 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.bean.UsSettingConstant;
-import com.growatt.shinetools.module.localbox.max.bean.MaxSettingBean;
+import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
 
 import java.util.List;
 
-public class MaxSettingAdapter extends BaseMultiItemQuickAdapter<MaxSettingBean, BaseViewHolder> {
+public class DeviceSettingAdapter extends BaseMultiItemQuickAdapter<ALLSettingBean, BaseViewHolder> {
     private OnChildCheckLiseners onChildCheckLiseners;
 
 
@@ -19,7 +19,7 @@ public class MaxSettingAdapter extends BaseMultiItemQuickAdapter<MaxSettingBean,
      * some initialization data.
      *
      */
-    public MaxSettingAdapter(List<MaxSettingBean> data, OnChildCheckLiseners liseners){
+    public DeviceSettingAdapter(List<ALLSettingBean> data, OnChildCheckLiseners liseners){
         super(data);
         addItemType(UsSettingConstant.SETTING_TYPE_SELECT, R.layout.item_setting_next);
         addItemType(UsSettingConstant.SETTING_TYPE_INPUT, R.layout.item_setting_input);
@@ -33,7 +33,7 @@ public class MaxSettingAdapter extends BaseMultiItemQuickAdapter<MaxSettingBean,
 
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, MaxSettingBean item) {
+    protected void convert(@NonNull BaseViewHolder helper, ALLSettingBean item) {
         if (item.getItemType()==UsSettingConstant.SETTING_TYPE_SELECT){
             helper.setText(R.id.tv_title,item.getTitle());
             helper.setText(R.id.tv_value,item.getValueStr());

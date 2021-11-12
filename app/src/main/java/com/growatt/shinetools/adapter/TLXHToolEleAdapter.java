@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.growatt.shinetools.R;
-import com.growatt.shinetools.module.localbox.max.bean.TLXHEleBean;
+import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHEleBean;
 import com.growatt.shinetools.utils.CommenUtils;
 
 import java.util.List;

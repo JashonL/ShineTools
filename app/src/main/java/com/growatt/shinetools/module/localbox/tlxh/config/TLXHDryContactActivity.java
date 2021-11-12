@@ -1,4 +1,4 @@
-package com.growatt.shinetools.module.localbox.max.config;
+package com.growatt.shinetools.module.localbox.tlxh.config;
 
 import android.os.Handler;
 import android.text.TextUtils;
@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.adapter.DeviceSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
+import com.growatt.shinetools.modbusbox.Arith;
 import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
@@ -34,7 +35,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MaxActivePowerActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
+public class TLXHDryContactActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
         DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
 
     @BindView(R.id.status_bar_view)
@@ -77,7 +78,7 @@ public class MaxActivePowerActivity extends BaseActivity implements BaseQuickAda
 
 
     private void setInputValue(String title, String hint) {
-        CircleDialogUtils.showInputValueDialog(MaxActivePowerActivity.this, title,
+        CircleDialogUtils.showInputValueDialog(TLXHDryContactActivity.this, title,
                 hint, "", value -> {
                     double result = Double.parseDouble(value);
                     String pValue = value + "";
@@ -147,7 +148,7 @@ public class MaxActivePowerActivity extends BaseActivity implements BaseQuickAda
     protected void initData() {
         //系统设置项
         List<ALLSettingBean> settingList
-                = MaxConfigControl.getSettingList(MaxConfigControl.MaxSettingEnum.MAX_ACTIVE0POWER_SETTING, this);
+                = TLXHConfigControl.getSettingList(TLXHConfigControl.TlxSettingEnum.TLXH_DRY_CONTACT, this);
         usParamsetAdapter.replaceData(settingList);
 
         connetSocket();
@@ -174,13 +175,13 @@ public class MaxActivePowerActivity extends BaseActivity implements BaseQuickAda
         @Override
         public void connectFail() {
             manager.disConnectSocket();
-            MyControl.showJumpWifiSet(MaxActivePowerActivity.this);
+            MyControl.showJumpWifiSet(TLXHDryContactActivity.this);
         }
 
         @Override
         public void sendMsgFail() {
             manager.disConnectSocket();
-            MyControl.showTcpDisConnect(MaxActivePowerActivity.this, getString(R.string.disconnet_retry),
+            MyControl.showTcpDisConnect(TLXHDryContactActivity.this, getString(R.string.disconnet_retry),
                     () -> {
                         connetSocket();
                     }
@@ -235,22 +236,43 @@ public class MaxActivePowerActivity extends BaseActivity implements BaseQuickAda
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
         switch (currentPos) {
-            case 0://有功功率百分比
+            case 0://干接点状态
                 //解析int值
-                int value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3, 0, 1));
-                ALLSettingBean bean = usParamsetAdapter.getData().get(0);
-                bean.setValue(String.valueOf(value));
-                String s = value + "";
-                bean.setValueStr(s);
+                int value0 = MaxWifiParseUtil.obtainValueOne(bs);
+                usParamsetAdapter.getData().get(0).setValue(String.valueOf(value0));
+                break;
+            case 1://干接点开通的功率百分比
+                //解析int值
 
-                int value1 = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 2, 0, 1));
-                ALLSettingBean bean1 = usParamsetAdapter.getData().get(1);
-                bean1.setValue(String.valueOf(value1));
-                bean1.setValueStr(s);
-
+                int value1 = MaxWifiParseUtil.obtainValueOne(bs);
+                ALLSettingBean bean = usParamsetAdapter.getData().get(1);
+                float mul = bean.getMul();
+                String unit = "";
+                usParamsetAdapter.getData().get(1).setValue(String.valueOf(value1));
+                usParamsetAdapter.getData().get(1).setValueStr(getReadValueReal(value1,mul,unit));
+                break;
+            case 2://干接点关闭功率百分比
+                int value2 = MaxWifiParseUtil.obtainValueOne(bs);
+                ALLSettingBean bean2 = usParamsetAdapter.getData().get(1);
+                float mul2 = bean2.getMul();
+                String unit2 = "";
+                usParamsetAdapter.getData().get(2).setValue(String.valueOf(value2));
+                usParamsetAdapter.getData().get(2).setValueStr(getReadValueReal(value2,mul2,unit2));
                 break;
         }
         usParamsetAdapter.notifyDataSetChanged();
+    }
+
+
+    public String getReadValueReal(int read, float mul, String unit) {
+        boolean isNum = ((int) mul) == mul;
+        String value;
+        if (isNum) {
+            value = read * ((int) mul) + unit;
+        } else {
+            value = Arith.mul(read, mul, 2) + unit;
+        }
+        return value;
     }
 
 

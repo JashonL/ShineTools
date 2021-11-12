@@ -293,12 +293,12 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".module.localbox.tlx.TLXHAutoTestOldInvActivity"
+        <activity android:name=".module.localbox.tlxh.TLXHAutoTestOldInvActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".module.localbox.tlx.TLXHToolAutoTestReportActivity"
+        <activity android:name=".module.localbox.tlxh.TLXHToolAutoTestReportActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -998,7 +998,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".module.localbox.max.Max230Ktl3HvtDeviceInfoActivity"
+        <activity android:name=".module.localbox.max.Max230Ktl3HvtMaxInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -1010,19 +1010,19 @@
             android:screenOrientation="portrait"
             />
 
-        <activity android:name=".module.localbox.tlx.TLXQuickSettingActivity"
+        <activity android:name=".module.localbox.tlx.config.TLXQuickSettingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             />
 
-        <activity android:name=".module.localbox.tlx.QuickSettingSecondActivity"
+        <activity android:name=".module.localbox.tlx.config.QuickSettingSecondActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             />
 
-        <activity android:name=".module.localbox.max.MaxMacModMidDeviceInfoActivity"
+        <activity android:name=".module.localbox.max.MaxMacModMidMaxInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -1036,7 +1036,7 @@
             />
 
 
-        <activity android:name=".module.localbox.max.MaxxDeviceInfoActivity"
+        <activity android:name=".module.localbox.max.MaxxMaxInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -1047,6 +1047,60 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             />
+
+        <activity android:name=".module.localbox.tlxh.TLXHToolActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity android:name=".module.localbox.tlxh.TL3XHToolActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+
+        <activity android:name=".module.localbox.tlx.TLXTLEToolActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".module.localbox.tlxh.config.TLXHQuickSettingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity android:name=".module.localbox.tlxh.config.TLXHSystemSettingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".module.localbox.tlxh.config.TLXHDryContactActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity android:name=".module.localbox.tlxh.TL3XHDeviceInfoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".module.localbox.tlxh.config.TLXHChargeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity android:name=".module.localbox.tlxh.TLXHDeviceInfoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+
 
         <!--==================================模块页面=========================================-->
 

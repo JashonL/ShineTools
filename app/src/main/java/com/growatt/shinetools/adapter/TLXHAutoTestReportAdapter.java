@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.growatt.shinetools.R;
-import com.growatt.shinetools.module.localbox.max.bean.TLXHToolAutoTestBean;
+import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHToolAutoTestBean;
 
 import java.util.List;
 

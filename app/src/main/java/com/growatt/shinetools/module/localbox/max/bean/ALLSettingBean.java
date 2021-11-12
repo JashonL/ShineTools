@@ -2,7 +2,7 @@ package com.growatt.shinetools.module.localbox.max.bean;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
-public class MaxSettingBean implements MultiItemEntity {
+public class ALLSettingBean implements MultiItemEntity {
 
     //选项的类型，下拉、弹框等
     private int itemType;

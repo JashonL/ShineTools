@@ -1,4 +1,4 @@
-package com.growatt.shinetools.module.localbox.tlx;
+package com.growatt.shinetools.module.localbox.tlx.config;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
-import com.growatt.shinetools.adapter.MaxSettingAdapter;
+import com.growatt.shinetools.adapter.DeviceSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.modbusbox.Arith;
 import com.growatt.shinetools.modbusbox.MaxUtil;
@@ -24,9 +24,10 @@ import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.afci.AFCIChartActivity;
-import com.growatt.shinetools.module.localbox.max.bean.MaxSettingBean;
+import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
 import com.growatt.shinetools.module.localbox.max.config.MaxConfigControl;
 import com.growatt.shinetools.module.localbox.mintool.TLXParamCountry2Activity;
+import com.growatt.shinetools.module.localbox.tlxh.TLXHAutoTestOldInvActivity;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
 import com.growatt.shinetools.utils.ActivityUtils;
@@ -48,7 +49,7 @@ import java.util.List;
 import butterknife.BindView;
 
 public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
-        MaxSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
+        DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
     @BindView(R.id.tv_title)
@@ -62,7 +63,7 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
 
 
     private MenuItem item;
-    private MaxSettingAdapter usParamsetAdapter;
+    private DeviceSettingAdapter usParamsetAdapter;
     private SocketManager manager;
     private int currentPos = 1;//当前请求项
     private int type = 0;//0：读取  1：设置
@@ -95,7 +96,7 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
         }
 
         rvSetting.setLayoutManager(new LinearLayoutManager(this));
-        usParamsetAdapter = new MaxSettingAdapter(new ArrayList<>(), this);
+        usParamsetAdapter = new DeviceSettingAdapter(new ArrayList<>(), this);
         int div = (int) getResources().getDimension(R.dimen.dp_1);
         GridDivider gridDivider = new GridDivider(ContextCompat.getColor(this, R.color.white), div, div);
         rvSetting.addItemDecoration(gridDivider);
@@ -107,7 +108,7 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
     protected void initData() {
         deviceType=getIntent().getIntExtra("deviceType",0);
         //快速设置项
-        List<MaxSettingBean> settingList
+        List<ALLSettingBean> settingList
                 = MaxConfigControl.getSettingList(MaxConfigControl.MaxSettingEnum.MAX_TLX_QUUICK_SETTING, this);
         usParamsetAdapter.replaceData(settingList);
         connetSocket();
@@ -301,9 +302,9 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
      * @return
      */
     public void parserLcdData(int value) {
-        List<MaxSettingBean> data = usParamsetAdapter.getData();
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > 2) {
-            MaxSettingBean bean = data.get(2);
+            ALLSettingBean bean = data.get(2);
             String[] items = bean.getItems();
             if (items != null && items.length > value) {
                 String lcd = items[value];
@@ -338,9 +339,9 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
 
 
     public void parserAddress(int read) {
-        List<MaxSettingBean> data = usParamsetAdapter.getData();
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > 3) {
-            MaxSettingBean bean = data.get(3);
+            ALLSettingBean bean = data.get(3);
             float mMul = bean.getMul();
             String unit = bean.getUnit();
             String value = read * ((int) mMul) + unit;
@@ -352,9 +353,9 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
 
 
     private void parserDynamometer(int read){
-        List<MaxSettingBean> data = usParamsetAdapter.getData();
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > 4) {
-            MaxSettingBean bean = data.get(4);
+            ALLSettingBean bean = data.get(4);
             String[] items = bean.getItems();
             if (read<items.length){
                 String value=items[read];
@@ -373,9 +374,9 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
     private void getData(int pos) {
         type = 0;
         currentPos = pos;
-        List<MaxSettingBean> data = usParamsetAdapter.getData();
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > pos) {
-            MaxSettingBean bean = data.get(pos);
+            ALLSettingBean bean = data.get(pos);
             int[] funs = bean.getFuns();
             manager.sendMsg(funs);
         }
@@ -394,7 +395,7 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-        MaxSettingBean bean = usParamsetAdapter.getData().get(position);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
         switch (position) {
             case 0:
                 manager.disConnectSocket();
@@ -467,9 +468,9 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
                 @Override
                 public void ymdHms(int year, int month, int day, int hour, int min, int second) {
 
-                    List<MaxSettingBean> data = usParamsetAdapter.getData();
+                    List<ALLSettingBean> data = usParamsetAdapter.getData();
                     if (data.size() > 1) {
-                        MaxSettingBean bean = data.get(1);
+                        ALLSettingBean bean = data.get(1);
                         type = 1;
                         int[][] doubleFunset = bean.getDoubleFunset();
                         if (year > 2000) {
@@ -536,9 +537,9 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
      *设置选择项
      */
     private void setSelectItem(int position) {
-        List<MaxSettingBean> data = usParamsetAdapter.getData();
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > position) {
-            MaxSettingBean bean = data.get(position);
+            ALLSettingBean bean = data.get(position);
             String[] items = bean.getItems();
             List<String> selects = new ArrayList<>(Arrays.asList(items));
 
@@ -573,9 +574,9 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
                     usParamsetAdapter.getData().get(3).setValue(String.valueOf(result));
                     usParamsetAdapter.notifyDataSetChanged();
 
-                    List<MaxSettingBean> data = usParamsetAdapter.getData();
+                    List<ALLSettingBean> data = usParamsetAdapter.getData();
                     if (data.size() > 3) {
-                        MaxSettingBean bean = data.get(3);
+                        ALLSettingBean bean = data.get(3);
                         //设置
                         type = 1;
                         int[] funs = bean.getFunSet();

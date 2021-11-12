@@ -37,8 +37,8 @@ import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.modbusbox.bean.MaxDataBean;
 import com.growatt.shinetools.modbusbox.bean.MaxDataDeviceBean;
 import com.growatt.shinetools.module.localbox.max.bean.MaxChildBean;
-import com.growatt.shinetools.module.localbox.max.bean.TLXHEleBean;
-import com.growatt.shinetools.module.localbox.max.bean.UsToolParamBean;
+import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHEleBean;
+import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxQuicksettingActivity;
@@ -140,9 +140,8 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     private TLXHToolEleAdapter mEleAdapter;
     private List<TLXHEleBean> mEleList;
     private RecyclerView mEleRecycler;
-    private TextView tvDetial;
     private ImageView ivDetail;
-
+    private LinearLayout llUpstreamDownstream;
 
 
     //设置项
@@ -218,6 +217,9 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         //发电
         initRecyclerViewEle();
 
+        //顺逆流
+        initUpstreamDownStream();
+
         //告警
         initRecyclerViewPower();
 
@@ -235,7 +237,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
 
 
     private void initListener() {
-        initOnclick(tvDetial, ivDetail, cvWarning);
+        initOnclick(ivDetail, cvWarning);
     }
 
 
@@ -313,7 +315,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
                 break;
 
             case 6:
-                clazz = Max230Ktl3HvtDeviceInfoActivity.class;
+                clazz = Max230Ktl3HvtMaxInfoActivity.class;
                 break;
 
             case 7:
@@ -370,9 +372,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     private void initRecyclerViewEle() {
         mEleList = new ArrayList<>();
         mEleRecycler = header.findViewById(R.id.rvEle);
-        tvDetial = header.findViewById(R.id.tvDetial);
         ivDetail = header.findViewById(R.id.iv_detail);
-        tvDetial.setText(String.format("%s>", getString(R.string.commondata_title)));
         mEleRecycler.setLayoutManager(new LinearLayoutManager(this));
         LinearDivider linearDivider = new LinearDivider(this, LinearLayoutManager.VERTICAL,
                 1, ContextCompat.getColor(this, R.color.gray_aaaaaa));
@@ -382,6 +382,12 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         initEleDatas(eleTitles, null, null, mEleAdapter);
     }
 
+
+    private void initUpstreamDownStream() {
+        llUpstreamDownstream = header.findViewById(R.id.ll_upstream_downstream);
+        //没有顺逆流
+        llUpstreamDownstream.setVisibility(View.GONE);
+    }
 
     /**
      * 设置项列表

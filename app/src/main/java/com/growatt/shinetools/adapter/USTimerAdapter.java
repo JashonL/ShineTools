@@ -8,7 +8,7 @@ import android.widget.EditText;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.growatt.shinetools.R;
-import com.growatt.shinetools.module.localbox.max.bean.USChargePriorityBean;
+import com.growatt.shinetools.module.localbox.ustool.bean.USChargePriorityBean;
 
 import java.util.List;
 

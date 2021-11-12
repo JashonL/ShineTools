@@ -44,10 +44,8 @@ import com.growatt.shinetools.module.localbox.configtype.usconfig.USParamsSettin
 import com.growatt.shinetools.module.localbox.max.MaxChartEnergyActivity;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.module.localbox.max.bean.MaxChildBean;
-import com.growatt.shinetools.module.localbox.max.bean.TLXHEleBean;
-import com.growatt.shinetools.module.localbox.max.bean.UsToolParamBean;
-import com.growatt.shinetools.module.localbox.mintool.TLXHBDCActivity;
-import com.growatt.shinetools.module.localbox.mintool.TLXHBattryActivity;
+import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHEleBean;
+import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 import com.growatt.shinetools.module.localbox.ustool.errorcode.ErrorCode;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.BtnDelayUtil;
@@ -57,8 +55,6 @@ import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.widget.GridDivider;
 import com.growatt.shinetools.widget.LinearDivider;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +82,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
     RecyclerView mRecyclerView;
     @BindView(R.id.tv_status)
     TextView tvStatus;
+
 
     private TextView tvFluxPower;
     private ImageView ivDryStatus;
@@ -173,7 +170,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
     private RecyclerView mPowerRecycler;
 
     private CardView cvWarning;
-    private int user_type = KEFU_USER;
+    public int user_type = KEFU_USER;
 
     //提示问题
     private boolean promptWifi = true;//提示连接wifi模块
@@ -1041,7 +1038,6 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         //停止刷新；关闭socket
         SocketClientUtil.close(mClientUtilRead);
         SocketClientUtil.close(mClientUtil);
-        SocketClientUtil.close(mClientUtilBDC);
         SocketClientUtil.close(mReadBdcUtil);
 
     }
@@ -1176,74 +1172,8 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
     }
 
 
-    //连接对象:用于读取数据
-    private SocketClientUtil mClientUtilBDC;
 
-    private void connectServerBDC() {
-        stopRefresh();
-        Mydialog.Show(mContext);
-        mClientUtilBDC = SocketClientUtil.connectServer(mHandler3124);
-    }
 
-    /**
-     * 读取寄存器handle
-     */
-    Handler mHandler3124 = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            int what = msg.what;
-            switch (what) {
-                //发送信息
-                case SOCKET_SEND:
-                    BtnDelayUtil.sendMessage(this);
-                    byte[] sendBytesR = sendMsgBDC(mClientUtilBDC, funs[3]);
-                    LogUtil.i("发送读取：" + SocketClientUtil.bytesToHexString(sendBytesR));
-                    break;
-                //接收字节数组
-                case SOCKET_RECEIVE_BYTES:
-                    BtnDelayUtil.receiveMessage(this);
-                    try {
-                        byte[] bytes = (byte[]) msg.obj;
-                        //检测内容正确性
-                        boolean isCheck = ModbusUtil.checkModbus(bytes);
-                        if (isCheck) {
-                            toast(R.string.all_success);
-                            RegisterParseUtil.parseInput3kT3124V2(mMaxData, bytes);
-                            isBDC = true;
-                            jumpBDC();
-                        } else {
-                            toast(R.string.all_failed);
-                        }
-                        LogUtil.i("接收读取：" + SocketClientUtil.bytesToHexString(bytes));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        //关闭tcp连接
-                        SocketClientUtil.close(mClientUtilBDC);
-                        BtnDelayUtil.refreshFinish();
-                    }
-                    break;
-                default:
-                    BtnDelayUtil.dealMaxBtn(this, what, mContext);
-                    break;
-            }
-        }
-    };
-
-    public void jumpBDC() {
-//        if (isBDC && mMaxData.getBdcStatus() == 0){
-//            MyControl.circlerDialog(this,getString(R.string.没有接入BDC),-1,false);
-//            return;
-//        }
-        if (bdcType == 0) {
-            EventBus.getDefault().postSticky(mMaxData);
-            jumpMaxSet(TLXHBDCActivity.class, "");
-        } else if (bdcType == 1) {
-            EventBus.getDefault().postSticky(mMaxData);
-            jumpMaxSet(TLXHBattryActivity.class, "");
-        }
-    }
 
 
     /**

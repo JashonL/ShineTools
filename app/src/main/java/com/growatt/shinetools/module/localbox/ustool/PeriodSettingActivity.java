@@ -30,7 +30,7 @@ import com.growatt.shinetools.bean.UsSettingConstant;
 import com.growatt.shinetools.constant.GlobalConstant;
 import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
-import com.growatt.shinetools.module.localbox.max.bean.USChargePriorityBean;
+import com.growatt.shinetools.module.localbox.ustool.bean.USChargePriorityBean;
 import com.growatt.shinetools.module.localbox.ustool.bean.TimeSelectBean;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsChargeConfigMsg;
 import com.growatt.shinetools.utils.ActivityUtils;

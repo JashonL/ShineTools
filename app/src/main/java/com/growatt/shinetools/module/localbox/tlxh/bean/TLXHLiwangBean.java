@@ -1,4 +1,4 @@
-package com.growatt.shinetools.module.localbox.max.bean;
+package com.growatt.shinetools.module.localbox.tlxh.bean;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 

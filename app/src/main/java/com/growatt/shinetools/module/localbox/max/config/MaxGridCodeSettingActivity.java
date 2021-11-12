@@ -15,14 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
-import com.growatt.shinetools.adapter.MaxSettingAdapter;
+import com.growatt.shinetools.adapter.DeviceSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.modbusbox.Arith;
 import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.max.bean.MaxSettingBean;
+import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
 import com.growatt.shinetools.utils.ActivityUtils;
@@ -38,7 +38,7 @@ import java.util.List;
 import butterknife.BindView;
 
 public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
-        MaxSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
+        DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
     @BindView(R.id.tv_title)
@@ -50,7 +50,7 @@ public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuic
     @BindView(R.id.rv_system)
     RecyclerView rvSystem;
 
-    private MaxSettingAdapter usParamsetAdapter;
+    private DeviceSettingAdapter usParamsetAdapter;
     private MenuItem item;
     private int currentPos = 0;//当前请求项
     private int type = 0;//0：读取  1：设置
@@ -73,7 +73,7 @@ public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuic
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(position);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
         String title = bean.getTitle();
         String hint = bean.getHint();
         float mul = bean.getMul();
@@ -110,9 +110,9 @@ public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuic
                     usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
                     usParamsetAdapter.notifyDataSetChanged();
 
-                    List<MaxSettingBean> data = usParamsetAdapter.getData();
+                    List<ALLSettingBean> data = usParamsetAdapter.getData();
                     if (data.size() > position) {
-                        MaxSettingBean bean = data.get(position);
+                        ALLSettingBean bean = data.get(position);
                         //设置
                         type = 1;
                         int[] funs = bean.getFunSet();
@@ -154,7 +154,7 @@ public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuic
 
 
         rvSystem.setLayoutManager(new LinearLayoutManager(this));
-        usParamsetAdapter = new MaxSettingAdapter(new ArrayList<>(), this);
+        usParamsetAdapter = new DeviceSettingAdapter(new ArrayList<>(), this);
         int div = (int) getResources().getDimension(R.dimen.dp_1);
         GridDivider gridDivider = new GridDivider(ContextCompat.getColor(this, R.color.white), div, div);
         rvSystem.addItemDecoration(gridDivider);
@@ -171,7 +171,7 @@ public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuic
     @Override
     protected void initData() {
         //系统设置项
-        List<MaxSettingBean> settingList
+        List<ALLSettingBean> settingList
                 = MaxConfigControl.getSettingList(MaxConfigControl.MaxSettingEnum.MAX_GRID_CODE_PARAMETERS_SETTING, this);
         usParamsetAdapter.replaceData(settingList);
         connetSocket();
@@ -287,7 +287,7 @@ public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuic
 
     private void parser(byte[] data, int pos) {
         int value1 = MaxWifiParseUtil.obtainValueOne(data);
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         float mul = bean.getMul();
         String unit = "";
         bean.setValueStr(getReadValueReal(value1, mul, unit));
@@ -308,9 +308,9 @@ public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuic
     private void getData(int pos) {
         type = 0;
         currentPos = pos;
-        List<MaxSettingBean> data = usParamsetAdapter.getData();
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > pos) {
-            MaxSettingBean bean = data.get(pos);
+            ALLSettingBean bean = data.get(pos);
             LogUtil.i("-------------------请求获取:" + bean.getTitle() + "----------------");
             int[] funs = bean.getFuns();
             manager.sendMsg(funs);

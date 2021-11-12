@@ -25,14 +25,13 @@ import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
-import com.growatt.shinetools.module.localbox.max.bean.TLXParamCountryBean;
+import com.growatt.shinetools.module.localbox.tlx.bean.TLXParamCountryBean;
 import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.utils.Position;
 import com.growatt.shinetools.utils.SharedPreferencesUnit;
-import com.growatt.shinetools.widget.AutoFitTextView;
 import com.mylhyl.circledialog.CircleDialog;
 
 import java.math.BigInteger;

@@ -1,4 +1,4 @@
-package com.growatt.shinetools.module.localbox.tlx;
+package com.growatt.shinetools.module.localbox.tlxh;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,9 +22,9 @@ import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.modbusbox.bean.MaxDataBean;
 import com.growatt.shinetools.modbusbox.bean.MaxDataDeviceBean;
-import com.growatt.shinetools.module.localbox.max.bean.TLXHAutoTestRegistBean;
-import com.growatt.shinetools.module.localbox.max.bean.TLXHAutoTestReportBean;
-import com.growatt.shinetools.module.localbox.max.bean.TLXHToolAutoTestBean;
+import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHAutoTestRegistBean;
+import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHAutoTestReportBean;
+import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHToolAutoTestBean;
 import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.ChartUtils;
 import com.growatt.shinetools.utils.LogUtil;

@@ -53,7 +53,7 @@ import butterknife.BindView;
 
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 
-public abstract class BaseDeviceInfoActivity extends BaseActivity implements View.OnClickListener, Toolbar.OnMenuItemClickListener {
+public abstract class BaseMaxInfoActivity extends BaseActivity implements View.OnClickListener, Toolbar.OnMenuItemClickListener {
 
     @BindView(R.id.status_bar_view)
     View statusBarView;

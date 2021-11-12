@@ -18,7 +18,7 @@ import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.modbusbox.bean.MaxDataBean;
 import com.growatt.shinetools.modbusbox.bean.ToolStorageDataBean;
-import com.growatt.shinetools.module.localbox.max.bean.TLXHLiwangBean;
+import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHLiwangBean;
 import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;

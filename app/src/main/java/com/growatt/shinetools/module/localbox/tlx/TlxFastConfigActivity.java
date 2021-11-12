@@ -24,6 +24,7 @@ import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
+import com.growatt.shinetools.module.localbox.tlxh.TLXHAutoTestOldInvActivity;
 import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.DateUtils;

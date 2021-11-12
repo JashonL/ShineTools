@@ -1,13 +1,13 @@
-package com.growatt.shinetools.module.localbox.max.config;
+package com.growatt.shinetools.module.localbox.tlxh.config;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -23,9 +23,8 @@ import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.eventMsg.EventFreshMsg;
 import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
-import com.growatt.shinetools.module.localbox.mintool.TLXParamCountry2Activity;
+import com.growatt.shinetools.module.localbox.mintool.TLXHToolTimerActivity;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
 import com.growatt.shinetools.utils.ActivityUtils;
@@ -37,23 +36,14 @@ import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.widget.GridDivider;
 import com.mylhyl.circledialog.CircleDialog;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 
-public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
+public class TLXHChargeActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
         DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
-
-
     @BindView(R.id.status_bar_view)
     View statusBarView;
     @BindView(R.id.tv_title)
@@ -65,6 +55,7 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
     @BindView(R.id.rv_setting)
     RecyclerView rvSetting;
 
+
     private MenuItem item;
     private DeviceSettingAdapter usParamsetAdapter;
     private SocketManager manager;
@@ -72,11 +63,19 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
     private int type = 0;//0：读取  1：设置
     private List<int[]> nowSetItem = new ArrayList<int[]>();
     private int nowIndex = 0;
+    private int deviceType;
 
+
+    //跳转到其他页面
+    private boolean toOhterSetting = false;
+    private String[] frequency;//离网频率
+    private String[] voltage;//离网电压
+    private String[] ctselect;//CT选择
+    private String[] batterySelect;//电池选择
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_max_quick_set;
+        return R.layout.activity_all_setting;
     }
 
     @Override
@@ -88,7 +87,10 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
         item = toolbar.getMenu().findItem(R.id.right_action);
         item.setTitle(R.string.android_key816);
         toolbar.setOnMenuItemClickListener(this);
-
+        String title = getIntent().getStringExtra("title");
+        if (!TextUtils.isEmpty(title)){
+            tvTitle.setText(title);
+        }
 
         rvSetting.setLayoutManager(new LinearLayoutManager(this));
         usParamsetAdapter = new DeviceSettingAdapter(new ArrayList<>(), this);
@@ -97,27 +99,21 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
         rvSetting.addItemDecoration(gridDivider);
         rvSetting.setAdapter(usParamsetAdapter);
         usParamsetAdapter.setOnItemClickListener(this);
-
     }
 
     @Override
     protected void initData() {
-        EventBus.getDefault().register(this);
+        deviceType=getIntent().getIntExtra("deviceType",0);
         //快速设置项
         List<ALLSettingBean> settingList
-                = MaxConfigControl.getSettingList(MaxConfigControl.MaxSettingEnum.MAX_QUICK_SETTING, this);
+                = TLXHConfigControl.getSettingList(TLXHConfigControl.TlxSettingEnum.TLXH_CHARGE_MANAGER, this);
         usParamsetAdapter.replaceData(settingList);
-        connetSocket();
-
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMin(@NonNull EventFreshMsg bean) {
+        frequency = new String[]{"50Hz", "60Hz"};
+        voltage = new String[]{"230V", "208V", "240V"};
+        ctselect=new String[]{"cWiredCT","cWirelessCT","METER"};
+        batterySelect=new String[]{"Lithium","Lead-acid","other"};
         connetSocket();
     }
-
-
 
 
 
@@ -135,19 +131,19 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
     ConnectHandler connectHandler = new ConnectHandler() {
         @Override
         public void connectSuccess() {
-            getInvdate();
+            getChageManager();
         }
 
         @Override
         public void connectFail() {
             manager.disConnectSocket();
-            MyControl.showJumpWifiSet(MaxQuicksettingActivity.this);
+            MyControl.showJumpWifiSet(TLXHChargeActivity.this);
         }
 
         @Override
         public void sendMsgFail() {
             manager.disConnectSocket();
-            MyControl.showTcpDisConnect(MaxQuicksettingActivity.this, getString(R.string.disconnet_retry),
+            MyControl.showTcpDisConnect(TLXHChargeActivity.this, getString(R.string.disconnet_retry),
                     () -> {
                         connetSocket();
                     }
@@ -173,28 +169,18 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
                     //接收正确，开始解析
                     parseMax(bytes);
                 }
-                switch (currentPos) {
-                    case 1:
-                        getLCDLanguge();
-                        break;
-                    case 2:
-                        getAddress();
-                        Mydialog.Dismiss();
-                        break;
+                if (currentPos < usParamsetAdapter.getData().size() - 1) {
+                    getData(++currentPos);
+                }else {
+                    Mydialog.Dismiss();
                 }
+
             } else {//设置
                 //检测内容正确性
                 boolean isCheck = MaxUtil.checkReceiverFull(bytes);
                 if (isCheck) {
-                    if (nowIndex < nowSetItem.size() - 1) {
-                        manager.sendMsg(nowSetItem.get(++nowIndex));
-                    } else {
-                        nowSetItem.clear();
-                        Mydialog.Dismiss();
-                        nowIndex = 0;
-                        toast(R.string.android_key121);
-                    }
-
+                    Mydialog.Dismiss();
+                    toast(R.string.all_success);
                 } else {
                     Mydialog.Dismiss();
                     toast(R.string.android_key3129);
@@ -202,6 +188,7 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
             }
         }
     };
+
 
 
     /**
@@ -214,22 +201,15 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
         switch (currentPos) {
-            case 1://逆变器时间
-                LogUtil.i("解析时间");
-                parserTimeData(bs);
+            case 0:
                 break;
-            case 2://LCD语言
-                //解析int值
-                LogUtil.i("解析语言");
-                int value0 = MaxWifiParseUtil.obtainValueOne(bs);
-                parserLcdData(value0);
-                break;
-            case 3://通信地址
-                LogUtil.i("解析通信地址");
+            case 1: case 2: case 3: case 4: case 5: case 6: case 7://CV电压
                 int value1 = MaxWifiParseUtil.obtainValueOne(bs);
-                parserAddress(value1);
+                LogUtil.i("CV电压:"+value1);
+                ALLSettingBean bean2 = usParamsetAdapter.getData().get(1);
+                bean2.setValue(String.valueOf(value1));
+                bean2.setValueStr(getReadValueReal(currentPos,value1));
                 break;
-
         }
         usParamsetAdapter.notifyDataSetChanged();
     }
@@ -238,95 +218,33 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
     /**
      * 请求获取逆变器的时间
      */
-    private void getInvdate() {
-        LogUtil.i("请求获取逆变器时间");
-        getData(1);
-    }
-
-    /**
-     * 解析逆变器时间
-     *
-     * @param bs
-     */
-    private void parserTimeData(byte[] bs) {
-        try {
-            int year = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 0, 0, 1));
-            int month = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 1, 0, 1));
-            int day = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 2, 0, 1));
-            int hour = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 3, 0, 1));
-            int min = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 4, 0, 1));
-            int seconds = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 5, 0, 1));
-            //更新ui
-            StringBuilder sb = new StringBuilder()
-                    .append(year).append("-")
-                    .append(month).append("-")
-                    .append(day).append(" ")
-                    .append(hour).append(":")
-                    .append(min).append(":")
-                    .append(seconds);
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String timeS = sb.toString();
-            Date date = sdf.parse(timeS);
-            String timeStr = sdf.format(date);
-            usParamsetAdapter.getData().get(1).setValueStr(timeStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    private void getChageManager() {
+        getData(0);
     }
 
 
-    /**
-     * 请求获取LCD语言
-     */
-    private void getLCDLanguge() {
-        LogUtil.i("请求获取语言");
-        getData(2);
-    }
 
 
-    /**
-     * 获取读取的值并解析，部分特殊处理
-     *
-     * @param value
-     * @return
-     */
-    public void parserLcdData(int value) {
-        List<ALLSettingBean> data = usParamsetAdapter.getData();
-        if (data.size() > 2) {
-            ALLSettingBean bean = data.get(2);
-            String[] items = bean.getItems();
-            if (items != null && items.length > value) {
-                String lcd = items[value];
-                usParamsetAdapter.getData().get(2).setValueStr(lcd);
-            } else {
-                usParamsetAdapter.getData().get(2).setValueStr(String.valueOf(value));
-            }
+
+
+
+
+    public String getReadValueReal(int position,int read) {
+        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
+        String[] items = bean.getItems();
+        String value=String.valueOf(read);
+        float mul=bean.getMul();
+        String unit=bean.getUnit();
+        boolean isNum = ((int) mul) == mul;
+        if (isNum) {
+            value = read * ((int) mul) + unit;
+        } else {
+            value = Arith.mul(read, mul, 2) + unit;
         }
 
+        return value;
     }
 
-
-    /**
-     * 请求获取通信地址
-     */
-    private void getAddress() {
-        LogUtil.i("请求获取通信地址");
-        getData(3);
-    }
-
-
-    public void parserAddress(int read) {
-        List<ALLSettingBean> data = usParamsetAdapter.getData();
-        if (data.size() > 3) {
-            ALLSettingBean bean = data.get(3);
-            float mMul = bean.getMul();
-            String unit = bean.getUnit();
-            String value = read * ((int) mMul) + unit;
-            usParamsetAdapter.getData().get(3).setValueStr(value);
-        }
-
-    }
 
 
     private void getData(int pos) {
@@ -341,10 +259,11 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
     }
 
 
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.right_action) {
-            getInvdate();
+            getChageManager();
         }
         return true;
     }
@@ -352,38 +271,30 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         ALLSettingBean bean = usParamsetAdapter.getData().get(position);
-        switch (position) {
-            case 0:
-                manager.disConnectSocket();
-                Intent intent = new Intent(mContext, TLXParamCountry2Activity.class);
-                intent.putExtra("type", 0);
-                intent.putExtra("title", String.format("%s%s", getString(R.string.m国家安规), ""));
-                ActivityUtils.startActivity(this, intent, false);
-                break;
-            case 1:
-                setInvTime();
-                break;
-            case 2:
-                setLcd();
-                break;
-            case 3:
-                setInputValue(bean.getTitle(), "1~254");
-                break;
-            case 4:
-                //断开连接
-                manager.disConnectSocket();
-                Intent intent1 = new Intent(mContext, MaxAFCIAcitivity.class);
-                intent1.putExtra("type", 0);
-                intent1.putExtra("title", bean.getTitle());
-                ActivityUtils.startActivity(this, intent1, false);
-                break;
-
+        String title = bean.getTitle();
+        String hint = bean.getHint();
+        if (position == 0) {//设置充放电
+            toOhterSetting = true;
+            manager.disConnectSocket();
+            Intent intent1 = new Intent(this, TLXHToolTimerActivity.class);
+            intent1.putExtra("title", bean.getTitle());
+            ActivityUtils.startActivity(this, intent1, false);
+        } else {
+            setInputValue(position, title, hint);
         }
     }
 
     @Override
     public void oncheck(boolean check, int position) {
-
+        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
+        int value = check ? 1 : 0;
+        usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
+        usParamsetAdapter.notifyDataSetChanged();
+        type = 1;
+        LogUtil.i("-------------------设置"+bean.getTitle()+"----------------");
+        int[] funSet = bean.getFunSet();
+        funSet[2]=value;
+        manager.sendMsg(funSet);
     }
 
 
@@ -463,29 +374,28 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
 
     }
 
-    /**
-     *
-     */
 
 
-    private void setLcd() {
+
+
+    private void setSelectItem(int pos,String title) {
         List<ALLSettingBean> data = usParamsetAdapter.getData();
-        if (data.size() > 2) {
-            ALLSettingBean bean = data.get(2);
+        if (data.size() > pos) {
+            ALLSettingBean bean = data.get(pos);
             String[] items = bean.getItems();
             List<String> selects = new ArrayList<>(Arrays.asList(items));
 
             new CircleDialog.Builder()
-                    .setTitle(getString(R.string.android_key499))
+                    .setTitle(title)
                     .setWidth(0.7f)
                     .setGravity(Gravity.CENTER)
                     .setMaxHeight(0.5f)
-                    .setItems(selects, (parent, view1, pos, id) -> {
-                        usParamsetAdapter.getData().get(2).setValueStr(selects.get(pos));
+                    .setItems(selects, (parent, view1, position, id) -> {
+                        usParamsetAdapter.getData().get(pos).setValueStr(selects.get(position));
                         usParamsetAdapter.notifyDataSetChanged();
                         type = 1;
                         int[] funs = bean.getFunSet();
-                        funs[2] = pos;
+                        funs[2] = position;
                         manager.sendMsg(funs);
                         return true;
                     })
@@ -495,18 +405,21 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
 
     }
 
-    private void setInputValue(String title, String hint) {
-        CircleDialogUtils.showInputValueDialog(MaxQuicksettingActivity.this, title,
+
+
+
+    private void setInputValue(int pos,String title, String hint) {
+        CircleDialogUtils.showInputValueDialog(this, title,
                 hint, "", value -> {
                     double result = Double.parseDouble(value);
                     String pValue = value + "";
-                    usParamsetAdapter.getData().get(3).setValueStr(pValue);
-                    usParamsetAdapter.getData().get(3).setValue(String.valueOf(result));
+                    usParamsetAdapter.getData().get(pos).setValueStr(pValue);
+                    usParamsetAdapter.getData().get(pos).setValue(String.valueOf(result));
                     usParamsetAdapter.notifyDataSetChanged();
 
                     List<ALLSettingBean> data = usParamsetAdapter.getData();
-                    if (data.size() > 3) {
-                        ALLSettingBean bean = data.get(3);
+                    if (data.size() > pos) {
+                        ALLSettingBean bean = data.get(pos);
                         //设置
                         type = 1;
                         int[] funs = bean.getFunSet();
@@ -515,6 +428,7 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
                     }
                 });
     }
+
 
 
     public int getWriteValueReal(double write) {
@@ -529,9 +443,23 @@ public class MaxQuicksettingActivity extends BaseActivity implements BaseQuickAd
 
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (toOhterSetting) {
+            toOhterSetting = false;
+            connetSocket();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        manager.disConnectSocket();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        manager.disConnectSocket();
-        EventBus.getDefault().unregister(this);
     }
+
 }

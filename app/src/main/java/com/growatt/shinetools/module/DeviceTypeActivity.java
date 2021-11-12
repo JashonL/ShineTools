@@ -19,11 +19,11 @@ import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.module.localbox.max.Max230KTL3HVToolActivity;
 import com.growatt.shinetools.module.localbox.max.MaxMacModMidToolActivity;
 import com.growatt.shinetools.module.localbox.max.MaxxToolActivity;
-import com.growatt.shinetools.module.localbox.mintool.TL3XHMainActivity;
-import com.growatt.shinetools.module.localbox.mintool.TLXHToolMainActivity;
-import com.growatt.shinetools.module.localbox.mintool.TLXToolMainActivity;
 import com.growatt.shinetools.module.localbox.mix.MixToolMainActivity;
 import com.growatt.shinetools.module.localbox.old.ToolMainOldInvActivity;
+import com.growatt.shinetools.module.localbox.tlxh.TL3XHToolActivity;
+import com.growatt.shinetools.module.localbox.tlxh.TLXHToolActivity;
+import com.growatt.shinetools.module.localbox.tlx.TLXTLEToolActivity;
 import com.growatt.shinetools.module.localbox.ustool.USToolsMainActivityV2;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.AppSystemUtils;
@@ -188,17 +188,27 @@ public class DeviceTypeActivity extends BaseActivity implements Toolbar.OnMenuIt
             case R.id.ll_type_max_x:
 //                ActivityUtils.gotoActivity(DeviceTypeActivity.this, MaxXMainActivity.class,false);
                 Intent intent2=new Intent(this,MaxxToolActivity.class);
-                intent2.putExtra("title","MAX 230KTL3 HV");
+                intent2.putExtra("title","MAX-X");
                 ActivityUtils.startActivity(DeviceTypeActivity.this,intent2,false);
                 break;
             case R.id.ll_type_tl3_xh:
-                ActivityUtils.gotoActivity(DeviceTypeActivity.this, TL3XHMainActivity.class,false);
+//                ActivityUtils.gotoActivity(DeviceTypeActivity.this, TL3XHMainActivity.class,false);
+                Intent intent3=new Intent(this, TL3XHToolActivity.class);
+                intent3.putExtra("title","TL3-XH");
+                ActivityUtils.startActivity(DeviceTypeActivity.this,intent3,false);
                 break;
             case R.id.ll_type_tl_x:
-                ActivityUtils.gotoActivity(DeviceTypeActivity.this, TLXToolMainActivity.class,false);
+//                ActivityUtils.gotoActivity(DeviceTypeActivity.this, TLXToolMainActivity.class,false);
+
+                Intent intent4=new Intent(this, TLXTLEToolActivity.class);
+                intent4.putExtra("title","TL-X/TL-E");
+                ActivityUtils.startActivity(DeviceTypeActivity.this,intent4,false);
                 break;
             case R.id.ll_tl_xh:
-                ActivityUtils.gotoActivity(DeviceTypeActivity.this, TLXHToolMainActivity.class,false);
+//                ActivityUtils.gotoActivity(DeviceTypeActivity.this, TLXHToolMainActivity.class,false);
+                Intent intent5=new Intent(this, TLXHToolActivity.class);
+                intent5.putExtra("title","TL-XH");
+                ActivityUtils.startActivity(DeviceTypeActivity.this,intent5,false);
                 break;
             case R.id.ll_type_tlx_us:
                 ActivityUtils.gotoActivity(DeviceTypeActivity.this, USToolsMainActivityV2.class,false);

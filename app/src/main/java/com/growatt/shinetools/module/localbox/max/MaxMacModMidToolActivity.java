@@ -3,12 +3,12 @@ package com.growatt.shinetools.module.localbox.max;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.max.base.BaseMaxToolActivity;
-import com.growatt.shinetools.module.localbox.max.bean.UsToolParamBean;
+import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxSystemConfigActivity;
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
-import com.growatt.shinetools.module.localbox.tlx.TLXQuickSettingActivity;
+import com.growatt.shinetools.module.localbox.tlx.config.TLXQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 
 public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
@@ -40,10 +40,15 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
     }
 
     @Override
+    public boolean initIsUpstream() {
+        return false;
+    }
+
+    @Override
     public void initEleRes() {
         eleTitles = new String[]{
                 getString(R.string.android_key2019) + "\n" + "(kWh)",
-                getString(R.string.m320功率) + "\n(kWh)",
+                getString(R.string.m320功率) + "\n(W)",
         };
 
 
@@ -94,7 +99,7 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
                 break;
 
             case 6:
-                clazz = Max230Ktl3HvtDeviceInfoActivity.class;
+                clazz = Max230Ktl3HvtMaxInfoActivity.class;
                 break;
             default:
                 clazz = null;

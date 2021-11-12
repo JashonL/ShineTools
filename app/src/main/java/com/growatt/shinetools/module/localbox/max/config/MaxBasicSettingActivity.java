@@ -16,14 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
-import com.growatt.shinetools.adapter.MaxSettingAdapter;
+import com.growatt.shinetools.adapter.DeviceSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.modbusbox.Arith;
 import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.max.bean.MaxSettingBean;
+import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
 import com.growatt.shinetools.module.localbox.mintool.TLXModeSetActivity;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
@@ -43,7 +43,7 @@ import java.util.List;
 import butterknife.BindView;
 
 public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
-        MaxSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
+        DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
     @BindView(R.id.tv_title)
@@ -55,7 +55,7 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
     @BindView(R.id.rv_system)
     RecyclerView rvSystem;
 
-    private MaxSettingAdapter usParamsetAdapter;
+    private DeviceSettingAdapter usParamsetAdapter;
     private MenuItem item;
     private int currentPos = 0;//当前请求项
     private int type = 0;//0：读取  1：设置
@@ -73,7 +73,7 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        MaxSettingBean bean = usParamsetAdapter.getData().get(position);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
         String title = bean.getTitle();
         String hint = bean.getHint();
         float mul = bean.getMul();
@@ -115,9 +115,9 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
                     if (TextUtils.isEmpty(value)) {
                         toast(R.string.all_blank);
                     } else {
-                        List<MaxSettingBean> data = usParamsetAdapter.getData();
+                        List<ALLSettingBean> data = usParamsetAdapter.getData();
                         if (data.size() > position) {
-                            MaxSettingBean bean = data.get(position);
+                            ALLSettingBean bean = data.get(position);
                             type = 1;
                             int[][] doubleFunset = bean.getDoubleFunset();
                             try {
@@ -154,9 +154,9 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
 
 
     private void setComRate() {
-        List<MaxSettingBean> data = usParamsetAdapter.getData();
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > 0) {
-            MaxSettingBean bean = data.get(0);
+            ALLSettingBean bean = data.get(0);
             String[] items = bean.getItems();
             List<String> selects = new ArrayList<>(Arrays.asList(items));
 
@@ -190,9 +190,9 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
                     usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
                     usParamsetAdapter.notifyDataSetChanged();
 
-                    List<MaxSettingBean> data = usParamsetAdapter.getData();
+                    List<ALLSettingBean> data = usParamsetAdapter.getData();
                     if (data.size() > position) {
-                        MaxSettingBean bean = data.get(position);
+                        ALLSettingBean bean = data.get(position);
                         //设置
                         type = 1;
                         int[] funs = bean.getFunSet();
@@ -235,7 +235,7 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
 
 
         rvSystem.setLayoutManager(new LinearLayoutManager(this));
-        usParamsetAdapter = new MaxSettingAdapter(new ArrayList<>(), this);
+        usParamsetAdapter = new DeviceSettingAdapter(new ArrayList<>(), this);
         int div = (int) getResources().getDimension(R.dimen.dp_1);
         GridDivider gridDivider = new GridDivider(ContextCompat.getColor(this, R.color.white), div, div);
         rvSystem.addItemDecoration(gridDivider);
@@ -253,7 +253,7 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
     protected void initData() {
         rightTitle = getString(R.string.m374设置Model);
         //系统设置项
-        List<MaxSettingBean> settingList
+        List<ALLSettingBean> settingList
                 = MaxConfigControl.getSettingList(MaxConfigControl.MaxSettingEnum.MAX_BASIC_SETTING, this);
         usParamsetAdapter.replaceData(settingList);
         note1 = getString(R.string.m443该项暂不能设置请设置Model);
@@ -366,7 +366,7 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
                 //解析int值
                 int value = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("通信波特率:" + value);
-                MaxSettingBean bean = usParamsetAdapter.getData().get(0);
+                ALLSettingBean bean = usParamsetAdapter.getData().get(0);
                 String[] items = bean.getItems();
                 if (items != null && items.length > value) {
                     String valueS = items[value];
@@ -396,7 +396,7 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
                 LogUtil.i("修改总发电量:");
                 int totalE = MaxWifiParseUtil.obtainRegistValueHOrL(1, bs[110], bs[111])
                         + MaxWifiParseUtil.obtainRegistValueHOrL(0, bs[112], bs[113]);
-                MaxSettingBean bean5 = usParamsetAdapter.getData().get(5);
+                ALLSettingBean bean5 = usParamsetAdapter.getData().get(5);
                 float mul = bean5.getMul();
                 String unit = "";
                 bean5.setValue(String.valueOf(totalE));
@@ -409,7 +409,7 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
 
     private void parser(byte[] data, int pos) {
         int value1 = MaxWifiParseUtil.obtainValueOne(data);
-        MaxSettingBean bean = usParamsetAdapter.getData().get(pos);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         float mul = bean.getMul();
         String unit = "";
         bean.setValueStr(getReadValueReal(value1, mul, unit));
@@ -430,9 +430,9 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
     private void getData(int pos) {
         type = 0;
         currentPos = pos;
-        List<MaxSettingBean> data = usParamsetAdapter.getData();
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
         if (data.size() > pos) {
-            MaxSettingBean bean = data.get(pos);
+            ALLSettingBean bean = data.get(pos);
             LogUtil.i("-------------------请求获取:" + bean.getTitle() + "----------------");
             int[] funs = bean.getFuns();
             manager.sendMsg(funs);

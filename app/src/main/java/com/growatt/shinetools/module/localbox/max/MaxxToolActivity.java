@@ -3,7 +3,7 @@ package com.growatt.shinetools.module.localbox.max;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.max.base.BaseMaxToolActivity;
-import com.growatt.shinetools.module.localbox.max.bean.UsToolParamBean;
+import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxQuicksettingActivity;
@@ -30,6 +30,11 @@ public class MaxxToolActivity extends BaseMaxToolActivity {
         drawableStatus=new int[]{
                 R.drawable.circle_wait,R.drawable.circle_grid,R.drawable.circle_fault, R.drawable.circle_upgrade
         };
+    }
+
+    @Override
+    public boolean initIsUpstream() {
+        return false;
     }
 
     @Override
@@ -85,7 +90,7 @@ public class MaxxToolActivity extends BaseMaxToolActivity {
                 break;
 
             case 6:
-                clazz = Max230Ktl3HvtDeviceInfoActivity.class;
+                clazz = MaxxMaxInfoActivity.class;
                 break;
 
             case 7:
