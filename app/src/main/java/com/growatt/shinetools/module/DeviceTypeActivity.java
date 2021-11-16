@@ -19,11 +19,11 @@ import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.module.localbox.max.Max230KTL3HVToolActivity;
 import com.growatt.shinetools.module.localbox.max.MaxMacModMidToolActivity;
 import com.growatt.shinetools.module.localbox.max.MaxxToolActivity;
-import com.growatt.shinetools.module.localbox.mix.MixToolMainActivity;
 import com.growatt.shinetools.module.localbox.old.ToolMainOldInvActivity;
+import com.growatt.shinetools.module.localbox.sph.SPHSPAToolActivity;
+import com.growatt.shinetools.module.localbox.tlx.TLXTLEToolActivity;
 import com.growatt.shinetools.module.localbox.tlxh.TL3XHToolActivity;
 import com.growatt.shinetools.module.localbox.tlxh.TLXHToolActivity;
-import com.growatt.shinetools.module.localbox.tlx.TLXTLEToolActivity;
 import com.growatt.shinetools.module.localbox.ustool.USToolsMainActivityV2;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.AppSystemUtils;
@@ -217,7 +217,10 @@ public class DeviceTypeActivity extends BaseActivity implements Toolbar.OnMenuIt
                 ActivityUtils.gotoActivity(DeviceTypeActivity.this, ToolMainOldInvActivity.class,false);
                 break;
             case R.id.ll_type_sph:
-                ActivityUtils.gotoActivity(DeviceTypeActivity.this, MixToolMainActivity.class,false);
+//                ActivityUtils.gotoActivity(DeviceTypeActivity.this, MixToolMainActivity.class,false);
+                Intent intent8=new Intent(this, SPHSPAToolActivity.class);
+                intent8.putExtra("title","SPH/SPA");
+                ActivityUtils.startActivity(DeviceTypeActivity.this,intent8,false);
                 break;
         }
     }

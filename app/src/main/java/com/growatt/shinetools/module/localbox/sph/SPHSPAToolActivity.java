@@ -1,25 +1,24 @@
-package com.growatt.shinetools.module.localbox.tlxh;
+package com.growatt.shinetools.module.localbox.sph;
 
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.tlx.base.TlxToolBaseActivity;
 import com.growatt.shinetools.module.localbox.max.MaxAdvanceSetActivity;
-import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
 import com.growatt.shinetools.module.localbox.mintool.TLXHAutoTestActivity;
+import com.growatt.shinetools.module.localbox.sph.base.SPHSPABaseActivity;
+import com.growatt.shinetools.module.localbox.sph.config.SPASPHQuickSettingActivity;
+import com.growatt.shinetools.module.localbox.sph.config.SphSpaSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHChargeActivity;
-import com.growatt.shinetools.module.localbox.tlxh.config.TLXHQuickSettingActivity;
-import com.growatt.shinetools.module.localbox.tlxh.config.TLXHSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 
-public class TL3XHToolActivity extends TlxToolBaseActivity {
-
+public class SPHSPAToolActivity extends SPHSPABaseActivity {
     @Override
     public void initStatusRes() {
+
         pidStatusStrs = new String[]{
-                "", getString(R.string.all_Waiting), getString(R.string.all_Normal), getString(R.string.m故障)
+                "",getString(R.string.all_Waiting),getString(R.string.all_Normal),getString(R.string.m故障)
         };
 
         statusTitles = new String[]{
@@ -38,21 +37,24 @@ public class TL3XHToolActivity extends TlxToolBaseActivity {
 
     @Override
     public void initEleRes() {
+
         eleTitles = new String[]{
-                getString(R.string.android_key2019) + "\n" + "(kWh)",
-                getString(R.string.android_key2371) + "\n(kWh)",
-                getString(R.string.android_key2370) + "\n(kWh)",
-                getString(R.string.android_key1319) + "\n(kWh)",
-                getString(R.string.android_key1320) + "\n(kWh)",
+                getString(R.string.photovoltaic_generatingcapacity)+ "\n(kWh)",
+                getString(R.string.m1261Charged)+ "\n(kWh)",
+                getString(R.string.m1260Discharged)+ "\n(kWh)",
+                getString(R.string.m214电网取电)+ "\n(kWh)",
+                getString(R.string.m217馈回电网)+ "\n(kWh)",
+                getString(R.string.m用户使用电量)+ "\n(kWh)"
         };
         eleResId = new int[]{
-                R.drawable.tlxh_ele_fadian, R.drawable.tlxh_ele_chongdian,
-                R.drawable.tlxh_ele_fangdian, R.drawable.tlxh_ele_bingwang, R.drawable.tlxh_ele_yonghushiyong
+                -1,R.drawable.tlxh_ele_fadian,R.drawable.tlxh_ele_chongdian,
+                R.drawable.tlxh_ele_fangdian,R.drawable.mix_export,R.drawable.mix_import,R.drawable.tlxh_ele_yonghushiyong
         };
     }
 
     @Override
     public void initPowerRes() {
+
         powerTitles = new String[]{
                 getString(R.string.android_key1993),
                 getString(R.string.额定功率),
@@ -60,71 +62,72 @@ public class TL3XHToolActivity extends TlxToolBaseActivity {
                 getString(R.string.android_key1824)
         };
         powerResId = new int[]{
-                R.drawable.tlxh_power_dangqian, R.drawable.tlxh_power_eding,
-                R.drawable.tlxh_power_chongdian, R.drawable.tlxh_power_fangdian
+                R.drawable.tlxh_power_dangqian,
+//                R.drawable.tlxh_power_eding,
+                R.drawable.tlxh_power_chongdian,R.drawable.tlxh_power_fangdian
         };
     }
 
     @Override
     public void initDeviceType() {
-        deviceType = DeviceConstant.TLXH_INDEX;
+        deviceType = DeviceConstant.SPA_SPH_INDEX;
     }
 
     @Override
     public void initGetDataArray() {
-        funs = new int[][]{{3, 0, 124}, {3, 125, 249}, {4, 3000, 3124}, {4, 3125, 3249}};
-        autoFun = new int[][]{{4, 3000, 3124}, {4, 3125, 3249}};
+
+        funs = new int[][] {{3, 0, 124},{3, 125, 249},{4,0,124},{4,1000,1124}};
+        autoFun = new int[][]{{4,0,124},{4,1000,1124}};
     }
 
     @Override
     public void initSetDataArray() {
+
         title = new String[]{
                 //快速设置、系统配置、市电码设置
                 getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
                 //充放电管理、智能检测、基本设置
-                , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.basic_setting)
+                , getString(R.string.android_key1308), getString(R.string.basic_setting)
                 //高级设置、设备信息、自动测试
                 , getString(R.string.m286高级设置), getString(R.string.m291设备信息), getString(R.string.android_key171)
         };
         res = new int[]{
                 R.drawable.quickly, R.drawable.system_config, R.drawable.city_code,
-                R.drawable.charge_manager, R.drawable.smart_check, R.drawable.param_setting,
+                R.drawable.charge_manager,  R.drawable.param_setting,
                 R.drawable.advan_setting, R.drawable.device_info, R.drawable.tlx_auto_test
         };
     }
 
     @Override
     public void toSettingActivity(int position) {
+
         UsToolParamBean item = usParamsetAdapter.getItem(position);
         final String title = item.getTitle();
         Class clazz = null;
         switch (position) {
-            case 0:
-                clazz = TLXHQuickSettingActivity.class;
+            case 0://快速设置
+                clazz = SPASPHQuickSettingActivity.class;
                 break;
-            case 1:
-                clazz = TLXHSystemSettingActivity.class;
+            case 1://系统设置
+                clazz = SphSpaSystemSettingActivity.class;
                 break;
-            case 2:
+            case 2://
                 clazz = MaxGridCodeSettingActivity.class;
                 break;
             case 3:
                 clazz = TLXHChargeActivity.class;
                 break;
-            case 4://智能检测
-                clazz = MaxCheckActivity.class;
-                break;
-            case 5://基本设置
+            case 4://基本设置
                 clazz = MaxBasicSettingActivity.class;
                 break;
 
-            case 6://高级设置
+            case 5://高级设置
                 clazz = MaxAdvanceSetActivity.class;
                 break;
-            case 7://设备信息
-                clazz = TL3XHDeviceInfoActivity.class;
+            case 6://设备信息
+                clazz = SPHSPADeviceInfoActivity.class;
                 break;
-            case 8:
+            case 7:
                 clazz = TLXHAutoTestActivity.class;
                 break;
             default:
@@ -140,31 +143,32 @@ public class TL3XHToolActivity extends TlxToolBaseActivity {
 
     @Override
     public void parserData(int count, byte[] bytes) {
-
         switch (count) {
             case 0:
-                RegisterParseUtil.parseHold0T124(mMaxData, bytes);
+                RegisterParseUtil.parseHold0T124Mix(mMaxData, bytes);
                 break;
             case 1:
-                RegisterParseUtil.parseHold125T249(mMaxData, bytes);
+                RegisterParseUtil.parseHold125T249Mix(mMaxData, bytes);
                 break;
             case 2:
-                RegisterParseUtil.parseInput3kT3124(mMaxData, bytes);
+                RegisterParseUtil.parseInput0T124Mix(mMaxData, bytes);
+                isBDC = true;
                 break;
             case 3:
-                RegisterParseUtil.parseInput3125T3249(mMaxData, bytes);
+                RegisterParseUtil.parseInput1kT1124Mix(mMaxData, bytes);
                 break;
         }
     }
 
     @Override
     public void parserMaxAuto(int count, byte[] bytes) {
+
         switch (count) {
             case 0:
-                RegisterParseUtil.parseInput3kT3124(mMaxData, bytes);
+                RegisterParseUtil.parseInput0T124Mix(mMaxData,bytes);
                 break;
             case 1:
-                RegisterParseUtil.parseInput3125T3249(mMaxData, bytes);
+                RegisterParseUtil.parseInput1kT1124Mix(mMaxData,bytes);
                 break;
         }
     }

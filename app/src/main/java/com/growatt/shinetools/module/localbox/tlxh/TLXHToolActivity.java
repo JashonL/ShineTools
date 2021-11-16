@@ -2,7 +2,7 @@ package com.growatt.shinetools.module.localbox.tlxh;
 
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.TlxToolBaseActivity;
+import com.growatt.shinetools.module.localbox.tlx.base.TlxToolBaseActivity;
 import com.growatt.shinetools.module.localbox.max.MaxAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;

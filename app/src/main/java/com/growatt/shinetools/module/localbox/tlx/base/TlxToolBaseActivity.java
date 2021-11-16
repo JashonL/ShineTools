@@ -1,4 +1,4 @@
-package com.growatt.shinetools.module.localbox;
+package com.growatt.shinetools.module.localbox.tlx.base;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;

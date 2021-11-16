@@ -2,15 +2,17 @@ package com.growatt.shinetools.module.localbox.tlx;
 
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.TlxToolBaseActivity;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
-import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
+import com.growatt.shinetools.module.localbox.max.base.BaseMaxToolActivity;
+import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
-import com.growatt.shinetools.module.localbox.mintool.TLXToolConfigActivity;
-import com.growatt.shinetools.module.localbox.mintool.TLXToolParamSetActivity;
+import com.growatt.shinetools.module.localbox.tlx.config.TLXSystemSettingActivity;
+import com.growatt.shinetools.module.localbox.tlx.config.TlxBasicSettingActivity;
+import com.growatt.shinetools.module.localbox.tlxh.config.TLXHQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
+import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 
-public class TLXTLEToolActivity  extends TlxToolBaseActivity {
+public class TLXTLEToolActivity  extends BaseMaxToolActivity {
 
     @Override
     public void initStatusRes() {
@@ -33,28 +35,24 @@ public class TLXTLEToolActivity  extends TlxToolBaseActivity {
     }
 
     @Override
+    public boolean initIsUpstream() {
+        return true;
+    }
+
+    @Override
     public void initEleRes() {
         eleTitles = new String[]{
-                getString(R.string.android_key2019) + "\n" + "(kWh)"
+                getString(R.string.android_key2019) + "\n" + "(kWh)",
+                getString(R.string.m320功率) + "\n(W)",
         };
 
 
         eleResId = new int[]{
-                R.drawable.tlxh_ele_fadian
+                R.drawable.tlxh_ele_fadian, R.drawable.ele_power,
         };
     }
 
-    @Override
-    public void initPowerRes() {
-        powerTitles = new String[]{
-                getString(R.string.android_key1993),
-                getString(R.string.额定功率),
 
-        };
-        powerResId = new int[]{
-                R.drawable.tlxh_power_dangqian, R.drawable.tlxh_power_eding,
-        };
-    }
 
     @Override
     public void initDeviceType() {
@@ -69,15 +67,16 @@ public class TLXTLEToolActivity  extends TlxToolBaseActivity {
 
     @Override
     public void initSetDataArray() {
+        //快速设置   系统设置   基本设置   参数设置   智能检测   高级设置   设备信息
         title = new String[]{
-                getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
-                , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
-                , getString(R.string.m286高级设置), getString(R.string.m291设备信息)
+                getString(R.string.快速设置), getString(R.string.系统设置), getString(R.string.basic_setting)
+                , getString(R.string.android_key352), getString(R.string.android_key625), getString(R.string.android_key626)
+                , getString(R.string.android_key637)
         };
         res = new int[]{
                 R.drawable.quickly, R.drawable.system_config, R.drawable.city_code,
-                R.drawable.charge_manager, R.drawable.smart_check, R.drawable.param_setting,
-                R.drawable.advan_setting, R.drawable.device_info
+                R.drawable.param_setting, R.drawable.smart_check, R.drawable.advan_setting,
+                R.drawable.device_info
         };
     }
 
@@ -86,22 +85,31 @@ public class TLXTLEToolActivity  extends TlxToolBaseActivity {
         UsToolParamBean item = usParamsetAdapter.getItem(position);
         final String title = item.getTitle();
         final Class clazz;
-        switch (position){
-            case 0:
-                clazz = null;
+
+        switch (position) {
+            case 0://快速设置
+                clazz = TLXHQuickSettingActivity.class;
                 break;
-            case 1:
-                clazz = TLXToolConfigActivity.class;
+            case 1://系统设置
+                clazz = TLXSystemSettingActivity.class;
                 break;
-            case 2:
-                clazz = TLXToolParamSetActivity.class;
+            case 2://基本设置
+                clazz = TlxBasicSettingActivity.class;
                 break;
-            case 3:
+            case 3://参数设置
+                clazz = MaxGridCodeSettingActivity.class;
+                break;
+            case 4://智能检测
                 clazz = MaxCheckActivity.class;
                 break;
-            case 4:
+            case 5://高级设置
                 clazz = USAdvanceSetActivity.class;
                 break;
+            case 6://设备信息
+                clazz = TLXDeviceInfoActivity.class;
+                break;
+
+
             default:
                 clazz = null;
                 break;

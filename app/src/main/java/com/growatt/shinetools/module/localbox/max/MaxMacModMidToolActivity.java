@@ -15,7 +15,7 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
     @Override
     public void initStatusRes() {
         pidStatusStrs = new String[]{
-                "",getString(R.string.all_Waiting),
+                "", getString(R.string.all_Waiting),
                 getString(R.string.all_Normal),
                 getString(R.string.m故障)
         };
@@ -24,14 +24,14 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
                 getString(R.string.m226升级中), getString(R.string.m故障)
         };
 
-        statusColors=new int[]{
+        statusColors = new int[]{
                 R.color.color_status_wait,
                 R.color.color_status_grid,
                 R.color.color_status_fault,
                 R.color.color_status_upgrade
         };
 
-        drawableStatus=new int[]{
+        drawableStatus = new int[]{
                 R.drawable.circle_wait,
                 R.drawable.circle_grid,
                 R.drawable.circle_fault,
@@ -60,14 +60,28 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
 
     @Override
     public void initDeviceType() {
-        deviceType= DeviceConstant.MAX_INDEX;
+        deviceType = DeviceConstant.MAX_INDEX;
     }
 
     @Override
     public void initGetDataArray() {
-        funs=new int[][] {{3, 0, 124}, {4, 0, 99}, {4, 100, 199}, {4, 875, 999}};
-        autoFun=new int[][]{{4, 0, 124}, {4, 125, 249}, {4, 875, 999}};
-        deviceTypeFun=new int[]{3,125,249};
+        funs = new int[][]{{3, 0, 124}, {4, 0, 99}, {4, 100, 199}, {4, 875, 999}};
+        autoFun = new int[][]{{4, 0, 124}, {4, 125, 249}, {4, 875, 999}};
+        deviceTypeFun = new int[]{3, 125, 249};
+    }
+
+    @Override
+    public void initSetDataArray() {
+      res = new int[]{
+                R.drawable.quickly, R.drawable.system_config,
+                R.drawable.charge_manager, R.drawable.smart_check, R.drawable.param_setting,
+                R.drawable.advan_setting, R.drawable.device_info
+        };
+     title = new String[]{
+                getString(R.string.快速设置), getString(R.string.android_key3052), getString(R.string.basic_setting)
+                , getString(R.string.m285智能检测), getString(R.string.m284参数设置)
+                , getString(R.string.m286高级设置), getString(R.string.m291设备信息)
+        };
     }
 
     @Override
@@ -118,10 +132,6 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
     }
 
 
-
-
-
-
     @Override
     public void parserData(int count, byte[] bytes) {
         switch (count) {
@@ -144,10 +154,10 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
     public void parserMaxAuto(int count, byte[] bytes) {
         switch (count) {
             case 0:
-                RegisterParseUtil.parseMax1500V4T0T125(mMaxData,bytes);
+                RegisterParseUtil.parseMax1500V4T0T125(mMaxData, bytes);
                 break;
             case 1:
-                RegisterParseUtil.parseMax1500V4T125T250(mMaxData,bytes);
+                RegisterParseUtil.parseMax1500V4T125T250(mMaxData, bytes);
                 break;
             case 2:
                 RegisterParseUtil.parseMax04T875T999(mMaxData, bytes);
