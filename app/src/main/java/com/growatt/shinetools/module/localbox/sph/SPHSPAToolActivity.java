@@ -3,14 +3,14 @@ package com.growatt.shinetools.module.localbox.sph;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.max.MaxAdvanceSetActivity;
-import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
-import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
 import com.growatt.shinetools.module.localbox.mintool.TLXHAutoTestActivity;
+import com.growatt.shinetools.module.localbox.mix.MixToolChargeManagerActivity;
 import com.growatt.shinetools.module.localbox.sph.base.SPHSPABaseActivity;
 import com.growatt.shinetools.module.localbox.sph.config.SPASPHQuickSettingActivity;
+import com.growatt.shinetools.module.localbox.sph.config.SPHSPABasicSettingActivity;
+import com.growatt.shinetools.module.localbox.sph.config.SPHSPAGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.sph.config.SphSpaSystemSettingActivity;
-import com.growatt.shinetools.module.localbox.tlxh.config.TLXHChargeActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 
 public class SPHSPAToolActivity extends SPHSPABaseActivity {
@@ -86,7 +86,7 @@ public class SPHSPAToolActivity extends SPHSPABaseActivity {
         title = new String[]{
                 //快速设置、系统配置、市电码设置
                 getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
-                //充放电管理、智能检测、基本设置
+                //充放电管理、基本设置
                 , getString(R.string.android_key1308), getString(R.string.basic_setting)
                 //高级设置、设备信息、自动测试
                 , getString(R.string.m286高级设置), getString(R.string.m291设备信息), getString(R.string.android_key171)
@@ -111,14 +111,14 @@ public class SPHSPAToolActivity extends SPHSPABaseActivity {
             case 1://系统设置
                 clazz = SphSpaSystemSettingActivity.class;
                 break;
-            case 2://
-                clazz = MaxGridCodeSettingActivity.class;
+            case 2://市电码设置
+                clazz = SPHSPAGridCodeSettingActivity.class;
                 break;
-            case 3:
-                clazz = TLXHChargeActivity.class;
+            case 3://充放电管理
+                clazz = MixToolChargeManagerActivity.class;
                 break;
             case 4://基本设置
-                clazz = MaxBasicSettingActivity.class;
+                clazz = SPHSPABasicSettingActivity.class;
                 break;
 
             case 5://高级设置

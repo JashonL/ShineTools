@@ -14,7 +14,9 @@ public class SPHSPAConfigControl {
 
     public enum SphSpaSettingEnum {
         SPH_SPA_QUICK_SETTING,//SPH快速设置
-        SPH_SPA_SYYSTEM_SETTING//SPH系统设置
+        SPH_SPA_SYYSTEM_SETTING,//SPH系统设置
+        SPH_SPA_GRID_CODE_SETTING,//SPH市电码设置
+        SPH_SPA_BASIC_SETTING//SPH基本设置
         //------------第二层级设置--------------
 
         //------------------第三层级设置---------------------
@@ -29,6 +31,12 @@ public class SPHSPAConfigControl {
                 break;
             case SPH_SPA_SYYSTEM_SETTING:
                 list = getSphSpaSystemSetList(context);
+                break;
+            case SPH_SPA_GRID_CODE_SETTING:
+                list = getSphSpaGridCodeList(context);
+                break;
+            case SPH_SPA_BASIC_SETTING:
+                list = getSphSpaBasicSettingList(context);
                 break;
         }
         return list;
@@ -331,4 +339,218 @@ public class SPHSPAConfigControl {
     }
 
 
+    private static List<ALLSettingBean> getSphSpaGridCodeList(Context context) {
+
+        List<ALLSettingBean> list = new ArrayList<>();
+        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
+                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
+        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String[] titls = new String[]{
+                context.getString(R.string.pf_setting),
+                context.getString(R.string.频率有功),
+                context.getString(R.string.android_key2438),
+                context.getString(R.string.上升斜率),
+                context.getString(R.string.ac_voltage_protect),
+                context.getString(R.string.ac_frency_protect),
+                context.getString(R.string.并网范围),
+                context.getString(R.string.m429AC电压10分钟保护值),
+                context.getString(R.string.android_key1002),
+        };
+
+        int[] itemTypes = new int[]{
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_INPUT,
+        };
+
+        String[] register = new String[]{
+                "", "",
+                "", "",
+                "", "",
+                "", "",
+                ""
+        };
+        float[] multiples = new float[]{
+                1, 1, 0.1f, 1, 1, 0.1f, 1, 0.1f, 0.1f
+        };
+        String[] units = new String[]{"", "", "", "", "", "", "", "V", "V"
+        };
+        String[] hints = new String[]{
+                tips, "", tips, "", tips, "", tips, "", ""
+        };
+        int[][] funs = new int[][]{
+                {3, 22, 22},//PF设置
+                {3, 88, 88},//频率有功
+                {3, 8, 8},//电压无功
+                {3, 8, 8},//电源启动/重启斜率
+                {3, 8, 8},//AC电压保护
+                {4, 0, 99},//AC频率保护
+                {3, 22, 22},//并网范围
+                {3, 80, 80},//10分钟平均AC电压保护值
+                {3, 81, 81},//PV过压保护点
+        };
+        int[][] funset = new int[][]{
+                {6, 22, 0},//PF设置
+                {6, 88, 0},//频率有功
+                {6, 8, 0},//电压无功
+                {6, 8, 0},//电源启动/重启斜率
+                {6, 8, 0},//AC电压保护
+                {6, 0, 0},//AC频率保护
+                {6, 22, 0},//并网范围
+                {6, 80, -1},//10分钟平均AC电压保护值
+                {6, 81, -1},//PV过压保护点
+        };
+
+        String[][] items = new String[][]{
+                {},//PF设置
+                {},//频率有功
+                {},//电压无功
+                {},//电源启动/重启斜率
+                {},//AC电压保护
+                {},//AC频率保护
+                {},//并网范围
+                {},//10分钟平均AC电压保护值
+                {},//PV过压保护点
+        };
+        int[][] doubleFunset = new int[][]{
+                {6, 7147, -1}, {6, 7148, -1}
+
+        };
+        int[][][] threeFunset = new int[][][]{
+                {{6, 2, 1}, {6, 3, -1}},//有功功率百分比设置
+                {{6, 233, -1}, {6, 234, -1}}//检查固件
+        };
+        for (int i = 0; i < titls.length; i++) {
+            ALLSettingBean bean = new ALLSettingBean();
+            bean.setTitle(titls[i]);
+            bean.setItemType(itemTypes[i]);
+            bean.setRegister(register[i]);
+            bean.setUnit(units[i]);
+            bean.setFuns(funs[i]);
+            bean.setFunSet(funset[i]);
+            bean.setItems(items[i]);
+            bean.setHint(hints[i]);
+            bean.setDoubleFunset(doubleFunset);
+            bean.setThreeFunSet(threeFunset);
+            bean.setMul(multiples[i]);
+            list.add(bean);
+        }
+        return list;
+    }
+
+    private static List<ALLSettingBean> getSphSpaBasicSettingList(Context context) {
+
+        List<ALLSettingBean> list = new ArrayList<>();
+        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
+                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
+        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String[] titls = new String[]{
+                context.getString(R.string.m404选择通信波特率),
+                context.getString(R.string.m431Modbus版本),
+                context.getString(R.string.m403PV电压),
+                context.getString(R.string.m435逆变器模块),
+                context.getString(R.string.m436逆变器经纬度),
+                context.getString(R.string.修改总发电量),
+                context.getString(R.string.android_key828),
+
+                context.getString(R.string.清除历史数据),
+                context.getString(R.string.android_key1415)
+
+        };
+
+        int[] itemTypes = new int[]{
+                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_ONLYREAD,
+                UsSettingConstant.SETTING_TYPE_ONLYREAD,
+                UsSettingConstant.SETTING_TYPE_ONLYREAD,
+                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_NEXT,
+
+                UsSettingConstant.SETTING_TYPE_SELECT,//清除历史数据
+                UsSettingConstant.SETTING_TYPE_SELECT,//恢复出厂设置
+        };
+
+        String[] register = new String[]{
+                "", "",
+                "", "",
+                "", "",
+                "","",""
+        };
+        float[] multiples = new float[]{
+                1, 1, 0.1f, 1, 1, 0.1f, 1,1,1
+        };
+        String[] units = new String[]{"", "", "", "", "", "kWh", ""
+        };
+        String[] hints = new String[]{
+                tips, "", tips, "", tips, "", tips
+        };
+        int[][] funs = new int[][]{
+                {3, 22, 22},//选择通信波特率
+                {3, 88, 88},//MODBUS版本
+                {3, 8, 8},//PV电压
+                {3, 8, 8},//逆变器模块
+                {3, 8, 8},//逆变器经纬度
+                {4, 0, 99},//修改总发电量
+                {3, 22, 22},//设置Model
+
+                {4, 32, 32},//清除历史数据
+                {3, 33, 33},//恢复出厂设置
+        };
+        int[][] funset = new int[][]{
+                {6, 22, 0},
+                {6, 88, 1},
+                {6, 8, -1},
+                {6, 2, 1},
+                {6, 3, -1},
+                {6, 7147, 1},
+                {6, 3, -1},
+
+                {6, 32, 32},//清除历史数据
+                {6, 33, 33},//恢复出厂设置
+        };
+
+        String[][] items = new String[][]{
+                {"9600bps", "38400bps", "115200bps"},//选择通信波特率
+                {},//MODBUS版本
+                {},//PV电压
+                {},//逆变器模块
+                {},//逆变器经纬度
+                {},//修改总发电量
+                {},//设置Model
+
+                {},//清除历史数据
+                {},//恢复出厂设置
+        };
+        int[][] doubleFunset = new int[][]{
+                {6, 7147, -1}, {6, 7148, -1}
+
+        };
+        int[][][] threeFunset = new int[][][]{
+                {{6, 2, 1}, {6, 3, -1}},//有功功率百分比设置
+                {{6, 233, -1}, {6, 234, -1}}//检查固件
+        };
+        for (int i = 0; i < titls.length; i++) {
+            ALLSettingBean bean = new ALLSettingBean();
+            bean.setTitle(titls[i]);
+            bean.setItemType(itemTypes[i]);
+            bean.setRegister(register[i]);
+            bean.setUnit(units[i]);
+            bean.setFuns(funs[i]);
+            bean.setFunSet(funset[i]);
+            bean.setItems(items[i]);
+            bean.setHint(hints[i]);
+            bean.setDoubleFunset(doubleFunset);
+            bean.setThreeFunSet(threeFunset);
+            bean.setMul(multiples[i]);
+            list.add(bean);
+        }
+        return list;
+    }
 }
