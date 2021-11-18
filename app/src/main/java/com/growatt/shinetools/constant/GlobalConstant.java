@@ -25,7 +25,8 @@ public class GlobalConstant {
     //记录登录用户的类型
     public static final String KEY_USER_TYPE = "key_user_type";
     //使用手册
-    public static final String web_url = "http://oss.growatt.com:80/common/knowledgeShareH5No?lang=cn&type=";
+    public static final String web_url_cn = "http://oss.growatt.com:80/common/knowledgeShareH5No?lang=cn&type=";
+    public static final String web_url_en = "http://oss.growatt.com:80/common/knowledgeShareH5No?lang=en&type=";
     public final static String MAX_PWD = "max_password";
 
     //扫码结果

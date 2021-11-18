@@ -102,8 +102,13 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_mode_setting:
+                int language = getLanguage();
+                String url=GlobalConstant.web_url_en;
+                if (language==0){
+                    url= GlobalConstant.web_url_cn;
+                }
                 Intent intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra(WebViewActivity.WEB_URL, GlobalConstant.web_url);
+                intent.putExtra(WebViewActivity.WEB_URL, url);
                 startActivity(intent);
                 break;
         }
