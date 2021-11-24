@@ -72,6 +72,69 @@ public class SocketManager {
     }
 
 
+
+
+    /**
+     * 根据命令以及起始寄存器发送查询命令
+     *
+     * @return：返回发送的字节数组
+     */
+    public byte[] sendMsg17(int fun,int subfun, byte[] values) {
+        Mydialog.Show(mContext);
+        if (mClientUtil != null) {
+            byte[] sendBytes = ModbusUtil.sendMsg17(fun, subfun, values);
+            mClientUtil.sendMsg(sendBytes);
+            return sendBytes;
+        } else {
+            Mydialog.Dismiss();
+            MyToastUtils.toast(R.string.android_key3129);
+            return null;
+        }
+    }
+
+
+
+
+    /**
+     * 根据命令以及起始寄存器发送查询命令
+     *
+     * @return：返回发送的字节数组
+     */
+    public byte[] sendMsg1705(int fun,int subfun,int num, byte[] values) {
+        Mydialog.Show(mContext);
+        if (mClientUtil != null) {
+            byte[] sendBytes = ModbusUtil.sendMsg1705(fun, subfun,num, values);
+            mClientUtil.sendMsg(sendBytes);
+            return sendBytes;
+        } else {
+            Mydialog.Dismiss();
+            MyToastUtils.toast(R.string.android_key3129);
+            return null;
+        }
+    }
+
+
+
+    /**
+     * 发送查询进度指令
+     *
+     * @return：返回发送的字节数组
+     */
+    public byte[] sendMsgCheckProgress(int fun,int cmd,int data) {
+        Mydialog.Show(mContext);
+        if (mClientUtil != null) {
+            byte[] sendBytes = ModbusUtil.sendMsgProgress( fun, cmd, data);
+            mClientUtil.sendMsg(sendBytes);
+            return sendBytes;
+        } else {
+            Mydialog.Dismiss();
+            MyToastUtils.toast(R.string.android_key3129);
+            return null;
+        }
+    }
+
+
+
     /**
      * 根据命令以及起始寄存器发送查询命令
      *

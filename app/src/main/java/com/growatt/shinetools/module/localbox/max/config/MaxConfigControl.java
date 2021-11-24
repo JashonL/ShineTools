@@ -376,7 +376,7 @@ public class MaxConfigControl {
                 "",
                 ""
         };
-        String[] hints = new String[]{tips, tips, tips, tips, tips1};
+        String[] hints = new String[]{tips, tips, tips, tips1, tips1};
         int[][] funs = new int[][]{
                 {3, 544, 544}, {3, 545, 545}, {3, 546, 546}, {3, 547, 547}, {3, 0, 0}
         };
@@ -408,9 +408,8 @@ public class MaxConfigControl {
 
     private static List<ALLSettingBean> getMaxSystemSetList(Context context) {
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = "";
+        String tips1 = "";
         String[] titls = new String[]{
                 context.getString(R.string.m396开关逆变器),
                 context.getString(R.string.m397安规功能使能),
@@ -535,8 +534,7 @@ public class MaxConfigControl {
 
     private static List<ALLSettingBean> getMaxActivePowerList(Context context) {
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
+        String tips = "";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
         String[] titls = new String[]{
                 context.getString(R.string.m398有功功率百分比),
@@ -601,9 +599,8 @@ public class MaxConfigControl {
     private static List<ALLSettingBean> getMaxBasicSettingList(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips ="";
+        String tips1 ="";
         String[] titls = new String[]{
                 context.getString(R.string.m404选择通信波特率),
                 context.getString(R.string.m431Modbus版本),
@@ -696,9 +693,7 @@ public class MaxConfigControl {
     private static List<ALLSettingBean> getMaxGridCodeSettingList(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = "";
         String[] titls = new String[]{
                 context.getString(R.string.pf_setting),
                 context.getString(R.string.频率有功),
@@ -802,9 +797,8 @@ public class MaxConfigControl {
     private static List<ALLSettingBean> getMaxGridSecondPfSettingList(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips =context.getString(R.string.android_key3048) + ":"+ " -1~-0.8,0.8~1";
+        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~60%";
         String[] titls = new String[]{
                 context.getString(R.string.android_key926),//运行PF为1
                 context.getString(R.string.m399感性载率),//感性载率
@@ -842,7 +836,7 @@ public class MaxConfigControl {
         String[] units = new String[]{"", "", "", "", "", "", "", "V", "V"
         };
         String[] hints = new String[]{
-                tips, "", tips, "", tips, "", tips, "", ""
+                "", tips1, tips1, tips, tips, "", "", "", ""
         };
         int[][] funs = new int[][]{
                 {3, 89, 89},//运行PF为1
@@ -914,9 +908,8 @@ public class MaxConfigControl {
     private static List<ALLSettingBean> getMaxFrencyWattSettingList(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = "";
+        String tips1 = "";
         String[] titls = new String[]{
                 context.getString(R.string.m406过频降额起点),//过频降额起点
                 context.getString(R.string.m407频率负载限制率),//恢复加载斜率
@@ -1000,9 +993,9 @@ public class MaxConfigControl {
     private static List<ALLSettingBean> getMaxVoltageSettingList(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = context.getString(R.string.android_key3048) + ":" + "0.85Vn~1.2Vn";
+        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~100%";
+        String tips2 = context.getString(R.string.android_key3048) + ":" + "0~20s";
         String[] titls = new String[]{
                 context.getString(R.string.m381Qv切入高压),//m381Qv切入高压
                 context.getString(R.string.m382Qv切出高压),//m382Qv切出高压
@@ -1039,9 +1032,9 @@ public class MaxConfigControl {
                 "", ""
         };
         String[] hints = new String[]{
-                tips, "", tips,
-                tips, "", tips,
-                tips, ""
+                tips, tips, tips,
+                tips, tips1, tips1,
+                tips1, tips2
         };
         int[][] funs = new int[][]{
                 {3, 93, 93},//m381Qv切入高压
@@ -1113,9 +1106,7 @@ public class MaxConfigControl {
     private static List<ALLSettingBean> getThirdInductiveReactiveSettingList(Context context, MaxSettingEnum
             maxSettingEnum) {
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = "";
         String[] titls = new String[]{
                 context.getString(R.string.m399感性载率),//感性载率
                 context.getString(R.string.m377记忆使能),//记忆使能
@@ -1201,8 +1192,7 @@ public class MaxConfigControl {
     private static List<ALLSettingBean> getCapacitivePf(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
+        String tips = "";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
         String[] titls = new String[]{
                 context.getString(R.string.m401容性PF),//感性载率
@@ -1274,9 +1264,8 @@ public class MaxConfigControl {
     private static List<ALLSettingBean> getCuveInouTVAC(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = context.getString(R.string.android_key3048) + ":" + "231~241V";
+        String tips2 = context.getString(R.string.android_key3048) + ":" + "220~230V";
         String[] titls = new String[]{
                 context.getString(R.string.m387无功曲线切入电压),//无功曲线切入电压
                 context.getString(R.string.m388无功曲线切出电压),//无功曲线切出电压
@@ -1295,7 +1284,7 @@ public class MaxConfigControl {
         };
         String[] units = new String[]{"V", "V"};
         String[] hints = new String[]{
-                tips, ""
+                tips, tips2
         };
         int[][] funs = new int[][]{
                 {3, 99, 100},//无功曲线切入电压
@@ -1346,9 +1335,7 @@ public class MaxConfigControl {
     private static List<ALLSettingBean> getPfCalibaFactor(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = context.getString(R.string.android_key3048) + ":" + "0.9~1.1";
         String[] titls = new String[]{
                 context.getString(R.string.m390PF调整值) + 1,//PF校准系数1
                 context.getString(R.string.m390PF调整值) + 2,//PF校准系数2
@@ -1439,9 +1426,7 @@ public class MaxConfigControl {
 
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = context.getString(R.string.android_key3048) + ":" + "0~100%";
         String[] titls = new String[]{
                 context.getString(R.string.m391PF限制负载百分比点) + 1,//PF限制负载百分比点
                 context.getString(R.string.m391PF限制负载百分比点) + 2,//PF限制负载百分比点
@@ -1464,7 +1449,7 @@ public class MaxConfigControl {
         };
         String[] units = new String[]{"", "", "", ""};
         String[] hints = new String[]{
-                tips, "", tips, ""
+                tips, tips, tips, tips
         };
         int[][] funs = new int[][]{
                 {3, 110, 116},//PF限制负载百分比点
@@ -1523,9 +1508,7 @@ public class MaxConfigControl {
 
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = context.getString(R.string.android_key3048) + ":" + " -1~-0.8,0.8~1";
         String[] titls = new String[]{
                 context.getString(R.string.m392PF限制功率因数) + 1,//PF限值
                 context.getString(R.string.m392PF限制功率因数) + 2,//PF限值
@@ -1548,7 +1531,7 @@ public class MaxConfigControl {
         };
         String[] units = new String[]{"", "", "", ""};
         String[] hints = new String[]{
-                tips, "", tips, ""
+                tips, tips, tips, tips
         };
         int[][] funs = new int[][]{
                 {3, 111, 117},//PF限值
@@ -1608,9 +1591,7 @@ public class MaxConfigControl {
 
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = context.getString(R.string.android_key3048) + ":" + "1%~6000%Pn/min";
         String[] titls = new String[]{
                 context.getString(R.string.android_key843),//加载斜率
                 context.getString(R.string.android_key846),//重启斜率
@@ -1629,7 +1610,7 @@ public class MaxConfigControl {
         };
         String[] units = new String[]{"%", "%"};
         String[] hints = new String[]{
-                tips, ""
+                tips, tips
         };
         int[][] funs = new int[][]{
                 {3, 20, 21},//加载斜率
@@ -1683,9 +1664,9 @@ public class MaxConfigControl {
 
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = context.getString(R.string.android_key3048) + ":" + "0.3Vn~0.9Vn";
+        String tips1 = context.getString(R.string.android_key3048) + ":" + "1.05Vn~1.5Vn";
+        String tips2 = context.getString(R.string.android_key3048) + ":" + "20ms~1min";
         String[] titls = new String[]{
                  "AC1 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m373低),
                 "AC1 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m372高)
@@ -1727,7 +1708,7 @@ public class MaxConfigControl {
         };
         String[] units = new String[]{"", "", "", "", "", "", "", "", "", "", "", "", ""};
         String[] hints = new String[]{
-                tips, "", tips, "", tips, "", "", "", tips, "", "", ""
+                tips, tips1, tips, tips1, tips, tips1, tips2, tips2, tips2, tips2, tips2, tips2
         };
         int[][] funs = new int[][]{
                 {3, 52, 52},//AC1限制电压低
@@ -1811,9 +1792,9 @@ public class MaxConfigControl {
 
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = context.getString(R.string.android_key3048) + ":" + "45~50Hz";
+        String tips1 = context.getString(R.string.android_key3048) + ":" + "50~55Hz";
+        String tips2 = context.getString(R.string.android_key3048) + ":" + "20ms~10min";
         String[] titls = new String[]{
                 "AC1 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m373低),
                 "AC1 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m372高)
@@ -1854,7 +1835,7 @@ public class MaxConfigControl {
         };
         String[] units = new String[]{"", "", "", "", "", "", "", "", "","","","",""};
         String[] hints = new String[]{
-                tips, "", tips, "", tips, "", "", "", tips, "", "", ""
+                tips, tips1, tips, tips1, tips, tips1, tips2, tips2, tips2, tips2, tips2, tips2
         };
         int[][] funs = new int[][]{
                 {3, 54, 54},//AC1频率限制低
@@ -1940,9 +1921,8 @@ public class MaxConfigControl {
 
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = "0.3Vn~0.9Vn";
+        String tips1 = context.getString(R.string.android_key3048) + ":" + "1.05Vn~1.5Vn";
         String[] titls = new String[]{
                 context.getString(R.string.m424启动电压),//并网电压
                 context.getString(R.string.m425启动时间),//并网时间
@@ -1972,7 +1952,7 @@ public class MaxConfigControl {
         };
         String[] units = new String[]{"", "", "", "", "", "", ""};
         String[] hints = new String[]{
-                tips, "", tips, "", tips, "", ""
+                "", "", "", tips, tips1, tips, tips1
         };
         int[][] funs = new int[][]{
                 {3, 17, 17},//并网电压

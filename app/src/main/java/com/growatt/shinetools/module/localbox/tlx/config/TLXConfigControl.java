@@ -225,8 +225,7 @@ public class TLXConfigControl {
     private static List<ALLSettingBean> getTlxBasicSettingList(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
+        String tips = "";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
         String[] titls = new String[]{
                 context.getString(R.string.m404选择通信波特率),

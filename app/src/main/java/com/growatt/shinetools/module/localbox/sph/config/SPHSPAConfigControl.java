@@ -342,9 +342,7 @@ public class SPHSPAConfigControl {
     private static List<ALLSettingBean> getSphSpaGridCodeList(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0~65000" + "(" + context.getString(R.string.AFCI阈值) + 1
-                + "<" + context.getString(R.string.AFCI阈值) + 2 + "<" + context.getString(R.string.AFCI阈值) + 3 + ")";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
+        String tips = "0.9Vn~1.08Vn";
         String[] titls = new String[]{
                 context.getString(R.string.pf_setting),
                 context.getString(R.string.频率有功),

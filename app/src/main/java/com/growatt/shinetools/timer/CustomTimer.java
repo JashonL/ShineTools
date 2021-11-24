@@ -1,9 +1,6 @@
-package com.growatt.shinetools.utils;
+package com.growatt.shinetools.timer;
 
 import android.os.Message;
-
-import com.growatt.shinetools.handler.NoLeakHandler;
-import com.growatt.shinetools.listeners.BaseHandlerCallBack;
 
 import java.util.Timer;
 import java.util.TimerTask;

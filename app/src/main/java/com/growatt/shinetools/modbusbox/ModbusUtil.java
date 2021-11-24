@@ -2,13 +2,13 @@ package com.growatt.shinetools.modbusbox;
 
 import android.text.TextUtils;
 
-
 import com.growatt.shinetools.modbusbox.bean.CommandRequest17;
 import com.growatt.shinetools.modbusbox.bean.ModbusQueryBean;
+import com.growatt.shinetools.modbusbox.bean.ModbusQueryBean17;
 import com.growatt.shinetools.modbusbox.bean.ModbusQueryOldInvBean;
+import com.growatt.shinetools.module.inverterUpdata.ModbusCheckProgreesBean;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.Log;
-
 
 import java.util.Arrays;
 
@@ -50,6 +50,80 @@ public class ModbusUtil {
         }
         return numBytes;
     }
+
+
+
+
+    /**
+     * 适用于功能码17
+     * @param fun：功能码
+     * @param subfun：子功能码
+     * @param values：数据
+     * @return
+     */
+    public static byte[] sendMsg17(int fun,int subfun, byte[] values) {
+        //modbus协议封装
+        byte[] modbytes = modbusPro17(fun, subfun, values);
+        //数服协议封装
+        byte[] numBytes = new byte[0];
+        try {
+            numBytes = numberServerPro(modbytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return numBytes;
+    }
+
+
+
+
+    /**
+     * 发送升级进度查询
+     * @param fun：功能码
+     * @param cmd：指令
+     * @param data：数据
+     * @return
+     */
+    public static byte[] sendMsgProgress(int fun,int cmd,int data) {
+        //modbus协议封装
+        byte[] modbytes = modbusProgress(fun, cmd, data);
+        //数服协议封装
+        byte[] numBytes = new byte[0];
+        try {
+            numBytes = numberServerPro(modbytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return numBytes;
+    }
+
+
+
+
+
+    /**
+     * 适用于功能码17
+     * @param fun：功能码
+     * @param subfun：子功能码
+     * @param values：数据
+     * @return
+     */
+    public static byte[] sendMsg1705(int fun,int subfun,int num, byte[] values) {
+        //modbus协议封装
+        byte[] modbytes = modbusPro1705(fun, subfun,num, values);
+        //数服协议封装
+        byte[] numBytes = new byte[0];
+        try {
+            numBytes = numberServerPro(modbytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return numBytes;
+    }
+
+
+
+
     /**
      * 适用于功能码3、4、6
      * @param fun：功能码
@@ -156,6 +230,52 @@ public class ModbusUtil {
 
 
     }
+
+
+
+    public static byte[] modbusProgress(int fun,int cmd,int data) {
+        ModbusCheckProgreesBean mod = new ModbusCheckProgreesBean();
+//        String function = mEtCommand.getText().toString().trim();
+//        String startRegis = mEtRegisterAddress.getText().toString().trim();
+//        String dataLen = mEtLengthData.getText().toString().trim();
+        //功能码
+        String function = isLenOne(fun);
+        mod.setFunCode(MyByte.hexStringToByte(function));
+        //命令
+        String startRegis = isLenOne(cmd);
+        byte[] startBytes = MyByte.hexStringToBytes(startRegis);
+        if (startBytes != null && startBytes.length > 0) {
+            if (startBytes.length > 1) {
+                mod.setCmd_H(startBytes[0]);
+                mod.setCmd_L(startBytes[1]);
+            } else {
+                mod.setCmd_L(startBytes[0]);
+            }
+        }
+        //数据
+        String dataLen = isLenOne(data);
+        byte[] regLenBytes = MyByte.hexStringToBytes(dataLen);
+        if (regLenBytes != null && regLenBytes.length > 0) {
+            if (regLenBytes.length > 1) {
+                mod.setDataLen_H(regLenBytes[0]);
+                mod.setDataLen_L(regLenBytes[1]);
+            } else {
+                mod.setDataLen_L(regLenBytes[0]);
+            }
+        }
+        //获取crc之外modbus数据
+        byte[] datas = mod.getBytes();
+        //获取crc效验
+        int crc = CRC16.calcCrc16(datas);
+        byte[] crcBytes = MyByte.hexStringToBytes(String.format("%04x", crc));
+        //设置crc
+        mod.setCrc_H(crcBytes[1]);
+        mod.setCrc_L(crcBytes[0]);
+        //返回整个modbus数据，包含crc校验
+        return mod.getBytesCRC();
+    }
+
+
 
     public static byte[] modbusPro(int fun, int start, int end) {
         ModbusQueryBean mod = new ModbusQueryBean();
@@ -379,6 +499,110 @@ public class ModbusUtil {
         //返回整个modbus数据，包含crc校验
         return mod.getBytesCRC10();
     }
+
+
+
+
+    public static byte[] modbusPro17(int fun,int subfun, byte[] values) {
+        if (values==null)return null;
+
+        ModbusQueryBean17 mod=new ModbusQueryBean17();
+        //功能码
+        String function = isLenOne(fun);
+        mod.setFunCode(MyByte.hexStringToByte(function));
+        //子功能码
+        String subfunction = isLenOne(subfun);
+        mod.setSubFunCode(MyByte.hexStringToByte(subfunction));
+        //数据长度
+        int length = values.length;
+        String lenRegis = isLenOne(length);
+        byte[] lenBytes = MyByte.hexStringToBytes(lenRegis);
+
+        if (lenBytes != null && lenBytes.length > 0) {
+            if (lenBytes.length > 1) {
+                mod.setDataLen_H(lenBytes[0]);
+                mod.setDataLen_L(lenBytes[1]);
+            } else {
+                mod.setDataLen_L(lenBytes[0]);
+            }
+        }
+
+
+        //数据
+        mod.setValues(values);
+
+        //CRC
+        //获取crc之外modbus数据
+        byte[] datas = mod.getBytes();
+        //获取crc效验
+        int crc = CRC16.calcCrc16(datas);
+        byte[] crcBytes = MyByte.hexStringToBytes(String.format("%04x", crc));
+        //设置crc
+        mod.setCrc_H(crcBytes[1]);
+        mod.setCrc_L(crcBytes[0]);
+        //返回整个modbus数据，包含crc校验
+        return mod.getBytesCRC();
+    }
+
+
+
+
+
+
+    public static byte[] modbusPro1705(int fun,int subfun,int num, byte[] values) {
+        if (values==null)return null;
+
+        ModbusQueryBean17 mod=new ModbusQueryBean17();
+        //功能码
+        String function = isLenOne(fun);
+        mod.setFunCode(MyByte.hexStringToByte(function));
+        //子功能码
+        String subfunction = isLenOne(subfun);
+        mod.setSubFunCode(MyByte.hexStringToByte(subfunction));
+        //数据长度
+        int length = values.length;
+        String lenRegis = isLenOne(length);
+        byte[] lenBytes = MyByte.hexStringToBytes(lenRegis);
+
+        if (lenBytes != null && lenBytes.length > 0) {
+            if (lenBytes.length > 1) {
+                mod.setDataLen_H(lenBytes[0]);
+                mod.setDataLen_L(lenBytes[1]);
+            } else {
+                mod.setDataLen_L(lenBytes[0]);
+            }
+        }
+
+        //数据编号
+        String numRegis = isLenOne(num);
+        byte[] numBytes = MyByte.hexStringToBytes(numRegis);
+        if (numBytes != null && numBytes.length > 0) {
+            if (numBytes.length > 1) {
+                mod.setDataNum_H(numBytes[0]);
+                mod.setDataNum_L(numBytes[1]);
+            } else {
+                mod.setDataNum_L(numBytes[0]);
+            }
+        }
+
+
+        //数据
+        mod.setValues(values);
+
+        //CRC
+        //获取crc之外modbus数据
+        byte[] datas = mod.getDataNumBytes();
+        //获取crc效验
+        int crc = CRC16.calcCrc16(datas);
+        byte[] crcBytes = MyByte.hexStringToBytes(String.format("%04x", crc));
+        //设置crc
+        mod.setCrc_H(crcBytes[1]);
+        mod.setCrc_L(crcBytes[0]);
+        //返回整个modbus数据，包含crc校验
+        return mod.getDataNumBytesCRC();
+    }
+
+
 
     /**
      * 10进制转16

@@ -1,9 +1,7 @@
-package com.growatt.shinetools.handler;
+package com.growatt.shinetools.timer;
 
 import android.os.Handler;
 import android.os.Message;
-
-import com.growatt.shinetools.listeners.BaseHandlerCallBack;
 
 import java.lang.ref.WeakReference;
 

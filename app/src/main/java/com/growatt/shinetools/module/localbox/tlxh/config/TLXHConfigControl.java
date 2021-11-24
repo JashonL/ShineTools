@@ -17,25 +17,12 @@ public class TLXHConfigControl {
         TLXH_DRY_CONTACT,//干接点设置
         TLXH_CHARGE_MANAGER,//充放电管理
         MAX_BASIC_SETTING,//基本设置
-        MAX_GRID_CODE_PARAMETERS_SETTING,//安规参数设置
-        MAX_ACTIVE0POWER_SETTING,//有功功率设置
+
+
         //------------第二层级设置--------------
-        MAX_GRID_SECOND_PF_SETTING,//pf设置
-        MAX_GRID_SECOND_FRENCY_WATT_SETTING,//频率有功
-        MAX_GRID_SECOND_VOLTAGE_SETTING,//电压无功
-        MAX_GRID_SECOND_POWERE_START_SETTING,//电源启动重启斜率
-        MAX_GRID_SECOND_AC_VOLTAGE_PROTECT,//AC电压保护
-        MAX_GRID_SECOND_AC_FRENCY_PROTECT,//AC频率保护
-        MAX_GRID_SECOND_SYNCHORNIZATION_RANGE,//并网范围
+
         //------------------第三层级设置---------------------
-        MAX_GRID_THIRE_INDUCTIVE_REACTIVE_POWER,//感性载率
-        MAX_GRID_THIRE_CAPACITIVE_REACTIVE_POWER,//容性载率
-        MAX_GRID_THIRE_CAPACITIVE_PF,//容性PF
-        MAX_GRID_THIRE_INDUCTIVE_PF,//感性PF
-        MAX_GRID_THIRE_PF_CURVE_INOUT_VAC,//无功曲线切入/切出电压
-        MAX_GRID_THIRE_PF_CALIBRATION_FACTOR,//PF校准系数
-        MAX_GRID_THIRE_PF_LIMIT_POINT_OF_PF_LOAD,//PF限制负载百分比点
-        MAX_GRID_THIRE_LIMIT_POINT_OF_PF,//PF限值
+
     }
 
 
@@ -58,47 +45,6 @@ public class TLXHConfigControl {
             case TLXH_CHARGE_MANAGER:
                 list= getChargeMangerSetList(context);
                 break;
-            case MAX_GRID_CODE_PARAMETERS_SETTING:
-                break;
-            case MAX_ACTIVE0POWER_SETTING:
-                break;
-
-            case MAX_GRID_SECOND_PF_SETTING:
-                break;
-            case MAX_GRID_SECOND_FRENCY_WATT_SETTING:
-                break;
-
-            case MAX_GRID_SECOND_VOLTAGE_SETTING:
-                break;
-            case MAX_GRID_SECOND_AC_VOLTAGE_PROTECT:
-                break;
-            case MAX_GRID_SECOND_AC_FRENCY_PROTECT:
-                break;
-            case MAX_GRID_SECOND_SYNCHORNIZATION_RANGE:
-                break;
-
-            case MAX_GRID_THIRE_INDUCTIVE_REACTIVE_POWER://感性载率和容性载率一样
-            case MAX_GRID_THIRE_CAPACITIVE_REACTIVE_POWER:
-                break;
-
-            case MAX_GRID_THIRE_INDUCTIVE_PF:
-            case MAX_GRID_THIRE_CAPACITIVE_PF:
-                break;
-
-            case MAX_GRID_THIRE_PF_CURVE_INOUT_VAC:
-                break;
-
-            case MAX_GRID_THIRE_PF_CALIBRATION_FACTOR:
-                break;
-
-            case MAX_GRID_THIRE_PF_LIMIT_POINT_OF_PF_LOAD:
-                break;
-
-            case MAX_GRID_THIRE_LIMIT_POINT_OF_PF:
-                break;
-            case MAX_GRID_SECOND_POWERE_START_SETTING:
-                break;
-
         }
         return list;
     }

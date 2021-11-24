@@ -398,4 +398,21 @@ public class CommenUtils {
          return s;
      }
 
+
+
+    /**
+     * 将int转成byte[4]
+     *
+     * @param a
+     * @return
+     */
+    public static byte[] int4Byte(int a) {
+        byte[] b = new byte[4];
+        b[0] = (byte) (a >> 24);
+        b[1] = (byte) (a >> 16);
+        b[2] = (byte) (a >> 8);
+        b[3] = (byte) (a);
+        return b;
+    }
+
 }

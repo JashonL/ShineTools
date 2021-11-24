@@ -1,12 +1,8 @@
 package com.growatt.shinetools.utils.datalogupdata;
 
 import android.app.Activity;
-import android.text.TextUtils;
-
 
 import com.growatt.shinetools.modbusbox.CRC16;
-
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -129,6 +125,85 @@ public class UpdateDatalogUtils {
      * @return
      * @throws IOException
      */
+    public static List<ByteBuffer> getFileByte(String filePath) throws IOException {
+        UPDATE_FILE.clear();
+        // 从手机本地获取文件
+        File file = new File(filePath);
+        // 1.定义变量
+        List<ByteBuffer> byteBufferList = new ArrayList<ByteBuffer>();
+        FileInputStream fis = null;
+        FileChannel channel = null;
+        MappedByteBuffer mbb = null;
+        try {
+            fis = new FileInputStream(file);
+            channel = fis.getChannel();
+            // 2.读取文件到ByteBuffer
+            mbb = channel.map(FileChannel.MapMode.READ_ONLY, 0, file.length());
+            System.out.println(".....................文件总长度:" + file.length());
+            // 3.将文件转换成byte[]形式
+            byte fileByte[] = new byte[(int) file.length()];
+            int ind = 0;
+            while (mbb.hasRemaining()) {
+                fileByte[ind++] = mbb.get(); // 读取数据
+            }
+            // 4.获取整个文件的CRC32（后期检验用）放在第一包
+            byte[] crc32 = crc32(fileByte);
+            ByteBuffer branchBuf1 = ByteBuffer.allocate(crc32.length);
+            branchBuf1.put(crc32, 0, crc32.length);
+            branchBuf1.flip();
+            byteBufferList.add(ByteBuffer.wrap(branchBuf1.array()));
+
+            // 5.整合文件及CRC检验码,生成新的byte数组
+      /*      byte[] newByteTemp = converData(crc32, fileByte);
+            byte[] newByte = converData(newByteTemp, crc32);*/
+            // 6.获取文件分包次数
+            int count = ((fileByte.length % INPUT_LENGTH_1024) == 0) ? (fileByte.length / INPUT_LENGTH_1024)
+                    : (fileByte.length / INPUT_LENGTH_1024 + 1);
+            System.out.println("..........................分包次数:" + count);
+            // 7.将分包后数据转为ByteBuffer添加到List中
+            for (int i = 0; i < count; i++) {
+                // 定义分包
+                ByteBuffer branchBuf = null;
+                if (i == count - 1) {
+                    int len = fileByte.length - (INPUT_LENGTH_1024 * i);
+                    branchBuf = ByteBuffer.allocate(len);
+                    branchBuf.put(fileByte, INPUT_LENGTH_1024 * i, len);
+                } else {
+                    branchBuf = ByteBuffer.allocate(INPUT_LENGTH_1024);
+                    branchBuf.put(fileByte, INPUT_LENGTH_1024 * i,
+                            INPUT_LENGTH_1024);
+                }
+                branchBuf.flip();
+                // 8.获取分包的crc16并整合分包
+         /*       byte[] branchByte = branchBuf.array();
+                byte[] branchByteCRC16 = crc16(branchByte);
+                byte[] resultByte = converData(branchByte, branchByteCRC16);
+                byteBufferList.add(ByteBuffer.wrap(resultByte));*/
+                byteBufferList.add(branchBuf);
+                System.out.println("当前是第" + i + "次添加");
+            }
+        } finally {
+            try {
+                channel.close();
+                fis.close();
+            } catch (Exception ex) {
+                System.out.println("*********************生成文件分包时出错："
+                        + ex.getMessage());
+            }
+        }
+        return byteBufferList;
+    }
+
+
+
+
+    /**
+     * 获取文件的分包，将文件按1024字节分成若干包
+     *
+     * @param filePath
+     * @return
+     * @throws IOException
+     */
     public static List<ByteBuffer> getFile2(Activity activity, String filePath) throws IOException {
         UPDATE_FILE.clear();
         // 从手机本地获取文件
@@ -211,13 +286,13 @@ public class UpdateDatalogUtils {
             branchBuf1.put(firstByte, 0, 20);
             branchBuf1.flip();
             byteBufferList.add(ByteBuffer.wrap(branchBuf1.array()));
-            //3.将剩余数据分包
+            //5.将剩余数据分包
             byte[] dataByte = Arrays.copyOfRange(fileByte, 20, fileByte.length);
-            // 4.获取文件分包次数(第一个包是20个字节)
+            // 6.获取文件分包次数(第一个包是20个字节)
             int count = (((dataByte.length) % INPUT_LENGTH_1024) == 0) ? ((dataByte.length) / INPUT_LENGTH_1024)
                     : ((dataByte.length) / INPUT_LENGTH_1024 + 1);
             System.out.println("..........................分包次数:" + count);
-            // 5.将分包后数据转为ByteBuffer添加到List中
+            // 7.将分包后数据转为ByteBuffer添加到List中
             for (int i = 0; i < count; i++) {
                 // 定义分包
                 ByteBuffer branchBuf = null;
@@ -231,7 +306,7 @@ public class UpdateDatalogUtils {
                             INPUT_LENGTH_1024);
                 }
                 branchBuf.flip();
-                // 6.获取分包封装到集合中
+                // 8.获取分包封装到集合中
                 byte[] branchByte = branchBuf.array();
                 byteBufferList.add(ByteBuffer.wrap(branchByte));
                 System.out.println("当前是第" + i + "次添加");
