@@ -3,6 +3,8 @@ package com.growatt.shinetools.utils.datalogupdata;
 import android.app.Activity;
 
 import com.growatt.shinetools.modbusbox.CRC16;
+import com.growatt.shinetools.utils.CommenUtils;
+import com.growatt.shinetools.utils.LogUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -215,6 +217,7 @@ public class UpdateDatalogUtils {
             byte[] fileByte = readStreamToByte(inputStream);
             //2.第一个包20个字节
             byte[] crc32 = crc32(fileByte);
+            LogUtil.i("文件CRC校验:"+ CommenUtils.bytesToHexString(crc32));
             ByteBuffer branchBuf1 = ByteBuffer.allocate(crc32.length);
             branchBuf1.put(crc32, 0, crc32.length);
             branchBuf1.flip();

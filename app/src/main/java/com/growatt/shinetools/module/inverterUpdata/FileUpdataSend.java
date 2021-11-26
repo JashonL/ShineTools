@@ -35,6 +35,8 @@ public class FileUpdataSend implements ConnectHandler {
     private List<File> updataFile;
     //文件切割字节数组
     private List<List<ByteBuffer>> fileData = new ArrayList<>();
+    //当前要下发的文件
+    private List<ByteBuffer> curBuffer=new ArrayList<>();
     //当前执行的步骤
     private int step = 0;
     //当前发送第几个文件
@@ -190,8 +192,7 @@ public class FileUpdataSend implements ConnectHandler {
                 sendData(fileIndex, curDataIndex);
                 break;
             case 7://发送烧录数据
-                List<ByteBuffer> byteBuffers = fileData.get(fileIndex);
-                if (curDataIndex < byteBuffers.size() - 1) {
+                if (curDataIndex < curBuffer.size() - 1) {
                     sendData(fileIndex, ++curDataIndex);
                 } else {
                     sendFinish();
@@ -245,6 +246,8 @@ public class FileUpdataSend implements ConnectHandler {
 
     //1.向02号保持寄存器写入0x01，保存波特率
     private void sendSaveComend() {
+        curBuffer=new ArrayList<>(fileData.get(fileIndex));
+        curBuffer.remove(0);//移除第一包 是CRC
         LogUtil.i("向02号保持寄存器写入0x01，保存波特率");
         updataListeners.updataStart("向02号保持寄存器写入0x01，保存波特率");
         step = 1;
@@ -278,9 +281,8 @@ public class FileUpdataSend implements ConnectHandler {
         step = 4;
 //        File file = updataFile.get(current);
 //        int len = (int) file.length();
-        List<ByteBuffer> byteBuffers = fileData.get(current);
-        int len = (byteBuffers.size() - 2) * 256;
-        ByteBuffer byteBuffer = byteBuffers.get(byteBuffers.size() - 1);
+        int len = (curBuffer.size() - 1) * 256;
+        ByteBuffer byteBuffer = curBuffer.get(curBuffer.size() - 1);
         byte[] array = byteBuffer.array();
         len += array.length;
         LogUtil.i("发送文件大小"+len);
@@ -313,8 +315,7 @@ public class FileUpdataSend implements ConnectHandler {
         LogUtil.i("发送烧录数据:"+"第"+current+"个文件"+"第"+index+"包");
         updataListeners.updataStart("发送烧录数据");
         step = 7;
-        List<ByteBuffer> byteBuffers = fileData.get(current);
-        ByteBuffer byteBuffer = byteBuffers.get(index + 1);
+        ByteBuffer byteBuffer = curBuffer.get(index);
         byte[] array = byteBuffer.array();
         manager.sendMsg1705(0x17, 0x05, index, array);
     }

@@ -545,7 +545,7 @@ public class ModbusUtil {
         //子功能码
         String subfunction = isLenOne(subfun);
         mod.setSubFunCode(MyByte.hexStringToByte(subfunction));
-        //数据长度+2CRC
+        //数据长度+2编号
         int length = values.length+2;
         String lenRegis = isLenOne(length);
         byte[] lenBytes = MyByte.hexStringToBytes(lenRegis);
