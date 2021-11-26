@@ -38,6 +38,8 @@ import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.modbusbox.bean.MaxDataBean;
 import com.growatt.shinetools.modbusbox.bean.ToolStorageDataBean;
+import com.growatt.shinetools.module.inverterUpdata.FileUpdataSend;
+import com.growatt.shinetools.module.inverterUpdata.IUpdataListeners;
 import com.growatt.shinetools.module.localbox.configtype.MainsCodeParamSetActivity;
 import com.growatt.shinetools.module.localbox.configtype.usconfig.USChargeActivity;
 import com.growatt.shinetools.module.localbox.configtype.usconfig.USParamsSettingActivity;
@@ -52,10 +54,14 @@ import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
+import com.growatt.shinetools.utils.MyToastUtils;
 import com.growatt.shinetools.utils.Mydialog;
+import com.growatt.shinetools.utils.datalogupdata.UpdateDatalogUtils;
 import com.growatt.shinetools.widget.GridDivider;
 import com.growatt.shinetools.widget.LinearDivider;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -420,13 +426,13 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         String[] title = new String[]{
                 getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
                 , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
-                , getString(R.string.m286高级设置), getString(R.string.m291设备信息)
+                , getString(R.string.m286高级设置), getString(R.string.m291设备信息),"升级"
         };
 
         int[] res = new int[]{
                 R.drawable.quickly, R.drawable.system_config, R.drawable.city_code,
                 R.drawable.charge_manager, R.drawable.smart_check, R.drawable.param_setting,
-                R.drawable.advan_setting, R.drawable.device_info
+                R.drawable.advan_setting, R.drawable.device_info, R.drawable.quickly,
         };
 
         if (user_type == END_USER||user_type==MAINTEAN_USER) {
@@ -1333,6 +1339,42 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
 
                     case 7:
                         clazz = USDeviceInfoActivity.class;
+                        break;
+
+                    case 8:
+                        try {
+                            List<ByteBuffer> fileByte1 = UpdateDatalogUtils.getFileByte2(this, "IFAB01_20200728.hex");
+                            List<ByteBuffer> fileByte2 = UpdateDatalogUtils.getFileByte2(this, "UEAA-03.hex");
+                            List<ByteBuffer> fileByte3 = UpdateDatalogUtils.getFileByte2(this, "ZACA-03.bin");
+                            List<List<ByteBuffer>>list=new ArrayList<>();
+                            list.add(fileByte1);
+                            list.add(fileByte2);
+                            list.add(fileByte3);
+                            new FileUpdataSend(this, list, new IUpdataListeners() {
+                                @Override
+                                public void updataStart(String msg) {
+                                    MyToastUtils.toast(msg);
+                                }
+
+                                @Override
+                                public void updataProgress(int total, int current, int progress) {
+
+                                }
+
+
+                                @Override
+                                public void updataFail(String msg) {
+
+                                }
+
+                                @Override
+                                public void updataEnd() {
+
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         break;
 
 

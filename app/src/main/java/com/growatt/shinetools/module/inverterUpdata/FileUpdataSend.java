@@ -15,10 +15,8 @@ import com.growatt.shinetools.timer.CustomTimer;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
-import com.growatt.shinetools.utils.datalogupdata.UpdateDatalogUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +45,11 @@ public class FileUpdataSend implements ConnectHandler {
     //定时刷新的计时器
     private CustomTimer mFreshTimer;
 
-    public FileUpdataSend(Context context, List<File> updataFile) {
+
+    private IUpdataListeners updataListeners;
+
+
+/*    public FileUpdataSend(Context context, List<File> updataFile) {
         this.updataFile = updataFile;
         this.context = context;
 
@@ -60,6 +62,16 @@ public class FileUpdataSend implements ConnectHandler {
                 e.printStackTrace();
             }
         }
+
+        //1.去连接TCP
+        connetSocket();
+    }*/
+
+
+    public FileUpdataSend(Context context, List<List<ByteBuffer>> fileData, IUpdataListeners updataListeners) {
+        this.context = context;
+        this.fileData = fileData;
+        this.updataListeners = updataListeners;
 
         //1.去连接TCP
         connetSocket();
@@ -106,6 +118,7 @@ public class FileUpdataSend implements ConnectHandler {
     @Override
     public void connectSuccess() {
         sendSaveComend();
+//        sendFile(fileIndex);
     }
 
     @Override
@@ -133,7 +146,7 @@ public class FileUpdataSend implements ConnectHandler {
 
     @Override
     public void receveByteMessage(byte[] bytes) {
-
+        updataListeners.updataStart("回应数据:" + CommenUtils.bytesToHexString(bytes));
 
         switch (step) {
             case 1://1.向02号保持寄存器写入0x01，保存波特率
@@ -153,6 +166,7 @@ public class FileUpdataSend implements ConnectHandler {
 
 
             case 3://3.当前发送文件.bin 01  .hex 00
+                updataListeners.updataStart("返回数据：" + CommenUtils.bytesToHexString(bytes));
                 boolean isCheck3 = UpdataUtils.checkReceiver0617(bytes);
                 if (isCheck3) {//检测成功，相当于设置成功
                     sendFileLength(fileIndex);
@@ -216,7 +230,7 @@ public class FileUpdataSend implements ConnectHandler {
                 }
                 break;
             case 11:
-                if (fileIndex < updataFile.size() - 1) {
+                if (fileIndex < fileData.size() - 1) {
                     fileIndex++;
                     curDataIndex = 0;
                     sendSaveComend();
@@ -232,41 +246,57 @@ public class FileUpdataSend implements ConnectHandler {
     //1.向02号保持寄存器写入0x01，保存波特率
     private void sendSaveComend() {
         LogUtil.i("向02号保持寄存器写入0x01，保存波特率");
+        updataListeners.updataStart("向02号保持寄存器写入0x01，保存波特率");
         step = 1;
-        manager.sendMsg(new int[]{6, 2, 1});
+        manager.sendMsgNoNum(new int[]{6, 2, 1});
     }
 
-    //2.送命令设置波特率
+    //2.发送命令设置波特率
     private void setBaudRate() {
         step = 2;
         LogUtil.i("送命令设置波特率");
-        manager.sendMsg(new int[]{6, 22, 1});
+        updataListeners.updataStart("向22号保持寄存器写入0x01，保存波特率");
+        updataListeners.updataStart("发送命令设置波特率");
+        manager.sendMsgNoNum(new int[]{6, 22, 1});
+
     }
 
-    //3.当前发送文件.bin 01  .hex 00
+    //3.当前发送文件.bin 01  .hex 10
     private void sendFile(int current) {
-        LogUtil.i("当前发送文件.bin 01  .hex 00:" + current);
+        LogUtil.i("当前发送文件.bin 01  .hex 10:" + current);
+        updataListeners.updataStart("当前发送文件.bin 01  .hex 10:" + current);
         step = 3;
-        manager.sendMsg(new int[]{6, 0x1f, current});
+        int data=0x01;
+        if (current!=fileData.size()-1){
+            data=0x10;
+        }
+        manager.sendMsgNoNum(new int[]{6, 0x1f, data});
     }
 
     //4.发送文件大小
     private void sendFileLength(int current) {
-        LogUtil.i("发送文件大小");
         step = 4;
-        File file = updataFile.get(current);
-        int len = (int) file.length();
+//        File file = updataFile.get(current);
+//        int len = (int) file.length();
+        List<ByteBuffer> byteBuffers = fileData.get(current);
+        int len = (byteBuffers.size() - 2) * 256;
+        ByteBuffer byteBuffer = byteBuffers.get(byteBuffers.size() - 1);
+        byte[] array = byteBuffer.array();
+        len += array.length;
+        LogUtil.i("发送文件大小"+len);
+        updataListeners.updataStart("发送文件大小" + len);
         byte[] bytes = CommenUtils.int4Byte(len);
-        manager.sendMsg17(17, 2, bytes);
+        manager.sendMsg17(0x17, 0x02, bytes);
     }
 
     //5.发送烧录文件CRC校验
     private void sendFileCRC(int current) {
         LogUtil.i("发送烧录文件CRC校验");
+        updataListeners.updataStart("发送烧录文件CRC校验");
         step = 5;
         List<ByteBuffer> byteBuffers = fileData.get(current);
         byte[] array = byteBuffers.get(0).array();
-        manager.sendMsg17(17, 3, array);
+        manager.sendMsg17(0x17, 0x03, array);
     }
 
     //6.PC发送Flash擦除指令
@@ -274,31 +304,35 @@ public class FileUpdataSend implements ConnectHandler {
         LogUtil.i("PC发送Flash擦除指令");
         step = 6;
         byte[] array = new byte[]{0x00, 0x00};
-        manager.sendMsg17(17, 4, array);
+        updataListeners.updataStart("PC发送Flash擦除指令");
+        manager.sendMsg17(0x17, 0x04, array);
     }
 
     //7.发送烧录数据
     private void sendData(int current, int index) {
-        LogUtil.i("发送烧录数据");
+        LogUtil.i("发送烧录数据:"+"第"+current+"个文件"+"第"+index+"包");
+        updataListeners.updataStart("发送烧录数据");
         step = 7;
         List<ByteBuffer> byteBuffers = fileData.get(current);
         ByteBuffer byteBuffer = byteBuffers.get(index + 1);
         byte[] array = byteBuffer.array();
-        manager.sendMsg1705(17, 5, index, array);
+        manager.sendMsg1705(0x17, 0x05, index, array);
     }
 
     //8.PC发送结束命令
     private void sendFinish() {
         LogUtil.i("PC发送结束命令");
+        updataListeners.updataStart("PC发送结束命令");
         step = 8;
         byte[] array = new byte[]{0x00, 0x00};
-        manager.sendMsg17(17, 6, array);
+        manager.sendMsg17(0x17, 0x06, array);
     }
 
 
     //9.发送查询指令
     private void check() {
         LogUtil.i("发送查询指令");
+        updataListeners.updataStart("发送查询指令");
         step = 9;
         manager.sendMsgCheckProgress(0x03, 0x1f, 0x01);
     }
@@ -306,6 +340,7 @@ public class FileUpdataSend implements ConnectHandler {
     //10.发送命令保存指令
     private void commendSave() {
         LogUtil.i("发送命令保存指令");
+        updataListeners.updataStart("发送命令保存指令");
         step = 10;
         manager.sendMsg(new int[]{6, 2, 1});
     }
@@ -314,6 +349,7 @@ public class FileUpdataSend implements ConnectHandler {
     //11.发送命令恢复波特率
     private void resRate() {
         LogUtil.i("发送命令恢复波特率");
+        updataListeners.updataStart("发送命令恢复波特率");
         step = 11;
         manager.sendMsg(new int[]{6, 22, 1});
     }

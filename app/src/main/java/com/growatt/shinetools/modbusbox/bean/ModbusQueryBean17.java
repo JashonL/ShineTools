@@ -111,7 +111,7 @@ public class ModbusQueryBean17 {
     }
 
     public byte[] getBytes(){
-        byte[] bytes = new byte[6];
+        byte[] bytes = new byte[5 + (values==null?0:values.length)];
         //逆变器地址
         bytes[0] = this.slaveAdd;
         //功能码
@@ -159,7 +159,7 @@ public class ModbusQueryBean17 {
 
 
     public byte[] getDataNumBytes(){
-        byte[] bytes = new byte[6];
+        byte[] bytes = new byte[7 + (values==null?0:values.length)];
         //逆变器地址
         bytes[0] = this.slaveAdd;
         //功能码
@@ -183,7 +183,7 @@ public class ModbusQueryBean17 {
         return bytes;
     }
     public byte[] getDataNumBytesCRC(){
-        int length = 5 + (values==null?0:values.length) + 2;
+        int length = 7 + (values==null?0:values.length) + 2;
         byte[] bytes = new byte[length];
         //逆变器地址
         bytes[0] = this.slaveAdd;

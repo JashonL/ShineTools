@@ -6,9 +6,11 @@ import com.growatt.shinetools.modbusbox.bean.CommandRequest17;
 import com.growatt.shinetools.modbusbox.bean.ModbusQueryBean;
 import com.growatt.shinetools.modbusbox.bean.ModbusQueryBean17;
 import com.growatt.shinetools.modbusbox.bean.ModbusQueryOldInvBean;
+import com.growatt.shinetools.module.inverterUpdata.CommandUpRequest;
 import com.growatt.shinetools.module.inverterUpdata.ModbusCheckProgreesBean;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.Log;
+import com.growatt.shinetools.utils.LogUtil;
 
 import java.util.Arrays;
 
@@ -54,72 +56,9 @@ public class ModbusUtil {
 
 
 
-    /**
-     * 适用于功能码17
-     * @param fun：功能码
-     * @param subfun：子功能码
-     * @param values：数据
-     * @return
-     */
-    public static byte[] sendMsg17(int fun,int subfun, byte[] values) {
-        //modbus协议封装
-        byte[] modbytes = modbusPro17(fun, subfun, values);
-        //数服协议封装
-        byte[] numBytes = new byte[0];
-        try {
-            numBytes = numberServerPro(modbytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return numBytes;
-    }
 
 
 
-
-    /**
-     * 发送升级进度查询
-     * @param fun：功能码
-     * @param cmd：指令
-     * @param data：数据
-     * @return
-     */
-    public static byte[] sendMsgProgress(int fun,int cmd,int data) {
-        //modbus协议封装
-        byte[] modbytes = modbusProgress(fun, cmd, data);
-        //数服协议封装
-        byte[] numBytes = new byte[0];
-        try {
-            numBytes = numberServerPro(modbytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return numBytes;
-    }
-
-
-
-
-
-    /**
-     * 适用于功能码17
-     * @param fun：功能码
-     * @param subfun：子功能码
-     * @param values：数据
-     * @return
-     */
-    public static byte[] sendMsg1705(int fun,int subfun,int num, byte[] values) {
-        //modbus协议封装
-        byte[] modbytes = modbusPro1705(fun, subfun,num, values);
-        //数服协议封装
-        byte[] numBytes = new byte[0];
-        try {
-            numBytes = numberServerPro(modbytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return numBytes;
-    }
 
 
 
@@ -178,6 +117,48 @@ public class ModbusUtil {
         return numBytes;
     }
 
+    public static byte[] numberServerProUpdata(byte[] modbytes) throws Exception {
+        CommandUpRequest comm = new CommandUpRequest();
+        //modbus数据长度
+        int modlen = modbytes.length;
+        //
+        int nodata = modbytes.length + 14;
+
+        byte[] modlenBytes = CommenUtils.int2Byte(modlen);
+        byte[] nodataLBytes = CommenUtils.int2Byte(nodata);
+
+        if (localDebugMode==USB_WIFI){
+            comm.setDatas(modbytes);
+            comm.setModbus_dataH(modlenBytes[0]);
+            comm.setModbus_dataL(modlenBytes[1]);
+
+            comm.setNo_dataH(nodataLBytes[0]);
+            comm.setNo_dataL(nodataLBytes[1]);
+            //获得整体发送数据
+            byte[] datas = comm.getBytes();
+            return datas;
+        }else {
+            comm.setDatas(modbytes);
+            byte[] pro =new byte[]{0x00,0x05};
+            comm.setProId(pro);
+            comm.setModbus_dataH(modlenBytes[0]);
+            comm.setModbus_dataL(modlenBytes[1]);
+
+            comm.setNo_dataH(nodataLBytes[0]);
+            comm.setNo_dataL(nodataLBytes[1]);
+            //对数据加密
+            byte[] encryptedData = DatalogApUtil.getEnCode(comm.getBytes());
+            comm.setEncryptedData(encryptedData);
+            //获取crc效验
+            int crc = CRC16.calcCrc16(encryptedData);
+            byte[] crcBytes = DatalogApUtil.int2Byte(crc);
+            comm.setCrcData(crcBytes);
+            return comm.getBytesCRC();
+        }
+    }
+
+
+
     public static byte[] numberServerPro(byte[] modbytes) throws Exception {
         CommandRequest17 comm = new CommandRequest17();
         if (localDebugMode==USB_WIFI){
@@ -203,6 +184,9 @@ public class ModbusUtil {
             return comm.getBytesCRC();
         }
     }
+
+
+
     public static byte[] numberServerProV2(byte[] modbytes) throws Exception {
         CommandRequest17 comm = new CommandRequest17();
         if (localDebugMode==USB_WIFI){
@@ -321,6 +305,7 @@ public class ModbusUtil {
         mod.setCrc_H(crcBytes[1]);
         mod.setCrc_L(crcBytes[0]);
         //返回整个modbus数据，包含crc校验
+        LogUtil.i("当前发送文件.bin 01  .hex 10:" + CommenUtils.bytesToHexString( mod.getBytesCRC()));
         return mod.getBytesCRC();
     }
     public static byte[] modbusProOldInv(int fun, int start, int end) {
@@ -541,6 +526,7 @@ public class ModbusUtil {
         mod.setCrc_H(crcBytes[1]);
         mod.setCrc_L(crcBytes[0]);
         //返回整个modbus数据，包含crc校验
+        LogUtil.i("发送文件大小的数据："+CommenUtils.bytesToHexString(mod.getBytesCRC()));
         return mod.getBytesCRC();
     }
 
@@ -559,8 +545,8 @@ public class ModbusUtil {
         //子功能码
         String subfunction = isLenOne(subfun);
         mod.setSubFunCode(MyByte.hexStringToByte(subfunction));
-        //数据长度
-        int length = values.length;
+        //数据长度+2CRC
+        int length = values.length+2;
         String lenRegis = isLenOne(length);
         byte[] lenBytes = MyByte.hexStringToBytes(lenRegis);
 

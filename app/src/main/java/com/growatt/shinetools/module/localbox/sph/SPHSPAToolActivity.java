@@ -63,7 +63,7 @@ public class SPHSPAToolActivity extends SPHSPABaseActivity {
         };
         powerResId = new int[]{
                 R.drawable.tlxh_power_dangqian,
-//                R.drawable.tlxh_power_eding,
+                R.drawable.tlxh_power_eding,
                 R.drawable.tlxh_power_chongdian,R.drawable.tlxh_power_fangdian
         };
     }

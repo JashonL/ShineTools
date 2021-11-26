@@ -6,6 +6,7 @@ import android.os.Looper;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
+import com.growatt.shinetools.module.inverterUpdata.UpdataUtils;
 import com.growatt.shinetools.utils.MyToastUtils;
 import com.growatt.shinetools.utils.Mydialog;
 
@@ -66,7 +67,7 @@ public class SocketManager {
             return sendBytes;
         } else {
             Mydialog.Dismiss();
-            MyToastUtils.toast(R.string.android_key539);
+            MyToastUtils.toast(R.string.android_key2583);
             return null;
         }
     }
@@ -82,7 +83,7 @@ public class SocketManager {
     public byte[] sendMsg17(int fun,int subfun, byte[] values) {
         Mydialog.Show(mContext);
         if (mClientUtil != null) {
-            byte[] sendBytes = ModbusUtil.sendMsg17(fun, subfun, values);
+            byte[] sendBytes = UpdataUtils.sendMsg17(fun, subfun, values);
             mClientUtil.sendMsg(sendBytes);
             return sendBytes;
         } else {
@@ -103,7 +104,7 @@ public class SocketManager {
     public byte[] sendMsg1705(int fun,int subfun,int num, byte[] values) {
         Mydialog.Show(mContext);
         if (mClientUtil != null) {
-            byte[] sendBytes = ModbusUtil.sendMsg1705(fun, subfun,num, values);
+            byte[] sendBytes = UpdataUtils.sendMsg1705(fun, subfun,num, values);
             mClientUtil.sendMsg(sendBytes);
             return sendBytes;
         } else {
@@ -123,7 +124,7 @@ public class SocketManager {
     public byte[] sendMsgCheckProgress(int fun,int cmd,int data) {
         Mydialog.Show(mContext);
         if (mClientUtil != null) {
-            byte[] sendBytes = ModbusUtil.sendMsgProgress( fun, cmd, data);
+            byte[] sendBytes = UpdataUtils.sendMsgProgress( fun, cmd, data);
             mClientUtil.sendMsg(sendBytes);
             return sendBytes;
         } else {
@@ -144,6 +145,29 @@ public class SocketManager {
     public byte[] sendMsgNoDialog(int[] sends) {
         if (mClientUtil != null) {
             byte[] sendBytes = ModbusUtil.sendMsg(sends[0], sends[1], sends[2]);
+            mClientUtil.sendMsg(sendBytes);
+            return sendBytes;
+        } else {
+            Mydialog.Dismiss();
+            MyToastUtils.toast(R.string.android_key539);
+            return null;
+        }
+    }
+
+
+
+
+    /**
+     * 不走数服协议
+     *
+     *
+     * @param sends
+     * @return：返回发送的字节数组
+     */
+    public byte[] sendMsgNoNum(int[] sends) {
+        Mydialog.Show(mContext);
+        if (mClientUtil != null) {
+            byte[] sendBytes = UpdataUtils.sendMsg(sends[0], sends[1], sends[2]);
             mClientUtil.sendMsg(sendBytes);
             return sendBytes;
         } else {

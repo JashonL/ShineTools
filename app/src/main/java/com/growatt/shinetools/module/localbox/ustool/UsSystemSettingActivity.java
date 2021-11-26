@@ -110,10 +110,10 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
         //初始化列表数据
         String[] titls = new String[]{getString(R.string.m396开关逆变器), getString(R.string.m398有功功率百分比), getString(R.string.android_key961),
                 getString(R.string.m防逆流设置), getString(R.string.android_key750), getString(R.string.android_key952), getString(R.string.android_key3111),
-                getString(R.string.AFCI功能)};
+                getString(R.string.AFCI功能),"当前版本"};
 
         String[] registers = new String[]{"", "", "",
-                "", "", "", "", ""};
+                "", "", "", "", "",""};
         //去掉 2，4
         if (user_type == END_USER) {
             titls = new String[]{getString(R.string.m396开关逆变器), getString(R.string.m398有功功率百分比),
@@ -150,6 +150,7 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
                     {3, 0, 0},//开关机0
                     {3, 399, 399},//PV输入模式
                     {3, 235, 235},//N至PE检测功能使能
+                    {4,6500,6507}
             };
 
         }
@@ -469,6 +470,11 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
                     break;
                 case 2:
                     usParamsetAdapter.getData().get(5).setValue(String.valueOf(value));
+                    break;
+                case 3:
+                    String s = MaxWifiParseUtil.obtainRegistValueAscii(MaxWifiParseUtil.subBytes125(bs, 0, 0, 7));
+                    usParamsetAdapter.getData().get(6).setValueStr(s);
+
                     break;
             }
         }

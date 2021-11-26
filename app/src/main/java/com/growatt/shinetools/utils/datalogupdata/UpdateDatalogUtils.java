@@ -37,6 +37,8 @@ public class UpdateDatalogUtils {
     public static String DOWN_FILE_PROCESS = "0%";
     // 将文件分包，每笔1024KB
     public static final int INPUT_LENGTH_1024 = 1024;
+    //将文件分包，每笔256B
+    public static final int INPUT_LENGTH_256 = 256;
 
     public static void main(String[] args) throws IOException {
         System.out
@@ -193,6 +195,68 @@ public class UpdateDatalogUtils {
         }
         return byteBufferList;
     }
+
+
+
+    /**
+     * 获取文件的分包，将文件按1024字节分成若干包
+     *
+     * @param filePath
+     * @return
+     * @throws IOException
+     */
+    public static List<ByteBuffer> getFileByte2(Activity activity, String filePath) throws IOException {
+        UPDATE_FILE.clear();
+        // 从手机本地获取文件
+        // 1.定义变量
+        List<ByteBuffer> byteBufferList = new ArrayList<ByteBuffer>();
+        try {
+            InputStream inputStream = activity.getAssets().open(filePath);
+            byte[] fileByte = readStreamToByte(inputStream);
+            //2.第一个包20个字节
+            byte[] crc32 = crc32(fileByte);
+            ByteBuffer branchBuf1 = ByteBuffer.allocate(crc32.length);
+            branchBuf1.put(crc32, 0, crc32.length);
+            branchBuf1.flip();
+            byteBufferList.add(ByteBuffer.wrap(branchBuf1.array()));
+
+            // 5.整合文件及CRC检验码,生成新的byte数组
+      /*      byte[] newByteTemp = converData(crc32, fileByte);
+            byte[] newByte = converData(newByteTemp, crc32);*/
+            // 6.获取文件分包次数
+            int count = ((fileByte.length % INPUT_LENGTH_256) == 0) ? (fileByte.length / INPUT_LENGTH_256)
+                    : (fileByte.length / INPUT_LENGTH_256 + 1);
+            System.out.println("..........................分包次数:" + count);
+            // 7.将分包后数据转为ByteBuffer添加到List中
+            for (int i = 0; i < count; i++) {
+                // 定义分包
+                ByteBuffer branchBuf = null;
+                if (i == count - 1) {
+                    int len = fileByte.length - (INPUT_LENGTH_256 * i);
+                    branchBuf = ByteBuffer.allocate(len);
+                    branchBuf.put(fileByte, INPUT_LENGTH_256 * i, len);
+                } else {
+                    branchBuf = ByteBuffer.allocate(INPUT_LENGTH_256);
+                    branchBuf.put(fileByte, INPUT_LENGTH_256 * i,
+                            INPUT_LENGTH_256);
+                }
+                branchBuf.flip();
+                // 8.获取分包的crc16并整合分包
+         /*       byte[] branchByte = branchBuf.array();
+                byte[] branchByteCRC16 = crc16(branchByte);
+                byte[] resultByte = converData(branchByte, branchByteCRC16);
+                byteBufferList.add(ByteBuffer.wrap(resultByte));*/
+                byteBufferList.add(branchBuf);
+                System.out.println("当前是第" + i + "次添加");
+            }
+        }catch (Exception ex) {
+            System.out.println("*********************生成文件分包时出错："
+                    + ex.getMessage());
+        }
+        return byteBufferList;
+    }
+
+
 
 
 
