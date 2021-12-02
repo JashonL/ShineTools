@@ -28,12 +28,14 @@ import com.growatt.shinetools.module.localbox.ustool.USWiFiConfigActivity;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
 import com.growatt.shinetools.utils.ActivityUtils;
+import com.growatt.shinetools.utils.BatteryCheckDialogUtils;
 import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.MyToastUtils;
 import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.widget.GridDivider;
+import com.mylhyl.circledialog.BaseCircleDialog;
 import com.mylhyl.circledialog.CircleDialog;
 
 import java.math.BigInteger;
@@ -47,6 +49,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 import static com.growatt.shinetools.constant.GlobalConstant.KEFU_USER;
 
 public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
@@ -83,6 +86,13 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
     private List<ALLSettingBean> settingList;
 
     private int user_type = KEFU_USER;
+    private BaseCircleDialog startDialog;
+    private int inputNum = 0;
+    private int bdcNum = 0;
+
+    private int batter_4041 = 0;
+    private int batter_4149 = 0;
+
 
     @Override
     protected int getContentView() {
@@ -146,7 +156,8 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
 
         List<ALLSettingBean> newList = new ArrayList<>(settingList);
 
-        if (user_type == KEFU_USER) {
+        if (user_type == END_USER) {
+            newList.clear();
             for (int i = 0; i < settingList.size(); i++) {
                 if (i != 2) {
                     newList.add(settingList.get(i));
@@ -220,8 +231,11 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                     case 2://获取功率采集器
                         getData(5);
                         break;
-                    case 5:
+                    case 5: case 6:
                         Mydialog.Dismiss();
+                        break;
+                    case 4041:
+                        get4149Num();
                         break;
                 }
             } else {//设置
@@ -384,6 +398,7 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                 LogUtil.i("电池诊断");
                 //解析int值
                 int value6 = MaxWifiParseUtil.obtainValueOne(bs);
+                bdcNum = value6;
                 if (value6 == 0) {//提示异常
                     MyToastUtils.toast(R.string.no_battery_installed);
                 } else {
@@ -392,15 +407,87 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                     String hint = getString(R.string.input_battery_num);
                     CircleDialogUtils.showInputValueDialog(this, title,
                             hint, "", value1 -> {
+                                if (TextUtils.isEmpty(value1)) {
+                                    return;
+                                }
+                                inputNum = Integer.parseInt(value1);
+                                startDialog = BatteryCheckDialogUtils.showCheckStartDialog(this, title);
+                                if (value6 == 1 || value6 == 2) {
+                                    get3198Num();
+                                } else if (value6 == 3) {
+                                    get4041Num();
+                                }
+                            });
 
+
+                }
+                break;
+
+
+            case 3198:
+                if (startDialog != null) {
+                    startDialog.dialogDismiss();
+                    startDialog = null;
+                }
+                //解析int值
+                LogUtil.i("解析3198");
+                //解析int值
+                ALLSettingBean allSettingBean1 = settingList.get(6);
+                String title = allSettingBean1.getTitle();
+                int value3198 = MaxWifiParseUtil.obtainValueOne(bs);
+                if (value3198 == inputNum) {//成功
+                    BatteryCheckDialogUtils.showCheckSuccessDialog(this, title);
+                } else {//失败
+                    String tips1 = getString(R.string.battery_install_error);
+                    if (bdcNum == 1) {
+                        tips1 += "(BDC1:" + value3198 + ")";
+                    } else {
+                        tips1 += "(BDC2:" + value3198 + ")";
+                    }
+
+                    String tips2 = "1." + getString(R.string.battery_error_tips1) + "\n" + "2." + getString(R.string.battery_error_tips2);
+                    BatteryCheckDialogUtils.showCheckErrorDialog(this, title, tips1, tips2,
+                            () -> {
+                                getBdcStatus(6);
                             });
                 }
+                break;
+
+            case 4041:
+                LogUtil.i("解析4041");
+                //解析int值
+                batter_4041 = MaxWifiParseUtil.obtainValueOne(bs);
+                break;
+
+            case 4149:
+                batter_4149 = MaxWifiParseUtil.obtainValueOne(bs);
+                if (startDialog != null) {
+                    startDialog.dialogDismiss();
+                    startDialog = null;
+                }
+                ALLSettingBean allSettingBean4149 = settingList.get(6);
+                String title4149 = allSettingBean4149.getTitle();
+                if (batter_4149 == inputNum && inputNum == batter_4041) {//成功
+                    BatteryCheckDialogUtils.showCheckSuccessDialog(this, title4149);
+                } else {//失败
+                    String tips1 = getString(R.string.battery_install_error)+"(BDC1:"+batter_4041+"  "
+                            +"BDC2:"+batter_4149+")";
+
+                    String tips2 = "1." + getString(R.string.battery_error_tips1) + "\n" + "2." + getString(R.string.battery_error_tips2);
+                    BatteryCheckDialogUtils.showCheckErrorDialog(this, title4149, tips1, tips2,
+                            () -> {
+                                getBdcStatus(6);
+                            });
+                }
+
+
                 break;
 
         }
 
         List<ALLSettingBean> newList = new ArrayList<>(settingList);
-        if (user_type == KEFU_USER) {
+        if (user_type == END_USER) {
+            newList.clear();
             for (int i = 0; i < settingList.size(); i++) {
                 if (i != 2) {
                     newList.add(settingList.get(i));
@@ -408,6 +495,39 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
             }
         }
         usParamsetAdapter.replaceData(newList);
+    }
+
+
+    /**
+     * 读取3198
+     */
+    private void get3198Num() {
+        uuid = 3198;
+        type = 0;
+        int[] funs = new int[]{4, 3198, 3198};
+        manager.sendMsgNoDialog(funs);
+    }
+
+
+    /**
+     * 读取4041
+     */
+    private void get4041Num() {
+        uuid = 4041;
+        type = 0;
+        int[] funs = new int[]{4, 4041, 4041};
+        manager.sendMsgNoDialog(funs);
+    }
+
+
+    /**
+     * 读取3198
+     */
+    private void get4149Num() {
+        uuid = 4149;
+        type = 0;
+        int[] funs = new int[]{4, 4149, 4149};
+        manager.sendMsgNoDialog(funs);
     }
 
 

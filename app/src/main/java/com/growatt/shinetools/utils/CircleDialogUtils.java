@@ -358,7 +358,6 @@ public class CircleDialogUtils {
     }
 
 
-
     public interface OndialogClickListeners {
         void buttonOk();
 
