@@ -31,6 +31,13 @@ public class ALLSettingBean implements MultiItemEntity {
     //三维数组
     private int[][][]threeFunSet;
 
+    //0x10设置值数组
+    private int [] setValues;
+
+    //该设置项唯一标识
+    private int uuid;
+
+
 
     public void setItemType(int itemType) {
         this.itemType = itemType;
@@ -130,6 +137,22 @@ public class ALLSettingBean implements MultiItemEntity {
 
     public void setThreeFunSet(int[][][] threeFunSet) {
         this.threeFunSet = threeFunSet;
+    }
+
+    public int[] getSetValues() {
+        return setValues;
+    }
+
+    public void setSetValues(int[] setValues) {
+        this.setValues = setValues;
+    }
+
+    public int getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(int uuid) {
+        this.uuid = uuid;
     }
 
     @Override

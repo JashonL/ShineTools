@@ -6533,4 +6533,14 @@
     <string name="grid_connetced_vol_limit">并网电压限制</string>
     <string name="grid_connetced_frency_limit">并网频率限制</string>
 
+    <string name="battery_diagnosis">Battery diagnosis</string>
+    <string name="being_diagnosed">Being diagnosed</string>
+    <string name="battery_install_success">The battery is installed successfully</string>
+    <string name="battery_install_error">Battery installation error</string>
+    <string name="battery_error_tips1"> Please check whether the battery section number is consistent with the input section number </string>
+    <string name="battery_error_tips2"> Please check whether the battery is connected</string>
+    <string name="re_diagnose"> re-diagnose</string>
+    <string name="no_battery_installed">No battery installed</string>
+    <string name="input_battery_num">Please enter the number of batteries</string>
+
 </resources>

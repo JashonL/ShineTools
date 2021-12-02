@@ -9,6 +9,7 @@ import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.module.inverterUpdata.UpdataUtils;
 import com.growatt.shinetools.utils.MyToastUtils;
 import com.growatt.shinetools.utils.Mydialog;
+import com.hjq.toast.ToastUtils;
 
 public class SocketManager {
 
@@ -177,6 +178,25 @@ public class SocketManager {
         }
     }
 
+
+    /**
+     * 发送连续的寄存器去设置
+     *
+     * @param sends
+     * @return：返回发送的字节数组
+     */
+    public  byte[] sendMsgToServer10(int[] sends, int[] values) {
+        Mydialog.Show(mContext);
+        if (mClientUtil != null) {
+            byte[] sendBytes = ModbusUtil.sendMsg10(sends[0], sends[1], sends[2], values);
+            mClientUtil.sendMsg(sendBytes);
+            return sendBytes;
+        }else {
+            Mydialog.Dismiss();
+            ToastUtils.show(R.string.all_failed);
+            return null;
+        }
+    }
 
     public boolean isDisConnect() {
         return isConnect;

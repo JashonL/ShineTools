@@ -197,11 +197,13 @@ public class CircleDialogUtils {
      */
     public static BaseCircleDialog showExplainDialog(AppCompatActivity context, String title, String text, OndialogClickListeners listeners) {
         View bodyView = LayoutInflater.from(context).inflate(R.layout.explain_dialog, null);
+
+        TextView tvTitle = bodyView.findViewById(R.id.tv_title);
+        TextView tvContent = bodyView.findViewById(R.id.tv_content);
+        ImageView ivClose = bodyView.findViewById(R.id.iv_close);
+
         CircleDialog.Builder builder = new CircleDialog.Builder();
         builder.setBodyView(bodyView, view -> {
-            TextView tvTitle = view.findViewById(R.id.tv_title);
-            TextView tvContent = view.findViewById(R.id.tv_content);
-            ImageView ivClose = view.findViewById(R.id.iv_close);
 
             if (!TextUtils.isEmpty(title)) {
                 tvTitle.setText(title);
@@ -210,15 +212,17 @@ public class CircleDialogUtils {
                 tvContent.setText(text);
             }
 
-            ivClose.setOnClickListener(view1 -> {
-                listeners.buttonOk();
-            });
+
 
         });
         builder.setYoff(20);
         builder.setGravity(Gravity.BOTTOM);
         builder.setCancelable(true);
         BaseCircleDialog show = builder.show(context.getSupportFragmentManager());
+
+        ivClose.setOnClickListener(view1 -> {
+            show.dialogDismiss();
+        });
         return show;
     }
 
@@ -297,7 +301,17 @@ public class CircleDialogUtils {
         void comfir(String value);
     }
 
-    public static void showInputValueDialog(FragmentActivity context, String title, String subTitle, String unit, OndialogComfirListener listener) {
+    public static void showInputValueDialog(FragmentActivity context, String title, String subTitle,
+                                            String unit, OndialogComfirListener listener) {
+        showInputValueDialog(context,title,subTitle,"",unit,listener);
+    }
+
+
+
+
+
+    public static void showInputValueDialog(FragmentActivity context, String title, String subTitle,
+                                           String hint, String unit, OndialogComfirListener listener) {
         View contentView = LayoutInflater.from(context).inflate(R.layout.dialog_input_custom, null, false);
         TextView tvTitle = contentView.findViewById(R.id.tv_title);
         TextView tvSubTtile = contentView.findViewById(R.id.tv_sub_title);
@@ -307,6 +321,10 @@ public class CircleDialogUtils {
         TextView etInput = contentView.findViewById(R.id.et_input);
         tvCancel.setText(R.string.mCancel_ios);
         tvConfirm.setText(R.string.android_key1935);
+
+        if (!TextUtils.isEmpty(hint)){
+            etInput.setText(hint);
+        }
 
         CircleDialog.Builder builder = new CircleDialog.Builder();
         builder.setWidth(0.75f);
@@ -338,6 +356,7 @@ public class CircleDialogUtils {
             listener.comfir(value);
         });
     }
+
 
 
     public interface OndialogClickListeners {

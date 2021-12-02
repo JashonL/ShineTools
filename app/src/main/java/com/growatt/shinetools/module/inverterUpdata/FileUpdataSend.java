@@ -6,8 +6,6 @@ import android.os.Handler;
 import androidx.fragment.app.FragmentActivity;
 
 import com.growatt.shinetools.R;
-import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
-import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
@@ -88,7 +86,8 @@ public class FileUpdataSend implements ConnectHandler {
         //初始化一个定时器并立即执行
         mFreshTimer = new CustomTimer(() -> {
             try {
-                check();
+//                check();
+                checkCRC();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -202,8 +201,12 @@ public class FileUpdataSend implements ConnectHandler {
                 startFreshTimer();
                 break;
             case 9:
+                byte[] bs = RegisterParseUtil.removePro17(bytes);
+                LogUtil.i("CRC校验：" + CommenUtils.bytesToHexString(bs));
+
+
                 //解析进度
-                boolean isCheck9 = ModbusUtil.checkModbus(bytes);
+       /*         boolean isCheck9 = ModbusUtil.checkModbus(bytes);
                 if (isCheck9) {
                     //移除数服协议,保留modbus协议
                     byte[] bs = RegisterParseUtil.removePro(bytes);
@@ -222,7 +225,7 @@ public class FileUpdataSend implements ConnectHandler {
 
                 } else {
 
-                }
+                }*/
                 break;
             case 10:
                 boolean isCheck10 = UpdataUtils.checkReceiver0617(bytes);
@@ -270,9 +273,9 @@ public class FileUpdataSend implements ConnectHandler {
         updataListeners.updataStart("当前发送文件.bin 01  .hex 10:" + current);
         step = 3;
         int data=0x01;
-        if (current!=fileData.size()-1){
+      /*  if (current!=fileData.size()-1){
             data=0x10;
-        }
+        }*/
         manager.sendMsgNoNum(new int[]{6, 0x1f, data});
     }
 
@@ -337,6 +340,15 @@ public class FileUpdataSend implements ConnectHandler {
         step = 9;
         manager.sendMsgCheckProgress(0x03, 0x1f, 0x01);
     }
+
+
+    //查询CRC
+    private void checkCRC(){
+        LogUtil.i("查询CRC");
+        step = 9;
+        manager.sendMsg(new int[]{3, 3300, 3300});
+    }
+
 
     //10.发送命令保存指令
     private void commendSave() {

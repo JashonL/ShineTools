@@ -48,6 +48,7 @@ import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.module.localbox.max.bean.MaxChildBean;
 import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHEleBean;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
+import com.growatt.shinetools.module.localbox.ustool.config.USFastConfigAcitivity;
 import com.growatt.shinetools.module.localbox.ustool.errorcode.ErrorCode;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.BtnDelayUtil;
@@ -1285,7 +1286,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
 
                 switch (position) {
                     case 0:
-                        clazz = USFastSetActivity.class;
+                        clazz = USFastConfigAcitivity.class;
                         break;
                     case 1:
                         clazz = UsSystemSettingActivity.class;
@@ -1314,7 +1315,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
             }else {
                 switch (position) {
                     case 0:
-                        clazz = USFastSetActivity.class;
+                        clazz = USFastConfigAcitivity.class;
                         break;
                     case 1:
                         clazz = UsSystemSettingActivity.class;
@@ -1343,13 +1344,15 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
 
                     case 8:
                         try {
-                            List<ByteBuffer> fileByte1 = UpdateDatalogUtils.getFileByte2(this, "IFAB01_20200728.hex");
-                            List<ByteBuffer> fileByte2 = UpdateDatalogUtils.getFileByte2(this, "UEAA-03.hex");
-                            List<ByteBuffer> fileByte3 = UpdateDatalogUtils.getFileByte2(this, "ZACA-03.bin");
+//                            List<ByteBuffer> fileByte1 = UpdateDatalogUtils.getFileByte2(this, "IFAB01_20200728.hex");
+//                            List<ByteBuffer> fileByte2 = UpdateDatalogUtils.getFileByte2(this, "UEAA-03.hex");
+//                            List<ByteBuffer> fileByte3 = UpdateDatalogUtils.getFileByte2(this, "ZACA-03.bin");
+                            List<ByteBuffer> fileByte4 = UpdateDatalogUtils.getFileByte2(this, "ZACA03testCRC.bin");
                             List<List<ByteBuffer>>list=new ArrayList<>();
-                            list.add(fileByte1);
-                            list.add(fileByte2);
-                            list.add(fileByte3);
+//                            list.add(fileByte1);
+//                            list.add(fileByte2);
+//                            list.add(fileByte3);
+                            list.add(fileByte4);
                             new FileUpdataSend(this, list, new IUpdataListeners() {
                                 @Override
                                 public void updataStart(String msg) {

@@ -6525,4 +6525,16 @@
     <string name="ac_frency_protect">AC频率保护</string>
     <string name="grid_connetced_vol_limit">并网电压限制</string>
     <string name="grid_connetced_frency_limit">并网频率限制</string>
+
+
+    <string name="battery_diagnosis">电池诊断</string>
+    <string name="being_diagnosed">正在诊断...</string>
+    <string name="battery_install_success">电池安装成功</string>
+    <string name="battery_install_error">电池安装错误</string>
+    <string name="battery_error_tips1">请检查电池节数与输入节数是否一致 </string>
+    <string name="battery_error_tips2">请检查电池是否已连接</string>
+    <string name="re_diagnose">重新诊断</string>
+    <string name="no_battery_installed">未安装电池</string>
+    <string name="input_battery_num">请输入电池节数</string>
+
 </resources>
