@@ -220,6 +220,13 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                 if (isCheck) {
                     //接收正确，开始解析
                     parseMax(bytes);
+                }else {
+                    if ( uuid == 3198||uuid==4041||uuid==4149){
+                        if (startDialog != null) {
+                            startDialog.dialogDismiss();
+                            startDialog = null;
+                        }
+                    }
                 }
                 switch (uuid) {
                     case 0:
@@ -398,6 +405,7 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                 LogUtil.i("电池诊断");
                 //解析int值
                 int value6 = MaxWifiParseUtil.obtainValueOne(bs);
+//                int value6 = 3;
                 bdcNum = value6;
                 if (value6 == 0) {//提示异常
                     MyToastUtils.toast(R.string.no_battery_installed);
@@ -587,9 +595,8 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
     private void getBdcStatus(int pos) {
         type = 0;
         uuid = pos;
-        List<ALLSettingBean> data = usParamsetAdapter.getData();
-        if (data.size() > pos) {
-            ALLSettingBean bean = data.get(pos);
+        if (settingList.size() > pos) {
+            ALLSettingBean bean = settingList.get(pos);
             int[] funs = bean.getFuns();
             manager.sendMsg(funs);
         }

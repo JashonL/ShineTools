@@ -6542,5 +6542,6 @@
     <string name="re_diagnose"> re-diagnose</string>
     <string name="no_battery_installed">No battery installed</string>
     <string name="input_battery_num">Please enter the number of batteries</string>
+    <string name="battery_modules">Battery modules</string>
 
 </resources>

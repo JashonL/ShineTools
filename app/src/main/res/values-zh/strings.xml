@@ -6536,5 +6536,6 @@
     <string name="re_diagnose">重新诊断</string>
     <string name="no_battery_installed">未安装电池</string>
     <string name="input_battery_num">请输入电池节数</string>
+    <string name="battery_modules">电池模组</string>
 
 </resources>

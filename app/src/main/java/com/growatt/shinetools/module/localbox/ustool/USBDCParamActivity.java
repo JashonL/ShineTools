@@ -45,6 +45,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.growatt.shinetools.modbusbox.MaxWifiParseUtil.obtainValueOne;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 
 /**
@@ -53,7 +54,7 @@ import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_B
  * 则根据实际的台数来获取03寄存器5000开始的字段和04寄存器4000开始的字段
  */
 
-public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener{
+public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
 
 
     @BindView(R.id.status_bar_view)
@@ -88,8 +89,6 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
     TextView tvError;*/
 
 
-
-
     private UsInfoAdapter mSystemAdapter;//系统信息
     private UsInfoAdapter mStatusAdapter;//状态信息
     private UsInfoAdapter mInnerAdapter;//内部信息
@@ -104,7 +103,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
 
     private List<String> bcdList = new ArrayList<>();
 
-    private int nowPos=0;
+    private int nowPos = 0;
 
     /**
      * 降额模式
@@ -112,6 +111,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
     private String[] deratModes;
 
     private MenuItem item;
+    private int batteryNum;
 
     @Override
     protected int getContentView() {
@@ -145,7 +145,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
         mBatteryAdapter = new UsInfoAdapter(R.layout.item_bdc_info, new ArrayList<>());
         rlvBatterySystem.setAdapter(mBatteryAdapter);
 
-        String hint=getString(R.string.android_key1001)+"1";
+        String hint = getString(R.string.android_key1001) + "1";
         tvBdcName.setText(hint);
     }
 
@@ -162,7 +162,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
                 getString(R.string.android_key414), getString(R.string.android_key2346),
                 getString(R.string.m324故障码), getString(R.string.android_key716)
         };
-        //状态信息
+        //内部信息
         String[] innerInfo = {getString(R.string.上电感电流), getString(R.string.下电感电流),
                 getString(R.string.BAT电压), getString(R.string.BAT电流),
                 getString(R.string.温度A), getString(R.string.温度B),
@@ -178,7 +178,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
                 "SOC", "SOH",
                 getString(R.string.android_key1298), getString(R.string.m电池温度),
                 getString(R.string.电池故障信息), getString(R.string.电池警告信息),
-                getString(R.string.电池保护信息)
+                getString(R.string.电池保护信息), getString(R.string.battery_modules)
         };
 
         deratModes = new String[]{
@@ -292,7 +292,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
                             public void run() {
                                 setReadFuns(nowPos);
                             }
-                        },1000);
+                        }, 1000);
                     }
                     break;
                 default:
@@ -323,7 +323,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
     //BDC数量
     private void initBdcList(int num) {
         bcdList.clear();
-        String name = getString(R.string.android_key1001)+"1";
+        String name = getString(R.string.android_key1001) + "1";
         if (num == 0) {
             bcdList.add(name);
         } else {
@@ -524,6 +524,15 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
                     break;
 
             }
+
+
+            //单独解析电池数量
+            byte[] bs = RegisterParseUtil.removePro17(bytes);
+            int batteryNum;
+            int addr = nowPos == 1 ? 4041 : 4149;
+            batteryNum = obtainValueOne(MaxWifiParseUtil.subBytes(bs, addr, 0, 1));
+            mMaxData.setBatteryNumber(batteryNum);
+
         } else {
             switch (count) {
                 case 0://解析03数据
@@ -534,6 +543,12 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
                     break;
 
             }
+
+            //单独解析电池数量
+            byte[] bs = RegisterParseUtil.removePro17(bytes);
+            int batteryNum;
+            batteryNum = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 3198, 0, 1));
+            mMaxData.setBatteryNumber(batteryNum);
         }
 
 
@@ -580,17 +595,17 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             statusData.get(1).setValue(getTextByMode(workModeBDC));
 
             //充电功率
-            String chargePower = bdcInfoBean.getBattery_charge_power()+"W";
+            String chargePower = bdcInfoBean.getBattery_charge_power() + "W";
             statusData.get(2).setValue(chargePower);
             //放电功率
-            String dischagePower = bdcInfoBean.getBattery_dischage_power()+"W";
+            String dischagePower = bdcInfoBean.getBattery_dischage_power() + "W";
             statusData.get(3).setValue(dischagePower);
             //总充电量
-            String chage_total = bdcInfoBean.getChage_total()+"kWh";
+            String chage_total = bdcInfoBean.getChage_total() + "kWh";
             statusData.get(4).setValue(chage_total);
 
             //总放电量
-            String dischargeTotal = bdcInfoBean.getDischarge_total()+"kWh";
+            String dischargeTotal = bdcInfoBean.getDischarge_total() + "kWh";
             statusData.get(5).setValue(dischargeTotal);
 
 
@@ -600,7 +615,8 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             int errCodeSecond = storageBeen.getError2Storage();
             int warmCodeSecond = storageBeen.getWarm2Storage();
             //添加副码
-            String errCodeStr = String.format("%d(%02d)", errCode, errCodeSecond);;
+            String errCodeStr = String.format("%d(%02d)", errCode, errCodeSecond);
+            ;
             String warnCodeStr = String.format("%d(%02d)", warmCode, warmCodeSecond);
 
             statusData.get(6).setValue(errCodeStr);
@@ -610,31 +626,31 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             //内部信息
             List<UsBdcInfoBean> innerData = mInnerAdapter.getData();
             //上电感电流
-            String aBB = storageBeen.getaBB() +"A";
+            String aBB = storageBeen.getaBB() + "A";
             innerData.get(0).setValue(aBB);
             //下电感电流
-            String allC = storageBeen.getaLLC() +"A";
+            String allC = storageBeen.getaLLC() + "A";
             innerData.get(1).setValue(allC);
             //BAT电压
-            String vBat = storageBeen.getvBat() +"V";
+            String vBat = storageBeen.getvBat() + "V";
             innerData.get(2).setValue(vBat);
             //BAT电流
-            String aBat = storageBeen.getaBat() +"A";
+            String aBat = storageBeen.getaBat() + "A";
             innerData.get(3).setValue(aBat);
             //温度A
-            String tempA = storageBeen.getTempA() +"℃";
+            String tempA = storageBeen.getTempA() + "℃";
             innerData.get(4).setValue(tempA);
             //温度B
-            String tempB = storageBeen.getTempB() +"℃";
+            String tempB = storageBeen.getTempB() + "℃";
             innerData.get(5).setValue(tempB);
             //上BUS电压
-            String vBus2 = storageBeen.getvBus2() +"V";
+            String vBus2 = storageBeen.getvBus2() + "V";
             innerData.get(6).setValue(vBus2);
             //下BUS电压
-            String vBus3 = storageBeen.getvBus3() +"V";
+            String vBus3 = storageBeen.getvBus3() + "V";
             innerData.get(7).setValue(vBus3);
             //总BUS电压
-            String vBus1 = storageBeen.getvBus1() +"V";
+            String vBus1 = storageBeen.getvBus1() + "V";
             innerData.get(8).setValue(vBus1);
             //BDC降额模式
             int derateMode = deviceBeen.getDerateMode();
@@ -666,36 +682,36 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
 
             //电池电压
             double vBms = storageBeen.getvBms();
-            String s = vBms +"V";
+            String s = vBms + "V";
             batteryData.get(2).setValue(s);
 
             //电池电流
             double aBms = storageBeen.getaBms();
-            String aBms_str = aBms +"A";
+            String aBms_str = aBms + "A";
             batteryData.get(3).setValue(aBms_str);
 
             //最大充电电流
             double aChargeMax = storageBeen.getaChargeMax();
-            if (aChargeMax>32767){
+            if (aChargeMax > 32767) {
                 double v = aChargeMax - 65535;
-                aChargeMax= Arith.mul(v,0.01);
-            }else {
-                aChargeMax= Arith.mul(aChargeMax,0.01);
+                aChargeMax = Arith.mul(v, 0.01);
+            } else {
+                aChargeMax = Arith.mul(aChargeMax, 0.01);
             }
 
-            String aChargeMax_str = aChargeMax +"A";
+            String aChargeMax_str = aChargeMax + "A";
             batteryData.get(4).setValue(aChargeMax_str);
 
             //最大放电电流
             double aDischargeMax = storageBeen.getAdisChargeMax();
-            if (aDischargeMax>32767){
+            if (aDischargeMax > 32767) {
                 double v = aDischargeMax - 65535;
-                aDischargeMax= Arith.mul(v,0.01);
-            }else {
-                aDischargeMax= Arith.mul(aDischargeMax,0.01);
+                aDischargeMax = Arith.mul(v, 0.01);
+            } else {
+                aDischargeMax = Arith.mul(aDischargeMax, 0.01);
             }
 
-            String aDischargeMax_str = aDischargeMax +"A";
+            String aDischargeMax_str = aDischargeMax + "A";
             batteryData.get(5).setValue(aDischargeMax_str);
             //SOC
             String soc = storageBeen.getSoc();
@@ -703,12 +719,12 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
 
             //SOH
             int soh = storageBeen.getSoh();
-            String soh_str=soh+"%";
+            String soh_str = soh + "%";
             batteryData.get(7).setValue(soh_str);
 
             //Vcv
             double vCv = storageBeen.getvCV();
-            String vCv_str=vCv+"V";
+            String vCv_str = vCv + "V";
             batteryData.get(8).setValue(vCv_str);
             //电池温度
             String tempBms = storageBeen.getTempBms();
@@ -732,6 +748,9 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             int bmsProtect3 = storageBeen.getBmsProtect3();
             String protect = bmsProtect1 + "-" + bmsProtect2 + "-" + bmsProtect3;
             batteryData.get(12).setValue(protect);
+
+            int batteryNumber = mMaxData.getBatteryNumber();
+            batteryData.get(13).setValue(String.valueOf(batteryNumber));
             mBatteryAdapter.notifyDataSetChanged();
         }
 
@@ -802,13 +821,12 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
     }
 
 
-
     @OnClick(R.id.ll_bdc_select)
     public void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.ll_bdc_select:
-                if (bcdList.size()>1){
-                    CircleDialogUtils.showCommentItemDialog(this, getString(R.string.m225请选择),bcdList , Gravity.CENTER, new OnLvItemClickListener() {
+                if (bcdList.size() > 1) {
+                    CircleDialogUtils.showCommentItemDialog(this, getString(R.string.m225请选择), bcdList, Gravity.CENTER, new OnLvItemClickListener() {
                         @Override
                         public boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             String s = bcdList.get(position);
@@ -826,16 +844,13 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.right_action:
                 readRegisterValue();
                 break;
         }
         return false;
     }
-
-
-
 
 
     public static String getStackTraceInfo(Exception e) {

@@ -66,6 +66,16 @@ public class MaxDataBean {
 
     private int bdcNumber;
 
+    private int batteryNumber;//电池数量
+
+
+    public int getBatteryNumber() {
+        return batteryNumber;
+    }
+
+    public void setBatteryNumber(int batteryNumber) {
+        this.batteryNumber = batteryNumber;
+    }
 
     public String getBatVersion() {
         return batVersion;
