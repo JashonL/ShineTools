@@ -13,6 +13,8 @@ public interface ConnectHandler {
 
     void sendMsgFail();
 
+    void readTimeOut();
+
     void sendMessage(String msg);
 
     void receiveMessage(String msg);

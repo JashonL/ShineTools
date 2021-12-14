@@ -47,8 +47,6 @@ public class Schedulers extends Handler {
                 break;
 
 
-
-
             case SocketClientUtil.SOCKET_SEND_MSG://发送消息的内容
                 String sendMsg = (String) msg.obj;
                 connectHandler.sendMessage(sendMsg);

@@ -295,6 +295,11 @@ public class SPHSPABasicSettingActivity extends BaseActivity implements BaseQuic
         }
 
         @Override
+        public void readTimeOut() {
+
+        }
+
+        @Override
         public void sendMessage(String msg) {
             LogUtil.i("发送的消息:" + msg);
         }

@@ -82,7 +82,6 @@ public class SocketManager {
      * @return：返回发送的字节数组
      */
     public byte[] sendMsg17(int fun,int subfun, byte[] values) {
-        Mydialog.Show(mContext);
         if (mClientUtil != null) {
             byte[] sendBytes = UpdataUtils.sendMsg17(fun, subfun, values);
             mClientUtil.sendMsg(sendBytes);
@@ -103,7 +102,6 @@ public class SocketManager {
      * @return：返回发送的字节数组
      */
     public byte[] sendMsg1705(int fun,int subfun,int num, byte[] values) {
-        Mydialog.Show(mContext);
         if (mClientUtil != null) {
             byte[] sendBytes = UpdataUtils.sendMsg1705(fun, subfun,num, values);
             mClientUtil.sendMsg(sendBytes);
@@ -123,7 +121,6 @@ public class SocketManager {
      * @return：返回发送的字节数组
      */
     public byte[] sendMsgCheckProgress(int fun,int cmd,int data) {
-        Mydialog.Show(mContext);
         if (mClientUtil != null) {
             byte[] sendBytes = UpdataUtils.sendMsgProgress( fun, cmd, data);
             mClientUtil.sendMsg(sendBytes);
@@ -166,7 +163,6 @@ public class SocketManager {
      * @return：返回发送的字节数组
      */
     public byte[] sendMsgNoNum(int[] sends) {
-        Mydialog.Show(mContext);
         if (mClientUtil != null) {
             byte[] sendBytes = UpdataUtils.sendMsg(sends[0], sends[1], sends[2]);
             mClientUtil.sendMsg(sendBytes);

@@ -11,9 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
-
 
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.ShineToosApplication;
@@ -23,6 +21,7 @@ import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.Log;
 import com.growatt.shinetools.utils.MyToastUtils;
 import com.growatt.shinetools.utils.ShineToolsApi;
+import com.mylhyl.circledialog.BaseCircleDialog;
 import com.mylhyl.circledialog.view.listener.OnCreateBodyViewListener;
 
 import org.json.JSONObject;
@@ -61,9 +60,9 @@ public class DatalogUpdataManager {
     //文件具体保存位置
     private String xSavePath;
     private String sSavePath;
-    private DialogFragment dialogFragment;
+    private BaseCircleDialog dialogFragment;
 
-    private DialogFragment progressDialog;
+    private BaseCircleDialog progressDialog;
 
 
     public DatalogUpdataManager(DatalogUpdataManager.Builder builder) {

@@ -152,7 +152,7 @@ public class CircleDialogUtils {
      *
      * @return
      */
-    public static DialogFragment showCommentBodyView(Context context, View bodyView, String title,
+    public static BaseCircleDialog showCommentBodyView(Context context, View bodyView, String title,
                                                      FragmentManager fragmentManager, OnCreateBodyViewListener listener,
                                                      int gravity, float width, float maxHeight, boolean cancelable) {
         CircleDialog.Builder builder = new CircleDialog.Builder();
@@ -164,7 +164,8 @@ public class CircleDialogUtils {
         builder.setWidth(width);
         builder.setMaxHeight(maxHeight);
         builder.setCancelable(cancelable);
-        return builder.show(fragmentManager);
+        BaseCircleDialog show = builder.show(fragmentManager);
+        return show;
     }
 
 

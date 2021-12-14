@@ -6543,5 +6543,9 @@
     <string name="no_battery_installed">No battery installed</string>
     <string name="input_battery_num">Please enter the number of batteries</string>
     <string name="battery_modules">Battery modules</string>
+    <string name="upgrading_in_preparation">Upgrading in preparation</string>
+    <string name="keep_page">Please keep the current page during the upgrade process</string>
+    <string name="installing">Installing</string>
+    <string name="device_restart">The inverter is restarting, wait about 60 seconds before reconnecting.</string>
 
 </resources>

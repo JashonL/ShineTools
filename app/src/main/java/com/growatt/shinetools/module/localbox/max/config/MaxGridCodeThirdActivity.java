@@ -162,6 +162,11 @@ public class MaxGridCodeThirdActivity extends BaseActivity implements BaseQuickA
         }
 
         @Override
+        public void readTimeOut() {
+
+        }
+
+        @Override
         public void sendMessage(String msg) {
             LogUtil.i("发送的消息:" + msg);
         }

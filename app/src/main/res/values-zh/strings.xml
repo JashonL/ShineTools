@@ -6537,5 +6537,10 @@
     <string name="no_battery_installed">未安装电池</string>
     <string name="input_battery_num">请输入电池节数</string>
     <string name="battery_modules">电池模组</string>
+    <string name="upgrading_in_preparation">升级准备中</string>
+    <string name="keep_page">升级过程请保持当前页面</string>
+    <string name="installing">正在安装</string>
+    <string name="device_restart">逆变器正在重启，大约等待60S后， 再重新连接。</string>
+
 
 </resources>

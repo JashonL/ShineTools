@@ -6,6 +6,8 @@ import android.os.Handler;
 import androidx.fragment.app.FragmentActivity;
 
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
+import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
@@ -34,19 +36,30 @@ public class FileUpdataSend implements ConnectHandler {
     //文件切割字节数组
     private List<List<ByteBuffer>> fileData = new ArrayList<>();
     //当前要下发的文件
-    private List<ByteBuffer> curBuffer=new ArrayList<>();
+    private List<ByteBuffer> curBuffer = new ArrayList<>();
     //当前执行的步骤
     private int step = 0;
     //当前发送第几个文件
     private int fileIndex = 0;
     //当前是第几包数据,从1开始，第一包是CRC
     private int curDataIndex = 0;
+    //发送擦除指令的次数
+    private int step_send_num = 0;
 
     //定时刷新的计时器
     private CustomTimer mFreshTimer;
 
 
+    //定时查询下发文件
     private IUpdataListeners updataListeners;
+
+    //定时查询的handler
+    private Handler readHandler = new Handler();
+
+    //当前发送第几包
+    private int preIndex = curDataIndex;
+
+
 
 
 /*    public FileUpdataSend(Context context, List<File> updataFile) {
@@ -86,8 +99,9 @@ public class FileUpdataSend implements ConnectHandler {
         //初始化一个定时器并立即执行
         mFreshTimer = new CustomTimer(() -> {
             try {
-//                check();
-                checkCRC();
+                //断开重连
+                manager.disConnectSocket();
+                connetSocket();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -118,8 +132,13 @@ public class FileUpdataSend implements ConnectHandler {
 
     @Override
     public void connectSuccess() {
-        sendSaveComend();
-//        sendFile(fileIndex);
+        if (step == 7) {
+            sendData(fileIndex, curDataIndex);
+        } else if (step == 9) {//查进度
+            check();
+        } else {
+            sendSaveComend();
+        }
     }
 
     @Override
@@ -136,6 +155,11 @@ public class FileUpdataSend implements ConnectHandler {
     }
 
     @Override
+    public void readTimeOut() {
+
+    }
+
+    @Override
     public void sendMessage(String msg) {
         LogUtil.i("发送的消息:" + msg);
     }
@@ -147,13 +171,14 @@ public class FileUpdataSend implements ConnectHandler {
 
     @Override
     public void receveByteMessage(byte[] bytes) {
-        updataListeners.updataStart("回应数据:" + CommenUtils.bytesToHexString(bytes));
-
         switch (step) {
             case 1://1.向02号保持寄存器写入0x01，保存波特率
                 boolean isCheck = UpdataUtils.checkReceiver0617(bytes);
                 if (isCheck) {//检测成功，相当于设置成功
                     setBaudRate();
+                } else {
+                    String errMsg = context.getString(R.string.错误) + ":" + step;
+                    updataListeners.updataFail(errMsg);
                 }
                 break;
 
@@ -161,16 +186,21 @@ public class FileUpdataSend implements ConnectHandler {
                 boolean isCheck2 = UpdataUtils.checkReceiver0617(bytes);
                 if (isCheck2) {//检测成功，相当于设置成功
                     sendFile(fileIndex);
+                } else {
+                    String errMsg = context.getString(R.string.错误) + ":" + step;
+                    updataListeners.updataFail(errMsg);
                 }
 
                 break;
 
 
             case 3://3.当前发送文件.bin 01  .hex 00
-                updataListeners.updataStart("返回数据：" + CommenUtils.bytesToHexString(bytes));
                 boolean isCheck3 = UpdataUtils.checkReceiver0617(bytes);
                 if (isCheck3) {//检测成功，相当于设置成功
                     sendFileLength(fileIndex);
+                } else {
+                    String errMsg = context.getString(R.string.错误) + ":" + step;
+                    updataListeners.updataFail(errMsg);
                 }
                 break;
 
@@ -178,70 +208,149 @@ public class FileUpdataSend implements ConnectHandler {
                 boolean isCheck4 = UpdataUtils.checkReceiver0617(bytes);
                 if (isCheck4) {
                     sendFileCRC(fileIndex);
+                } else {
+                    String errMsg = context.getString(R.string.错误) + ":" + step;
+                    updataListeners.updataFail(errMsg);
                 }
                 break;
 
             case 5://5.发送烧录文件CRC校验
                 boolean isCheck5 = UpdataUtils.checkReceiver0617(bytes);
                 if (isCheck5) {
+                    step_send_num = 0;
                     sendFlash();
+                } else {
+                    if (step_send_num < 6) {
+                        new Handler().postDelayed(this::sendFlash, 3000);
+                    } else {//提示升级失败
+                        step_send_num = 0;
+                        //擦除失败  重复第10和11的步骤
+                        commendSave();
+                        String errMsg = context.getString(R.string.错误) + ":" + step;
+                        updataListeners.updataFail(errMsg);
+                    }
                 }
                 break;
             case 6:
-                sendData(fileIndex, curDataIndex);
+                //判断是否擦除成功   不成功要隔3秒再次擦除  一直到成功为止
+                boolean isCheck6 = UpdataUtils.checkReceiver0617(bytes);
+                if (isCheck6) {
+                    sendData(fileIndex, curDataIndex);
+                } else {
+                    if (step_send_num < 6) {
+                        step_send_num = 0;
+                        new Handler().postDelayed(this::sendFlash, 3000);
+                    } else {//提示升级失败
+                        step_send_num = 0;
+                        //擦除失败  重复第10和11的步骤
+                        commendSave();
+                        String errMsg = context.getString(R.string.错误) + ":" + step;
+                        updataListeners.updataFail(errMsg);
+                    }
+
+                }
+
                 break;
             case 7://发送烧录数据
-                if (curDataIndex < curBuffer.size() - 1) {
-                    sendData(fileIndex, ++curDataIndex);
+                readHandler.removeCallbacksAndMessages(null);
+                boolean isCheck7 = UpdataUtils.checkReceiver0617(bytes);
+                if (isCheck7) {
+                    step_send_num = 0;
+                    if (curDataIndex < curBuffer.size() - 1) {
+                        sendData(fileIndex, ++curDataIndex);
+                    } else {
+                        sendFinish();
+                    }
                 } else {
-                    sendFinish();
+                    //发送失败 ，重新发这一包
+                    if (step_send_num < 6) {
+                        sendData(fileIndex, curDataIndex);
+                    } else {
+                        String errMsg = context.getString(R.string.错误) + ":" + step;
+                        updataListeners.updataFail(errMsg);
+                    }
                 }
+
+
                 break;
             case 8://每隔两秒查一次进度
-                startFreshTimer();
+                boolean isCheck8 = UpdataUtils.checkReceiver0617(bytes);
+                if (isCheck8) {
+                    step_send_num = 0;
+                    step = 9;
+                    startFreshTimer();
+                } else {
+                    //返回失败 ，重新发这一包
+                    if (step_send_num < 6) {
+                        sendFinish();
+                    } else {
+                        String errMsg = context.getString(R.string.错误) + ":" + step;
+                        updataListeners.updataFail(errMsg);
+                    }
+                }
                 break;
             case 9:
-                byte[] bs = RegisterParseUtil.removePro17(bytes);
-                LogUtil.i("CRC校验：" + CommenUtils.bytesToHexString(bs));
-
-
                 //解析进度
-       /*         boolean isCheck9 = ModbusUtil.checkModbus(bytes);
+                boolean isCheck9 = ModbusUtil.checkModbus(bytes);
                 if (isCheck9) {
                     //移除数服协议,保留modbus协议
                     byte[] bs = RegisterParseUtil.removePro(bytes);
                     byte[] value = new byte[2];
                     value[0] = bs[3];
-                    value[0] = bs[4];
+                    value[1] = bs[4];
                     int progress = MaxWifiParseUtil.obtainValueOne(value);
                     if (progress == 100) {//成功
-                        stopFreshTimer();
+                        step_send_num = 0;
                         commendSave();
-                    } else if (progress < 100) {
-                        //显示进度
-                    } else if (progress > 100) {//失败
                         stopFreshTimer();
+                    } else if (progress < 100) {
+                        step_send_num = 0;
+                        //显示进度
+                        updataListeners.updataUpdataProgress(fileData.size(), fileIndex + 1, progress);
+                    } else {//失败
+                        if (step_send_num > 100) {//查询100次  都失败的话就显示失败
+                            stopFreshTimer();
+                            String errMsg = context.getString(R.string.错误) + ":" + step;
+                            updataListeners.updataFail(errMsg);
+                        }
                     }
 
                 } else {
-
-                }*/
+                    if (step_send_num > 100) {//查询20次  都失败的话就显示失败
+                        stopFreshTimer();
+                        String errMsg = context.getString(R.string.错误) + ":" + step;
+                        updataListeners.updataFail(errMsg);
+                    }
+                }
                 break;
             case 10:
                 boolean isCheck10 = UpdataUtils.checkReceiver0617(bytes);
+
                 if (isCheck10) {//检测成功，相当于设置成功
                     resRate();
+                } else {
+                    String errMsg = context.getString(R.string.错误) + ":" + step;
+                    updataListeners.updataFail(errMsg);
                 }
                 break;
             case 11:
-                if (fileIndex < fileData.size() - 1) {
-                    fileIndex++;
-                    curDataIndex = 0;
-                    sendSaveComend();
-                } else {//两个文件都发送完成
-                    fileIndex = 0;
-                    curDataIndex = 0;
+                boolean isCheck11 = UpdataUtils.checkReceiver0617(bytes);
+                if (isCheck11) {
+                    if (fileIndex < fileData.size() - 1) {
+                        fileIndex++;
+                        curDataIndex = 0;
+                        sendSaveComend();
+                    } else {//两个文件都发送完成
+                        fileIndex = 0;
+                        curDataIndex = 0;
+                        updataListeners.updataSuccess();
+
+                    }
+                } else {
+                    String errMsg = context.getString(R.string.错误) + ":" + step;
+                    updataListeners.updataFail(errMsg);
                 }
+
                 break;
         }
     }
@@ -249,10 +358,9 @@ public class FileUpdataSend implements ConnectHandler {
 
     //1.向02号保持寄存器写入0x01，保存波特率
     private void sendSaveComend() {
-        curBuffer=new ArrayList<>(fileData.get(fileIndex));
+        updataListeners.preparing();
+        curBuffer = new ArrayList<>(fileData.get(fileIndex));
         curBuffer.remove(0);//移除第一包 是CRC
-        LogUtil.i("向02号保持寄存器写入0x01，保存波特率");
-        updataListeners.updataStart("向02号保持寄存器写入0x01，保存波特率");
         step = 1;
         manager.sendMsgNoNum(new int[]{6, 2, 1});
     }
@@ -260,19 +368,14 @@ public class FileUpdataSend implements ConnectHandler {
     //2.发送命令设置波特率
     private void setBaudRate() {
         step = 2;
-        LogUtil.i("送命令设置波特率");
-        updataListeners.updataStart("向22号保持寄存器写入0x01，保存波特率");
-        updataListeners.updataStart("发送命令设置波特率");
         manager.sendMsgNoNum(new int[]{6, 22, 1});
 
     }
 
     //3.当前发送文件.bin 01  .hex 10
     private void sendFile(int current) {
-        LogUtil.i("当前发送文件.bin 01  .hex 10:" + current);
-        updataListeners.updataStart("当前发送文件.bin 01  .hex 10:" + current);
         step = 3;
-        int data=0x01;
+        int data = 0x01;
       /*  if (current!=fileData.size()-1){
             data=0x10;
         }*/
@@ -288,16 +391,13 @@ public class FileUpdataSend implements ConnectHandler {
         ByteBuffer byteBuffer = curBuffer.get(curBuffer.size() - 1);
         byte[] array = byteBuffer.array();
         len += array.length;
-        LogUtil.i("发送文件大小"+len);
-        updataListeners.updataStart("发送文件大小" + len);
         byte[] bytes = CommenUtils.int4Byte(len);
         manager.sendMsg17(0x17, 0x02, bytes);
     }
 
     //5.发送烧录文件CRC校验
     private void sendFileCRC(int current) {
-        LogUtil.i("发送烧录文件CRC校验");
-        updataListeners.updataStart("发送烧录文件CRC校验");
+        step_send_num++;
         step = 5;
         List<ByteBuffer> byteBuffers = fileData.get(current);
         byte[] array = byteBuffers.get(0).array();
@@ -306,17 +406,19 @@ public class FileUpdataSend implements ConnectHandler {
 
     //6.PC发送Flash擦除指令
     private void sendFlash() {
-        LogUtil.i("PC发送Flash擦除指令");
         step = 6;
+        step_send_num++;
         byte[] array = new byte[]{0x00, 0x00};
-        updataListeners.updataStart("PC发送Flash擦除指令");
         manager.sendMsg17(0x17, 0x04, array);
     }
 
     //7.发送烧录数据
     private void sendData(int current, int index) {
-        LogUtil.i("发送烧录数据:"+"第"+current+"个文件"+"第"+index+"包");
-        updataListeners.updataStart("发送烧录数据");
+        preIndex = curDataIndex;
+        step_send_num++;
+        readHandler.postDelayed(new SendDataRunable(), 5000);
+        int progress = (index + 1) * 100 / curBuffer.size();
+        updataListeners.sendFileProgress(fileData.size(), current, progress);
         step = 7;
         ByteBuffer byteBuffer = curBuffer.get(index);
         byte[] array = byteBuffer.array();
@@ -325,8 +427,6 @@ public class FileUpdataSend implements ConnectHandler {
 
     //8.PC发送结束命令
     private void sendFinish() {
-        LogUtil.i("PC发送结束命令");
-        updataListeners.updataStart("PC发送结束命令");
         step = 8;
         byte[] array = new byte[]{0x00, 0x00};
         manager.sendMsg17(0x17, 0x06, array);
@@ -335,25 +435,14 @@ public class FileUpdataSend implements ConnectHandler {
 
     //9.发送查询指令
     private void check() {
-        LogUtil.i("发送查询指令");
-        updataListeners.updataStart("发送查询指令");
+        step_send_num++;
         step = 9;
         manager.sendMsgCheckProgress(0x03, 0x1f, 0x01);
     }
 
 
-    //查询CRC
-    private void checkCRC(){
-        LogUtil.i("查询CRC");
-        step = 9;
-        manager.sendMsg(new int[]{3, 3300, 3300});
-    }
-
-
     //10.发送命令保存指令
     private void commendSave() {
-        LogUtil.i("发送命令保存指令");
-        updataListeners.updataStart("发送命令保存指令");
         step = 10;
         manager.sendMsg(new int[]{6, 2, 1});
     }
@@ -361,10 +450,25 @@ public class FileUpdataSend implements ConnectHandler {
 
     //11.发送命令恢复波特率
     private void resRate() {
-        LogUtil.i("发送命令恢复波特率");
-        updataListeners.updataStart("发送命令恢复波特率");
         step = 11;
         manager.sendMsg(new int[]{6, 22, 1});
+    }
+
+
+    public void close() {
+        manager.disConnectSocket();
+    }
+
+
+    class SendDataRunable implements Runnable {
+        @Override
+        public void run() {
+            if (preIndex == curDataIndex && step_send_num < 3) {
+                //断开重连
+                manager.disConnectSocket();
+                connetSocket();
+            }
+        }
     }
 
 

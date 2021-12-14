@@ -152,6 +152,11 @@ public class SphSpaSystemSettingActivity extends BaseActivity implements BaseQui
         }
 
         @Override
+        public void readTimeOut() {
+
+        }
+
+        @Override
         public void sendMessage(String msg) {
             LogUtil.i("发送的消息:" + msg);
         }

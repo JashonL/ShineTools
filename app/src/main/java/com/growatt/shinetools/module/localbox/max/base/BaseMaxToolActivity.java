@@ -242,6 +242,11 @@ public abstract class BaseMaxToolActivity extends BaseActivity implements Toolba
         }
 
         @Override
+        public void readTimeOut() {
+
+        }
+
+        @Override
         public void sendMessage(String msg) {
             LogUtil.i("发送的消息:" + msg);
         }

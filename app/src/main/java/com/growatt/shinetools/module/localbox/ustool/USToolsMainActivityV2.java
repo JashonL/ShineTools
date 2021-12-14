@@ -38,8 +38,7 @@ import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.modbusbox.bean.MaxDataBean;
 import com.growatt.shinetools.modbusbox.bean.ToolStorageDataBean;
-import com.growatt.shinetools.module.inverterUpdata.FileUpdataSend;
-import com.growatt.shinetools.module.inverterUpdata.IUpdataListeners;
+import com.growatt.shinetools.module.inverterUpdata.InverterUpdataManager;
 import com.growatt.shinetools.module.localbox.configtype.MainsCodeParamSetActivity;
 import com.growatt.shinetools.module.localbox.configtype.usconfig.USChargeActivity;
 import com.growatt.shinetools.module.localbox.configtype.usconfig.USParamsSettingActivity;
@@ -55,14 +54,10 @@ import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
-import com.growatt.shinetools.utils.MyToastUtils;
 import com.growatt.shinetools.utils.Mydialog;
-import com.growatt.shinetools.utils.datalogupdata.UpdateDatalogUtils;
 import com.growatt.shinetools.widget.GridDivider;
 import com.growatt.shinetools.widget.LinearDivider;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -1343,41 +1338,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                         break;
 
                     case 8:
-                        try {
-//                            List<ByteBuffer> fileByte1 = UpdateDatalogUtils.getFileByte2(this, "IFAB01_20200728.hex");
-//                            List<ByteBuffer> fileByte2 = UpdateDatalogUtils.getFileByte2(this, "UEAA-03.hex");
-//                            List<ByteBuffer> fileByte3 = UpdateDatalogUtils.getFileByte2(this, "ZACA-03.bin");
-                            List<ByteBuffer> fileByte4 = UpdateDatalogUtils.getFileByte2(this, "ZACA03testCRC.bin");
-                            List<List<ByteBuffer>>list=new ArrayList<>();
-//                            list.add(fileByte1);
-//                            list.add(fileByte2);
-//                            list.add(fileByte3);
-                            list.add(fileByte4);
-                            new FileUpdataSend(this, list, new IUpdataListeners() {
-                                @Override
-                                public void updataStart(String msg) {
-                                    MyToastUtils.toast(msg);
-                                }
-
-                                @Override
-                                public void updataProgress(int total, int current, int progress) {
-
-                                }
-
-
-                                @Override
-                                public void updataFail(String msg) {
-
-                                }
-
-                                @Override
-                                public void updataEnd() {
-
-                                }
-                            });
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        InverterUpdataManager.getInstance(this).updata();
                         break;
 
 
