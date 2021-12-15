@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <include layout="@layout/toobar_title" />
+
+
+    <TextView
+        android:id="@+id/tv_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_10"
+        android:text="@string/android_key1322"
+        android:textColor="@color/color_text_66"
+        android:textSize="@dimen/size_content_sp_14" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--max mac mod mid-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/shape_white_corner"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_max"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    android:text="Single Phase On-grid Inverter"
+                    android:textColor="@color/color_text_99"
+                    android:textSize="@dimen/size_content_sp_14" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:background="@color/gray_eeeeeee" />
+
+                <LinearLayout
+                    android:id="@+id/ll_type_mic_min"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_type_max"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="MIC、MIN TL-X/XE"
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_type_min_tl_xh"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_type_230"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="MIN TL-XH"
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_type_min_tl_xh_us"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_type_max_x"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="MIN TL-XH-US"
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/shape_white_corner"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    android:text="Three Phase On-grid Inverter"
+                    android:textColor="@color/color_text_99"
+                    android:textSize="@dimen/size_content_sp_14" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:background="@color/gray_eeeeeee" />
+
+                <LinearLayout
+                    android:id="@+id/ll_type_mod_mid_mac"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_type_tl_x"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="MOD MID MAC"
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_mod_tl3_xh"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_tl_xh"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="MOD TL3-XH"
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_type_max_tl3_lvmv"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_type_tlx_us"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="MAX TL3 LV/MV"
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_type_max_tl3_x_hv"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_type_tl3_x_hv"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="MAX TL3-X HV"
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/shape_white_corner"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_type_olb"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_type_olb"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="-S/MTL-S/TL3-S..."
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/device_old" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/shape_white_corner"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_storage_inverter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    android:text="Storage Inverter"
+                    android:textColor="@color/color_text_99"
+                    android:textSize="@dimen/size_content_sp_14" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:background="@color/gray_eeeeeee" />
+
+                <LinearLayout
+                    android:id="@+id/ll_type_spa_tl_bl"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_type_spa_tl_bl"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="SPA TL BL"
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_spa_tl3_bh"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_spa_tl3_bh"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="SPA TL3 BH"
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_type_sph"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_type_sph"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="SPH"
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_type_sph_tl3_bh"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_type_sph_tl3_bh"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="SPH TL3 BH"
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_type_sph_tl_bl_us"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_type_sph_tl_bl_us"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_45"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dp_10"
+                        android:text="SPH TL BL-US"
+                        android:textColor="@color/color_text_33"
+                        android:textSize="@dimen/size_content_sp_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/more" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

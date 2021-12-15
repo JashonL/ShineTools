@@ -6547,5 +6547,6 @@
     <string name="keep_page">Please keep the current page during the upgrade process</string>
     <string name="installing">Installing</string>
     <string name="device_restart">The inverter is restarting, wait about 60 seconds before reconnecting.</string>
+    <string name="file_downloading">正在下载固件版本，请保持网络畅通</string>
 
 </resources>

@@ -183,4 +183,9 @@ public class InverterUpdataManager {
     }
 
 
+
+
+
+
+
 }

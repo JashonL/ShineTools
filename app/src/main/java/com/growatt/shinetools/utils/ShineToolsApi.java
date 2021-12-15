@@ -11,7 +11,14 @@ public class ShineToolsApi {
 
     public static String BASE_URL = "https://oss.growatt.com";
 
+    public static String FILE_DOWNLOAD_BASE_URL ="http://20.6.1.114:8081/ShineServer_2016";
+
     public static String DATALOG_DETAIL="/newTwoEicAPI.do?op=getDatalogData";
+
+    public static String getFileDownLoadUrl() {
+        return FILE_DOWNLOAD_BASE_URL + "/newTwoServiceAPI.do?op=getOssFileUploadList";
+    }
+
 
     /**
      * 请求登录
@@ -54,5 +61,15 @@ public class ShineToolsApi {
         Log.i(params.toString());
         InternetUtils.asynPost(context, url, params,callback);
     }
+
+
+
+    public static void getUpdataFileZip(Context context,String url,StringCallback callback) {
+        Map<String, String> params = new HashMap<>();
+        Log.i(params.toString());
+        InternetUtils.asynPost(context, url, params,callback);
+    }
+
+
 
 }

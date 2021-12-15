@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white_background"
+    android:orientation="vertical">
 
     <include layout="@layout/toobar_title" />
 
 
     <!--升级中-->
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/grop_updataing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="iv_updata,bp_progress,tv_progress,tv_tips,tv_tips2" />
-
     <ImageView
         android:id="@+id/iv_updata"
         android:layout_width="wrap_content"
@@ -26,6 +19,22 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_title" />
+
+
+    <TextView
+        android:id="@+id/tv_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center"
+        android:textColor="@color/content_bg_white"
+        android:textSize="@dimen/size_content_sp_14"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/dp_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_updata" />
+
 
     <ProgressBar
         android:id="@+id/bp_progress"
@@ -37,8 +46,8 @@
         android:layout_marginEnd="@dimen/dp_10"
         android:max="100"
         android:progress="0"
-        android:progressDrawable="@drawable/progress_style_blue"
-        app:layout_constraintTop_toBottomOf="@+id/iv_updata" />
+        android:progressDrawable="@drawable/progress_style_04"
+        app:layout_constraintTop_toBottomOf="@+id/tv_loading" />
 
     <TextView
         android:id="@+id/tv_progress"
@@ -48,7 +57,7 @@
         android:gravity="end"
         android:padding="@dimen/dp_10"
         android:text="0%"
-        android:textColor="@color/theme_blue_color"
+        android:textColor="@color/headerView"
         android:textSize="@dimen/size_content_sp_14"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -62,26 +71,14 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/dp_10"
         android:gravity="center"
-        android:text="@string/android_key2934"
-        android:textColor="@color/color_text_33"
-        android:textSize="@dimen/size_content_sp_16"
+        android:text="@string/file_downloading"
+        android:textColor="@color/content_bg_white"
+        android:textSize="@dimen/size_content_sp_14"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_progress" />
 
-    <TextView
-        android:id="@+id/tv_tips2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp_10"
-        android:gravity="center"
-        android:text="@string/android_key2935"
-        android:textColor="@color/color_text_33"
-        android:textSize="@dimen/size_content_sp_14"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_tips" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

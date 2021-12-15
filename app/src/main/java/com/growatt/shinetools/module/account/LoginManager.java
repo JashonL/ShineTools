@@ -11,9 +11,15 @@ import com.growatt.shinetools.bean.User;
 import com.growatt.shinetools.constant.GlobalConstant;
 import com.growatt.shinetools.db.DataBaseManager;
 import com.growatt.shinetools.module.WelcomeActivity;
+import com.growatt.shinetools.module.inverterUpdata.CheckDownloadUtils;
+import com.growatt.shinetools.module.inverterUpdata.DownloadFileActivity;
+import com.growatt.shinetools.module.inverterUpdata.FileCheckUpdataCallback;
+import com.growatt.shinetools.module.inverterUpdata.FileDownBean;
+import com.growatt.shinetools.module.inverterUpdata.FileUpdataManager;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.AppSystemUtils;
 import com.growatt.shinetools.utils.CommenUtils;
+import com.growatt.shinetools.utils.DialogUtils;
 import com.growatt.shinetools.utils.Log;
 import com.growatt.shinetools.utils.MyToastUtils;
 import com.growatt.shinetools.utils.RequestCallback;
@@ -87,13 +93,40 @@ public class LoginManager {
         if (MAINTEAN_USER == userType||KEFU_USER==userType) {
             dataBaseManager.save(new User("1",username,password));
         }
-        //如果是
-        boolean firstWelcome = AppSystemUtils.isFirstWelcome();
-        if (!firstWelcome){
-            ActivityUtils.gotoActivity((Activity) context, WelcomeActivity.class, true);
-        }else {
-            ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
-        }
+
+
+
+        //检测是否要下载文件
+        FileUpdataManager fileUpdataManager = CheckDownloadUtils.checkUpdata((Activity) context);
+        fileUpdataManager.checkNewVersion(new FileCheckUpdataCallback(){
+            @Override
+            protected void onBefore() {
+                super.onBefore();
+                DialogUtils.getInstance().showLoadingDialog((Activity) context);
+            }
+
+            @Override
+            protected void hasNewVersion(FileDownBean updateApp, FileUpdataManager updateAppManager) {
+                super.hasNewVersion(updateApp, updateAppManager);
+                DialogUtils.getInstance().closeLoadingDialog();
+                ActivityUtils.gotoActivity((Activity) context, DownloadFileActivity.class, true);
+            }
+
+            @Override
+            protected void noNewVirsion(String error) {
+                super.noNewVirsion(error);
+                DialogUtils.getInstance().closeLoadingDialog();
+                //如果是
+                boolean firstWelcome = AppSystemUtils.isFirstWelcome();
+                if (!firstWelcome){
+                    ActivityUtils.gotoActivity((Activity) context, WelcomeActivity.class, true);
+                }else {
+                    ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
+                }
+            }
+        });
+
+
     }
 
 

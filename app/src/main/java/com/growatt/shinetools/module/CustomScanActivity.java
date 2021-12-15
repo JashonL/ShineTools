@@ -191,7 +191,7 @@ public class CustomScanActivity extends BaseScanActivity implements OnCaptureCal
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.right_action:
-                ActivityUtils.gotoActivity(this, DeviceTypeActivity.class, true);
+                ActivityUtils.gotoActivity(this, DeviceTypeChooseActivity.class, true);
                 break;
         }
         return true;

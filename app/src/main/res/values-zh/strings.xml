@@ -6541,6 +6541,6 @@
     <string name="keep_page">升级过程请保持当前页面</string>
     <string name="installing">正在安装</string>
     <string name="device_restart">逆变器正在重启，大约等待60S后， 再重新连接。</string>
-
+    <string name="file_downloading">正在下载固件版本，请保持网络畅通</string>
 
 </resources>

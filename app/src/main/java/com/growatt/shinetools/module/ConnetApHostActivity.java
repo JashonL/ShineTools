@@ -539,7 +539,7 @@ public class ConnetApHostActivity extends BaseActivity {
     }
 
     private void toConfig() {
-        ActivityUtils.gotoActivity(this, DeviceTypeActivity.class, true);
+        ActivityUtils.gotoActivity(this, DeviceTypeChooseActivity.class, true);
 
     }
 

@@ -37,7 +37,9 @@ import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 
 public class ShineToosApplication extends Application {
 
-    public  static String DATALOGER_UPDATA_DIR;
+    public static String DATALOGER_UPDATA_DIR;
+
+    public static String INVERTER_UPDATA_FILE_DIR;
 
     private static ShineToosApplication context = null;
 
@@ -60,7 +62,7 @@ public class ShineToosApplication extends Application {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(30000L, TimeUnit.MILLISECONDS)
                 .readTimeout(30000, TimeUnit.MILLISECONDS)
-                .addInterceptor(new LoggerInterceptor("TAG",true))
+                .addInterceptor(new LoggerInterceptor("TAG", true))
                 .cookieJar(cookieJar1)
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override
@@ -89,8 +91,11 @@ public class ShineToosApplication extends Application {
                 .build();
         Realm.setDefaultConfiguration(configRealm);
         DATALOGER_UPDATA_DIR = getFilesDir().getPath() + File.separator + "datalog" + File.separator;//
-
-
+        INVERTER_UPDATA_FILE_DIR = getFilesDir().getParent() + File.separator + "updata";
+        File file = new File(INVERTER_UPDATA_FILE_DIR);
+        if (!file.exists()){
+            file.mkdirs();
+        }
 //        Crasheye.init(context, "aada7e10");
     }
 

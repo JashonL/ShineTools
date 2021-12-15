@@ -26,28 +26,26 @@ public class DeviceConstant {
 
     //----------------------设备分类------------------------
 
-
+    public static final String THREE_PHASE = "Three Phase On-grid Inverter";
     public static final int MIC_MIN_TL_X_XE = 1;
     public static final int MIN_TL_XH = 2;
     public static final int MIN_TL_XH_US = 3;//一个单独的入口
 
-
+    public static final String SPH_SPA = "SPH/SPA";
     public static final int MOD_MID_MAC = 4;
     public static final int MOD_TL3_XH = 5;
     public static final int MAX_TL3_LV_MV = 6;
     public static final int MAX_TL3_X_HV = 7;
 
-    public static final int S_MTL_S_TL3_S = 8;
+    public static final String SINGLE_PHASE = "Single Phase On-grid Inverter";
 
+
+    public static final String S_MTL_S_TL3_S = "S/MTL-S/TL3-S...";
     public static final int SPA_TL_BL = 9;
-    public static final int  SPA_TL3_BH = 10;
+    public static final int SPA_TL3_BH = 10;
     public static final int SPH = 11;
     public static final int SPH_TL3_BH = 12;
     public static final int SPH_TL_BL_US = 13;
-
-
-
-
 
 
 }
