@@ -1991,7 +1991,7 @@
     <string name="android_key1987">安装商编号</string>
     <string name="android_key1988">安装商编码错误</string>
     <string name="android_key1989">单个电站采集器数量超出限制</string>
-    <string name="android_key1990">当前版本:</string>
+    <string name="android_key1990">当前版本</string>
     <string name="android_key1991">当前电流</string>
     <string name="android_key1992">当前电压</string>
     <string name="android_key1993">当前功率</string>
@@ -3621,7 +3621,7 @@
     <string name="about_agreement">用户协议</string>
     <string name="about_phone">客服电话</string>
     <string name="about_update">检查更新</string>
-    <string name="最新版本为">最新版本为</string>
+    <string name="最新版本为">最新版本</string>
     <string name="是否更新">是否更新</string>
     <string name="soft_update_no">已经是最新版本</string>
     <string name="暂不">暂不</string>
@@ -6542,5 +6542,12 @@
     <string name="installing">正在安装</string>
     <string name="device_restart">逆变器正在重启，大约等待60S后， 再重新连接。</string>
     <string name="file_downloading">正在下载固件版本，请保持网络畅通</string>
+    <string name="version_low">当前逆变器版本过低，是否升级逆变器版本</string>
+    <string name="version_updata">版本升级</string>
+    <string name="inverter_upgrade">逆变器升级</string>
+    <string name="choise_package">请选择升级包</string>
+    <string name="no_newversion">没有最新升级包</string>
+    <string name="choose_other">选择其他升级包</string>
+    <string name="use_this_version">是否升级为该版本</string>
 
 </resources>

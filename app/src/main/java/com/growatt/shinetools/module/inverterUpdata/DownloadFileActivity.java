@@ -18,6 +18,7 @@ import com.growatt.shinetools.module.WelcomeActivity;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.AppSystemUtils;
 import com.growatt.shinetools.utils.CircleDialogUtils;
+import com.growatt.shinetools.utils.DialogUtils;
 
 import butterknife.BindView;
 
@@ -117,7 +118,13 @@ public class DownloadFileActivity extends BaseActivity {
             @Override
             protected void noNewVirsion(String error) {
                 super.noNewVirsion(error);
+                DialogUtils.getInstance().closeLoadingDialog();
+            }
 
+            @Override
+            protected void onServerError() {
+                super.onServerError();
+                DialogUtils.getInstance().closeLoadingDialog();
             }
         });
 

@@ -1,13 +1,21 @@
 package com.growatt.shinetools.module.localbox.tlxh;
 
+import android.content.Intent;
+import android.view.View;
+import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
+import com.growatt.shinetools.module.inverterUpdata.DeviceManualUpdataActivity;
+import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
 import com.growatt.shinetools.module.localbox.tlxh.base.BaseTLXHInfoActivity;
 
 public class TLXHDeviceInfoActivity extends BaseTLXHInfoActivity {
     @Override
     public int getHeaderView() {
-        return R.layout.header_us_device_info;
+        return R.layout.header_tlxh_device_info;
     }
 
 
@@ -124,7 +132,7 @@ public class TLXHDeviceInfoActivity extends BaseTLXHInfoActivity {
                 break;
             case 1:
 //                RegisterParseUtil.parseHold125T249(mMaxData, bytes);
-                RegisterParseUtil.parseTL3XH125T249(mMaxData,bytes);
+                RegisterParseUtil.parseTL3XH125T249(mMaxData, bytes);
                 break;
 //            case 2:
 //                RegisterParseUtil.parseMax2(mMaxData, bytes);
@@ -141,4 +149,22 @@ public class TLXHDeviceInfoActivity extends BaseTLXHInfoActivity {
                 break;
         }
     }
+
+    @Override
+    public void initUpdata() {
+        super.initUpdata();
+        View upTitle = header.findViewById(R.id.tvTitle_updata);
+        TextView tvhead = upTitle.findViewById(R.id.tvHeadTitle);
+        tvhead.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+        upTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(TLXHDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
+                intent.putExtra("path", UpgradePath.MIN_TL_XH);
+                startActivity(intent);
+            }
+        });
+    }
+
+
 }

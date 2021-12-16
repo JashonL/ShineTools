@@ -1990,7 +1990,7 @@
     <string name="android_key1987">Installer code</string>
     <string name="android_key1988">Installer code error</string>
     <string name="android_key1989">Datalogger reached the limit  number of single plant</string>
-    <string name="android_key1990">current version:</string>
+    <string name="android_key1990">current version</string>
     <string name="android_key1991">Current</string>
     <string name="android_key1992">Voltage</string>
     <string name="android_key1993">Current\nPower</string>
@@ -6548,5 +6548,12 @@
     <string name="installing">Installing</string>
     <string name="device_restart">The inverter is restarting, wait about 60 seconds before reconnecting.</string>
     <string name="file_downloading">正在下载固件版本，请保持网络畅通</string>
+    <string name="version_low">当前逆变器版本过低，是否升级逆变器版本</string>
+    <string name="version_updata">版本升级</string>
+    <string name="inverter_upgrade">逆变器升级</string>
+    <string name="choise_package">请选择升级包</string>
+    <string name="no_newversion">没有最新升级包</string>
+    <string name="choose_other">选择其他升级包</string>
+    <string name="use_this_version">是否升级为该版本</string>
 
 </resources>

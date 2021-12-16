@@ -170,6 +170,9 @@ public abstract class TlxToolBaseActivity extends BaseActivity implements Toolba
     private boolean isConnect = false;
 
 
+    //检测更新
+    public abstract void checkUpdata();
+
 
     @Override
     protected int getContentView() {
@@ -739,6 +742,12 @@ public abstract class TlxToolBaseActivity extends BaseActivity implements Toolba
         Drawable drawableLeft=getResources().getDrawable(drawable);
         tvStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableLeft,null,null,null);
         tvStatus.setCompoundDrawablePadding(4);
+
+        if (currenRead==0){
+            //先断开
+            manager.disConnectSocket();
+            checkUpdata();
+        }
     }
 
 

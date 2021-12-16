@@ -359,6 +359,56 @@ public class CircleDialogUtils {
     }
 
 
+
+
+
+    public static void showUpdataDialog(FragmentActivity context, String title, String subTitle,
+                                            String current, String newversion, OndialogClickListeners listener) {
+        View contentView = LayoutInflater.from(context).inflate(R.layout.dialog_inverter_updata, null, false);
+        TextView tvTitle = contentView.findViewById(R.id.tv_title);
+        TextView tvSubTtile = contentView.findViewById(R.id.tv_sub_title);
+        TextView tvCurrentValue = contentView.findViewById(R.id.tv_current_value);
+        TextView tvTargetValue = contentView.findViewById(R.id.tv_target_value);
+        TextView tvCancel = contentView.findViewById(R.id.tv_button_cancel);
+        TextView tvConfirm = contentView.findViewById(R.id.tv_button_confirm);
+
+        if (!TextUtils.isEmpty(current)){
+            tvCurrentValue.setText(current);
+        }
+
+        if (!TextUtils.isEmpty(newversion)){
+            tvTargetValue.setText(newversion);
+        }
+
+
+        CircleDialog.Builder builder = new CircleDialog.Builder();
+        builder.setWidth(0.75f);
+        builder.setMaxHeight(0.8f);
+        builder.setBodyView(contentView, view -> {
+            CircleDrawable bgCircleDrawable = new CircleDrawable(CircleColor.DIALOG_BACKGROUND
+                    , CircleDimen.DIALOG_RADIUS, CircleDimen.DIALOG_RADIUS, CircleDimen.DIALOG_RADIUS, CircleDimen.DIALOG_RADIUS);
+            view.setBackground(bgCircleDrawable);
+        });
+        builder.setGravity(Gravity.CENTER);
+        builder.setCancelable(true);
+        BaseCircleDialog show = builder.show(context.getSupportFragmentManager());
+        tvSubTtile.setText(subTitle);
+        tvTitle.setText(title);
+
+        tvCancel.setOnClickListener(view1 -> {
+            show.dialogDismiss();
+        });
+
+
+        tvConfirm.setOnClickListener(view -> {
+            show.dialogDismiss();
+            listener.buttonOk();
+        });
+    }
+
+
+
+
     public interface OndialogClickListeners {
         void buttonOk();
 

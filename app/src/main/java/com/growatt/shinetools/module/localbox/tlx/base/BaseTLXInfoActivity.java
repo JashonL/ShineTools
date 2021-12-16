@@ -957,7 +957,9 @@ public abstract class BaseTLXInfoActivity extends BaseActivity implements View.O
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        refresh();
+        if (item.getItemId()==R.id.right_action){
+            refresh();
+        }
         return true;
     }
 }

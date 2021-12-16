@@ -94,6 +94,11 @@ public class TL3XHToolActivity extends TlxToolBaseActivity {
     }
 
     @Override
+    public void checkUpdata() {
+
+    }
+
+    @Override
     public void toSettingActivity(int position) {
         UsToolParamBean item = usParamsetAdapter.getItem(position);
         final String title = item.getTitle();

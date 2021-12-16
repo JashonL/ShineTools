@@ -39,7 +39,10 @@ public class ShineToosApplication extends Application {
 
     public static String DATALOGER_UPDATA_DIR;
 
+    //逆变器升级目录
     public static String INVERTER_UPDATA_FILE_DIR;
+    //逆变器升级从其他地方选择的升级包
+    public static String INVERTER_OTHER_FILE_DIR;
 
     private static ShineToosApplication context = null;
 
@@ -91,11 +94,14 @@ public class ShineToosApplication extends Application {
                 .build();
         Realm.setDefaultConfiguration(configRealm);
         DATALOGER_UPDATA_DIR = getFilesDir().getPath() + File.separator + "datalog" + File.separator;//
-        INVERTER_UPDATA_FILE_DIR = getFilesDir().getParent() + File.separator + "updata";
-        File file = new File(INVERTER_UPDATA_FILE_DIR);
+        INVERTER_UPDATA_FILE_DIR = getFilesDir().getParent() + File.separator + "updata"+ File.separator;
+        INVERTER_OTHER_FILE_DIR=getFilesDir().getParent() + File.separator + "updata"+ File.separator+"other"+ File.separator;
+        File file = new File(INVERTER_OTHER_FILE_DIR);
         if (!file.exists()){
             file.mkdirs();
         }
+
+
 //        Crasheye.init(context, "aada7e10");
     }
 

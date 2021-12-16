@@ -22,16 +22,19 @@ public class CheckInvertUpdata {
 
     private SocketManager manager;
     private Context context;
+    private String newVersion;
+    private InverterCheckUpdataCallback callback;
 
-
-    public CheckInvertUpdata(SocketManager manager, Context context) {
-        this.manager = manager;
+    public CheckInvertUpdata(Context context, String newVersion, InverterCheckUpdataCallback checkUpdataCallback) {
         this.context = context;
+        this.newVersion = newVersion;
+        this.callback = checkUpdataCallback;
 
+    }
 
+    public void checkNewVersion() {
         //1.去连接TCP
         connetSocket();
-
     }
 
 
@@ -106,9 +109,14 @@ public class CheckInvertUpdata {
         //移除外部协议
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
-        int value = MaxWifiParseUtil.obtainValueOne(bs);
-
-
+        String value = MaxWifiParseUtil.obtainRegistValueAsciiYesNull(MaxWifiParseUtil.subBytes125(bs, 0, 0, 8));
+        if (!value.equals(newVersion)) {
+            callback.hasNewVersion(value,newVersion);
+        }else {
+            callback.noNewVirsion(context.getString(R.string.soft_update_no));
+        }
+        LogUtil.i("当前版本:" + value + "最新版本:" + newVersion);
+        manager.disConnectSocket();
     }
 
 
@@ -116,7 +124,7 @@ public class CheckInvertUpdata {
      * 请求获取当前软件的版本
      */
     private void getCurrentVersion() {
-        int[] funs = new int[]{4,6500,6507};
+        int[] funs = new int[]{4, 6500, 6507};
         manager.sendMsg(funs);
     }
 

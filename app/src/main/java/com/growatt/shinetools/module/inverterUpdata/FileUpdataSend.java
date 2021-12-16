@@ -15,8 +15,10 @@ import com.growatt.shinetools.timer.CustomTimer;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
+import com.growatt.shinetools.utils.datalogupdata.UpdateDatalogUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,12 +62,10 @@ public class FileUpdataSend implements ConnectHandler {
     private int preIndex = curDataIndex;
 
 
-
-
-/*    public FileUpdataSend(Context context, List<File> updataFile) {
+    public FileUpdataSend(Context context, List<File> updataFile, IUpdataListeners updataListeners) {
         this.updataFile = updataFile;
         this.context = context;
-
+        this.updataListeners = updataListeners;
         //1.将文件分包
         for (int i = 0; i < updataFile.size(); i++) {
             try {
@@ -78,9 +78,9 @@ public class FileUpdataSend implements ConnectHandler {
 
         //1.去连接TCP
         connetSocket();
-    }*/
+    }
 
-
+/*
     public FileUpdataSend(Context context, List<List<ByteBuffer>> fileData, IUpdataListeners updataListeners) {
         this.context = context;
         this.fileData = fileData;
@@ -88,7 +88,7 @@ public class FileUpdataSend implements ConnectHandler {
 
         //1.去连接TCP
         connetSocket();
-    }
+    }*/
 
 
     /**
@@ -376,9 +376,10 @@ public class FileUpdataSend implements ConnectHandler {
     private void sendFile(int current) {
         step = 3;
         int data = 0x01;
-      /*  if (current!=fileData.size()-1){
-            data=0x10;
-        }*/
+        File file = updataFile.get(current);
+        if (file.getName().endsWith(".bin")) {
+            data = 0x10;
+        }
         manager.sendMsgNoNum(new int[]{6, 0x1f, data});
     }
 

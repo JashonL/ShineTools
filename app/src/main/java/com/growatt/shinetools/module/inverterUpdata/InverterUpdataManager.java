@@ -1,7 +1,7 @@
 package com.growatt.shinetools.module.inverterUpdata;
 
-import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +12,16 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.utils.CircleDialogUtils;
-import com.growatt.shinetools.utils.datalogupdata.UpdateDatalogUtils;
+import com.growatt.shinetools.utils.FileUtils;
 import com.mylhyl.circledialog.BaseCircleDialog;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class InverterUpdataManager {
@@ -45,32 +49,221 @@ public class InverterUpdataManager {
 
 
     //检测升级
-    public boolean checkUpdata(int nowVersion) {
 
-        return false;
+    public void checkUpdata(String filePath) {
+        File versionFile = new File(filePath);
+        String zipPath = "";
+        String zipTargetPath = "";
+        if (versionFile.exists()) {
+            File[] files = versionFile.listFiles();
+            if (files == null) return;
+            String version = "";
+            for (File f : files) {
+                String name = f.getName();
+                if (name.endsWith(".zip")) {
+                    version = name.substring(0, name.lastIndexOf("."));
+                    zipPath = f.getAbsolutePath();
+                    zipTargetPath = versionFile.getAbsolutePath() +File.separator+ name;
+                    break;
+                }
+            }
+
+            //解压缩
+            if (!TextUtils.isEmpty(version)) {
+                String finalZipPath = zipPath;
+                String finalZipTargetPath = zipTargetPath;
+                checkUpdata(version, new InverterCheckUpdataCallback() {
+                    @Override
+                    protected void hasNewVersion(String oldVersion, String newVersion) {
+                        super.hasNewVersion(oldVersion, newVersion);
+                        String title = context.getString(R.string.reminder);
+                        String subtitle = context.getString(R.string.version_low);
+                        CircleDialogUtils.showUpdataDialog((FragmentActivity) context, title, subtitle, oldVersion,
+                                newVersion, new CircleDialogUtils.OndialogClickListeners() {
+                                    @Override
+                                    public void buttonOk() {
+
+                                        List<File> unzip = new ArrayList<>();
+                                        //1.解压文件
+                                        File zipParent = new File(finalZipTargetPath);
+                                        if (!zipParent.exists()) {
+                                            zipParent.mkdirs();
+                                            try {
+                                                unzip = FileUtils.unzip(finalZipPath, finalZipTargetPath);
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            File[] files1 = zipParent.listFiles();
+                                            if (files1 == null) return;
+                                            unzip = Arrays.asList(files1);
+                                        }
+
+
+                                        //2.读取txt文件 获取升级顺序
+                                        try {
+                                            List<String> upFileName = new ArrayList<>();
+                                            for (File f : unzip) {
+                                                String name = f.getName();
+                                                if (name.endsWith(".txt")) {
+                                                    FileInputStream fileInputStream = new FileInputStream(f);
+                                                    InputStreamReader isr = new InputStreamReader(fileInputStream);
+                                                    BufferedReader br = new BufferedReader(isr);
+                                                    String line;
+                                                    while ((line = br.readLine()) != null) {
+                                                        upFileName.add(line.trim());
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                            //3.获取要下发的文件
+                                            List<File> files = new ArrayList<>();
+                                            for (String s : upFileName) {
+                                                for (File f : unzip) {
+                                                    String name = f.getName();
+                                                    if (s.contains(name)) {
+                                                        files.add(f);
+                                                    }
+                                                }
+                                            }
+                                            //4.去升级
+                                           updata(context, files);
+
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+
+                                    }
+
+                                    @Override
+                                    public void buttonCancel() {
+
+                                    }
+                                });
+
+                    }
+                });
+            }
+
+        }
+    }
+
+
+
+
+
+    public void checkUpdataByLocal(String currenVersion,String filePath,InverterCheckUpdataCallback callback) {
+        File versionFile = new File(filePath);
+        String fileName = "";
+        if (TextUtils.isEmpty(currenVersion)){
+            callback.noNewVirsion(context.getString(R.string.soft_update_no));
+            return;
+        }
+        if (versionFile.exists()) {
+            File[] files = versionFile.listFiles();
+            if (files == null) {
+                callback.noNewVirsion(context.getString(R.string.soft_update_no));
+                return;
+            }
+            String version = "";
+            for (File f : files) {
+                String name = f.getName();
+                if (name.endsWith(".zip")) {
+                    version = name.substring(0, name.lastIndexOf("."));
+                    fileName=name;
+                    break;
+                }
+            }
+
+            if (TextUtils.isEmpty(version)){
+                callback.noNewVirsion(context.getString(R.string.no_newversion));
+                return;
+            }
+
+           if (!currenVersion.equals(version)){
+               callback.hasNewVersion(currenVersion,fileName);
+           }else {
+               callback.noNewVirsion(context.getString(R.string.soft_update_no));
+           }
+
+        }
+        else {
+            callback.noNewVirsion(context.getString(R.string.soft_update_no));
+        }
+    }
+
+
+
+
+
+
+
+    public void checkUpdata(String nowVersion, InverterCheckUpdataCallback callback) {
+        CheckInvertUpdata checkInvertUpdata = new CheckInvertUpdata(context, nowVersion, callback);
+        checkInvertUpdata.checkNewVersion();
     }
 
 
     //去升级,下发升级文件
 
     //检测升级
-    public void updata() {
+    public void updata(Context context, List<File> updataFile) {
         try {
 //                            List<ByteBuffer> fileByte1 = UpdateDatalogUtils.getFileByte2(this, "IFAB01_20200728.hex");
 //                            List<ByteBuffer> fileByte2 = UpdateDatalogUtils.getFileByte2(this, "UEAA-03.hex");
 //                            List<ByteBuffer> fileByte3 = UpdateDatalogUtils.getFileByte2(this, "ZACA-03.bin");
 //                            List<ByteBuffer> fileByte4 = UpdateDatalogUtils.getFileByte2(this, "ZACA02testCRC.bin");
-            List<ByteBuffer> fileByte5 = UpdateDatalogUtils.getFileByte2((Activity) context, "ZACA04.bin");
+//            List<ByteBuffer> fileByte5 = UpdateDatalogUtils.getFileByte2((Activity) context, "ZACA04.bin");
 //                            List<ByteBuffer> fileByte6 = UpdateDatalogUtils.getFileByte2(this, "ZACA03testCRC.bin");
 
-            List<List<ByteBuffer>> list = new ArrayList<>();
+//            List<List<ByteBuffer>> list = new ArrayList<>();
 //                            list.add(fileByte1);
 //                            list.add(fileByte2);
 //                            list.add(fileByte3);
 //                            list.add(fileByte4);
-            list.add(fileByte5);
+//            list.add(fileByte5);
 //                            list.add(fileByte6);
-             fileUpdataSend = new FileUpdataSend(context, list, new IUpdataListeners() {
+//             fileUpdataSend = new FileUpdataSend(context, list, new IUpdataListeners() {
+//                @Override
+//                public void preparing() {
+//                    showDialogFragment();
+//                }
+//
+//                @Override
+//                public void sendFileProgress(int total, int current, int progress) {
+//                    String uptating = context.getString(R.string.android_key1148) + "(" + (current+1) + "/" + total + ")";
+//                    tvSubtext.setText(uptating);
+//                    tvProgress.setText(progress + "%");
+//                    pbar.setProgress(progress);
+//                }
+//
+//                @Override
+//                public void updataUpdataProgress(int total, int current, int progress) {
+//                    String uptating = context.getString(R.string.installing) + "(" + current + "/" + total + ")";
+//                    tvSubtext.setText(uptating);
+//                    pbar.setProgress(progress);
+//                }
+//
+//                @Override
+//                public void updataFail(String msg) {
+//                    if (dialogFragment != null) {
+//                        dialogFragment.dialogDismiss();
+//                    }
+//                    showUpdataError(msg);
+//                }
+//
+//                @Override
+//                public void updataSuccess() {
+//                    if (dialogFragment != null) {
+//                        dialogFragment.dialogDismiss();
+//                    }
+//                    showUpdataSuccess();
+//                }
+//            });
+
+
+            fileUpdataSend = new FileUpdataSend(context, updataFile, new IUpdataListeners() {
                 @Override
                 public void preparing() {
                     showDialogFragment();
@@ -78,7 +271,7 @@ public class InverterUpdataManager {
 
                 @Override
                 public void sendFileProgress(int total, int current, int progress) {
-                    String uptating = context.getString(R.string.android_key1148) + "(" + (current+1) + "/" + total + ")";
+                    String uptating = context.getString(R.string.android_key1148) + "(" + (current + 1) + "/" + total + ")";
                     tvSubtext.setText(uptating);
                     tvProgress.setText(progress + "%");
                     pbar.setProgress(progress);
@@ -107,7 +300,8 @@ public class InverterUpdataManager {
                     showUpdataSuccess();
                 }
             });
-        } catch (IOException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -165,6 +359,7 @@ public class InverterUpdataManager {
      * 升级失败
      */
     private BaseCircleDialog dialog_error;
+
     private void showUpdataError(String error) {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_config_error, null);
         dialog_error = CircleDialogUtils.showCommentBodyView(context, view, "", ((FragmentActivity) context).getSupportFragmentManager(), view1 -> {
@@ -181,11 +376,6 @@ public class InverterUpdataManager {
 
         }, Gravity.CENTER, 0.8f, 0.5f, true);
     }
-
-
-
-
-
 
 
 }

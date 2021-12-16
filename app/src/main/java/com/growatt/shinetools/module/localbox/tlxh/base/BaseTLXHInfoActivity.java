@@ -182,6 +182,8 @@ public abstract class BaseTLXHInfoActivity extends BaseActivity implements View.
     public abstract void initInternalParamString();
 
 
+
+
     private MenuItem item;
 
 
@@ -208,7 +210,7 @@ public abstract class BaseTLXHInfoActivity extends BaseActivity implements View.
     //表格列表
     private LinearLayoutManager mLayoutManager;
     private List<MaxChildBean> mGridList;
-    private View header;
+    public View header;
     private MaxMainChildAdapter mAdapter;
 
     /**
@@ -221,6 +223,10 @@ public abstract class BaseTLXHInfoActivity extends BaseActivity implements View.
 
     public abstract int getHeaderView();
     private int rvHeaderView;
+
+
+
+
 
     @Override
     protected int getContentView() {
@@ -268,6 +274,13 @@ public abstract class BaseTLXHInfoActivity extends BaseActivity implements View.
         initContent6();
         //离网参数/BDC/电池参数
         initOtherView();
+        //升级
+        initUpdata();
+    }
+
+
+    public void initUpdata(){
+
     }
 
 

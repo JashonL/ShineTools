@@ -1,18 +1,22 @@
 package com.growatt.shinetools.module.localbox.tlxh;
 
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.tlx.base.TlxToolBaseActivity;
+import com.growatt.shinetools.module.inverterUpdata.InverterUpdataManager;
 import com.growatt.shinetools.module.localbox.max.MaxAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
 import com.growatt.shinetools.module.localbox.mintool.TLXHAutoTestActivity;
+import com.growatt.shinetools.module.localbox.tlx.base.TlxToolBaseActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHChargeActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
+
+import java.io.File;
 
 public class TLXHToolActivity extends TlxToolBaseActivity {
 
@@ -92,6 +96,13 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
     }
 
     @Override
+    public void checkUpdata() {
+        InverterUpdataManager.getInstance(this).checkUpdata(ShineToosApplication.INVERTER_UPDATA_FILE_DIR  +
+                "Three Phase On-grid Inverter" + File.separator + "MIN TL-XH");
+
+    }
+
+    @Override
     public void toSettingActivity(int position) {
         UsToolParamBean item = usParamsetAdapter.getItem(position);
         final String title = item.getTitle();
@@ -159,10 +170,10 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
     public void parserMaxAuto(int count, byte[] bytes) {
         switch (count) {
             case 0:
-                RegisterParseUtil.parseInput3kT3124(mMaxData,bytes);
+                RegisterParseUtil.parseInput3kT3124(mMaxData, bytes);
                 break;
             case 1:
-                RegisterParseUtil.parseInput3125T3249(mMaxData,bytes);
+                RegisterParseUtil.parseInput3125T3249(mMaxData, bytes);
                 break;
         }
     }

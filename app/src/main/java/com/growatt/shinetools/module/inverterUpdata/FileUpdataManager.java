@@ -170,7 +170,7 @@ public class FileUpdataManager {
                 if (mUpdateApp.isUpdate()) {
                     callback.hasNewVersion(mUpdateApp, this);
                 } else {
-                    callback.noNewVirsion("没有新版本");
+                    callback.noNewVirsion(mActivity.getString(R.string.soft_update_no));
                 }
             }
         } catch (Exception ignored) {

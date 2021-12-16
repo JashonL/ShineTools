@@ -124,6 +124,19 @@ public class LoginManager {
                     ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
                 }
             }
+
+            @Override
+            protected void onServerError() {
+                super.onServerError();
+                DialogUtils.getInstance().closeLoadingDialog();
+                //如果是
+                boolean firstWelcome = AppSystemUtils.isFirstWelcome();
+                if (!firstWelcome){
+                    ActivityUtils.gotoActivity((Activity) context, WelcomeActivity.class, true);
+                }else {
+                    ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
+                }
+            }
         });
 
 
