@@ -69,7 +69,7 @@ public class FileUpdataSend implements ConnectHandler {
         //1.将文件分包
         for (int i = 0; i < updataFile.size(); i++) {
             try {
-                List<ByteBuffer> file = UpdateDatalogUtils.getFileByte(updataFile.get(i).getAbsolutePath());
+                List<ByteBuffer> file = UpdateDatalogUtils.getFileByte256(updataFile.get(i).getAbsolutePath());
                 fileData.add(file);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -122,11 +122,17 @@ public class FileUpdataSend implements ConnectHandler {
         //初始化连接
         manager = new SocketManager(context);
         //设置连接监听
-        manager.onConect(this);
+        if (step==9){
+            manager.onConectNoDialog(this);
+        }else {
+            manager.onConect(this);
+        }
         //开始连接TCP
         //延迟一下避免频繁操作
         new Handler().postDelayed(() -> manager.connectSocket(), 100);
     }
+
+
 
 
     @Override
@@ -358,7 +364,7 @@ public class FileUpdataSend implements ConnectHandler {
 
     //1.向02号保持寄存器写入0x01，保存波特率
     private void sendSaveComend() {
-        updataListeners.preparing();
+        updataListeners.preparing(fileData.size(), fileIndex);
         curBuffer = new ArrayList<>(fileData.get(fileIndex));
         curBuffer.remove(0);//移除第一包 是CRC
         step = 1;
@@ -389,8 +395,6 @@ public class FileUpdataSend implements ConnectHandler {
     //4.发送文件大小
     private void sendFileLength(int current) {
         step = 4;
-//        File file = updataFile.get(current);
-//        int len = (int) file.length();
         int len = (curBuffer.size() - 1) * 256;
         ByteBuffer byteBuffer = curBuffer.get(curBuffer.size() - 1);
         byte[] array = byteBuffer.array();

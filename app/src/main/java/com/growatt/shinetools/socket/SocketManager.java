@@ -32,6 +32,11 @@ public class SocketManager {
         mHandler = new Schedulers(Looper.getMainLooper(), connectHandler,this);
     }
 
+
+    public void onConectNoDialog(ConnectHandler connectHandler) {
+        mHandler = new Schedulers(Looper.getMainLooper(), connectHandler,this);
+    }
+
     /**
      * 连接Socket
      */

@@ -93,7 +93,7 @@ public class DeviceManualUpdataActivity extends BaseActivity implements BaseQuic
 
 
         String[] items = new String[]{getString(R.string.inverter_upgrade)};
-        String[] values = new String[]{getString(R.string.android_key1990) + ":"};
+        String[] values = new String[]{""};
 
         List<UpdataBean> updataItems = new ArrayList<>();
         for (int i = 0; i < items.length; i++) {
@@ -113,6 +113,7 @@ public class DeviceManualUpdataActivity extends BaseActivity implements BaseQuic
                 super.hasNewVersion(oldVersion, newVersion);
                 currentVersion = oldVersion;
                 manualAdater.getData().get(0).setCurrentVersion(oldVersion);
+                manualAdater.notifyDataSetChanged();
             }
 
             @Override

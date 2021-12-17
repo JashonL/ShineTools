@@ -151,19 +151,19 @@ public class FileUpdataManager {
                 List<FileDownBean.DownFileBean> downFileBeans = new ArrayList<>();
 
                 JSONObject threeObject = jsonObject1.optJSONObject(DeviceConstant.THREE_PHASE);
-                parserFile(threeObject,urls,downFileBeans);
+                parserFile(threeObject, urls, downFileBeans, 1, DeviceConstant.THREE_PHASE);
 
                 JSONObject spaObject = jsonObject1.optJSONObject(DeviceConstant.SPH_SPA);
-                parserFile(spaObject,urls,downFileBeans);
+                parserFile(spaObject, urls, downFileBeans, 2, DeviceConstant.SPH_SPA);
 
                 JSONObject singleObject = jsonObject1.optJSONObject(DeviceConstant.SINGLE_PHASE);
-                parserFile(singleObject,urls,downFileBeans);
+                parserFile(singleObject, urls, downFileBeans, 3, DeviceConstant.SINGLE_PHASE);
 
 
                 JSONObject oldObject = jsonObject1.optJSONObject(DeviceConstant.S_MTL_S_TL3_S);
-                parserFile(oldObject,urls,downFileBeans);
+                parserFile(oldObject, urls, downFileBeans, 4, DeviceConstant.S_MTL_S_TL3_S);
 
-                mUpdateApp.setUpdate(downFileBeans.size()>0);
+                mUpdateApp.setUpdate(downFileBeans.size() > 0);
                 mUpdateApp.setFile_urls(urls);
                 mUpdateApp.setDownFileBeans(downFileBeans);
 
@@ -180,8 +180,10 @@ public class FileUpdataManager {
     }
 
 
-
-    private void parserFile(JSONObject jsonObject ,List<String> urls, List<FileDownBean.DownFileBean> downFileBeans){
+    private void parserFile(JSONObject jsonObject, List<String> urls,
+                            List<FileDownBean.DownFileBean> downFileBeans,
+                            int type, String sort
+    ) {
         if (jsonObject != null) {
             //循环遍历
             Iterator<String> keys = jsonObject.keys();
@@ -192,13 +194,86 @@ public class FileUpdataManager {
                 //2.如果不为空 判断是否已经存在该升级包
                 if (!TextUtils.isEmpty(value)) {
                     String name = value.substring(value.lastIndexOf("/"));
-                    File versionFile = new File(fileDir + File.separator + "Three Phase On-grid Inverter" + File.separator + key, name);
-                    if (!versionFile.exists()){
+
+                    String sort_dir = sort.replaceAll(" ", "_")
+                            .replaceAll("/", "_")
+                            .replaceAll("-", "_");
+
+                    String device_dir = key.replaceAll(" ", "_")
+                            .replaceAll("/", "_")
+                            .replaceAll("-", "_");
+
+
+                    String filePath = fileDir + File.separator + sort_dir + File.separator + device_dir;
+                    String fileParentPath = fileDir + File.separator + sort_dir + File.separator + device_dir + File.separator;
+
+
+                    switch (type) {
+                        case 1:
+                            switch (key) {
+                                case DeviceConstant.MOD_TL3_XH:
+                                    UpgradePath.MOD_TL3_XH_PATH = fileParentPath;
+                                    break;
+                                case DeviceConstant.MAX_TL3LV_MV:
+                                    UpgradePath.MAX_TL3LV_MV_PATH = fileParentPath;
+                                    break;
+                                case DeviceConstant.MOD_MID_MAC:
+                                    UpgradePath.MOD_MID_MAC_PATH = fileParentPath;
+                                    break;
+                                case DeviceConstant.MAX_TL3_X_HV:
+                                    UpgradePath.MAX_TL3_X_HV_PATH = fileParentPath;
+                                    break;
+                            }
+
+                            break;
+                        case 2:
+                            switch (key) {
+                                case DeviceConstant.SPH_TL_BL_US:
+                                    UpgradePath.SPH_TL_BL_US_PATH = fileParentPath;
+                                    break;
+                                case DeviceConstant.SPA_TL3_BH:
+                                    UpgradePath.SPA_TL3_BH_PATH = fileParentPath;
+                                    break;
+                                case DeviceConstant.SPH:
+                                    UpgradePath.SPH_PATH = fileParentPath;
+                                    break;
+                                case DeviceConstant.SPH_TL3_BH:
+                                    UpgradePath.SPH_TL3_BH_PATH = fileParentPath;
+                                    break;
+                                case DeviceConstant.SPA_TL_BL:
+                                    UpgradePath.SPA_TL_BL_PATH = fileParentPath;
+                                    break;
+                            }
+                            break;
+                        case 3:
+                            switch (key) {
+                                case DeviceConstant.MIN_TL_XH:
+                                    UpgradePath.MIN_TL_XH_PATH = fileParentPath;
+                                    break;
+                                case DeviceConstant.MIC_MIN_TL_X_XE:
+                                    UpgradePath.MIC_MIN_TL_X_XE_PATH = fileParentPath;
+                                    break;
+                                case DeviceConstant.MIN_TL_XH_US:
+                                    UpgradePath.MIN_TL_XH_US_PATH = fileParentPath;
+                                    break;
+                            }
+
+                            break;
+                        case 4:
+                            if (DeviceConstant.S_MTL_S_TL3_S.equals(key)) {
+                                UpgradePath._S_MIL_S_TL3_S_PATH = fileParentPath;
+                            }
+                            break;
+                    }
+
+
+                    File versionFile = new File(filePath, name);
+                    if (!versionFile.exists()) {
                         //3.判断是否存在旧版，先清空，保证只有一个最新版本 节省内存
-                        File fileParent = new File(fileDir + File.separator + "Three Phase On-grid Inverter" + File.separator + key);
-                        if (fileParent.exists()){
+                        File fileParent = new File(fileParentPath);
+                        if (fileParent.exists()) {
                             FileUtils.removeDir(fileParent);
-                        }else {
+                        } else {
                             fileParent.mkdirs();
                         }
                         urls.add(value);
@@ -213,7 +288,6 @@ public class FileUpdataManager {
             }
         }
     }
-
 
 
     /**

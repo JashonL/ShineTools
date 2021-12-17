@@ -32,6 +32,8 @@ import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.modbusbox.bean.MaxDataBean;
 import com.growatt.shinetools.modbusbox.bean.MaxDataDeviceBean;
 import com.growatt.shinetools.modbusbox.bean.ToolStorageDataBean;
+import com.growatt.shinetools.module.inverterUpdata.DeviceManualUpdataActivity;
+import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
 import com.growatt.shinetools.module.localbox.max.bean.MaxChildBean;
 import com.growatt.shinetools.module.localbox.max.bean.MaxContentBean;
 import com.growatt.shinetools.module.localbox.mintool.TLXHBattryActivity;
@@ -206,7 +208,7 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MaxMainChildAdapter(R.layout.item_max_childrv, mGridList);
-        header = LayoutInflater.from(this).inflate(R.layout.header_us_device_info, (ViewGroup) mRecyclerView.getParent(), false);
+        header = LayoutInflater.from(this).inflate(R.layout.header_min_tlxh_us_device_info, (ViewGroup) mRecyclerView.getParent(), false);
         mAdapter.addHeaderView(header);
         mRecyclerView.setAdapter(mAdapter);
         //头部初始化
@@ -227,6 +229,9 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
         initContent6();
         //离网参数/BDC/电池参数
         initOtherView();
+
+        //升级
+        initUpdata();
 
 
     /*    if (promptWifi){
@@ -726,6 +731,20 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
         TextView battryTitle = tvTitleBattry.findViewById(R.id.tvHeadTitle);
         battryTitle.setTextColor(ContextCompat.getColor(this,R.color.color_text_33));
     }
+
+
+    public void initUpdata(){
+        View upTitle = header.findViewById(R.id.tvTitle_updata);
+        TextView tvhead = upTitle.findViewById(R.id.tvHeadTitle);
+        tvhead.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+        upTitle.setOnClickListener(view -> {
+            Intent intent =new Intent(USDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
+            intent.putExtra("path", UpgradePath.MIN_TL_XH_US_PATH);
+            startActivity(intent);
+        });
+    }
+
+
 
     private void initC1Datas(String[] title1, String[] title2, List<String> c1List, MaxContentAdapter adapter) {
         if (title1 == null || title2 == null) return;

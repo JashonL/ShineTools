@@ -40,6 +40,8 @@ public class InvererManualAdater extends BaseMultiItemQuickAdapter<UpdataBean, B
             boolean checked = item.isChecked();
             ivCheck.setImageResource(checked ? R.drawable.checkbox_checked : R.drawable.checkbox_uncheck);
             helper.addOnClickListener(R.id.tv_other_package);
+            String s = item.getCurrentVersion()+"";
+            helper.setText(R.id.tv_current_version, s);
         }
     }
 }

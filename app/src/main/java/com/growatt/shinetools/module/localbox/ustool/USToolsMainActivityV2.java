@@ -38,6 +38,8 @@ import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.modbusbox.bean.MaxDataBean;
 import com.growatt.shinetools.modbusbox.bean.ToolStorageDataBean;
+import com.growatt.shinetools.module.inverterUpdata.InverterUpdataManager;
+import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
 import com.growatt.shinetools.module.localbox.configtype.MainsCodeParamSetActivity;
 import com.growatt.shinetools.module.localbox.configtype.usconfig.USChargeActivity;
 import com.growatt.shinetools.module.localbox.configtype.usconfig.USParamsSettingActivity;
@@ -757,6 +759,8 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                             //关闭连接
                             SocketClientUtil.close(mReadBdcUtil);
                             refreshFinish();
+                            checkUpdata();
+
                         }
 
                         LogUtil.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
@@ -793,6 +797,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
     };
 
 
+
     private void parseBdc(byte[] bytes, int pos) {
         //移除外部协议
         byte[] bs = RegisterParseUtil.removePro17(bytes);
@@ -811,6 +816,13 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         powers.add(String.valueOf(bdcChargePower));
         powers.add(String.valueOf(bdcDisChargePower));
         initPowerDatas(powerTitles, powers, mPowerAdapter);
+    }
+
+
+
+    public void checkUpdata() {
+        InverterUpdataManager.getInstance().checkUpdata(this, UpgradePath.MIN_TL_XH_US_PATH);
+
     }
 
     /**

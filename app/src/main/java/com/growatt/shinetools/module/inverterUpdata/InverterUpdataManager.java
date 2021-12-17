@@ -264,8 +264,12 @@ public class InverterUpdataManager {
             //------------------正式使用--------------------
             fileUpdataSend = new FileUpdataSend(context, updataFile, new IUpdataListeners() {
                 @Override
-                public void preparing() {
-                    showDialogFragment(context);
+                public void preparing(int total, int current) {
+                    if (dialogFragment != null) {
+                        dialogFragment.dialogDismiss();
+                    }
+                    showDialogFragment(context,total,current);
+
                 }
 
                 @Override
@@ -281,6 +285,7 @@ public class InverterUpdataManager {
                     String uptating = context.getString(R.string.installing) + "(" + current + "/" + total + ")";
                     tvSubtext.setText(uptating);
                     pbar.setProgress(progress);
+                    tvProgress.setText(progress + "%");
                 }
 
                 @Override
@@ -314,19 +319,18 @@ public class InverterUpdataManager {
     /**
      * 显示更新提示
      */
-    private void showDialogFragment(Context context) {
+    private void showDialogFragment(Context context,int total, int current) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_updata_dialog, null);
         tvSubtext = view.findViewById(R.id.tv_subtext);
         pbar = view.findViewById(R.id.loading_img);
         tvProgress = view.findViewById(R.id.tv_progress);
         tvUpdating = view.findViewById(R.id.uptating_tips);
-        tvSubtext.setText(R.string.upgrading_in_preparation);
+        String uptating = context.getString(R.string.upgrading_in_preparation) + "(" + (current + 1) + "/" + total + ")";
+        tvSubtext.setText(uptating);
         tvSubtext.setOnClickListener(view12 -> {
             fileUpdataSend.readTimeOut();
         });
         dialogFragment = CircleDialogUtils.showCommentBodyView(context, view, "", ((FragmentActivity) context).getSupportFragmentManager(), view1 -> {
-
-
         }, Gravity.CENTER, 0.8f, 0.5f, false);
     }
 

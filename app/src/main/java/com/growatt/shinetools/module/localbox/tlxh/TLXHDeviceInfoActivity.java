@@ -158,7 +158,7 @@ public class TLXHDeviceInfoActivity extends BaseTLXHInfoActivity {
         tvhead.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
         upTitle.setOnClickListener(view -> {
             Intent intent =new Intent(TLXHDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
-            intent.putExtra("path", UpgradePath.MIN_TL_XH);
+            intent.putExtra("path", UpgradePath.MIN_TL_XH_PATH);
             startActivity(intent);
         });
     }

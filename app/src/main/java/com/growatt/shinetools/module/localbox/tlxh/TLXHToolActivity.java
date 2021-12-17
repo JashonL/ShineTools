@@ -1,9 +1,9 @@
 package com.growatt.shinetools.module.localbox.tlxh;
 
 import com.growatt.shinetools.R;
-import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.inverterUpdata.InverterUpdataManager;
+import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
 import com.growatt.shinetools.module.localbox.max.MaxAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
@@ -15,8 +15,6 @@ import com.growatt.shinetools.module.localbox.tlxh.config.TLXHChargeActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
-
-import java.io.File;
 
 public class TLXHToolActivity extends TlxToolBaseActivity {
 
@@ -97,8 +95,7 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
 
     @Override
     public void checkUpdata() {
-        InverterUpdataManager.getInstance().checkUpdata(this,ShineToosApplication.INVERTER_UPDATA_FILE_DIR  +
-                "Three Phase On-grid Inverter" + File.separator + "MIN TL-XH"+File.separator);
+        InverterUpdataManager.getInstance().checkUpdata(this, UpgradePath.MIN_TL_XH_PATH);
 
     }
 

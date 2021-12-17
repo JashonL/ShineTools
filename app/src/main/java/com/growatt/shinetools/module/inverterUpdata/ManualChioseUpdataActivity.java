@@ -100,7 +100,7 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
         path = getIntent().getStringExtra("path");
 
         String[] items = new String[]{getString(R.string.inverter_upgrade), getString(R.string.choise_package)};
-        String[] values = new String[]{getString(R.string.android_key1990) + ":" + version, ""};
+        String[] values = new String[]{ version, ""};
         List<UpdataBean> updataItems = new ArrayList<>();
         for (int i = 0; i < items.length; i++) {
             UpdataBean bean = new UpdataBean();

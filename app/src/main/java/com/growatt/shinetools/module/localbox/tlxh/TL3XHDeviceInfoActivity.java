@@ -162,7 +162,7 @@ public class TL3XHDeviceInfoActivity extends BaseTLXHInfoActivity {
             @Override
             public void onClick(View view) {
                 Intent intent =new Intent(TL3XHDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
-                intent.putExtra("path", UpgradePath.MOD_TL3_XH);
+                intent.putExtra("path", UpgradePath.MOD_TL3_XH_PATH);
                 startActivity(intent);
             }
         });
