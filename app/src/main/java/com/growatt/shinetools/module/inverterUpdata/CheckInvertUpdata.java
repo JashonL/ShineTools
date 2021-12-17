@@ -88,6 +88,7 @@ public class CheckInvertUpdata {
 
         @Override
         public void receveByteMessage(byte[] bytes) {
+            manager.disConnectSocket();
             //解析
             //检测内容正确性
             boolean isCheck = ModbusUtil.checkModbus(bytes);
@@ -110,12 +111,13 @@ public class CheckInvertUpdata {
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
         String value = MaxWifiParseUtil.obtainRegistValueAsciiYesNull(MaxWifiParseUtil.subBytes125(bs, 0, 0, 8));
-        if (!value.equals(newVersion)) {
+        String substring = newVersion.substring(0, newVersion.length() - 2);
+        if (!value.equals(substring)) {
             callback.hasNewVersion(value,newVersion);
         }else {
             callback.noNewVirsion(context.getString(R.string.soft_update_no));
         }
-        LogUtil.i("当前版本:" + value + "最新版本:" + newVersion);
+        LogUtil.i("当前版本:" + value + "最新版本:" + substring);
         manager.disConnectSocket();
     }
 

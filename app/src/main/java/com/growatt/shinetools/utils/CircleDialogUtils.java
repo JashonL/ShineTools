@@ -391,12 +391,15 @@ public class CircleDialogUtils {
         });
         builder.setGravity(Gravity.CENTER);
         builder.setCancelable(true);
+
+
         BaseCircleDialog show = builder.show(context.getSupportFragmentManager());
         tvSubTtile.setText(subTitle);
         tvTitle.setText(title);
 
         tvCancel.setOnClickListener(view1 -> {
             show.dialogDismiss();
+            show.dismiss();
         });
 
 
