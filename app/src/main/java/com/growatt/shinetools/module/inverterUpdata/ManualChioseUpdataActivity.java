@@ -117,7 +117,7 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
         manualAdater.replaceData(updataItems);
 
 
-        InverterUpdataManager.getInstance(this).checkUpdataByLocal(version, path, new InverterCheckUpdataCallback() {
+        InverterUpdataManager.getInstance().checkUpdataByLocal(this,version, path, new InverterCheckUpdataCallback() {
             @Override
             protected void hasNewVersion(String oldVersion, String newVersion) {
                 UpdataBean bean = manualAdater.getData().get(1);
@@ -227,7 +227,7 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
                     }
                 }
                 //4.去升级
-                InverterUpdataManager.getInstance(this).updata(this, send_files);
+                InverterUpdataManager.getInstance().updata(this, send_files);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -307,7 +307,7 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
                 FileUtils.removeDir(otherDir);
             }
 
-            File copyFile = new File(otherDir.getAbsolutePath(), name+".zip");
+            File copyFile = new File(otherDir.getAbsolutePath(), name);
 
             //以下为直接从该uri中获取InputSteam，并读取出文本的内容的操作 写入指定文件夹中
             try {
@@ -336,7 +336,8 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
                 String cancel=getString(R.string.android_key1806);
                 CircleDialogUtils.showCommentDialog(this, title, text, ok, cancel, Gravity.CENTER, view -> {
 
-                    String zipTargetPath = copyFile.getParent()+File.separator+name;
+                    String replace = name.replace(".zip", "");
+                    String zipTargetPath = copyFile.getParent()+File.separator+replace;
 
 
                     List<File> unzip = new ArrayList<>();
@@ -351,9 +352,14 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
                             e.printStackTrace();
                         }
                     } else {
-                        File[] files1 = zipParent.listFiles();
-                        if (files1 == null) return;
-                        unzip = Arrays.asList(files1);
+                        //先删除再解压
+                        FileUtils.removeDir(zipParent);
+                        try {
+                            unzip = FileUtils.unzip(copyFile.getAbsolutePath(), zipTargetPath);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (unzip == null) return;
                     }
 
 
@@ -384,7 +390,9 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
                             }
                         }
                         //4.去升级
-                        InverterUpdataManager.getInstance(this).updata(this,files);
+                        if (files.size() > 0) {
+                            InverterUpdataManager.getInstance().updata(this,files);
+                        }
 
                     } catch (IOException e) {
                         e.printStackTrace();

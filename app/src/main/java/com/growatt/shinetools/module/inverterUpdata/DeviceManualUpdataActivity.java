@@ -18,6 +18,7 @@ import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.bean.UpdataBean;
 import com.growatt.shinetools.widget.GridDivider;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class DeviceManualUpdataActivity extends BaseActivity implements BaseQuic
     private MenuItem item;
     private String currentVersion;
     private String path;
+    private String localVersion;
 
 
     @Override
@@ -74,6 +76,21 @@ public class DeviceManualUpdataActivity extends BaseActivity implements BaseQuic
     protected void initData() {
 
         path = getIntent().getStringExtra("path");
+        //本地保存的最新版本
+        localVersion="";
+        File versionFile = new File(path);
+        if (versionFile.exists()) {
+            File[] files = versionFile.listFiles();
+            if (files == null) return;
+            for (File f : files) {
+                String name = f.getName();
+                if (name.endsWith(".zip")) {
+                    localVersion = name.substring(0, name.lastIndexOf("."));
+                    break;
+                }
+            }
+        }
+
 
         String[] items = new String[]{getString(R.string.inverter_upgrade)};
         String[] values = new String[]{getString(R.string.android_key1990) + ":"};
@@ -86,11 +103,11 @@ public class DeviceManualUpdataActivity extends BaseActivity implements BaseQuic
             updataItems.add(bean);
         }
         manualAdater.replaceData(updataItems);
-        getVersion();
+        getVersion(localVersion);
     }
 
-    private void getVersion() {
-        InverterUpdataManager.getInstance(this).checkUpdata("", new InverterCheckUpdataCallback() {
+    private void getVersion(String localVersion) {
+        InverterUpdataManager.getInstance().checkUpdata(this,localVersion, new InverterCheckUpdataCallback() {
             @Override
             protected void hasNewVersion(String oldVersion, String newVersion) {
                 super.hasNewVersion(oldVersion, newVersion);
@@ -118,7 +135,7 @@ public class DeviceManualUpdataActivity extends BaseActivity implements BaseQuic
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.right_action) {
-            getVersion();
+            getVersion(localVersion);
         }
         return true;
     }

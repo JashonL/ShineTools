@@ -26,21 +26,19 @@ import java.util.List;
 
 public class InverterUpdataManager {
 
-    private static Context context;
 
     private FileUpdataSend fileUpdataSend;
 
     private static InverterUpdataManager mInstance = null;
 
-    private InverterUpdataManager(Context context) {
-        this.context = context;
+    private InverterUpdataManager() {
     }
 
-    public static InverterUpdataManager getInstance(Context context) {
+    public static InverterUpdataManager getInstance() {
         if (mInstance == null) {
             synchronized (InverterUpdataManager.class) {
                 if (mInstance == null) {
-                    mInstance = new InverterUpdataManager(context);
+                    mInstance = new InverterUpdataManager();
                 }
             }
         }
@@ -73,7 +71,7 @@ public class InverterUpdataManager {
             if (!TextUtils.isEmpty(version)) {
                 String finalZipPath = zipPath;
                 String finalZipTargetPath = zipTargetPath;
-                checkUpdata(version, new InverterCheckUpdataCallback() {
+                checkUpdata(activity,version, new InverterCheckUpdataCallback() {
                     @Override
                     protected void hasNewVersion(String oldVersion, String newVersion) {
                         super.hasNewVersion(oldVersion, newVersion);
@@ -159,7 +157,7 @@ public class InverterUpdataManager {
     }
 
 
-    public void checkUpdataByLocal(String currenVersion, String filePath, InverterCheckUpdataCallback callback) {
+    public void checkUpdataByLocal(Context context,String currenVersion, String filePath, InverterCheckUpdataCallback callback) {
         File versionFile = new File(filePath);
         String fileName = "";
         if (TextUtils.isEmpty(currenVersion)) {
@@ -199,7 +197,7 @@ public class InverterUpdataManager {
     }
 
 
-    public void checkUpdata(String nowVersion, InverterCheckUpdataCallback callback) {
+    public void checkUpdata(Context context,String nowVersion, InverterCheckUpdataCallback callback) {
         CheckInvertUpdata checkInvertUpdata = new CheckInvertUpdata(context, nowVersion, callback);
         checkInvertUpdata.checkNewVersion();
     }
@@ -267,7 +265,7 @@ public class InverterUpdataManager {
             fileUpdataSend = new FileUpdataSend(context, updataFile, new IUpdataListeners() {
                 @Override
                 public void preparing() {
-                    showDialogFragment();
+                    showDialogFragment(context);
                 }
 
                 @Override
@@ -290,7 +288,7 @@ public class InverterUpdataManager {
                     if (dialogFragment != null) {
                         dialogFragment.dialogDismiss();
                     }
-                    showUpdataError(msg);
+                    showUpdataError(context,msg);
                 }
 
                 @Override
@@ -298,7 +296,7 @@ public class InverterUpdataManager {
                     if (dialogFragment != null) {
                         dialogFragment.dialogDismiss();
                     }
-                    showUpdataSuccess();
+                    showUpdataSuccess(context);
                 }
             });
         } catch (Exception e) {
@@ -316,7 +314,7 @@ public class InverterUpdataManager {
     /**
      * 显示更新提示
      */
-    private void showDialogFragment() {
+    private void showDialogFragment(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_updata_dialog, null);
         tvSubtext = view.findViewById(R.id.tv_subtext);
         pbar = view.findViewById(R.id.loading_img);
@@ -338,7 +336,7 @@ public class InverterUpdataManager {
     /**
      * 升级成功
      */
-    private void showUpdataSuccess() {
+    private void showUpdataSuccess(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_config_success, null);
         dialog_success = CircleDialogUtils.showCommentBodyView(context, view, "", ((FragmentActivity) context).getSupportFragmentManager(), view1 -> {
             TextView tvTitle = view1.findViewById(R.id.tv_title);
@@ -360,7 +358,7 @@ public class InverterUpdataManager {
      */
     private BaseCircleDialog dialog_error;
 
-    private void showUpdataError(String error) {
+    private void showUpdataError(Context context,String error) {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_config_error, null);
         dialog_error = CircleDialogUtils.showCommentBodyView(context, view, "", ((FragmentActivity) context).getSupportFragmentManager(), view1 -> {
             TextView tvTitle = view1.findViewById(R.id.tv_title);

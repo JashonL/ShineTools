@@ -97,8 +97,8 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
 
     @Override
     public void checkUpdata() {
-        InverterUpdataManager.getInstance(this).checkUpdata(this,ShineToosApplication.INVERTER_UPDATA_FILE_DIR  +
-                "Three Phase On-grid Inverter" + File.separator + "MIN TL-XH");
+        InverterUpdataManager.getInstance().checkUpdata(this,ShineToosApplication.INVERTER_UPDATA_FILE_DIR  +
+                "Three Phase On-grid Inverter" + File.separator + "MIN TL-XH"+File.separator);
 
     }
 

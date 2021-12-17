@@ -1,13 +1,21 @@
 package com.growatt.shinetools.module.localbox.tlxh;
 
+import android.content.Intent;
+import android.view.View;
+import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
+import com.growatt.shinetools.module.inverterUpdata.DeviceManualUpdataActivity;
+import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
 import com.growatt.shinetools.module.localbox.tlxh.base.BaseTLXHInfoActivity;
 
 public class TL3XHDeviceInfoActivity extends BaseTLXHInfoActivity {
     @Override
     public int getHeaderView() {
-        return R.layout.header_us_device_info;
+        return R.layout.header_tl3xh_device_info;
     }
 
 
@@ -141,4 +149,23 @@ public class TL3XHDeviceInfoActivity extends BaseTLXHInfoActivity {
                 break;
         }
     }
+
+
+
+    @Override
+    public void initUpdata() {
+        super.initUpdata();
+        View upTitle = header.findViewById(R.id.tvTitle_updata);
+        TextView tvhead = upTitle.findViewById(R.id.tvHeadTitle);
+        tvhead.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+        upTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(TL3XHDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
+                intent.putExtra("path", UpgradePath.MOD_TL3_XH);
+                startActivity(intent);
+            }
+        });
+    }
+
 }

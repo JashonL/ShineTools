@@ -156,13 +156,10 @@ public class TLXHDeviceInfoActivity extends BaseTLXHInfoActivity {
         View upTitle = header.findViewById(R.id.tvTitle_updata);
         TextView tvhead = upTitle.findViewById(R.id.tvHeadTitle);
         tvhead.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
-        upTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent =new Intent(TLXHDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
-                intent.putExtra("path", UpgradePath.MIN_TL_XH);
-                startActivity(intent);
-            }
+        upTitle.setOnClickListener(view -> {
+            Intent intent =new Intent(TLXHDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
+            intent.putExtra("path", UpgradePath.MIN_TL_XH);
+            startActivity(intent);
         });
     }
 

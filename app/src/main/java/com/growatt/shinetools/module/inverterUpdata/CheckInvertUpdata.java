@@ -11,6 +11,7 @@ import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
+import com.growatt.shinetools.utils.DialogUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 
@@ -88,6 +89,7 @@ public class CheckInvertUpdata {
 
         @Override
         public void receveByteMessage(byte[] bytes) {
+            DialogUtils.getInstance().closeLoadingDialog();
             manager.disConnectSocket();
             //解析
             //检测内容正确性
@@ -111,7 +113,7 @@ public class CheckInvertUpdata {
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
         String value = MaxWifiParseUtil.obtainRegistValueAsciiYesNull(MaxWifiParseUtil.subBytes125(bs, 0, 0, 8));
-        String substring = newVersion.substring(0, newVersion.length() - 2);
+        String substring = newVersion.replace(".zip","");
         if (!value.equals(substring)) {
             callback.hasNewVersion(value,newVersion);
         }else {

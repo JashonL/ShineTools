@@ -345,7 +345,6 @@ public class FileUpdataSend implements ConnectHandler {
                         fileIndex = 0;
                         curDataIndex = 0;
                         updataListeners.updataSuccess();
-
                     }
                 } else {
                     String errMsg = context.getString(R.string.错误) + ":" + step;
@@ -378,7 +377,7 @@ public class FileUpdataSend implements ConnectHandler {
     //3.当前发送文件.bin 01  .hex 10
     private void sendFile(int current) {
         step = 3;
-        int data = 0x10;
+        int data = 0x01;
         File file = updataFile.get(current);
         if (file.getName().endsWith(".hex")) {
             data = 0x10;
@@ -484,6 +483,8 @@ public class FileUpdataSend implements ConnectHandler {
             }
         }
     }
+
+
 
 
 }
