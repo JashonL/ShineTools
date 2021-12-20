@@ -133,8 +133,8 @@ public class MaxConfigControl {
         String[] hints = new String[]{
                 "",
                 "",
-                "1~99",
                 "",
+                "1~99",
                 "",
                 "",
                 "",
@@ -178,7 +178,7 @@ public class MaxConfigControl {
                 {3, 45, 50},//逆变器时间
                 {3, 15, 15},//语言
                 {3, 30, 30},//通信地址
-                {3, 533, 533},//通讯地址
+                {3, 533, 533},//功率采集器
                 {3, 541, 543},//AFCI使能
                 {3, 30, 30},
                 {3, 0, 124}
@@ -188,7 +188,7 @@ public class MaxConfigControl {
                 {0x10, 118, 121},
                 {6, 15, 0},
                 {6, 30, 0},
-                {0x10, 118, 121},
+                {6, 533, 533},
                 {6, 15, 0},
                 {6, 30, 0},
                 {0x10, 118, 121},
@@ -503,7 +503,7 @@ public class MaxConfigControl {
                 {},//检查固件
                 {},//GPRS状态
                 {context.getString(R.string.m89禁止), context.getString(R.string.m88使能)},//夜间SVG功能使能  12
-                {"Automatic", "Continaual", "Overnight"},//PID工作模式
+                {context.getString(R.string.m438自动), context.getString(R.string.Continual),context.getString(R.string.Overnight)},//PID工作模式
                 {},//PID开关
                 {}//PID工作电压选择
 

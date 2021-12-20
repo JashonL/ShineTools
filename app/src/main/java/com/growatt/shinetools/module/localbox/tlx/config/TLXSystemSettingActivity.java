@@ -70,10 +70,6 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
 
     //跳转到其他页面
     private boolean toOhterSetting = false;
-    private String[] frequency;//离网频率
-    private String[] voltage;//离网电压
-    private String[] ctselect;//CT选择
-    private String[] batterySelect;//电池选择
 
     @Override
     protected int getContentView() {
@@ -110,10 +106,6 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
         List<ALLSettingBean> settingList
                 = TLXConfigControl.getSettingList(TLXConfigControl.TlxSettingEnum.TLX_SYSTEM_SETTING, this);
         usParamsetAdapter.replaceData(settingList);
-        frequency = new String[]{"50Hz", "60Hz"};
-        voltage = new String[]{"230V", "208V", "240V"};
-        ctselect=new String[]{"cWiredCT","cWirelessCT","METER"};
-        batterySelect=new String[]{"Lithium","Lead-acid","other"};
         connetSocket();
     }
 
@@ -321,8 +313,8 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
 
     public void parserSafetyEnable(int read) {
         ALLSettingBean bean = usParamsetAdapter.getData().get(6);
-        bean.setValueStr(getReadValueReal(6,read));
-
+//        bean.setValueStr(getReadValueReal(6,read));
+        bean.setValue(String.valueOf(read));
     }
 
 
@@ -418,7 +410,7 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
                 setSelectItem(position,title);
                 break;
             case 6://安规功能使能
-                setInputValue(position,title,hint);
+//                setInputValue(position,title,hint);
                 break;
 
             case 10://

@@ -28,6 +28,8 @@ import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.bean.WifiList;
 import com.mylhyl.circledialog.CircleDialog;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -449,4 +451,38 @@ public class CommenUtils {
         return b;
     }
 
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+
+    /**
+     * 获取SimpleDateFormat对象，线程安全
+     *
+     * @param dateFormat："yyyy-MM-dd HH:mm:ss"
+     * @return
+     */
+    public static DateFormat getDateFormat(String dateFormat) {
+        return new SimpleDateFormat(dateFormat);
+    }
+
+    public static String getFormatDate(String dateFromat, Date date) {
+        if (TextUtils.isEmpty(dateFromat)) {
+            dateFromat = DATE_FORMAT;
+        }
+        if (date == null) {
+            date = new Date();
+        }
+        return getDateFormat(dateFromat).format(date);
+    }
+
+    public static Date getParseDate(String dateFromat, String strDate) {
+        if (TextUtils.isEmpty(dateFromat)) {
+            dateFromat = DATE_FORMAT;
+        }
+        try {
+            return getDateFormat(dateFromat).parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

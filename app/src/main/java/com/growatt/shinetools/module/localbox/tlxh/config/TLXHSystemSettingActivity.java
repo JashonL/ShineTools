@@ -68,10 +68,10 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
 
     //跳转到其他页面
     private boolean toOhterSetting = false;
-    private String[] frequency;//离网频率
+/*    private String[] frequency;//离网频率
     private String[] voltage;//离网电压
     private String[] ctselect;//CT选择
-    private String[] batterySelect;//电池选择
+    private String[] batterySelect;//电池选择*/
 
     @Override
     protected int getContentView() {
@@ -108,10 +108,10 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
         List<ALLSettingBean> settingList
                 = TLXHConfigControl.getSettingList(TLXHConfigControl.TlxSettingEnum.TLXH_SYSTEM_SETTING, this);
         usParamsetAdapter.replaceData(settingList);
-        frequency = new String[]{"50Hz", "60Hz"};
+    /*    frequency = new String[]{"50Hz", "60Hz"};
         voltage = new String[]{"230V", "208V", "240V"};
         ctselect=new String[]{"cWiredCT","cWirelessCT","METER"};
-        batterySelect=new String[]{"Lithium","Lead-acid","other"};
+        batterySelect=new String[]{"Lithium","Lead-acid","other"};*/
         connetSocket();
     }
 
@@ -273,44 +273,51 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
             case 11://离网频率
                 //解析int值
                 int value11 = MaxWifiParseUtil.obtainValueOne(bs);
-                usParamsetAdapter.getData().get(11).setValue(String.valueOf(value11));
-
+                ALLSettingBean allSettingBean = usParamsetAdapter.getData().get(11);
+                allSettingBean.setValue(String.valueOf(value11));
                 String sValue = String.valueOf(value11);
+                String[] frequency = allSettingBean.getItems();
                 if (frequency.length > value11) {
                     sValue = frequency[value11];
                 }
-                usParamsetAdapter.getData().get(11).setValueStr(sValue);
+                allSettingBean.setValueStr(sValue);
                 break;
             case 12://离网电压
                 //解析int值
                 int value12 = MaxWifiParseUtil.obtainValueOne(bs);
-                usParamsetAdapter.getData().get(12).setValue(String.valueOf(value12));
+                ALLSettingBean allSettingBean1 = usParamsetAdapter.getData().get(12);
+                allSettingBean1.setValue(String.valueOf(value12));
+                String[] voltage = allSettingBean1.getItems();
                 String sValue12 = String.valueOf(value12);
                 if (voltage.length > value12) {
                     sValue12 = voltage[value12];
                 }
-                usParamsetAdapter.getData().get(12).setValueStr(sValue12);
+                allSettingBean1.setValueStr(sValue12);
                 break;
             case 13://CT选择
                 //解析int值
                 int value13 = MaxWifiParseUtil.obtainValueOne(bs);
-                usParamsetAdapter.getData().get(13).setValue(String.valueOf(value13));
+                ALLSettingBean allSettingBean2 = usParamsetAdapter.getData().get(13);
+                allSettingBean2.setValue(String.valueOf(value13));
                 String sValue13 = String.valueOf(value13);
+                String[] ctselect = allSettingBean2.getItems();
                 if (ctselect.length > value13) {
                     sValue13 = ctselect[value13];
                 }
-                usParamsetAdapter.getData().get(13).setValueStr(sValue13);
+                allSettingBean2.setValueStr(sValue13);
                 break;
 
             case 14://电池选择
                 //解析int值
                 int value14 = MaxWifiParseUtil.obtainValueOne(bs);
-                usParamsetAdapter.getData().get(14).setValue(String.valueOf(value14));
+                ALLSettingBean allSettingBean3 = usParamsetAdapter.getData().get(14);
+                allSettingBean3.setValue(String.valueOf(value14));
                 String sValue14 = String.valueOf(value14);
-                if (ctselect.length > value14) {
+                String[] batterySelect = allSettingBean3.getItems();
+                if (batterySelect.length > value14) {
                     sValue14 = batterySelect[value14];
                 }
-                usParamsetAdapter.getData().get(14).setValueStr(sValue14);
+                allSettingBean3.setValueStr(sValue14);
                 break;
 
         }
@@ -330,7 +337,8 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
 
     public void parserSafetyEnable(int read) {
         ALLSettingBean bean = usParamsetAdapter.getData().get(6);
-        bean.setValueStr(getReadValueReal(6,read));
+//        bean.setValueStr(getReadValueReal(6,read));
+        bean.setValue(String.valueOf(read));
 
     }
 
@@ -430,10 +438,10 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
                 setInputValue(position,title,hint);
                 break;
             case 11:
-                setInputValue(position,title,hint);
+                setSelectItem(position,title);
                 break;
             case 12:
-                setInputValue(position,title,hint);
+                setSelectItem(position,title);
                 break;
             case 13:
                 setSelectItem(position,title);

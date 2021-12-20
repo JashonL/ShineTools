@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -44,7 +45,6 @@ import com.growatt.shinetools.adapter.MaxCheckOneKeyAcAdapter;
 import com.growatt.shinetools.adapter.MaxCheckOneKeyRSTAdapter;
 import com.growatt.shinetools.adapter.MaxCheckOneKeyTHDVAdapter;
 import com.growatt.shinetools.base.DemoBase;
-import com.growatt.shinetools.module.localbox.max.bean.MaxCheckIVBean;
 import com.growatt.shinetools.constant.GlobalConstant;
 import com.growatt.shinetools.db.SqliteUtil;
 import com.growatt.shinetools.listeners.OnEmptyListener;
@@ -57,10 +57,10 @@ import com.growatt.shinetools.modbusbox.bean.MaxCheckOneKeyAcBean;
 import com.growatt.shinetools.modbusbox.bean.MaxCheckOneKeyISOBean;
 import com.growatt.shinetools.modbusbox.bean.MaxCheckOneKeyRSTBean;
 import com.growatt.shinetools.modbusbox.bean.MaxCheckOneKeyTHDVBean;
+import com.growatt.shinetools.module.localbox.max.bean.MaxCheckIVBean;
 import com.growatt.shinetools.utils.BtnDelayUtil;
-import com.growatt.shinetools.utils.ChartUtils;
 import com.growatt.shinetools.utils.CommenUtils;
-import com.growatt.shinetools.utils.Log;
+import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.utils.Position;
@@ -76,7 +76,6 @@ import butterknife.OnClick;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_10_READ;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_SERVER_SET;
 import static com.growatt.shinetools.utils.BtnDelayUtil.TIMEOUT_RECEIVE;
-import static com.growatt.shinetools.utils.BtnDelayUtil.refreshFinish;
 
 
 /**
@@ -161,7 +160,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
     private MaxCheckIVAdapter mAdapterIV;
     private List<MaxCheckIVBean> mListIV;
     private List<ArrayList<Entry>> newDataList;
-//    int[] colors = {R.color.max_iv_graph_linechart1, R.color.max_iv_graph_linechart2, R.color.max_iv_graph_linechart3, R.color.max_iv_graph_linechart4,
+    //    int[] colors = {R.color.max_iv_graph_linechart1, R.color.max_iv_graph_linechart2, R.color.max_iv_graph_linechart3, R.color.max_iv_graph_linechart4,
 //            R.color.max_iv_graph_linechart5, R.color.max_iv_graph_linechart6, R.color.max_iv_graph_linechart7, R.color.max_iv_graph_linechart8};
 //    int[] colors_a = {R.color.max_iv_graph_linechart1, R.color.max_iv_graph_linechart2, R.color.max_iv_graph_linechart3, R.color.max_iv_graph_linechart4,
 //            R.color.max_iv_graph_linechart5, R.color.max_iv_graph_linechart6, R.color.max_iv_graph_linechart7, R.color.max_iv_graph_linechart8};
@@ -357,10 +356,10 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
     private void initLineChartAC() {
         tvXUnit.setText("V");
         tvYUnit.setText("A");
-        ChartUtils.initLineChart(mContext, mLineChartAC, 0, "", true, R.color.grid_bg_white, true, R.color.grid_bg_white, true, R.color.note_bg_white, R.color.grid_bg_white, R.color.grid_bg_white, R.color.highLightColor, false, R.string.m4, R.string.m5, new OnEmptyListener() {
+        MaxUtil.initLineChart(mContext, mLineChartAC, 0, "", true, R.color.grid_bg_white, true, R.color.grid_bg_white, true, R.color.note_bg_white, R.color.grid_bg_white, R.color.grid_bg_white, R.color.highLightColor, false, R.string.m4, R.string.m5, new OnEmptyListener() {
             @Override
             public void onEmpty(Entry e, Highlight highlight) {
-                Log.i("x位置" + e.getX());
+                LogUtil.i("x位置" + e.getX());
                 getValuesByEntryAC(e);
             }
         });
@@ -535,7 +534,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     msgSend.what = 100;
                     mHandlerAC.sendEmptyMessageDelayed(100, 3000);
                     String sendMsg = (String) msg.obj;
-                    Log.i("发送消息:" + sendMsg);
+                    LogUtil.i("发送消息:" + sendMsg);
                     break;
                 //接收字节数组
                 case SocketClientUtil.SOCKET_RECEIVE_BYTES:
@@ -568,10 +567,9 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                             countAC = 0;
                             //关闭连接
                             SocketClientUtil.close(mClientUtilAC);
-                            refreshFinish();
                             startReal();
                         }
-                        Log.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
+                        LogUtil.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
                         countAC = 0;
@@ -583,7 +581,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     break;
                 case TIMEOUT_RECEIVE://接收超时
                     if (nowTimeCount < TIME_COUNT){
-                        Log.e("重连nowTimecount:" + nowTimeCount);
+                        LogUtil.e("重连nowTimecount:" + nowTimeCount);
                         BtnDelayUtil.receiveMessage(this);
                         //重新发送命令
                         this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
@@ -592,7 +590,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     }
                     nowTimeCount = 0;
                 case SOCKET_SERVER_SET://跳转到wifi列表
-                    Log.e("nowTimecount:" + nowTimeCount);
+                    LogUtil.e("nowTimecount:" + nowTimeCount);
                     try {
                         MyControl.showJumpWifiSet(MaxCheckOneKey1500Activity.this);
                     } catch (Exception e) {
@@ -638,7 +636,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     BtnDelayUtil.sendMessageWrite(this);
                     if (nowSetAC != null && nowSetAC[2] != -1) {
                         sendBytesAC = SocketClientUtil.sendMsgToServer10(mClientUtilWriterAC, nowSetAC, valueAC);
-                        Log.i("发送写入：" + SocketClientUtil.bytesToHexString(sendBytesAC));
+                        LogUtil.i("发送写入：" + SocketClientUtil.bytesToHexString(sendBytesAC));
                     } else {
                         toast("系统错误，请重启应用");
                     }
@@ -661,13 +659,13 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                             noticeUpdateTime(-1, false, 2);
                             reStartBtn();
                         }
-                        Log.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
+                        LogUtil.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
                         //关闭tcp连接
                         SocketClientUtil.close(mClientUtilWriterAC);
-                        refreshFinish();
+                        BtnDelayUtil.refreshFinish();
                     }
                     break;
                 case SOCKET_10_READ:
@@ -687,7 +685,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     String progressText = String.format("%s%d%%", readStr2, countProgressTime(1, nowTime1 + posTimeAC) * 100 / totalTime);
                     mTvStart.setText(progressText);
                     mTvTitle.setText(progressText);
-                    Log.i("当前时间0：" + nowTime + "---总时间0：" + totalTime0 + "---总时间：" + totalTime);
+                    LogUtil.i("当前时间0：" + nowTime + "---总时间0：" + totalTime0 + "---总时间：" + totalTime);
                     if (nowTime1 == totalTime1) {
                         width = 0;
                         mTvStart.setText(readStr1);
@@ -701,7 +699,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     break;
                 case TIMEOUT_RECEIVE://接收超时
                     if (nowTimeCount < TIME_COUNT){
-                        Log.e("重连nowTimecount:" + nowTimeCount);
+                        LogUtil.e("重连nowTimecount:" + nowTimeCount);
                         BtnDelayUtil.receiveMessage(this);
                         //重新发送命令
                         this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
@@ -710,7 +708,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     }
                     nowTimeCount = 0;
                 case SOCKET_SERVER_SET://跳转到wifi列表
-                    Log.e("nowTimecount:" + nowTimeCount);
+                    LogUtil.e("nowTimecount:" + nowTimeCount);
                     try {
                         MyControl.showJumpWifiSet(MaxCheckOneKey1500Activity.this);
                     } catch (Exception e) {
@@ -719,6 +717,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
+                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     countAC = 0;
                     SocketClientUtil.close(mClientUtilWriterAC);
                     break;
@@ -779,10 +778,10 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
     }
 
     private void initBarChartTHDV() {
-        ChartUtils.initBarChart(this, mBarChartTHDV, "%", true, R.color.note_bg_white, R.color.grid_bg_white, R.color.grid_bg_white, true, R.color.grid_bg_white, true, R.color.grid_bg_white, R.color.highLightColor, null);
+        MaxUtil.initBarChart(this, mBarChartTHDV, "%", true, R.color.note_bg_white, R.color.grid_bg_white, R.color.grid_bg_white, true, R.color.grid_bg_white, true, R.color.grid_bg_white, R.color.highLightColor, null);
         initDataTHDV();
         initLastTHDV();
-        ChartUtils.setBarChartData(mContext, mBarChartTHDV, dataListTHDV, colorsTHDV, colorsTHDV, 3);
+        MaxUtil.setBarChartData(mContext, mBarChartTHDV, dataListTHDV, colorsTHDV, colorsTHDV, 3);
     }
 
     private void initLastTHDV() {
@@ -854,7 +853,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     msgSend.what = 100;
                     mHandlerTHDV.sendEmptyMessageDelayed(100, 3000);
                     String sendMsg = (String) msg.obj;
-                    Log.i("发送消息:" + sendMsg);
+                    LogUtil.i("发送消息:" + sendMsg);
                     break;
                 //接收字节数组
                 case SocketClientUtil.SOCKET_RECEIVE_BYTES:
@@ -877,7 +876,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                         } else {
                             //保存数据
                             SqliteUtil.setListJson(GlobalConstant.MAX_ONEKEY_LAST_DATA3, MaxUtil.saveBarList(dataListTHDV));
-//                            Log.i("thdv保存:"+MaxUtil.saveBarList(dataListTHDV));
+//                            LogUtil.i("thdv保存:"+MaxUtil.saveBarList(dataListTHDV));
                             //保存列表
                             if (mListTHDV != null) {
                                 SharedPreferencesUnit.getInstance(mContext).put(GlobalConstant.MAX_ONEKEY_LIST_LAST_DATA3, new Gson().toJson(mListTHDV));
@@ -887,10 +886,9 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                             countTHDV = 0;
                             //关闭连接
                             SocketClientUtil.close(mClientUtilTHDV);
-                            refreshFinish();
                             startReal();
                         }
-                        Log.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
+                        LogUtil.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
                         countAC = 0;
@@ -902,7 +900,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     break;
                 case TIMEOUT_RECEIVE://接收超时
                     if (nowTimeCount < TIME_COUNT){
-                        Log.e("重连nowTimecount:" + nowTimeCount);
+                        LogUtil.e("重连nowTimecount:" + nowTimeCount);
                         BtnDelayUtil.receiveMessage(this);
                         //重新发送命令
                         this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
@@ -911,7 +909,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     }
                     nowTimeCount = 0;
                 case SOCKET_SERVER_SET://跳转到wifi列表
-                    Log.e("nowTimecount:" + nowTimeCount);
+                    LogUtil.e("nowTimecount:" + nowTimeCount);
                     try {
                         MyControl.showJumpWifiSet(MaxCheckOneKey1500Activity.this);
                     } catch (Exception e) {
@@ -920,6 +918,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
+                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     countTHDV = 0;
                     SocketClientUtil.close(mClientUtilTHDV);
                     break;
@@ -931,7 +930,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
     };
 
     private void updateUiTHDV() {
-        ChartUtils.setBarChartData(mContext, mBarChartTHDV, dataListTHDV, colorsTHDV, colorsTHDV, 3);
+        MaxUtil.setBarChartData(mContext, mBarChartTHDV, dataListTHDV, colorsTHDV, colorsTHDV, 3);
         mAdapterTHDV.notifyDataSetChanged();
     }
 
@@ -962,7 +961,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     BtnDelayUtil.sendMessageWrite(this);
                     if (nowSetTHDV != null && nowSetTHDV[2] != -1) {
                         sendBytesTHDV = SocketClientUtil.sendMsgToServer10(mClientUtilWriterTHDV, nowSetTHDV, valueTHDV);
-                        Log.i("发送写入：" + SocketClientUtil.bytesToHexString(sendBytesTHDV));
+                        LogUtil.i("发送写入：" + SocketClientUtil.bytesToHexString(sendBytesTHDV));
                     } else {
                         toast("系统错误，请重启应用");
                     }
@@ -985,13 +984,13 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                             noticeUpdateTime(-1, false, 3);
                             reStartBtn();
                         }
-                        Log.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
+                        LogUtil.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
                         //关闭tcp连接
                         SocketClientUtil.close(mClientUtilWriterTHDV);
-                        refreshFinish();
+                        BtnDelayUtil.refreshFinish();
                     }
                     break;
                 case SOCKET_10_READ:
@@ -1024,7 +1023,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     break;
                 case TIMEOUT_RECEIVE://接收超时
                     if (nowTimeCount < TIME_COUNT){
-                        Log.e("重连nowTimecount:" + nowTimeCount);
+                        LogUtil.e("重连nowTimecount:" + nowTimeCount);
                         BtnDelayUtil.receiveMessage(this);
                         //重新发送命令
                         this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
@@ -1033,7 +1032,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     }
                     nowTimeCount = 0;
                 case SOCKET_SERVER_SET://跳转到wifi列表
-                    Log.e("nowTimecount:" + nowTimeCount);
+                    LogUtil.e("nowTimecount:" + nowTimeCount);
                     try {
                         MyControl.showJumpWifiSet(MaxCheckOneKey1500Activity.this);
                     } catch (Exception e) {
@@ -1135,7 +1134,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     msgSend.what = 100;
                     mHandlerRST.sendEmptyMessageDelayed(100, 3000);
                     String sendMsg = (String) msg.obj;
-                    Log.i("发送消息:" + sendMsg);
+                    LogUtil.i("发送消息:" + sendMsg);
                     break;
                 //接收字节数组
                 case SocketClientUtil.SOCKET_RECEIVE_BYTES:
@@ -1163,10 +1162,9 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                             countRST = 0;
                             //关闭连接
                             SocketClientUtil.close(mClientUtilRST);
-                            refreshFinish();
                             startReal();
                         }
-                        Log.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
+                        LogUtil.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
                         countRST = 0;
@@ -1178,7 +1176,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     break;
                 case TIMEOUT_RECEIVE://接收超时
                     if (nowTimeCount < TIME_COUNT){
-                        Log.e("重连nowTimecount:" + nowTimeCount);
+                        LogUtil.e("重连nowTimecount:" + nowTimeCount);
                         BtnDelayUtil.receiveMessage(this);
                         //重新发送命令
                         this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
@@ -1187,7 +1185,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     }
                     nowTimeCount = 0;
                 case SOCKET_SERVER_SET://跳转到wifi列表
-                    Log.e("nowTimecount:" + nowTimeCount);
+                    LogUtil.e("nowTimecount:" + nowTimeCount);
                     try {
                         MyControl.showJumpWifiSet(MaxCheckOneKey1500Activity.this);
                     } catch (Exception e) {
@@ -1196,6 +1194,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
+                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     countRST = 0;
                     SocketClientUtil.close(mClientUtilRST);
                     break;
@@ -1232,7 +1231,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     BtnDelayUtil.sendMessageWrite(this);
                     if (nowSetRST != null && nowSetRST[2] != -1) {
                         sendBytesRST = SocketClientUtil.sendMsgToServer10(mClientUtilWriterRST, nowSetRST, valueRST);
-                        Log.i("发送写入：" + SocketClientUtil.bytesToHexString(sendBytesRST));
+                        LogUtil.i("发送写入：" + SocketClientUtil.bytesToHexString(sendBytesRST));
                     } else {
                         toast("系统错误，请重启应用");
                     }
@@ -1255,13 +1254,13 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                             noticeUpdateTime(-1, false, 4);
                             reStartBtn();
                         }
-                        Log.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
+                        LogUtil.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
                         //关闭tcp连接
                         SocketClientUtil.close(mClientUtilWriterRST);
-                        refreshFinish();
+                        BtnDelayUtil.refreshFinish();
                     }
                     break;
                 case SOCKET_10_READ:
@@ -1279,7 +1278,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     //当前进度
                     int width = countProgressTime(3, nowTime3 + posTimeRST) * mWidth / totalTime;
                     String progressText = String.format("%s%d%%", readStr2, countProgressTime(3, nowTime3 + posTimeRST) * 100 / totalTime);
-                    Log.i(String.format("进度：%s", progressText));
+                    LogUtil.i(String.format("进度：%s", progressText));
                     mTvStart.setText(progressText);
                     mTvTitle.setText(progressText);
                     if (nowTime3 == totalTime3) {
@@ -1295,7 +1294,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     break;
                 case TIMEOUT_RECEIVE://接收超时
                     if (nowTimeCount < TIME_COUNT){
-                        Log.e("重连nowTimecount:" + nowTimeCount);
+                        LogUtil.e("重连nowTimecount:" + nowTimeCount);
                         BtnDelayUtil.receiveMessage(this);
                         //重新发送命令
                         this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
@@ -1304,7 +1303,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     }
                     nowTimeCount = 0;
                 case SOCKET_SERVER_SET://跳转到wifi列表
-                    Log.e("nowTimecount:" + nowTimeCount);
+                    LogUtil.e("nowTimecount:" + nowTimeCount);
                     try {
                         MyControl.showJumpWifiSet(MaxCheckOneKey1500Activity.this);
                     } catch (Exception e) {
@@ -1363,7 +1362,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     msgSend.what = 100;
                     mHandlerISO.sendEmptyMessageDelayed(100, 3000);
                     String sendMsg = (String) msg.obj;
-                    Log.i("发送消息:" + sendMsg);
+                    LogUtil.i("发送消息:" + sendMsg);
                     break;
                 //接收字节数组
                 case SocketClientUtil.SOCKET_RECEIVE_BYTES:
@@ -1393,10 +1392,9 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                             countISO = 0;
                             //关闭连接
                             SocketClientUtil.close(mClientUtilISO);
-                            refreshFinish();
                             startReal();
                         }
-                        Log.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
+                        LogUtil.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
                         countISO = 0;
@@ -1409,7 +1407,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                 case TIMEOUT_RECEIVE://接收超时
                     if (nowTimeCount < TIME_COUNT){
                         BtnDelayUtil.receiveMessage(this);
-                        Log.i("重连nowTimecount:" + nowTimeCount);
+                        LogUtil.e("重连nowTimecount:" + nowTimeCount);
                         //重新发送命令
                         this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
                         nowTimeCount++;
@@ -1418,7 +1416,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     nowTimeCount = 0;
                 case SOCKET_SERVER_SET://跳转到wifi列表
                     try {
-                        Log.i("nowTimecount:" + nowTimeCount);
+                        LogUtil.e("nowTimecount:" + nowTimeCount);
                         MyControl.showJumpWifiSet(MaxCheckOneKey1500Activity.this);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1463,7 +1461,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     BtnDelayUtil.sendMessageWrite(this);
                     if (nowSetISO != null && nowSetISO[2] != -1) {
                         sendBytesISO = SocketClientUtil.sendMsgToServer10(mClientUtilWriterISO, nowSetISO, valueISO);
-                        Log.i("发送写入：" + SocketClientUtil.bytesToHexString(sendBytesISO));
+                        LogUtil.i("发送写入：" + SocketClientUtil.bytesToHexString(sendBytesISO));
                     } else {
                         toast("系统错误，请重启应用");
                     }
@@ -1486,13 +1484,13 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                             noticeUpdateTime(-1, false, 5);
                             reStartBtn();
                         }
-                        Log.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
+                        LogUtil.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
                         //关闭tcp连接
                         SocketClientUtil.close(mClientUtilWriterISO);
-                        refreshFinish();
+                        BtnDelayUtil.refreshFinish();
                     }
                     break;
                 case SOCKET_10_READ:
@@ -1510,7 +1508,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     //当前进度
                     int width = countProgressTime(4, nowTime4 + posTimeISO) * mWidth / totalTime;
                     String progressText = String.format("%s%d%%", readStr2, countProgressTime(4, nowTime4 + posTimeISO) * 100 / totalTime);
-                    Log.i(String.format("进度：%s", progressText));
+                    LogUtil.i(String.format("进度：%s", progressText));
                     mTvStart.setText(progressText);
                     mTvTitle.setText(progressText);
                     if (nowTime4 == totalTime4) {
@@ -1526,7 +1524,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     break;
                 case TIMEOUT_RECEIVE://接收超时
                     if (nowTimeCount < TIME_COUNT){
-                        Log.i("重连nowTimecount:" + nowTimeCount);
+                        LogUtil.e("重连nowTimecount:" + nowTimeCount);
                         BtnDelayUtil.receiveMessage(this);
                         //重新发送命令
                         this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
@@ -1536,7 +1534,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     nowTimeCount = 0;
                 case SOCKET_SERVER_SET://跳转到wifi列表
                     try {
-                        Log.i("nowTimecount:" + nowTimeCount);
+                        LogUtil.e("nowTimecount:" + nowTimeCount);
                         MyControl.showJumpWifiSet(MaxCheckOneKey1500Activity.this);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1544,6 +1542,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
+                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     countISO = 0;
                     SocketClientUtil.close(mClientUtilWriterISO);
                     break;
@@ -1594,10 +1593,10 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
      * 初始化图表IV---------------------------------------------------------------------------------------------------------------
      */
     private void initLineChartIV() {
-        ChartUtils.initLineChart(mContext, mLineChartIV, 0, "", true, R.color.grid_bg_white, true, R.color.grid_bg_white, true, R.color.note_bg_white, R.color.grid_bg_white, R.color.grid_bg_white, R.color.highLightColor, false, R.string.m4, R.string.m5, new OnEmptyListener() {
+        MaxUtil.initLineChart(mContext, mLineChartIV, 0, "", true, R.color.grid_bg_white, true, R.color.grid_bg_white, true, R.color.note_bg_white, R.color.grid_bg_white, R.color.grid_bg_white, R.color.highLightColor, false, R.string.m4, R.string.m5, new OnEmptyListener() {
             @Override
             public void onEmpty(Entry e, Highlight highlight) {
-                Log.i("x位置" + e.getX());
+                LogUtil.i("x位置" + e.getX());
                 getValuesByEntryIV(e);
             }
         });
@@ -1740,7 +1739,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     BtnDelayUtil.sendMessageWrite(this);
                     if (nowSet != null && nowSet[2] != -1) {
                         sendBytes = SocketClientUtil.sendMsgToServer10(mClientUtilWriter, nowSet, values);
-                        Log.i("发送写入：" + SocketClientUtil.bytesToHexString(sendBytes));
+                        LogUtil.i("发送写入：" + SocketClientUtil.bytesToHexString(sendBytes));
                     } else {
                         toast("系统错误，请重启应用");
                     }
@@ -1763,13 +1762,12 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                             noticeUpdateTime(-1, false, 1);
                             reStartBtn();
                         }
-                        Log.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
+                        LogUtil.i("接收写入：" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
                         //关闭tcp连接
                         SocketClientUtil.close(mClientUtilWriter);
-                        refreshFinish();
                     }
                     break;
                 case SOCKET_10_READ:
@@ -1802,7 +1800,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     break;
                 case TIMEOUT_RECEIVE://接收超时
                     if (nowTimeCount < TIME_COUNT){
-                        Log.i("重连nowTimecount:" + nowTimeCount);
+                        LogUtil.e("重连nowTimecount:" + nowTimeCount);
                         BtnDelayUtil.receiveMessage(this);
                         //重新发送命令
                         this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
@@ -1812,7 +1810,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     nowTimeCount = 0;
                 case SOCKET_SERVER_SET://跳转到wifi列表
                     try {
-                        Log.i("nowTimecount:" + nowTimeCount);
+                        LogUtil.e("nowTimecount:" + nowTimeCount);
                         MyControl.showJumpWifiSet(MaxCheckOneKey1500Activity.this);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1906,7 +1904,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     msgSend.what = 100;
                     mHandler.sendEmptyMessageDelayed(100, 3000);
                     String sendMsg = (String) msg.obj;
-                    Log.i("发送消息:" + sendMsg);
+                    LogUtil.i("发送消息:" + sendMsg);
                     break;
                 //接收字节数组
                 case SocketClientUtil.SOCKET_RECEIVE_BYTES:
@@ -1939,10 +1937,9 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                             count = 0;
                             //关闭连接
                             SocketClientUtil.close(mClientUtil);
-                            refreshFinish();
                             startReal();
                         }
-                        Log.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
+                        LogUtil.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
                     } catch (Exception e) {
                         e.printStackTrace();
                         count = 0;
@@ -1954,7 +1951,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     break;
                 case TIMEOUT_RECEIVE://接收超时
                     if (nowTimeCount < TIME_COUNT){
-                        Log.e("重连nowTimecount:" + nowTimeCount);
+                        LogUtil.e("重连nowTimecount:" + nowTimeCount);
                         BtnDelayUtil.receiveMessage(this);
                         //重新发送命令
                         this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
@@ -1963,7 +1960,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     }
                     nowTimeCount = 0;
                 case SOCKET_SERVER_SET://跳转到wifi列表
-                    Log.e("nowTimecount:" + nowTimeCount);
+                    LogUtil.e("nowTimecount:" + nowTimeCount);
                     try {
                         try {
                             MyControl.showJumpWifiSet(MaxCheckOneKey1500Activity.this);
@@ -1976,6 +1973,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
+                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     count = 0;
                     SocketClientUtil.close(mClientUtil);
                     break;
@@ -2192,7 +2190,6 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
 //                    }
 //                }).show();
 //    }
-
 
 
     @Override
@@ -2498,6 +2495,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
                     return (float) (Math.round(value * 10)) / 10 + "";
                 }
             });
+
             //设置曲线图
             setIPVData(mIPType);
             if (sb.length() > 0) {
@@ -2566,7 +2564,7 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
         time = time + nowTime;
         if (time >= totalTime) {
             //刷新完成保存时间
-            SharedPreferencesUnit.getInstance(mContext).put(GlobalConstant.MAX_ONEKEY_LAST_TIME, ChartUtils.getFormatDate(null, null));
+            SharedPreferencesUnit.getInstance(mContext).put(GlobalConstant.MAX_ONEKEY_LAST_TIME, CommenUtils.getFormatDate(null, null));
             mTvLastTime.setText(String.format("%s%s", readStr3, SharedPreferencesUnit.getInstance(mContext).get(GlobalConstant.MAX_ONEKEY_LAST_TIME)));
         }
         return time;
@@ -2628,13 +2626,11 @@ public class MaxCheckOneKey1500Activity extends DemoBase implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
 }

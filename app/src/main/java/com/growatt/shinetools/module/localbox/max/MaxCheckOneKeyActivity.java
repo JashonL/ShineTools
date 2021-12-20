@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,12 +26,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
@@ -42,7 +45,6 @@ import com.growatt.shinetools.adapter.MaxCheckOneKeyAcAdapter;
 import com.growatt.shinetools.adapter.MaxCheckOneKeyRSTAdapter;
 import com.growatt.shinetools.adapter.MaxCheckOneKeyTHDVAdapter;
 import com.growatt.shinetools.base.DemoBase;
-import com.growatt.shinetools.module.localbox.max.bean.MaxCheckIVBean;
 import com.growatt.shinetools.constant.GlobalConstant;
 import com.growatt.shinetools.db.SqliteUtil;
 import com.growatt.shinetools.listeners.OnEmptyListener;
@@ -55,13 +57,13 @@ import com.growatt.shinetools.modbusbox.bean.MaxCheckOneKeyAcBean;
 import com.growatt.shinetools.modbusbox.bean.MaxCheckOneKeyISOBean;
 import com.growatt.shinetools.modbusbox.bean.MaxCheckOneKeyRSTBean;
 import com.growatt.shinetools.modbusbox.bean.MaxCheckOneKeyTHDVBean;
+import com.growatt.shinetools.module.localbox.max.bean.MaxCheckIVBean;
 import com.growatt.shinetools.utils.BtnDelayUtil;
-import com.growatt.shinetools.utils.ChartUtils;
 import com.growatt.shinetools.utils.CommenUtils;
-import com.growatt.shinetools.utils.Log;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.Mydialog;
+import com.growatt.shinetools.utils.PermissionCodeUtil;
 import com.growatt.shinetools.utils.Position;
 import com.growatt.shinetools.utils.SharedPreferencesUnit;
 
@@ -71,11 +73,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_10_READ;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_SERVER_SET;
 import static com.growatt.shinetools.utils.BtnDelayUtil.TIMEOUT_RECEIVE;
-import static com.growatt.shinetools.utils.BtnDelayUtil.refreshFinish;
 
 
 /**
@@ -344,10 +346,10 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
     private void initLineChartAC() {
         tvXUnit.setText("V");
         tvYUnit.setText("A");
-        ChartUtils.initLineChart(mContext, mLineChartAC, 0, "", true, R.color.grid_bg_white, true, R.color.grid_bg_white, true, R.color.note_bg_white, R.color.grid_bg_white, R.color.grid_bg_white, R.color.highLightColor, false, R.string.m4, R.string.m5, new OnEmptyListener() {
+        MaxUtil.initLineChart(mContext, mLineChartAC, 0, "", true, R.color.grid_bg_white, true, R.color.grid_bg_white, true, R.color.note_bg_white, R.color.grid_bg_white, R.color.grid_bg_white, R.color.highLightColor, false, R.string.m4, R.string.m5, new OnEmptyListener() {
             @Override
             public void onEmpty(Entry e, Highlight highlight) {
-                Log.i("x位置" + e.getX());
+                LogUtil.i("x位置" + e.getX());
                 getValuesByEntryAC(e);
             }
         });
@@ -588,6 +590,7 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
+                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     countAC = 0;
                     SocketClientUtil.close(mClientUtilAC);
                     break;
@@ -597,6 +600,17 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
             }
         }
     };
+
+
+    /**
+     * 刷新完成
+     */
+    public static void refreshFinish() {
+//        Mydialog.Dismiss();
+    }
+
+
+
     //连接对象:用于设置数据
     private SocketClientUtil mClientUtilWriterAC;
 
@@ -653,7 +667,7 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
                     } finally {
                         //关闭tcp连接
                         SocketClientUtil.close(mClientUtilWriterAC);
-                        refreshFinish();
+                        BtnDelayUtil.refreshFinish();
                     }
                     break;
                 case SOCKET_10_READ:
@@ -705,6 +719,7 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
+                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     countAC = 0;
                     SocketClientUtil.close(mClientUtilWriterAC);
                     break;
@@ -765,10 +780,10 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
     }
 
     private void initBarChartTHDV() {
-        ChartUtils.initBarChart(this, mBarChartTHDV, "%", true, R.color.note_bg_white, R.color.grid_bg_white, R.color.grid_bg_white, true, R.color.grid_bg_white, true, R.color.grid_bg_white, R.color.highLightColor, null);
+        MaxUtil.initBarChart(this, mBarChartTHDV, "%", true, R.color.note_bg_white, R.color.grid_bg_white, R.color.grid_bg_white, true, R.color.grid_bg_white, true, R.color.grid_bg_white, R.color.highLightColor, null);
         initDataTHDV();
         initLastTHDV();
-        ChartUtils.setBarChartData(mContext, mBarChartTHDV, dataListTHDV, colorsTHDV, colorsTHDV, 3);
+        MaxUtil.setBarChartData(mContext, mBarChartTHDV, dataListTHDV, colorsTHDV, colorsTHDV, 3);
     }
 
     private void initLastTHDV() {
@@ -918,7 +933,7 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
     };
 
     private void updateUiTHDV() {
-        ChartUtils.setBarChartData(mContext, mBarChartTHDV, dataListTHDV, colorsTHDV, colorsTHDV, 3);
+        MaxUtil.setBarChartData(mContext, mBarChartTHDV, dataListTHDV, colorsTHDV, colorsTHDV, 3);
         mAdapterTHDV.notifyDataSetChanged();
     }
 
@@ -978,7 +993,7 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
                     } finally {
                         //关闭tcp连接
                         SocketClientUtil.close(mClientUtilWriterTHDV);
-                        refreshFinish();
+                        BtnDelayUtil.refreshFinish();
                     }
                     break;
                 case SOCKET_10_READ:
@@ -1183,6 +1198,7 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
                     reStartBtn();
                     break;
                 case SocketClientUtil.SOCKET_CLOSE:
+                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     countRST = 0;
                     SocketClientUtil.close(mClientUtilRST);
                     break;
@@ -1248,7 +1264,7 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
                     } finally {
                         //关闭tcp连接
                         SocketClientUtil.close(mClientUtilWriterRST);
-                        refreshFinish();
+                        BtnDelayUtil.refreshFinish();
                     }
                     break;
                 case SOCKET_10_READ:
@@ -1479,7 +1495,7 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
                     } finally {
                         //关闭tcp连接
                         SocketClientUtil.close(mClientUtilWriterISO);
-                        refreshFinish();
+                        BtnDelayUtil.refreshFinish();
                     }
                     break;
                 case SOCKET_10_READ:
@@ -1582,7 +1598,7 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
      * 初始化图表IV---------------------------------------------------------------------------------------------------------------
      */
     private void initLineChartIV() {
-        ChartUtils.initLineChart(mContext, mLineChartIV, 0, "", true, R.color.grid_bg_white, true, R.color.grid_bg_white, true, R.color.note_bg_white, R.color.grid_bg_white, R.color.grid_bg_white, R.color.highLightColor, false, R.string.m4, R.string.m5, new OnEmptyListener() {
+        MaxUtil.initLineChart(mContext, mLineChartIV, 0, "", true, R.color.grid_bg_white, true, R.color.grid_bg_white, true, R.color.note_bg_white, R.color.grid_bg_white, R.color.grid_bg_white, R.color.highLightColor, false, R.string.m4, R.string.m5, new OnEmptyListener() {
             @Override
             public void onEmpty(Entry e, Highlight highlight) {
                 LogUtil.i("x位置" + e.getX());
@@ -2168,6 +2184,7 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
 //    }
 
 
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -2471,11 +2488,12 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
             }
             //设置曲线图
             YAxis axisLeft = mLineChartIV.getAxisLeft();
+
+
             axisLeft.setValueFormatter(new ValueFormatter() {
                 @Override
                 public String getFormattedValue(float value) {
                     return (float) (Math.round(value * 10)) / 10 + "";
-
                 }
             });
 
@@ -2547,7 +2565,7 @@ public class MaxCheckOneKeyActivity extends DemoBase implements
         time = time + nowTime;
         if (time >= totalTime) {
             //刷新完成保存时间
-            SharedPreferencesUnit.getInstance(mContext).put(GlobalConstant.MAX_ONEKEY_LAST_TIME, ChartUtils.getFormatDate(null, null));
+            SharedPreferencesUnit.getInstance(mContext).put(GlobalConstant.MAX_ONEKEY_LAST_TIME, CommenUtils.getFormatDate(null, null));
             mTvLastTime.setText(String.format("%s%s", readStr3, SharedPreferencesUnit.getInstance(mContext).get(GlobalConstant.MAX_ONEKEY_LAST_TIME)));
         }
         return time;

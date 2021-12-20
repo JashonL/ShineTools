@@ -6549,5 +6549,7 @@
     <string name="no_newversion">没有最新升级包</string>
     <string name="choose_other">选择其他升级包</string>
     <string name="use_this_version">是否升级为该版本</string>
+    <string name="Continual">持续</string>
+    <string name="Overnight">整晚</string>
 
 </resources>

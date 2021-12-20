@@ -4180,7 +4180,7 @@
     <string name="m412风扇检查">Fan Check</string>
     <string name="m413电网N线使能">Neutral line Enable</string>
     <string name="m414N至GND监测功能使能">Enable the Detection of N-PE</string>
-    <string name="m415非标准电网电压范围使能">Enable Wide Range Gride Volatage</string>
+    <string name="m415非标准电网电压范围使能">Wide Grid Voltage Enable</string>
     <string name="m416指定的规格设置使能">Enable Assigned Specification</string>
     <string name="m417MPPT使能">PV Input Mode</string>
     <string name="m418电源启动重启斜率">Normal/Restart Ramp Rate</string>
@@ -6555,5 +6555,7 @@
     <string name="no_newversion">没有最新升级包</string>
     <string name="choose_other">选择其他升级包</string>
     <string name="use_this_version">是否升级为该版本</string>
+    <string name="Continual">持续</string>
+    <string name="Overnight">整晚</string>
 
 </resources>

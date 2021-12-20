@@ -69,7 +69,7 @@ public class TLXHDryContactActivity extends BaseActivity implements BaseQuickAda
         ALLSettingBean bean = usParamsetAdapter.getData().get(position);
         String title = bean.getTitle();
         String hint = bean.getHint();
-        if (position == 0) {
+        if (position != 0) {
             setInputValue(title,hint);
         }
     }

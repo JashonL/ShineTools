@@ -38,7 +38,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_10"
             android:padding="@dimen/dp_10"
-            android:text="正在对逆变器进行升级"
+            android:text="@string/android_key1148"
             android:textColor="@color/color_text_33"
             android:textSize="@dimen/size_content_sp_16"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -92,7 +92,7 @@
             android:layout_height="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_10"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loading_tips" />
+            app:layout_constraintTop_toBottomOf="@+id/uptating_tips" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

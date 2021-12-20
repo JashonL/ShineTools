@@ -23,8 +23,8 @@ import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.afci.AFCIChartActivity;
 import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
+import com.growatt.shinetools.module.localbox.max.config.MaxAFCIAcitivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxConfigControl;
 import com.growatt.shinetools.module.localbox.mintool.TLXParamCountry2Activity;
 import com.growatt.shinetools.module.localbox.tlxh.TLXHAutoTestOldInvActivity;
@@ -424,10 +424,16 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
                 //断开连接
                 manager.disConnectSocket();
                 toOhterSetting=true;
-                Intent intent1 = new Intent(mContext, AFCIChartActivity.class);
+/*                Intent intent1 = new Intent(mContext, AFCIChartActivity.class);
                 intent1.putExtra("type", 36);
                 intent1.putExtra("title", String.format("%s%s",getString(R.string.AFCI曲线扫描),""));
-                ActivityUtils.startActivity(this,intent1,false);
+                ActivityUtils.startActivity(this,intent1,false);*/
+
+                Intent intent1 = new Intent(mContext, MaxAFCIAcitivity.class);
+                intent1.putExtra("type", 36);
+                intent1.putExtra("title", bean.getTitle());
+                ActivityUtils.startActivity(this, intent1, false);
+
                 break;
             case 6://防逆流设置
                 //断开连接
@@ -441,13 +447,28 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
                 break;
             case 7://自动测试
                 //断开连接
-                manager.disConnectSocket();
-                toOhterSetting=true;
-                Intent intent7 = new Intent(mContext, TLXHAutoTestOldInvActivity.class);
-                intent7.putExtra("type", 0);
-                intent7.putExtra("title", bean.getTitle());
-                intent7.putExtra("deviceType",deviceType);
-                ActivityUtils.startActivity(this, intent7, false);
+
+                new CircleDialog.Builder()
+                        .setWidth(0.7f)
+                        .setGravity(Gravity.CENTER)
+                        .setTitle(getString(R.string.reminder))
+                        .setText(getString(R.string.请确认是否为意大利机型))
+                        .setNegative(getString(R.string.all_no), null)
+                        .setPositive(getString(R.string.all_ok), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                manager.disConnectSocket();
+                                toOhterSetting=true;
+                                Intent intent7 = new Intent(mContext, TLXHAutoTestOldInvActivity.class);
+                                intent7.putExtra("type", 0);
+                                intent7.putExtra("title", bean.getTitle());
+                                intent7.putExtra("deviceType",deviceType);
+                                ActivityUtils.startActivity(TLXQuickSettingActivity.this, intent7, false);
+                            }
+                        })
+                        .show(getSupportFragmentManager());
+
+
                 break;
 
         }

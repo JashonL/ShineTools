@@ -1,4 +1,4 @@
-package com.growatt.shinetools.module.localbox.sph.config;
+package com.growatt.shinetools.module.localbox.tlxh.config;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -42,7 +42,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class SPHSPABasicSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
+public class TLXHBasicSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
         DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
@@ -88,22 +88,22 @@ public class SPHSPABasicSettingActivity extends BaseActivity implements BaseQuic
 
                 break;
             case 3:
-                OssUtils.circlerDialog(SPHSPABasicSettingActivity.this, note1, -1, false);
+                OssUtils.circlerDialog(TLXHBasicSettingActivity.this, note1, -1, false);
                 break;
             case 4:
-                OssUtils.circlerDialog(SPHSPABasicSettingActivity.this, note2, -1, false);
+                OssUtils.circlerDialog(TLXHBasicSettingActivity.this, note2, -1, false);
                 break;
             case 5:
                 setEnergyTotal(position, title, hint, mul);
                 break;
             case 6:
                 //断开连接
-                //断开连接
                 manager.disConnectSocket();
                 Intent intent1 = new Intent(mContext, TLXModeSetActivity.class);
                 intent1.putExtra("title",rightTitle);
                 ActivityUtils.startActivity(this, intent1, false);
                 break;
+
 
             case 7:
             case 8:
@@ -262,7 +262,7 @@ public class SPHSPABasicSettingActivity extends BaseActivity implements BaseQuic
         rightTitle = getString(R.string.m374设置Model);
         //系统设置项
         List<ALLSettingBean> settingList
-                = SPHSPAConfigControl.getSettingList(SPHSPAConfigControl.SphSpaSettingEnum.SPH_SPA_BASIC_SETTING, this);
+                = TLXHConfigControl.getSettingList(TLXHConfigControl.TlxSettingEnum.TLXH_BASIC_SETTING, this);
         usParamsetAdapter.replaceData(settingList);
         note1 = getString(R.string.m443该项暂不能设置请设置Model);
         note2 = getString(R.string.m444该项暂不能设置);
@@ -289,13 +289,13 @@ public class SPHSPABasicSettingActivity extends BaseActivity implements BaseQuic
         @Override
         public void connectFail() {
             manager.disConnectSocket();
-            MyControl.showJumpWifiSet(SPHSPABasicSettingActivity.this);
+            MyControl.showJumpWifiSet(TLXHBasicSettingActivity.this);
         }
 
         @Override
         public void sendMsgFail() {
             manager.disConnectSocket();
-            MyControl.showTcpDisConnect(SPHSPABasicSettingActivity.this, getString(R.string.disconnet_retry),
+            MyControl.showTcpDisConnect(TLXHBasicSettingActivity.this, getString(R.string.disconnet_retry),
                     () -> {
                         connetSocket();
                     }
@@ -415,45 +415,28 @@ public class SPHSPABasicSettingActivity extends BaseActivity implements BaseQuic
                 bean5.setValue(String.valueOf(totalE));
                 bean5.setValueStr(getReadValueReal(totalE, mul, unit));
                 break;
+
             case 7://清除历史数据
                 LogUtil.i("清除历史数据:");
-                int value6 = MaxWifiParseUtil.obtainValueOne(bs);
-                ALLSettingBean bean6 = usParamsetAdapter.getData().get(6);
-                bean6.setValue(String.valueOf(bean6));
+                int value7 = MaxWifiParseUtil.obtainValueOne(bs);
+                ALLSettingBean bean7 = usParamsetAdapter.getData().get(7);
+                float mul1 = bean7.getMul();
+                String unit1 = bean7.getUnit();
+                bean7.setValue(String.valueOf(bean7));
+                bean7.setValueStr(getReadValueReal(value7,mul1,unit1));
                 break;
             case 8://恢复出厂设置
                 LogUtil.i("恢复出厂设置:");
-                ALLSettingBean bean7 = usParamsetAdapter.getData().get(7);
-                bean7.setValue(String.valueOf(bean7));
+                int value8 = MaxWifiParseUtil.obtainValueOne(bs);
+                ALLSettingBean bean8 = usParamsetAdapter.getData().get(7);
+                bean8.setValue(String.valueOf(value8));
+                float mul2 = bean8.getMul();
+                String unit2 = bean8.getUnit();
+                bean8.setValueStr(getReadValueReal(value8,mul2,unit2));
                 break;
+
         }
         usParamsetAdapter.notifyDataSetChanged();
-    }
-
-
-    public String getReadValueReal(int position,int read) {
-        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
-        String[] items = bean.getItems();
-        String value=String.valueOf(read);
-        float mul=bean.getMul();
-        String unit=bean.getUnit();
-        switch (position){
-            case 1:
-                boolean isNum = ((int) mul) == mul;
-                if (isNum) {
-                    value = read * ((int) mul) + unit;
-                } else {
-                    value = Arith.mul(read, mul, 2) + unit;
-                }
-                break;
-            case 6: case 7:
-                if (read<items.length){
-                    value = items[read];
-                }
-                break;
-        }
-
-        return value;
     }
 
 

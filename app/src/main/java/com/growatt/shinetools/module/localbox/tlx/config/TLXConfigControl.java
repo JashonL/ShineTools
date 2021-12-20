@@ -53,9 +53,9 @@ public class TLXConfigControl {
                 context.getString(R.string.m412风扇检查),//风扇检查 4
                 context.getString(R.string.android_key873),//检查固件 10
 
-                context.getString(R.string.m412风扇检查),//PID工作模式 12
-                context.getString(R.string.android_key873),//PID开关  13
-                context.getString(R.string.android_key873),//PID工作电压选择  14
+                context.getString(R.string.android_key1008),//PID工作模式 12
+                context.getString(R.string.android_key1011),//PID开关  13
+                context.getString(R.string.android_key1014),//PID工作电压选择  14
 
         };
         String[] hints = new String[]{
@@ -82,7 +82,7 @@ public class TLXConfigControl {
                 UsSettingConstant.SETTING_TYPE_NEXT,//干接点设置
                 UsSettingConstant.SETTING_TYPE_SWITCH,//N至PE监测功能使能
                 UsSettingConstant.SETTING_TYPE_SELECT,//宽电网电压范围使能
-                UsSettingConstant.SETTING_TYPE_INPUT,//安规功能使能
+                UsSettingConstant.SETTING_TYPE_SWITCH,//安规功能使能
                 UsSettingConstant.SETTING_TYPE_SWITCH,//电网N线使能
                 UsSettingConstant.SETTING_TYPE_SWITCH,//指定的规格设置使能
                 UsSettingConstant.SETTING_TYPE_SWITCH,//ISland使能
@@ -178,26 +178,18 @@ public class TLXConfigControl {
                 {},
                 {},
                 {
-                        context.getString(R.string.意大利),
-                        context.getString(R.string.英语),
-                        context.getString(R.string.德语),
-                        context.getString(R.string.西班牙语),
-                        context.getString(R.string.法语),
-                        context.getString(R.string.匈牙利语),
-                        context.getString(R.string.土耳其语),
-                        context.getString(R.string.波兰语),
-                        context.getString(R.string.葡萄牙语)
+                   "0","1","2"
                 },
                 {},
                 {context.getString(R.string.android_key1427),context.getString(R.string.m484电表)},
+                { "0","1","2"},
                 {},
                 {},
                 {},
                 {},
                 {},
                 {},
-                {},
-                {"Automatic", "Continaual", "Overnight"},//PID工作模式
+                {context.getString(R.string.m438自动), context.getString(R.string.Continual),context.getString(R.string.Overnight)},//PID工作模式
                 {},
                 {},
 

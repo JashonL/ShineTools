@@ -104,13 +104,13 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
 
         List<ALLSettingBean> list = new ArrayList<>();
 
-        String[] titls = new String[]{getString(R.string.m防逆流设置),
+        String[] titls = new String[]{getString(R.string.防逆流使能),
                 getString(R.string.m防逆流功率百分比),
                 getString(R.string.android_key748)};
         String[] registers = new String[]{"(122)", "(123)", "(3000)"};
 
         int[] itemTypes = new int[]{
-                UsSettingConstant.SETTING_TYPE_SWITCH,
+                UsSettingConstant.SETTING_TYPE_SELECT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
         };
@@ -158,14 +158,14 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
 
 
         String[][] items = new String[][]{
-                {"Off","On(with Meter)"},
+                {getString(R.string.不使能防逆流), getString(R.string.使能485接口防逆流),getString(R.string.使能232接口防逆流),getString(R.string.使能CT防逆流)},
                 {},
                 {}
 
         };
         if(deviceType==1){
             items = new String[][]{
-                    {"Off","On(with Meter)","On(with CT)"},
+                    {getString(R.string.不使能防逆流), getString(R.string.使能485接口防逆流),getString(R.string.使能232接口防逆流),getString(R.string.使能CT防逆流)},
                     {},
                     {}
 
@@ -308,6 +308,13 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
         //解析int值
         switch (currentPos){
             case 0:
+                ALLSettingBean bean = usParamsetAdapter.getData().get(0);
+                String[] items = bean.getItems();
+                int value1 = MaxWifiParseUtil.obtainValueOne(bs);
+                bean.setValueStr(String.valueOf(value1));
+                if (value1<items.length){
+                    bean.setValueStr(items[value1]);
+                }
 
                 break;
             case 1:

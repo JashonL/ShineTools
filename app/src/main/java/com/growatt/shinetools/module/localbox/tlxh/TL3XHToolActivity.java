@@ -1,5 +1,7 @@
 package com.growatt.shinetools.module.localbox.tlxh;
 
+import android.view.Gravity;
+
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.inverterUpdata.InverterUpdataManager;
@@ -15,6 +17,7 @@ import com.growatt.shinetools.module.localbox.tlxh.config.TLXHChargeActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
+import com.mylhyl.circledialog.CircleDialog;
 
 public class TL3XHToolActivity extends TlxToolBaseActivity {
 
@@ -132,6 +135,8 @@ public class TL3XHToolActivity extends TlxToolBaseActivity {
                 clazz = TL3XHDeviceInfoActivity.class;
                 break;
             case 8:
+
+
                 clazz = TLXHAutoTestActivity.class;
                 break;
             default:
@@ -141,7 +146,19 @@ public class TL3XHToolActivity extends TlxToolBaseActivity {
 
 
         if (clazz != null) {
-            jumpMaxSet(clazz, title);
+            if (position == 8) {
+                Class finalClazz = clazz;
+                new CircleDialog.Builder()
+                        .setWidth(0.7f)
+                        .setGravity(Gravity.CENTER)
+                        .setTitle(getString(R.string.reminder))
+                        .setText(getString(R.string.请确认是否为意大利机型))
+                        .setNegative(getString(R.string.all_no), null)
+                        .setPositive(getString(R.string.all_ok), v -> jumpMaxSet(finalClazz, title))
+                        .show(getSupportFragmentManager());
+            } else {
+                jumpMaxSet(clazz, title);
+            }
         }
     }
 

@@ -692,7 +692,7 @@ public abstract class BaseTLXHInfoActivity extends BaseActivity implements View.
 
     private void initListener() {
         initOnclick(title1Head2, title2Head2, title3Head2, title34Head2, title4Head2,
-                title5Head2, title6Head2);
+                title5Head2, title6Head2,tvTitleLiwang,tvTitleBdc);
     }
 
     private void initOnclick(View... views) {

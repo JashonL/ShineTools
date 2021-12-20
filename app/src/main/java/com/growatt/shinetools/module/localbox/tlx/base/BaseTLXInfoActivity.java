@@ -267,7 +267,7 @@ public abstract class BaseTLXInfoActivity extends BaseActivity implements View.O
         //内部参数
         initContent6();
         //离网参数/BDC/电池参数
-        initOtherView();
+//        initOtherView();
     }
 
 

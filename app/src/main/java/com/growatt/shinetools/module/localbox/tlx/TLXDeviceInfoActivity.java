@@ -59,14 +59,16 @@ public class TLXDeviceInfoActivity extends BaseTLXInfoActivity {
     @Override
     public void initPIDString() {
 
-        c6Title1 = new String[]{
-                getString(R.string.m305并网倒计时),  getString(R.string.m306功率百分比),
-                "ISO",
-                getString(R.string.m307内部环境温度),  getString(R.string.m308Boost温度),
-                getString(R.string.m309INV温度),
-                "+Bus", "-Bus"
-                , getString(R.string.m降额模式)
+         c4Title1 = new String[]{
+                "PID1", "PID2", "PID3", "PID4", "PID5", "PID6", "PID7", "PID8"
         };
+
+
+        c4Title2 = new String[]{
+                String.format("%s(V)",getString(R.string.m318电压)),
+                String.format("%s(mA)",getString(R.string.m319电流))
+        };
+
     }
 
     @Override
@@ -110,7 +112,7 @@ public class TLXDeviceInfoActivity extends BaseTLXInfoActivity {
 
     @Override
     public int getHeaderView() {
-        return R.layout.header_max_device_info;
+        return R.layout.header_tlxe_device_info;
     }
 
     @Override

@@ -204,8 +204,8 @@ public class FileUpdataManager {
                             .replaceAll("-", "_");
 
 
-                    String filePath = fileDir + File.separator + sort_dir + File.separator + device_dir;
-                    String fileParentPath = fileDir + File.separator + sort_dir + File.separator + device_dir + File.separator;
+                    String filePath = fileDir + sort_dir + File.separator + device_dir;
+                    String fileParentPath = fileDir + sort_dir + File.separator + device_dir + File.separator;
 
 
                     switch (type) {

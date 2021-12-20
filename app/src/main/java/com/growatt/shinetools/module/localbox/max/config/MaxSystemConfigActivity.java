@@ -377,7 +377,7 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
                 manager.disConnectSocket();
                 Intent intent = new Intent(mContext, ConfigType2Activity.class);
                 intent.putExtra("type", 5);
-                intent.putExtra("title", String.format("%s%s",title,"233~234"));
+                intent.putExtra("title", String.format("%s%s",title,""));
                 startActivity(intent);
                 break;
             case 11:

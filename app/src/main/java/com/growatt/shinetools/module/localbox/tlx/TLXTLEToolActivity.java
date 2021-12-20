@@ -6,9 +6,9 @@ import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.module.localbox.max.base.BaseMaxToolActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
+import com.growatt.shinetools.module.localbox.tlx.config.TLXQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.tlx.config.TLXSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.tlx.config.TlxBasicSettingActivity;
-import com.growatt.shinetools.module.localbox.tlxh.config.TLXHQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 
@@ -88,7 +88,8 @@ public class TLXTLEToolActivity  extends BaseMaxToolActivity {
 
         switch (position) {
             case 0://快速设置
-                clazz = TLXHQuickSettingActivity.class;
+//                clazz = TLXHQuickSettingActivity.class;
+                clazz = TLXQuickSettingActivity.class;
                 break;
             case 1://系统设置
                 clazz = TLXSystemSettingActivity.class;

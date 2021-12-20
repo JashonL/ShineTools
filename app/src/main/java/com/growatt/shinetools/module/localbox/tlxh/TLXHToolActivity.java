@@ -4,16 +4,16 @@ import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.inverterUpdata.InverterUpdataManager;
 import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
-import com.growatt.shinetools.module.localbox.max.MaxAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
-import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
 import com.growatt.shinetools.module.localbox.mintool.TLXHAutoTestActivity;
 import com.growatt.shinetools.module.localbox.tlx.base.TlxToolBaseActivity;
+import com.growatt.shinetools.module.localbox.tlxh.config.TLXHBasicSettingActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHChargeActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHSystemSettingActivity;
+import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 
 public class TLXHToolActivity extends TlxToolBaseActivity {
@@ -84,12 +84,12 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
         title = new String[]{
                 getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
                 , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
-                , getString(R.string.m286高级设置), getString(R.string.m291设备信息)
+                , getString(R.string.m286高级设置), getString(R.string.m291设备信息),getString(R.string.android_key171)
         };
         res = new int[]{
                 R.drawable.quickly, R.drawable.system_config, R.drawable.city_code,
                 R.drawable.charge_manager, R.drawable.smart_check, R.drawable.param_setting,
-                R.drawable.advan_setting, R.drawable.device_info
+                R.drawable.advan_setting, R.drawable.device_info,R.drawable.tlx_auto_test
         };
     }
 
@@ -121,11 +121,11 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
                 clazz = MaxCheckActivity.class;
                 break;
             case 5://基本设置
-                clazz = MaxBasicSettingActivity.class;
+                clazz = TLXHBasicSettingActivity.class;
                 break;
 
             case 6://高级设置
-                clazz = MaxAdvanceSetActivity.class;
+                clazz = USAdvanceSetActivity.class;
                 break;
             case 7://设备信息
                 clazz = TLXHDeviceInfoActivity.class;
