@@ -49,7 +49,6 @@ public class CommenUtils {
     }
 
 
-
     //获得今天的日期
     public enum DataType {
         YMD(1), YMD_HSM(2), HSM(3);
@@ -152,8 +151,8 @@ public class CommenUtils {
     public static boolean isWifi(Context mContext) {
         ConnectivityManager connectivityManager = (ConnectivityManager) mContext
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info= connectivityManager.getActiveNetworkInfo();
-        if (info!= null
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+        if (info != null
                 && info.getType() == ConnectivityManager.TYPE_WIFI) {
             return true;
         }
@@ -238,15 +237,14 @@ public class CommenUtils {
     }
 
 
-
-    public interface ITcpDisConnectListener{
+    public interface ITcpDisConnectListener {
         void tryConnect();
     }
 
     /**
      * 提示wifi断开连接是否重连
      */
-    public static void showTcpDisConnet(final FragmentActivity act, String str,ITcpDisConnectListener listener) {
+    public static void showTcpDisConnet(final FragmentActivity act, String str, ITcpDisConnectListener listener) {
         DialogUtils.getInstance().closeLoadingDialog();
         new CircleDialog.Builder()
                 .setWidth(0.7f)
@@ -265,7 +263,6 @@ public class CommenUtils {
                 })
                 .show(act.getSupportFragmentManager());
     }
-
 
 
     /**
@@ -340,7 +337,6 @@ public class CommenUtils {
     }
 
 
-
     /**
      * 隐藏所有的view
      *
@@ -395,11 +391,10 @@ public class CommenUtils {
      * 获取时分双位数
      */
 
-     public static String getDoubleNum(int value){
-         String s=String.format("%02d",value);
-         return s;
-     }
-
+    public static String getDoubleNum(int value) {
+        String s = String.format("%02d", value);
+        return s;
+    }
 
 
     /**
@@ -427,13 +422,12 @@ public class CommenUtils {
         int value = 0;
         if (b.length > 1) {
 //            value = (b[0] & 0xff << 8) | (b[1] & 0xff);
-            value= (((0x000000ff & b[0]) << 8) & 0x0000ff00) | (0x000000ff & b[1]);
+            value = (((0x000000ff & b[0]) << 8) & 0x0000ff00) | (0x000000ff & b[1]);
             return value;
 
         }
         return value;
     }
-
 
 
     /**
@@ -484,5 +478,18 @@ public class CommenUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    /* 反转数组*/
+    public static char[] reverse(char a[], int n) {
+        char[] b = new char[n];
+        int j = n;
+        for (int i = 0; i < n; i++) {
+            b[j - 1] = a[i];
+            j = j - 1;
+        }
+
+        return b;
     }
 }

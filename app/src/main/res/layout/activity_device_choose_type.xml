@@ -43,7 +43,7 @@
                     android:layout_height="@dimen/dp_45"
                     android:gravity="center"
                     android:padding="@dimen/dp_10"
-                    android:text="Single Phase On-grid Inverter"
+                    android:text="@string/android_key2798"
                     android:textColor="@color/color_text_99"
                     android:textSize="@dimen/size_content_sp_14" />
 
@@ -112,6 +112,7 @@
                     android:id="@+id/ll_type_min_tl_xh_us"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_45"
+                    android:visibility="gone"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -155,7 +156,7 @@
                     android:layout_height="@dimen/dp_45"
                     android:gravity="center"
                     android:padding="@dimen/dp_10"
-                    android:text="Three Phase On-grid Inverter"
+                    android:text="@string/android_key2799"
                     android:textColor="@color/color_text_99"
                     android:textSize="@dimen/size_content_sp_14" />
 
@@ -335,7 +336,7 @@
                     android:layout_height="@dimen/dp_45"
                     android:gravity="center"
                     android:padding="@dimen/dp_10"
-                    android:text="Storage Inverter"
+                    android:text="@string/all_storage"
                     android:textColor="@color/color_text_99"
                     android:textSize="@dimen/size_content_sp_14" />
 

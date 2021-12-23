@@ -107,7 +107,7 @@ public class TLXConfigControl {
                 1
         };
         String[] units = new String[]{
-                "", "", "", "", "", "", "","",
+                "", "%", "", "", "", "", "","",
                 "", "", "", "", "", "", "",
         };
         int[][] funs = new int[][]{
@@ -178,7 +178,7 @@ public class TLXConfigControl {
                 {},
                 {},
                 {
-                   "0","1","2"
+                        context.getString(R.string.Independent), context.getString(R.string.dc_source), context.getString(R.string.Parallel)
                 },
                 {},
                 {context.getString(R.string.android_key1427),context.getString(R.string.m484电表)},

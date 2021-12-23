@@ -3889,7 +3889,6 @@
     <string name="mSpf5k_充电源">充电源</string>
     <string name="mSpf5k_市电输出">市电输出</string>
     <string name="mSpf5k_市电充电">市电充电</string>
-    <string name="mSpf5k_光伏接入模式">光伏接入模式</string>
     <string name="mSpf5k_AC输入模式">AC输入模式</string>
     <string name="mSpf5k_AC输出电压">AC输出电压</string>
     <string name="mSpf5k_AC输出频率">AC输出频率</string>
@@ -6551,5 +6550,6 @@
     <string name="use_this_version">是否升级为该版本</string>
     <string name="Continual">持续</string>
     <string name="Overnight">整晚</string>
+
 
 </resources>

@@ -2798,8 +2798,8 @@
     <string name="android_key2795">Software version</string>
     <string name="android_key2796">Remote restart</string>
     <string name="android_key2797">Successful restart</string>
-    <string name="android_key2798">Single phase</string>
-    <string name="android_key2799">Three phase</string>
+    <string name="android_key2798">Single Phase On-grid Inverter</string>
+    <string name="android_key2799">Three Phase On-grid Inverter</string>
     <string name="android_key2800">Select load</string>
     <string name="android_key2801">constant temperature</string>
     <string name="android_key2802">all day（24h）</string>
@@ -3354,7 +3354,7 @@
     <string name="main_device">Device</string>
     <string name="示范电站">Demo plant</string>
     <string name="all_interver">Inverter</string>
-    <string name="all_storage">Storage</string>
+    <string name="all_storage">Storage Inverter</string>
     <string name="充电桩">EV charger</string>
     <string name="功率调节器">Power regulator</string>
     <string name="未连接">Not connected</string>
@@ -3894,7 +3894,6 @@
     <string name="mSpf5k_充电源">Charge source</string>
     <string name="mSpf5k_市电输出">UTI output</string>
     <string name="mSpf5k_市电充电">UTI charge</string>
-    <string name="mSpf5k_光伏接入模式">PV input model</string>
     <string name="mSpf5k_AC输入模式">AC input model</string>
     <string name="mSpf5k_AC输出电压">AC discharge voltage</string>
     <string name="mSpf5k_AC输出频率">AC discharge frequency</string>
@@ -6510,28 +6509,28 @@
     <string name="init_dry_setting"> initialize dry contact setting parameters </string>
     <string name="dynamo">Dynamo</string>
 
-    <string name="disable">不使能</string>
-    <string name="out_power">按输出功率</string>
-    <string name="time_period">按时间段</string>
-    <string name="mixed_mode">混合模式</string>
-    <string name="battery_param">按电池参数</string>
+    <string name="disable">Disable</string>
+    <string name="out_power">According to output power</string>
+    <string name="time_period">According to time period</string>
+    <string name="mixed_mode">Mixed mode</string>
+    <string name="battery_param">According to battery parameters</string>
 
-    <string name="water_heateing">热水器工作中</string>
-    <string name="generator_working">发电机工作中</string>
-    <string name="function_close">功能关闭</string>
+    <string name="water_heateing">The water heater is working</string>
+    <string name="generator_working">The generator is working</string>
+    <string name="function_close">Function off</string>
     <string name="额定功率">Nominal\nPower</string>
     <string name="confirm_init_dry_setting"> confirm the initialization of dry contact setting parameters </string>
-    <string name="one_key_set_bdc_mode">一键设置电池模式</string>
-    <string name="welcome">欢迎</string>
-    <string name="welcome_content">这个应用程序将帮助您更新激活和启用Growatt设备。 帮助您进行设备版本更新和设备调试等。</string>
-    <string name="no_remind_again">不再提示</string>
-    <string name="basic_setting">基本设置</string>
-    <string name="disconnet_retry">与当前设备通信已断开，请重试</string>
+    <string name="one_key_set_bdc_mode">One key to set battery mode</string>
+    <string name="welcome">Welcome</string>
+    <string name="welcome_content">This APP will help you activate and enable Growatt devices, and help you complete device version update and device debugging.</string>
+    <string name="no_remind_again">Do not remind again</string>
+    <string name="basic_setting">Basic settings</string>
+    <string name="disconnet_retry">Communication with the current device has been disconnected, please try again</string>
 
-    <string name="ac_voltage_protect">AC电压保护</string>
-    <string name="ac_frency_protect">AC频率保护</string>
-    <string name="grid_connetced_vol_limit">并网电压限制</string>
-    <string name="grid_connetced_frency_limit">并网频率限制</string>
+    <string name="ac_voltage_protect">AC voltage protection</string>
+    <string name="ac_frency_protect">AC frequency protection</string>
+    <string name="grid_connetced_vol_limit">Grid-connected voltage limit</string>
+    <string name="grid_connetced_frency_limit">Grid-connected frequency limit</string>
 
     <string name="battery_diagnosis">Battery diagnosis</string>
     <string name="being_diagnosed">Being diagnosed</string>
@@ -6547,15 +6546,15 @@
     <string name="keep_page">Please keep the current page during the upgrade process</string>
     <string name="installing">Installing</string>
     <string name="device_restart">The inverter is restarting, wait about 60 seconds before reconnecting.</string>
-    <string name="file_downloading">正在下载固件版本，请保持网络畅通</string>
-    <string name="version_low">当前逆变器版本过低，是否升级逆变器版本</string>
-    <string name="version_updata">版本升级</string>
-    <string name="inverter_upgrade">逆变器升级</string>
-    <string name="choise_package">请选择升级包</string>
-    <string name="no_newversion">没有最新升级包</string>
-    <string name="choose_other">选择其他升级包</string>
-    <string name="use_this_version">是否升级为该版本</string>
-    <string name="Continual">持续</string>
-    <string name="Overnight">整晚</string>
+    <string name="file_downloading">The firmware version is being downloaded, please keep the network open</string>
+    <string name="version_low">The current inverter version is too low, whether to upgrade the inverter version?</string>
+    <string name="version_updata">version upgrade</string>
+    <string name="inverter_upgrade">Inverter upgrade</string>
+    <string name="choise_package">Please select an upgrade package</string>
+    <string name="no_newversion">No latest upgrade package</string>
+    <string name="choose_other">Choose another upgrade package</string>
+    <string name="use_this_version">Whether to upgrade to this version</string>
+    <string name="Continual">Continual</string>
+    <string name="Overnight">Overnight</string>
 
 </resources>

@@ -126,7 +126,7 @@ public class USWiFiConfigActivity extends BaseActivity {
     private boolean isCheckStatus = false;
 
 
-    private int[] funsCable = {3, 20144, 20144};
+    private int[] funsCable = {3, 20114, 20114};
 
 
     //倒计时
@@ -225,7 +225,7 @@ public class USWiFiConfigActivity extends BaseActivity {
                 case SocketClientUtil.SOCKET_EXCETION_CLOSE:
                     Mydialog.Dismiss();
                     stopFreshTimer();
-                    if (dialogFragment!=null){
+                    if (dialogFragment != null) {
                         dialogFragment.dismiss();
                         dialogFragment = null;
                         configing = false;
@@ -342,15 +342,30 @@ public class USWiFiConfigActivity extends BaseActivity {
                     //移除外部协议
                     byte[] bs = RegisterParseUtil.removePro17(bytes);
 
-                    LogUtil.i("");
 
                     //网线连接状态
                     int status_cable = MaxWifiParseUtil.obtainValueOne(bs);
+                    LogUtil.i("返回值：" + status_cable);
+
+                    String s = Integer.toBinaryString(status_cable);
+                    char[] chars = s.toCharArray();
+                    LogUtil.i("反转之前：" + Arrays.toString(chars));
+                    int len = chars.length;
+                    char[] reverse = CommenUtils.reverse(chars, len);
+
+                    LogUtil.i("反转之后：" + Arrays.toString(reverse));
+                    String b5 = String.valueOf(reverse[5]);
+                    String b6 = String.valueOf(reverse[6]);
+                    String b8 = String.valueOf(reverse[8]);
+
+
+/*
                     byte cable_byte = (byte) status_cable;
                     //取第5和第6个bit位
                     String b5 = (byte) ((cable_byte >> 5) & 0x1) + "";
                     String b6 = (byte) ((cable_byte >> 6) & 0x1) + "";
-                    String b8 = (byte) ((cable_byte >> 8) & 0x1) + "";
+                    String b8 = (byte) ((cable_byte >> 8) & 0x1) + "";*/
+
 
                     if (!isCheckStatus) {
                         if (!"1".equals(b5)) {
@@ -364,7 +379,7 @@ public class USWiFiConfigActivity extends BaseActivity {
                         //下发服务器地址
                         sendSetComand();
                     } else {
-                        if (!"1".equals(b8)) {
+                        if ("1".equals(b8)) {
                             showConfigSuccess();
                         } else {
                             //继续读状态
@@ -866,13 +881,18 @@ public class USWiFiConfigActivity extends BaseActivity {
         }
     }
 
-
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
         //释放handler
         SocketClientUtil.close(mClientUtil);
         mHandler.removeCallbacksAndMessages(null);
         mHandler = null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

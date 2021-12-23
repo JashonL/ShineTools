@@ -224,13 +224,13 @@ public class UsSystemSettingActivity extends BaseActivity implements BaseQuickAd
         USDebugSettingBean bean = usParamsetAdapter.getData().get(position);
 
 
-        if (user_type != END_USER && position == 4) {
+  /*      if (user_type != END_USER && position == 4) {
             Intent intent = new Intent(this, DryFunctionActivity.class);
             intent.putExtra(USConfigTypeAllActivity.KEY_OF_ITEM_SETITEMSINDEX, itemIndex);
             intent.putExtra("title", bean.getTitle());
             ActivityUtils.startActivity(this, intent, false);
             return;
-        }
+        }*/
 
         Intent intent = new Intent(this, USConfigTypeAllActivity.class);
         intent.putExtra(USConfigTypeAllActivity.KEY_OF_ITEM_SETITEMSINDEX, itemIndex);

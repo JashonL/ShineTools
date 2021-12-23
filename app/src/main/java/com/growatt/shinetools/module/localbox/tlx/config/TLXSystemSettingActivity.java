@@ -23,7 +23,7 @@ import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.configtype.ConfigType2Activity;
+import com.growatt.shinetools.module.ChekFirmWareActivity;
 import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
 import com.growatt.shinetools.module.localbox.max.config.MaxActivePowerActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHDryContactActivity;
@@ -321,7 +321,7 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
 
     public void parserActiviPercent(int read) {
         ALLSettingBean bean = usParamsetAdapter.getData().get(1);
-        bean.setValueStr(String.valueOf(read));
+        bean.setValueStr(read +bean.getUnit());
     }
 
 
@@ -419,9 +419,9 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
             case 11:
                 toOhterSetting=true;
                 manager.disConnectSocket();
-                Intent intent = new Intent(mContext, ConfigType2Activity.class);
+                Intent intent = new Intent(mContext, ChekFirmWareActivity.class);
                 intent.putExtra("type", 5);
-                intent.putExtra("title", String.format("%s%s",title,"233~234"));
+                intent.putExtra("title", String.format("%s%s",title,""));
                 startActivity(intent);
                 break;
 

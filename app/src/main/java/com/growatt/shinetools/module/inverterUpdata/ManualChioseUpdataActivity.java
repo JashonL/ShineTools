@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -47,7 +46,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener,
         Toolbar.OnMenuItemClickListener {
@@ -61,8 +59,7 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
     LinearLayout headerTitle;
     @BindView(R.id.rv_device)
     RecyclerView rvDevice;
-    @BindView(R.id.btnOK)
-    Button btnOK;
+
 
 
     private InvererManualAdater manualAdater;
@@ -91,7 +88,6 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
         rvDevice.setAdapter(manualAdater);
         manualAdater.setOnItemClickListener(this);
         manualAdater.setOnItemChildClickListener(this);
-        btnOK.setEnabled(false);
     }
 
     @Override
@@ -124,7 +120,6 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
                 bean.setCurrentVersion(newVersion);
                 manualAdater.notifyDataSetChanged();
                 isNewVersion = true;
-                btnOK.setText(R.string.android_key252);
             }
 
             @Override
@@ -133,7 +128,6 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
                 bean.setCurrentVersion(error);
                 isNewVersion = false;
                 manualAdater.notifyDataSetChanged();
-                btnOK.setText(error);
             }
         });
     }
@@ -143,9 +137,16 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         UpdataBean bean = manualAdater.getData().get(position);
         boolean checked = bean.isChecked();
-        bean.setChecked(!checked);
+        boolean b = !checked;
+        bean.setChecked(b);
         manualAdater.notifyDataSetChanged();
-        btnOK.setEnabled(!checked);
+        if (b){
+            if (isNewVersion) {
+                toUpdata();
+            }
+        }else {
+            toast(R.string.soft_update_no);
+        }
     }
 
 
@@ -155,16 +156,6 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
     }
 
 
-    @OnClick({R.id.btnOK})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btnOK:
-                if (isNewVersion) {
-                    toUpdata();
-                }
-                break;
-        }
-    }
 
 
     private void toUpdata() {

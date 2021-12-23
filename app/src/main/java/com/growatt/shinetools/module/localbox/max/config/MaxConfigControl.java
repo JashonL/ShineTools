@@ -499,7 +499,7 @@ public class MaxConfigControl {
                 {},//N至PE检测功能使能
                 {"0", "1", "2"},//电压范围使能
                 {},//指定的规格使能
-                {"0", "1", "2"},//PV输入模式
+                { context.getString(R.string.Independent), context.getString(R.string.dc_source), context.getString(R.string.Parallel)},//PV输入模式
                 {},//检查固件
                 {},//GPRS状态
                 {context.getString(R.string.m89禁止), context.getString(R.string.m88使能)},//夜间SVG功能使能  12
@@ -534,7 +534,7 @@ public class MaxConfigControl {
 
     private static List<ALLSettingBean> getMaxActivePowerList(Context context) {
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = "";
+        String tips = context.getString(R.string.android_key3048) + ":" + "0~100";;
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
         String[] titls = new String[]{
                 context.getString(R.string.m398有功功率百分比),

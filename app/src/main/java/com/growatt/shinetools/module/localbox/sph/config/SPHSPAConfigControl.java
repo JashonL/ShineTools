@@ -295,15 +295,7 @@ public class SPHSPAConfigControl {
                 {},
                 {},
                 {
-                        context.getString(R.string.意大利),
-                        context.getString(R.string.英语),
-                        context.getString(R.string.德语),
-                        context.getString(R.string.西班牙语),
-                        context.getString(R.string.法语),
-                        context.getString(R.string.匈牙利语),
-                        context.getString(R.string.土耳其语),
-                        context.getString(R.string.波兰语),
-                        context.getString(R.string.葡萄牙语)
+                        context.getString(R.string.Independent), context.getString(R.string.dc_source), context.getString(R.string.Parallel)
                 },
                 {},
                 {context.getString(R.string.android_key1427),context.getString(R.string.m484电表)},
