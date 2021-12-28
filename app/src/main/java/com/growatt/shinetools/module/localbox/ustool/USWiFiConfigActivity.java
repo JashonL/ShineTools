@@ -347,7 +347,7 @@ public class USWiFiConfigActivity extends BaseActivity {
                     int status_cable = MaxWifiParseUtil.obtainValueOne(bs);
                     LogUtil.i("返回值：" + status_cable);
 
-                    String s = Integer.toBinaryString(status_cable);
+                    String s =  CommenUtils.intToBinary(status_cable,16);
                     char[] chars = s.toCharArray();
                     LogUtil.i("反转之前：" + Arrays.toString(chars));
                     int len = chars.length;

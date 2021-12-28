@@ -268,7 +268,9 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
             case 10://离网功能使能
                 int value10 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("离网功能使能:"+value10);
-                usParamsetAdapter.getData().get(10).setValue(String.valueOf(value10));
+                ALLSettingBean bean10 = usParamsetAdapter.getData().get(10);
+                bean10.setValue(String.valueOf(value10));
+                bean10.setValueStr(getReadValueReal(10,value10));
                 break;
             case 11://离网频率
                 //解析int值
@@ -373,7 +375,7 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
                     value = Arith.mul(read, mul, 2) + unit;
                 }
                 break;
-            case 7: case 9: case 12: case 13:
+            case 2: case 5: case 9: case 12: case 13:
                 if (read<items.length){
                     value = items[read];
                 }
@@ -436,6 +438,9 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
                 break;
             case 6://安规功能使能
                 setInputValue(position,title,hint);
+                break;
+            case 10:
+                setSelectItem(position,title);
                 break;
             case 11:
                 setSelectItem(position,title);

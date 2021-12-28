@@ -1194,6 +1194,41 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".module.localbox.tlx.config.TLXGridCodeSettingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.localbox.tlx.config.TLXGridCodeSecondActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".module.localbox.tlx.config.TLXGridCodeThirdActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".module.localbox.tlxh.config.TLXHGridCodeSettingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".module.localbox.tlxh.config.TLXHGridCodeSecondActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".module.localbox.tlxh.config.TLXhGridCodeThirdActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
         <!--==================================模块页面=========================================-->
 
         <service android:name=".utils.datalogupdata.DatalogDownloadService" />

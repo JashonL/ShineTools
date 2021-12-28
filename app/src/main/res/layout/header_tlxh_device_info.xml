@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/tvTitle1"
-        layout="@layout/header_usmain2_title1" />
+        layout="@layout/header_tlxhmain2_title1" />
 
     <include
         android:id="@+id/tvContent1"

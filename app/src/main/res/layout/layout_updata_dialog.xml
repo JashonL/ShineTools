@@ -88,11 +88,31 @@
             app:layout_constraintTop_toBottomOf="@+id/loading_img" />
 
         <View
+            android:id="@+id/v_bottom"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_10"
+            android:layout_height="@dimen/dp_1"
             android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/gray_eeeeeee"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/uptating_tips" />
+
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_10"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            android:text="@string/android_key1806"
+            android:textColor="@color/headerView"
+            android:textSize="@dimen/size_content_sp_14"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/v_bottom" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

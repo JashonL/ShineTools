@@ -325,10 +325,12 @@ public class InverterUpdataManager {
             pbar = view.findViewById(R.id.loading_img);
             tvProgress = view.findViewById(R.id.tv_progress);
             tvUpdating = view.findViewById(R.id.uptating_tips);
+            TextView tvCancel = view.findViewById(R.id.tv_cancel);
             String uptating = context.getString(R.string.upgrading_in_preparation) + "(" + (current + 1) + "/" + total + ")";
             tvSubtext.setText(uptating);
-            tvSubtext.setOnClickListener(view12 -> {
-                fileUpdataSend.readTimeOut();
+            tvCancel.setOnClickListener(view12 -> {
+                fileUpdataSend.close();
+                dialogFragment.dialogDismiss();
             });
             dialogFragment = CircleDialogUtils.showCommentBodyView(context, view, "", ((FragmentActivity) context).getSupportFragmentManager(), view1 -> {
             }, Gravity.CENTER, 0.8f, 0.5f, false);

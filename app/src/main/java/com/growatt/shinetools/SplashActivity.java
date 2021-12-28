@@ -5,7 +5,6 @@ import android.os.Handler;
 
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.module.account.LoginActivity;
-import com.growatt.shinetools.utils.AppSystemUtils;
 
 
 public class SplashActivity extends BaseActivity {
@@ -32,15 +31,8 @@ public class SplashActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                boolean firstUse = AppSystemUtils.isFirstInstall();
-                if (firstUse){
-                    startActivity(new Intent(SplashActivity.this,GuideActivity.class));
-                    finish();
-                }else {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    finish();
-                }
-
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                finish();
             }
         }, 800);
 

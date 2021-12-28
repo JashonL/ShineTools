@@ -158,14 +158,14 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
 
 
         String[][] items = new String[][]{
-                {getString(R.string.不使能防逆流), getString(R.string.使能485接口防逆流),getString(R.string.使能232接口防逆流),getString(R.string.使能CT防逆流)},
+                {getString(R.string.不使能防逆流), getString(R.string.使能485接口防逆流),getString(R.string.使能CT防逆流)},
                 {},
                 {}
 
         };
         if(deviceType==1){
             items = new String[][]{
-                    {getString(R.string.不使能防逆流), getString(R.string.使能485接口防逆流),getString(R.string.使能232接口防逆流),getString(R.string.使能CT防逆流)},
+                    {getString(R.string.不使能防逆流), getString(R.string.使能485接口防逆流),getString(R.string.使能CT防逆流)},
                     {},
                     {}
 
@@ -314,6 +314,9 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
                 bean.setValueStr(String.valueOf(value1));
                 if (value1<items.length){
                     bean.setValueStr(items[value1]);
+                }
+                if (value1==3){
+                    bean.setValueStr(items[2]);
                 }
 
                 break;

@@ -23,8 +23,8 @@ import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.afci.AFCIChartActivity;
 import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
+import com.growatt.shinetools.module.localbox.max.config.MaxAFCIAcitivity;
 import com.growatt.shinetools.module.localbox.mintool.TLXParamCountry2Activity;
 import com.growatt.shinetools.module.localbox.tlx.config.QuickSettingSecondActivity;
 import com.growatt.shinetools.module.localbox.tlxh.TLXHAutoTestOldInvActivity;
@@ -424,10 +424,16 @@ public class TLXHQuickSettingActivity extends BaseActivity implements BaseQuickA
                 //断开连接
                 manager.disConnectSocket();
                 toOhterSetting=true;
-                Intent intent1 = new Intent(mContext, AFCIChartActivity.class);
+/*                Intent intent1 = new Intent(mContext, AFCIChartActivity.class);
                 intent1.putExtra("type", 36);
                 intent1.putExtra("title", String.format("%s%s",getString(R.string.AFCI曲线扫描),""));
-                ActivityUtils.startActivity(this,intent1,false);
+                ActivityUtils.startActivity(this,intent1,false);*/
+
+                Intent intent1 = new Intent(mContext, MaxAFCIAcitivity.class);
+                intent1.putExtra("type", 36);
+                intent1.putExtra("title", bean.getTitle());
+                ActivityUtils.startActivity(this, intent1, false);
+
                 break;
             case 6://防逆流设置
                 //断开连接

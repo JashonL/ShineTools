@@ -30,6 +30,7 @@ import com.growatt.shinetools.socket.SocketManager;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.BatteryCheckDialogUtils;
 import com.growatt.shinetools.utils.CircleDialogUtils;
+import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.MyToastUtils;
@@ -243,7 +244,10 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                     case 2://获取功率采集器
                         getData(5);
                         break;
-                    case 5: case 6:
+                    case 5:
+                        getData(6);
+                        break;
+                     case 6: case 7:
                         Mydialog.Dismiss();
                         break;
                     case 4041:
@@ -390,32 +394,48 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                 ALLSettingBean allSettingBean7 = settingList.get(7);
                 allSettingBean7.setValueStr(sb.toString());
                 break;
-            case 5://EMS
+
+            case 5://AC couple功能使能
+                LogUtil.i("AC couple功能使能");
+                //解析int值
+                int value5 = MaxWifiParseUtil.obtainValueOne(bs);
+                //取第bit11
+                String s =  CommenUtils.intToBinary(value5,16);
+                char[] chars = s.toCharArray();
+                LogUtil.i("反转之前：" + Arrays.toString(chars));
+                int len = chars.length;
+                char[] reverse = CommenUtils.reverse(chars, len);
+                String b11 = String.valueOf(reverse[11]);
+                settingList.get(5).setValue(b11);
+                break;
+
+
+            case 6://EMS
                 //解析int值
                 LogUtil.i("EMS");
                 //解析int值
-                int value5 = MaxWifiParseUtil.obtainValueOne(bs);
+                int value6 = MaxWifiParseUtil.obtainValueOne(bs);
                 //更新ui
-                ALLSettingBean allSettingBean5 = settingList.get(5);
+                ALLSettingBean allSettingBean5 = settingList.get(6);
                 String[] items5 = allSettingBean5.getItems();
-                String value51 = String.valueOf(value5);
-                if (value5 < items5.length) {
-                    value51 = items5[value5];
+                String value51 = String.valueOf(value6);
+                if (value6 < items5.length) {
+                    value51 = items5[value6];
                 }
                 allSettingBean5.setValueStr(value51);
                 break;
 
-            case 6:
+            case 7:
                 //解析int值
                 LogUtil.i("电池诊断");
                 //解析int值
-                int value6 = MaxWifiParseUtil.obtainValueOne(bs);
+                int value7 = MaxWifiParseUtil.obtainValueOne(bs);
 //                int value6 = 3;
-                bdcNum = value6;
-                if (value6 == 0) {//提示异常
+                bdcNum = value7;
+                if (value7 == 0) {//提示异常
                     MyToastUtils.toast(R.string.no_battery_installed);
                 } else {
-                    ALLSettingBean allSettingBean1 = settingList.get(6);
+                    ALLSettingBean allSettingBean1 = settingList.get(7);
                     String title = allSettingBean1.getTitle();
                     String hint = getString(R.string.input_battery_num);
                     CircleDialogUtils.showInputValueDialog(this, title,
@@ -425,9 +445,9 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                                 }
                                 inputNum = Integer.parseInt(value1);
                                 startDialog = BatteryCheckDialogUtils.showCheckStartDialog(this, title);
-                                if (value6 == 1 || value6 == 2) {
+                                if (value7 == 1 || value7 == 2) {
                                     get3198Num();
-                                } else if (value6 == 3) {
+                                } else if (value7 == 3) {
                                     get4041Num();
                                 }
                             });
@@ -582,15 +602,17 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                         .setNegative(getString(R.string.all_no), null)
                         .show(getSupportFragmentManager());
                 break;
-            case 5://ems
+
+
+            case 6://ems
 //                setSelectItem(position);
                 break;
 
-            case 6://电池
+            case 7://电池
                 getBdcStatus(6);
                 break;
 
-            case 7://时间
+            case 8://时间
 
                 break;
         }
@@ -754,7 +776,14 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
 
     @Override
     public void oncheck(boolean check, int position) {
-
+        int value = check ? 1 : 0;
+        ALLSettingBean allSettingBean = usParamsetAdapter.getData().get(position);
+        allSettingBean.setValue(String.valueOf(value));
+        allSettingBean.setValueStr(String.valueOf(value));
+        type = 1;
+        int[] funs = allSettingBean.getFunSet();
+        funs[2] = value;
+        manager.sendMsg(funs);
     }
 
 

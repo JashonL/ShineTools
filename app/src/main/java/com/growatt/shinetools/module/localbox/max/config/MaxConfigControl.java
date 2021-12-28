@@ -1264,8 +1264,8 @@ public class MaxConfigControl {
     private static List<ALLSettingBean> getCuveInouTVAC(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "231~241V";
-        String tips2 = context.getString(R.string.android_key3048) + ":" + "220~230V";
+        String tips = context.getString(R.string.android_key3048) + ":" + "184~253V";
+        String tips2 = context.getString(R.string.android_key3048) + ":" + "184~253V";
         String[] titls = new String[]{
                 context.getString(R.string.m387无功曲线切入电压),//无功曲线切入电压
                 context.getString(R.string.m388无功曲线切出电压),//无功曲线切出电压
@@ -1921,8 +1921,10 @@ public class MaxConfigControl {
 
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = "0.3Vn~0.9Vn";
+        String tips = context.getString(R.string.android_key3048) + ":" +"0.3Vn~0.9Vn";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "1.05Vn~1.5Vn";
+        String tips3 = context.getString(R.string.android_key3048) + ":" +"70~550W";
+        String tips4 = context.getString(R.string.android_key3048) + ":" +"10s~15min";
         String[] titls = new String[]{
                 context.getString(R.string.m424启动电压),//并网电压
                 context.getString(R.string.m425启动时间),//并网时间
@@ -1950,9 +1952,9 @@ public class MaxConfigControl {
         float[] multiples = new float[]{
                 1, 1, 1, 1, 1, 1, 1
         };
-        String[] units = new String[]{"", "", "", "", "", "", ""};
+        String[] units = new String[]{"W", "min", "min", "Vn", "Vn", "Vn", "Vn"};
         String[] hints = new String[]{
-                "", "", "", tips, tips1, tips, tips1
+                tips3, tips4, tips4, tips, tips1, tips, tips1
         };
         int[][] funs = new int[][]{
                 {3, 17, 17},//并网电压

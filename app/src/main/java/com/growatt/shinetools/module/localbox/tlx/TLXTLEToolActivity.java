@@ -4,8 +4,8 @@ import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.module.localbox.max.base.BaseMaxToolActivity;
-import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
+import com.growatt.shinetools.module.localbox.tlx.config.TLXGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.tlx.config.TLXQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.tlx.config.TLXSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.tlx.config.TlxBasicSettingActivity;
@@ -74,7 +74,7 @@ public class TLXTLEToolActivity  extends BaseMaxToolActivity {
                 , getString(R.string.android_key637)
         };
         res = new int[]{
-                R.drawable.quickly, R.drawable.system_config, R.drawable.city_code,
+                R.drawable.quickly, R.drawable.system_config, R.drawable.charge_manager,
                 R.drawable.param_setting, R.drawable.smart_check, R.drawable.advan_setting,
                 R.drawable.device_info
         };
@@ -98,7 +98,7 @@ public class TLXTLEToolActivity  extends BaseMaxToolActivity {
                 clazz = TlxBasicSettingActivity.class;
                 break;
             case 3://参数设置
-                clazz = MaxGridCodeSettingActivity.class;
+                clazz = TLXGridCodeSettingActivity.class;
                 break;
             case 4://智能检测
                 clazz = MaxCheckActivity.class;

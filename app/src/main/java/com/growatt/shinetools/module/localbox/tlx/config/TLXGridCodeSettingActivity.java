@@ -3,7 +3,6 @@ package com.growatt.shinetools.module.localbox.tlx.config;
 import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -24,7 +23,7 @@ import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
-import com.growatt.shinetools.module.localbox.mintool.TLXModeSetActivity;
+import com.growatt.shinetools.module.localbox.tlxh.config.TLXHConfigControl;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
 import com.growatt.shinetools.utils.ActivityUtils;
@@ -32,17 +31,14 @@ import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.Mydialog;
-import com.growatt.shinetools.utils.OssUtils;
 import com.growatt.shinetools.widget.GridDivider;
-import com.mylhyl.circledialog.CircleDialog;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 
-public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
+public class TLXGridCodeSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
         DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
@@ -63,13 +59,18 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
     //跳转到其他页面
     private boolean toOhterSetting = false;
 
-    private String note1;
-    private String note2;
-
 
     private List<int[]> nowSetItem = new ArrayList<>();
     private int nowIndex = 0;
-    String rightTitle;
+
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.right_action) {
+            getData(7);
+        }
+        return true;
+    }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -77,110 +78,28 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
         String title = bean.getTitle();
         String hint = bean.getHint();
         float mul = bean.getMul();
-        switch (position) {
+        switch (position){
             case 0:
-                setComRate();
-                break;
             case 1:
-                setInputValue(position, title, hint, mul);
-                break;
             case 2:
-                setInputValue(position, title, hint, mul);
-                break;
             case 3:
-                OssUtils.circlerDialog(TlxBasicSettingActivity.this, note1, -1, false);
-                break;
             case 4:
-                OssUtils.circlerDialog(TlxBasicSettingActivity.this, note2, -1, false);
-                break;
             case 5:
-                setEnergyTotal(position, title, hint, mul);
-                break;
             case 6:
-                //断开连接
+                toOhterSetting=true;
                 manager.disConnectSocket();
-                Intent intent1 = new Intent(mContext, TLXModeSetActivity.class);
-                intent1.putExtra("title", rightTitle);
-                ActivityUtils.startActivity(this, intent1, false);
+                Intent intent=new Intent(TLXGridCodeSettingActivity.this,TLXGridCodeSecondActivity.class);
+                intent.putExtra("curpos",position);
+                intent.putExtra("title",title);
+                ActivityUtils.startActivity(TLXGridCodeSettingActivity.this,intent,false);
                 break;
-            case 7:
+            case 7://10分钟平均AC电压保护值
+            case 8://PV过压保护点
                 setInputValue(position, title, hint, mul);
                 break;
-
         }
     }
 
-
-    private void setEnergyTotal(int position, String title, String hint, float mul) {
-        CircleDialogUtils.showInputValueDialog(this, title,
-                hint, "", value -> {
-                    if (TextUtils.isEmpty(value)) {
-                        toast(R.string.all_blank);
-                    } else {
-                        List<ALLSettingBean> data = usParamsetAdapter.getData();
-                        if (data.size() > position) {
-                            ALLSettingBean bean = data.get(position);
-                            type = 1;
-                            int[][] doubleFunset = bean.getDoubleFunset();
-                            try {
-                                int low = getWriteValueReal(Double.parseDouble(value), mul);
-                                int high = 0;
-                                if (low > 0xffff) {
-                                    high = low - 0xffff;
-                                    low = 0xffff;
-                                }
-                                doubleFunset[0][2] = high;
-                                doubleFunset[1][2] = low;
-                                double result = Double.parseDouble(value);
-                                String pValue = value + "";
-                                usParamsetAdapter.getData().get(position).setValueStr(pValue);
-                                usParamsetAdapter.getData().get(position).setValue(String.valueOf(result));
-                                usParamsetAdapter.notifyDataSetChanged();
-                                nowSetItem.clear();
-                                for (int[] ints : doubleFunset) {
-                                    nowSetItem.add(ints);
-                                }
-                                nowIndex = 0;
-                                int[] funs = doubleFunset[0];
-                                manager.sendMsg(funs);
-                            } catch (NumberFormatException e) {
-                                e.printStackTrace();
-                                toast(getString(R.string.m363设置失败));
-                            }
-                        }
-                    }
-                });
-
-
-    }
-
-
-    private void setComRate() {
-        List<ALLSettingBean> data = usParamsetAdapter.getData();
-        if (data.size() > 0) {
-            ALLSettingBean bean = data.get(0);
-            String[] items = bean.getItems();
-            List<String> selects = new ArrayList<>(Arrays.asList(items));
-
-            new CircleDialog.Builder()
-                    .setTitle(getString(R.string.android_key499))
-                    .setWidth(0.7f)
-                    .setGravity(Gravity.CENTER)
-                    .setMaxHeight(0.5f)
-                    .setItems(selects, (parent, view1, pos, id) -> {
-                        usParamsetAdapter.getData().get(0).setValueStr(selects.get(pos));
-                        usParamsetAdapter.notifyDataSetChanged();
-                        type = 1;
-                        int[] funs = bean.getFunSet();
-                        funs[2] = pos;
-                        manager.sendMsg(funs);
-                        return true;
-                    })
-                    .setNegative(getString(R.string.all_no), null)
-                    .show(getSupportFragmentManager());
-        }
-
-    }
 
 
     private void setInputValue(int position, String title, String hint, float mul) {
@@ -214,7 +133,6 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
         }
     }
 
-
     @Override
     public void oncheck(boolean check, int position) {
 
@@ -222,7 +140,7 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_basic_max_setting;
+        return R.layout.activity_max_grid_code_setting;
     }
 
     @Override
@@ -253,16 +171,12 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     protected void initData() {
-        rightTitle = getString(R.string.m374设置Model);
         //系统设置项
         List<ALLSettingBean> settingList
-                = TLXConfigControl.getSettingList(TLXConfigControl.TlxSettingEnum.TLX_BASIC_SETTING, this);
+                = TLXHConfigControl.getSettingList(TLXHConfigControl.TlxSettingEnum.TLXH_GRID_CODE_PARAMETERS_SETTING, this);
         usParamsetAdapter.replaceData(settingList);
-        note1 = getString(R.string.m443该项暂不能设置请设置Model);
-        note2 = getString(R.string.m444该项暂不能设置);
         connetSocket();
     }
-
     private void connetSocket() {
         //初始化连接
         manager = new SocketManager(this);
@@ -277,19 +191,19 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
     ConnectHandler connectHandler = new ConnectHandler() {
         @Override
         public void connectSuccess() {
-            getData(0);
+            getData(7);
         }
 
         @Override
         public void connectFail() {
             manager.disConnectSocket();
-            MyControl.showJumpWifiSet(TlxBasicSettingActivity.this);
+            MyControl.showJumpWifiSet(TLXGridCodeSettingActivity.this);
         }
 
         @Override
         public void sendMsgFail() {
             manager.disConnectSocket();
-            MyControl.showTcpDisConnect(TlxBasicSettingActivity.this, getString(R.string.disconnet_retry),
+            MyControl.showTcpDisConnect(TLXGridCodeSettingActivity.this, getString(R.string.disconnet_retry),
                     () -> {
                         connetSocket();
                     }
@@ -322,19 +236,10 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
                 }
 
                 switch (currentPos) {
-                    case 0:
-                        getData(1);
+                    case 7:
+                        getData(8);
                         break;
-                    case 1:
-                        getData(2);
-                        break;
-                    case 2:
-                        getData(5);
-                        break;
-                    case 5:
-                        getData(7);
-                        break;
-                    default:
+                    case 8:
                         Mydialog.Dismiss();
                         break;
                 }
@@ -361,7 +266,6 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
         }
     };
 
-
     /**
      * 根据传进来的mtype解析数据
      *
@@ -372,95 +276,28 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
         switch (currentPos) {
-            case 0://通信波特率
+            case 7://10分钟平均AC电压保护值
                 //解析int值
-                int value = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("通信波特率:" + value);
-                ALLSettingBean bean = usParamsetAdapter.getData().get(0);
-                String[] items = bean.getItems();
-                if (items != null && items.length > value) {
-                    String valueS = items[value];
-                    bean.setValue(String.valueOf(value));
-                    bean.setValueStr(String.valueOf(valueS));
-                } else {
-                    bean.setValue(String.valueOf(value));
-                    bean.setValueStr(String.valueOf(value));
-                }
-
-
-                break;
-            case 1://modbus版本
-                //解析int值
-                LogUtil.i("modbus版本:");
-                parser(bs, 1);
-
-                break;
-            case 2://PV电压
-                //解析int值
-                LogUtil.i("PV电压:");
-                parser(bs, 2);
-                break;
-
-            case 5://修改总发电量
-                //解析int值
-                LogUtil.i("修改总发电量:");
-                int totalE = MaxWifiParseUtil.obtainRegistValueHOrL(1, bs[110], bs[111])
-                        + MaxWifiParseUtil.obtainRegistValueHOrL(0, bs[112], bs[113]);
-                ALLSettingBean bean5 = usParamsetAdapter.getData().get(5);
-                float mul = bean5.getMul();
-                String unit = "";
-                bean5.setValue(String.valueOf(totalE));
-                bean5.setValueStr(getReadValueReal(totalE, mul, unit));
-                break;
-            case 7:
+                LogUtil.i("10分钟平均AC电压保护值:");
                 parser(bs, 7);
                 break;
+            case 8://PV过压保护点
+                //解析int值
+                LogUtil.i("10分钟平均AC电压保护值:");
+                parser(bs, 8);
+                break;
+
         }
         usParamsetAdapter.notifyDataSetChanged();
     }
-
 
     private void parser(byte[] data, int pos) {
         int value1 = MaxWifiParseUtil.obtainValueOne(data);
         ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         float mul = bean.getMul();
         String unit = "";
-        if (pos != 7) {
-            bean.setValueStr(getReadValueReal(value1, mul, unit));
-        } else {
-            bean.setValueStr(getWeek(value1));
-        }
+        bean.setValueStr(getReadValueReal(value1, mul, unit));
     }
-
-
-    public String getWeek(int read) {
-        String value = String.valueOf(read);
-        switch (read) {
-            case 0:
-                value = getString(R.string.m41);
-                break;
-            case 1:
-                value = getString(R.string.m35);
-                break;
-            case 2:
-                value = getString(R.string.m36);
-                break;
-            case 3:
-                value = getString(R.string.m37);
-                break;
-            case 4:
-                value = getString(R.string.m38);
-                break;
-            case 5:
-                value = getString(R.string.m39);
-                break;
-            case 6:
-                value = getString(R.string.m40);
-                break;
-        }
-        return value;
-    }
-
 
     public String getReadValueReal(int read, float mul, String unit) {
         boolean isNum = ((int) mul) == mul;
@@ -486,16 +323,6 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
         }
     }
 
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId() == R.id.right_action) {
-            getData(0);
-        }
-        return true;
-    }
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -515,5 +342,4 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
     protected void onDestroy() {
         super.onDestroy();
     }
-
 }

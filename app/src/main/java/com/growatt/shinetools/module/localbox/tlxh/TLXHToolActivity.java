@@ -5,12 +5,12 @@ import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.inverterUpdata.InverterUpdataManager;
 import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
-import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
 import com.growatt.shinetools.module.localbox.mintool.TLXHAutoTestActivity;
 import com.growatt.shinetools.module.localbox.tlx.base.TlxToolBaseActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHBasicSettingActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHChargeActivity;
+import com.growatt.shinetools.module.localbox.tlxh.config.TLXHGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
@@ -112,7 +112,7 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
                 clazz = TLXHSystemSettingActivity.class;
                 break;
             case 2:
-                clazz = MaxGridCodeSettingActivity.class;
+                clazz = TLXHGridCodeSettingActivity.class;
                 break;
             case 3:
                 clazz = TLXHChargeActivity.class;

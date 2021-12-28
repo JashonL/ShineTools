@@ -10,7 +10,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,12 +34,10 @@ import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
 import com.mylhyl.circledialog.BaseCircleDialog;
-import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.res.drawable.CircleDrawable;
 import com.mylhyl.circledialog.res.values.CircleColor;
 import com.mylhyl.circledialog.res.values.CircleDimen;
 import com.mylhyl.circledialog.view.listener.OnCreateBodyViewListener;
-import com.mylhyl.circledialog.view.listener.OnLvItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class USFWattActivity extends DemoBase implements BaseQuickAdapter.OnItemChildClickListener,UsThroughAdapter.OnChildCheckLiseners,
+public class USFWattActivity extends DemoBase implements UsThroughAdapter.OnChildCheckLiseners,
         BaseQuickAdapter.OnItemClickListener {
 
     @BindView(R.id.recyclerView)
@@ -106,7 +103,8 @@ private UsThroughAdapter mAdapter;
         //读取命令功能码（功能码，开始寄存器，结束寄存器）
         funs = new int[][]{
                 {3, 0, 124},
-                {3, 125, 249}
+                {3, 125, 249},
+                {3,334,334}
         };
         titles = new String[]{
                 getString(R.string.过频降载使能)
@@ -116,6 +114,8 @@ private UsThroughAdapter mAdapter;
                 ,getString(R.string.过频降载) + " " + getString(R.string.延时时间)
                 ,getString(R.string.过频降载) + " " + getString(R.string.恢复时间)
                 ,getString(R.string.过频降载) + " " + getString(R.string.响应时间)
+
+                ,getString(R.string.android_key2425)
                 ,getString(R.string.欠频加载) + " " + getString(R.string.点)
                 ,getString(R.string.欠频加载) + " " + getString(R.string.停止点)
                 ,getString(R.string.欠频加载) + " " + getString(R.string.斜率)
@@ -124,15 +124,17 @@ private UsThroughAdapter mAdapter;
         };
         units = new String[]{
                 " "
-                , "Hz", "Hz","%","s","s","s"
+                , "Hz", "Hz","%","s","s","s",
+                ""
                 , "Hz", "Hz","%","s","s"
         };
         regists = new int[]{
-                1,91,143,92,108,144,178,142,151,176,175,179
+                1,91,143,92,108,144,178,334,142,151,176,175,179
         };
         mulits = new float[]{
                 1f
                 ,0.01f,0.01f,0.01f,0.05f,0.05f,0.02f
+                ,1f
                 ,0.01f,0.01f,0.01f,0.05f,0.02f
         };
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -147,9 +149,13 @@ private UsThroughAdapter mAdapter;
         List<USVThroughBean> newList = new ArrayList<>();
         for (int i = 0; i < titles.length; i++) {
             USVThroughBean bean = new USVThroughBean();
-            if (i == 0){
+            if (i == 0||i==7){
                 bean.setType(UsSettingConstant.SETTING_TYPE_SWITCH);
-                bean.setItemPos(1);
+                if (i==0){
+                    bean.setItemPos(1);
+                }else {
+                    bean.setItemPos(8);
+                }
                 bean.setShowValue(String.valueOf(bean.getItemPos()));
             }else {
                 bean.setType(UsSettingConstant.SETTING_TYPE_INPUT_UNIT);
@@ -161,7 +167,6 @@ private UsThroughAdapter mAdapter;
             newList.add(bean);
         }
         mAdapter.replaceData(newList);
-        mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemClickListener(this);
     }
 
@@ -201,9 +206,11 @@ private UsThroughAdapter mAdapter;
                             int itemPos = bean.getItemPos();
                             int newValue = bean.getRegistValue() & 0b1111110111110111 | (itemPos << 3);
                             bean.setRegistValue(newValue);
+                        }else if (i==7){
+                            bean.setRegistValue(Integer.parseInt(showValue));
                         }else {
                             float value = Float.parseFloat(showValue);
-                            if (i == 3 || i == 9){
+                            if (i == 3 || i == 10){
                                 bean.setRegistValue((int) Math.round(Arith.div(2000, value)));
                             }else {
                                 bean.setRegistValue((int) Math.round(Arith.div(value, bean.getMuilt())));
@@ -365,7 +372,7 @@ private UsThroughAdapter mAdapter;
                             toast(R.string.all_failed);
                         }
                         if (!isSet){
-                            if (countRead < 1){
+                            if (countRead < 2){
                                 countRead ++;
                                 this.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
                             }else {
@@ -451,6 +458,29 @@ private UsThroughAdapter mAdapter;
                 newList.add(bean);
             }
             mAdapter.replaceData(newList);
+        }else if (count==2){
+            List<USVThroughBean> list = mAdapter.getData();
+            List<USVThroughBean> newList = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                USVThroughBean bean = new USVThroughBean();
+                USVThroughBean item = mAdapter.getItem(i);
+                bean.setRegistValue(item.getRegistValue());
+                bean.setShowValue(item.getShowValue());
+                bean.setUnit(item.getUnit());
+                bean.setTitle(item.getTitle());
+                bean.setMuilt(item.getMuilt());
+                bean.setRegistPos(item.getRegistPos());
+                bean.setVol(item.getVol());
+                bean.setType(item.getType());
+                bean.setItemPos(item.getItemPos());
+                if (i==7){
+                    int value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 0, 0, 1));
+                    bean.setRegistValue(value);
+                    bean.setShowValue(String.valueOf(Arith.mul(value, bean.getMuilt(), 2)));
+                }
+                newList.add(bean);
+            }
+            mAdapter.replaceData(newList);
         }
     }
 
@@ -482,31 +512,7 @@ private UsThroughAdapter mAdapter;
         }
     }
 
-    @Override
-    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        if (adapter == mAdapter) {
-            switch (view.getId()) {
-                case R.id.btnValue:
-                    new CircleDialog.Builder()
-                            .setTitle(mContext.getString(R.string.m225请选择))
-                            .setWidth(0.7f)
-                            .setGravity(Gravity.CENTER)
-                            .setItems(items, new OnLvItemClickListener() {
-                                @Override
-                                public boolean onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                    USVThroughBean item = mAdapter.getItem(position);
-                                    item.setShowValue(items[i]);
-                                    item.setItemPos(i);
-                                    mAdapter.notifyDataSetChanged();
-                                    return true;
-                                }
-                            })
-                            .setNegative(mContext.getString(R.string.all_no),null)
-                            .show(getSupportFragmentManager());
-                    break;
-            }
-        }
-    }
+
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -533,40 +539,44 @@ private UsThroughAdapter mAdapter;
             case 6://过频降载相应时间
                 tips=getString(R.string.android_key3048)+":"+"0~10";
                 break;
-            case 7://欠频加载点
+
+            case 8://欠频加载点
                 tips=getString(R.string.android_key3048)+":"+"48~49.9Hz";
                 break;
-            case 8://欠频加载停止点
+            case 9://欠频加载停止点
                 tips=getString(R.string.android_key3048)+":"+"48~49.9Hz";
                 break;
-            case 9://欠频加载斜率
+            case 10://欠频加载斜率
                 tips=getString(R.string.android_key3048)+":"+"5~100%";
                 break;
-            case 10://欠频加载延时时间
+            case 11://欠频加载延时时间
                 tips=getString(R.string.android_key3048)+":"+"0~2s";
                 break;
-            case 11://欠频加载相应
+            case 12://欠频加载相应
                 tips=getString(R.string.android_key3048)+":"+"0~10s";
                 break;
         }
 
         String title = usvThroughBean.getTitle();
 
-        showInputValueDialog(title, tips, unit, value -> {
+        if (position!=0&&position!=7){
+            showInputValueDialog(title, tips, unit, value -> {
 
-            //获取用户输入内容
-            if (TextUtils.isEmpty(value)) {
-                toast(R.string.all_blank);
-                return;
-            }
-            try {
-                usvThroughBean.setShowValue(value);
-                mAdapter.notifyDataSetChanged();
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                toast(getString(R.string.m363设置失败));
-            }
-        });
+                //获取用户输入内容
+                if (TextUtils.isEmpty(value)) {
+                    toast(R.string.all_blank);
+                    return;
+                }
+                try {
+                    usvThroughBean.setShowValue(value);
+                    mAdapter.notifyDataSetChanged();
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    toast(getString(R.string.m363设置失败));
+                }
+            });
+        }
+
     }
 
 
@@ -631,7 +641,9 @@ private UsThroughAdapter mAdapter;
     @Override
     public void oncheck(boolean check, int position) {
         int value = check ? 1 : 0;
-        mAdapter.getData().get(position).setShowValue(String.valueOf(value));
+        USVThroughBean usvThroughBean = mAdapter.getData().get(position);
+        usvThroughBean.setShowValue(String.valueOf(value));
+        usvThroughBean.setRegistValue(value);
         mAdapter.notifyDataSetChanged();
     }
 }

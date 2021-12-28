@@ -137,29 +137,33 @@ public class DeviceTypeChooseActivity extends BaseActivity implements Toolbar.On
                 //                ActivityUtils.gotoActivity(DeviceTypeChooseActivity.this, TLXToolMainActivity.class,false);
 
                 Intent intent4=new Intent(this, TLXTLEToolActivity.class);
-                intent4.putExtra("title","TL-X/TL-E");
+                intent4.putExtra("title","MIC、MIN TL-X/XE");
                 ActivityUtils.startActivity(DeviceTypeChooseActivity.this,intent4,false);
                 break;
             case R.id.ll_type_min_tl_xh:
                 //                ActivityUtils.gotoActivity(DeviceTypeChooseActivity.this, TLXHToolMainActivity.class,false);
                 Intent intent5=new Intent(this, TLXHToolActivity.class);
-                intent5.putExtra("title","TL-XH");
+                intent5.putExtra("title","MIN TL-XH");
                 ActivityUtils.startActivity(DeviceTypeChooseActivity.this,intent5,false);
                 break;
             case R.id.ll_type_min_tl_xh_us:
                 ActivityUtils.gotoActivity(DeviceTypeChooseActivity.this, USToolsMainActivityV2.class,false);
                 break;
             case R.id.ll_type_max_tl3_lvmv:
+                Intent intent7=new Intent(this, MaxMacModMidToolActivity.class);
+                intent7.putExtra("title","MOD MID MAC");
+                ActivityUtils.startActivity(DeviceTypeChooseActivity.this,intent7,false);
+                break;
             case R.id.ll_type_mod_mid_mac:
                 //                ActivityUtils.gotoActivity(DeviceTypeChooseActivity.this, MaxMainActivity.class,false);
                 Intent intent=new Intent(this, MaxMacModMidToolActivity.class);
-                intent.putExtra("title","MAX/MAC/MOD/MID");
+                intent.putExtra("title","MOD TL3-XH");
                 ActivityUtils.startActivity(DeviceTypeChooseActivity.this,intent,false);
                 break;
             case R.id.ll_mod_tl3_xh:
                 //                ActivityUtils.gotoActivity(DeviceTypeChooseActivity.this, TL3XHMainActivity.class,false);
                 Intent intent3=new Intent(this, TL3XHToolActivity.class);
-                intent3.putExtra("title","TL3-XH");
+                intent3.putExtra("title","MAX TL3 LV/MV");
                 ActivityUtils.startActivity(DeviceTypeChooseActivity.this,intent3,false);
                 break;
 
@@ -168,7 +172,7 @@ public class DeviceTypeChooseActivity extends BaseActivity implements Toolbar.On
 
 //                ActivityUtils.gotoActivity(DeviceTypeChooseActivity.this, MaxMain1500VActivity.class,false);
                 Intent intent1=new Intent(this, Max230KTL3HVToolActivity.class);
-                intent1.putExtra("title","MAX 230KTL3 HV");
+                intent1.putExtra("title","MAX TL3-X HV");
                 ActivityUtils.startActivity(DeviceTypeChooseActivity.this,intent1,false);
                 break;
             case R.id.ll_type_olb:

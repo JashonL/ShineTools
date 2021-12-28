@@ -39,6 +39,7 @@ public class USConfigControl {
                 context.getString(R.string.市电码),//市电码
                 context.getString(R.string.电压等级),//电压等级
                 context.getString(R.string.输出模式),//输出模式
+                context.getString(R.string.android_key145),//AC couple功能使能
                 context.getString(R.string.EMS),//EMS
                 context.getString(R.string.battery_diagnosis),//电池诊断
                 context.getString(R.string.m4),//时间
@@ -52,6 +53,7 @@ public class USConfigControl {
                 "",
                 "",
                 "",
+                "",
         };
         int[] itemTypes = new int[]{
                 UsSettingConstant.SETTING_TYPE_INPUT,
@@ -59,6 +61,7 @@ public class USConfigControl {
                 UsSettingConstant.SETTING_TYPE_SELECT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_SWITCH,
                 UsSettingConstant.SETTING_TYPE_EXPLAIN,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
@@ -72,11 +75,13 @@ public class USConfigControl {
                 "",
                 "",
                 "",
+                "",
         };
         float[] multiples = new float[]{
-                1, 1, 1, 1, 1, 1, 1,1
+                1, 1, 1, 1, 1, 1, 1,1,1
         };
         String[] units = new String[]{
+                "",
                 "",
                 "",
                 "",
@@ -92,6 +97,7 @@ public class USConfigControl {
                 {3, 0, 124},//市电码、时间、电压等级
                 {3, 0, 124},//电压等级
                 {3, 0, 124},//输出模式  固定（裂相）
+                {3,1,1},//AC couple功能使能
                  {3, 3144, 3144},//EMS:只读取
                  {4, 3118, 3118},//电池诊断
                  {3, 0, 124},//时间
@@ -103,6 +109,7 @@ public class USConfigControl {
                 {6, 118, 0},//电压等级
                 {6, 118, 0},//输出模式  固定（裂相）
                 {6, 3144, 0},//EMS:只读取
+                {6,1,1},//AC couple功能使能
                 {6, 3118, 0},//电池诊断
                 {0x10, 45, 50},//时间
         };
@@ -117,6 +124,7 @@ public class USConfigControl {
                 {6, 48, -1},
                 {6, 49, -1},
                 {6, 49, -1},
+                {6, 49, -1},
         };
 
 
@@ -124,6 +132,7 @@ public class USConfigControl {
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0},
                 {-1, -1, -1, -1},//市电码
+                {0, 0, 0, 0},
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
@@ -141,6 +150,7 @@ public class USConfigControl {
                         context.getString(R.string.意大利),
                         context.getString(R.string.英语),
                 },
+                {},
                 {},
                 {},
                 {

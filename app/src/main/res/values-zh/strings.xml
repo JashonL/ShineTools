@@ -146,7 +146,7 @@
     <string name="android_key142">停转</string>
     <string name="android_key143">手动模式</string>
     <string name="android_key144">自动模式</string>
-    <string name="android_key145">AC充电</string>
+    <string name="android_key145">AC couple 功能使能</string>
     <string name="android_key146">GPRS模式</string>
     <string name="android_key147">实时告警</string>
     <string name="android_key148">异常</string>
@@ -162,8 +162,8 @@
     <string name="android_key158">逆变器常见问题解决</string>
     <string name="android_key159">人工客服在线为您答疑</string>
     <string name="android_key160">个人头像</string>
-    <string name="android_key161">宣传推广视频</string>
-    <string name="android_key162">最新报修工单</string>
+    <string name="android_key161">有线CT</string>
+    <string name="android_key162">无线CT</string>
     <string name="android_key163">最新问题咨询</string>
     <string name="android_key164">设备不在线</string>
     <string name="android_key165">未配网</string>
@@ -366,7 +366,7 @@
     <string name="android_key362">PV2功率</string>
     <string name="android_key363">充电桩ID</string>
     <string name="android_key364">PV1电压</string>
-    <string name="android_key365">授权认证秘钥</string>
+    <string name="android_key365">认证参数</string>
     <string name="android_key366">蓝灯闪烁：采集器和逆变器、路由器、服务器的通信都正常。</string>
     <string name="android_key367">PV2电压</string>
     <string name="android_key368">基础参数</string>
@@ -2426,7 +2426,7 @@
     <string name="android_key2422">并网范围</string>
     <string name="android_key2423">电压限制</string>
     <string name="android_key2424">频率限制</string>
-    <string name="android_key2425">欠频加载</string>
+    <string name="android_key2425">欠频加载使能</string>
     <string name="android_key2426">恢复点</string>
     <string name="android_key2427">斜率</string>
     <string name="android_key2428">延时时间</string>

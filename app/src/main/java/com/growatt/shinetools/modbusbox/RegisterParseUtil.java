@@ -414,6 +414,20 @@ public class RegisterParseUtil {
         int bdc = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 184, 0, 1));
         been.setBdcNumber(bdc);
 
+
+
+        //读取Input185寄存器，该寄存器的Bit0为新老机型标志位
+        //1：功率拓展机器（新机器）
+        //0：功率不拓展机器（老机器）
+        //读取该标志位办法：
+        //功率拓展标志位 = uwInvPowerExpandEnable =Bit0 = Input185&0x01;
+        //当uwInvPowerExpandEnable = 1时，逆变器机型型号为xx.xK TL-XH US EXP
+        //当uwInvPowerExpandEnable = 0时，逆变器机型型号为xx.xK TL-XH US
+        int uwInvPowerExpandEnable = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 185, 0, 1))&0x01;
+        if (uwInvPowerExpandEnable==1){
+            String s = deviceBean.getDeviceType() + " EXP";
+            deviceBean.setDeviceType(s);
+        }
     }
 
     /**
@@ -718,9 +732,9 @@ public class RegisterParseUtil {
         //温度
 //        int  envTemp = obtainValueOne(MaxWifiParseUtil.subBytes125(bs,3094,0,1));
 //        int  envTemp2 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs,3096,0,1));
-        int envTemp = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3097, 0, 1));
-        int deviceTemp = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3093, 0, 1));
-        int boostTemp = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3095, 0, 1));
+        int envTemp =getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3097, 0, 1)));
+        int deviceTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3093, 0, 1)));
+        int boostTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3095, 0, 1)));
         //iso
         int iso = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3087, 0, 1));
         //电压
@@ -831,9 +845,9 @@ public class RegisterParseUtil {
         //温度
 //        int  envTemp = obtainValueOne(MaxWifiParseUtil.subBytes125(bs,3094,0,1));
 //        int  envTemp2 = obtainValueOne(MaxWifiParseUtil.subBytes125(bs,3096,0,1));
-        int envTemp = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3097, 0, 1));
-        int deviceTemp = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3093, 0, 1));
-        int boostTemp = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3095, 0, 1));
+        int envTemp =getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3097, 0, 1)));
+        int deviceTemp =getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3093, 0, 1)));
+        int boostTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3095, 0, 1)));
         //iso
         int iso = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3087, 0, 1));
         //电压
@@ -1013,9 +1027,9 @@ public class RegisterParseUtil {
         }
 
         //-------------------------------------内部参数
-        int envTemp = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 94, 0, 1));
-        int deviceTemp = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 93, 0, 1));
-        int boostTemp = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 95, 0, 1));
+        int envTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 93, 0, 1)));
+        int deviceTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes125(bs,94 , 0, 1)));
+        int boostTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 95, 0, 1)));
         //iso
 //        int  iso = obtainValueOne(MaxWifiParseUtil.subBytes125(bs,3087,0,1));
         //电压
@@ -2399,9 +2413,9 @@ public class RegisterParseUtil {
         //pv总电量
         int pvTotalE = obtainValueHAndL(MaxWifiParseUtil.subBytes(bs, 91, 0, 2));
         //温度
-        int deviceTemp = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 93, 0, 1));
-        int envTemp = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 94, 0, 1));
-        int boostTemp = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 95, 0, 1));
+        int deviceTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes(bs, 94, 0, 1)));
+        int envTemp =getNegativNum( obtainValueOne(MaxWifiParseUtil.subBytes(bs, 93, 0, 1)));
+        int boostTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes(bs, 95, 0, 1)));
         //电压
         int pBusV = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 98, 0, 1));
         int nBusV = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 99, 0, 1));
@@ -2516,9 +2530,9 @@ public class RegisterParseUtil {
         //pv总电量
         int pvTotalE = obtainValueHAndL(MaxWifiParseUtil.subBytes(bs, 91, 0, 2));
         //温度
-        int deviceTemp = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 93, 0, 1));
-        int envTemp = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 94, 0, 1));
-        int boostTemp = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 95, 0, 1));
+        int deviceTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes(bs, 94, 0, 1)));
+        int envTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes(bs, 93, 0, 1)));
+        int boostTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes(bs, 95, 0, 1)));
         //电压
         int pBusV = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 98, 0, 1));
         int nBusV = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 99, 0, 1));
@@ -2656,7 +2670,7 @@ public class RegisterParseUtil {
 //        int  pvTotalE = obtainValueHAndL(MaxWifiParseUtil.subBytes(bs,91,0,2));
         //温度
 //        int  envTemp = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs,93,0,1));
-        int deviceTemp = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 32, 0, 1));
+        int deviceTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes(bs, 32, 0, 1)));
 //        int  boostTemp = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs,95,0,1));
         //电压
         int pBusV = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 42, 0, 1));
@@ -2814,7 +2828,7 @@ public class RegisterParseUtil {
 //        int  pvTotalE = obtainValueHAndL(MaxWifiParseUtil.subBytes(bs,91,0,2));
         //温度
 //        int  envTemp = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs,93,0,1));
-        int deviceTemp = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 32, 0, 1));
+        int deviceTemp = getNegativNum(obtainValueOne(MaxWifiParseUtil.subBytes(bs, 32, 0, 1)));
 //        int  boostTemp = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs,95,0,1));
         //电压
         int pBusV = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 42, 0, 1));
@@ -4059,5 +4073,14 @@ public class RegisterParseUtil {
         int newRegister = olbRegister + 843 + 108 * bdcPosition;
         //根据起始寄存器获取当前处于寄存器的哪个位置
         return newRegister - resResgister;
+    }
+
+
+
+    public static int getNegativNum(int value){
+        if (value>32767){
+            value=value-65536;
+        }
+        return value;
     }
 }

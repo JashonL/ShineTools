@@ -492,4 +492,22 @@ public class CommenUtils {
 
         return b;
     }
+
+    /**
+     * 将int整型转成二进制 不足的补0
+     * @param i
+     * @param bitNum
+     * @return
+     */
+
+    public static String intToBinary(int i, int bitNum){
+        StringBuilder binaryStr = new StringBuilder(Integer.toBinaryString(i));
+        while(binaryStr.length() < bitNum){
+            binaryStr.insert(0, "0");
+        }
+        return binaryStr.toString();
+    }
+
+
+
 }

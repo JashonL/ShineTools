@@ -145,7 +145,7 @@
     <string name="android_key142">Stop</string>
     <string name="android_key143">Manual mode</string>
     <string name="android_key144">Automatic mode</string>
-    <string name="android_key145">AC charge</string>
+    <string name="android_key145">AC couple function enable</string>
     <string name="android_key146">GPRS mode</string>
     <string name="android_key147">Real-time alarm</string>
     <string name="android_key148">Abnormal</string>
@@ -161,8 +161,8 @@
     <string name="android_key158">Inverter common problem solving</string>
     <string name="android_key159">Manual customer service online to answer your questions</string>
     <string name="android_key160">Personal avatar</string>
-    <string name="android_key161">Promotion video</string>
-    <string name="android_key162">Latest work order for maintenance</string>
+    <string name="android_key161">cWiredCT</string>
+    <string name="android_key162">cWirelessCT</string>
     <string name="android_key163">Latest query</string>
     <string name="android_key164">Device offline</string>
     <string name="android_key165">No network</string>
@@ -365,7 +365,7 @@
     <string name="android_key362">Ppv2</string>
     <string name="android_key363">Charger ID</string>
     <string name="android_key364">Pv1 Voltage</string>
-    <string name="android_key365">Authorization key</string>
+    <string name="android_key365">Safety Standad Parameter Setting</string>
     <string name="android_key366">Blue LED flash: WiFi module communicating with inverter, router, and ShineServer are normal.</string>
     <string name="android_key367">Pv2 Voltage</string>
     <string name="android_key368">Basic parameters</string>
@@ -2425,7 +2425,7 @@
     <string name="android_key2422">Synchornization Range </string>
     <string name="android_key2423">Voltage limit</string>
     <string name="android_key2424">Frequency limit</string>
-    <string name="android_key2425">Under frequency loading</string>
+    <string name="android_key2425">Underfrequency load enable</string>
     <string name="android_key2426">Recovery point</string>
     <string name="android_key2427">Slope</string>
     <string name="android_key2428">Delay time</string>

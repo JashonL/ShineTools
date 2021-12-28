@@ -33,6 +33,18 @@ public class TLXDeviceInfoActivity extends BaseTLXInfoActivity {
     @Override
     public void initVolFreCurString() {
 
+        c3Title1 =new String[] {
+                "R", "S", "T"
+        };
+
+        c3Title2 = new String[]{
+                String.format("%s(V)",getString(R.string.m318电压)),
+                String.format("%s(Hz)",getString(R.string.m321频率)),
+                String.format("%s(A)",getString(R.string.m319电流)),
+                String.format("%s(W)",getString(R.string.m320功率)),
+                "PF"
+        };
+
         c34Title1 = new String[]{
                 "R", "S", "T"
         };
