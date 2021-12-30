@@ -15,8 +15,8 @@
         android:layout_weight="1"
         android:maxLines="2"
         android:text="@string/android_key2"
-        android:textColor="@color/color_text_66"
-        android:textSize="@dimen/size_content_sp_14"
+        android:textSize="@dimen/size_content_sp_12"
+        android:textColor="@color/title_bg_white"
         app:autoSizeMaxTextSize="@dimen/size_content_sp_14"
         app:autoSizeMinTextSize="@dimen/sp_8"
         app:autoSizeTextType="uniform" />

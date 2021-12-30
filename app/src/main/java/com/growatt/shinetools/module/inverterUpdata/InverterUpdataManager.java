@@ -331,6 +331,7 @@ public class InverterUpdataManager {
             tvCancel.setOnClickListener(view12 -> {
                 fileUpdataSend.close();
                 dialogFragment.dialogDismiss();
+                dialogFragment=null;
             });
             dialogFragment = CircleDialogUtils.showCommentBodyView(context, view, "", ((FragmentActivity) context).getSupportFragmentManager(), view1 -> {
             }, Gravity.CENTER, 0.8f, 0.5f, false);

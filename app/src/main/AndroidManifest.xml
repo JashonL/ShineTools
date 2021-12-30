@@ -1229,6 +1229,15 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+
+        <activity
+            android:name=".module.localbox.max.NewMaxCheckIVActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+
+
         <!--==================================模块页面=========================================-->
 
         <service android:name=".utils.datalogupdata.DatalogDownloadService" />

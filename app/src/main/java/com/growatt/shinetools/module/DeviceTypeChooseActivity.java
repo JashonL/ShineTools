@@ -151,19 +151,19 @@ public class DeviceTypeChooseActivity extends BaseActivity implements Toolbar.On
                 break;
             case R.id.ll_type_max_tl3_lvmv:
                 Intent intent7=new Intent(this, MaxMacModMidToolActivity.class);
-                intent7.putExtra("title","MOD MID MAC");
+                intent7.putExtra("title","MAX TL3 LV/MV");
                 ActivityUtils.startActivity(DeviceTypeChooseActivity.this,intent7,false);
                 break;
             case R.id.ll_type_mod_mid_mac:
                 //                ActivityUtils.gotoActivity(DeviceTypeChooseActivity.this, MaxMainActivity.class,false);
                 Intent intent=new Intent(this, MaxMacModMidToolActivity.class);
-                intent.putExtra("title","MOD TL3-XH");
+                intent.putExtra("title","MOD MID MAC");
                 ActivityUtils.startActivity(DeviceTypeChooseActivity.this,intent,false);
                 break;
             case R.id.ll_mod_tl3_xh:
                 //                ActivityUtils.gotoActivity(DeviceTypeChooseActivity.this, TL3XHMainActivity.class,false);
                 Intent intent3=new Intent(this, TL3XHToolActivity.class);
-                intent3.putExtra("title","MAX TL3 LV/MV");
+                intent3.putExtra("title","MOD TL3-XH");
                 ActivityUtils.startActivity(DeviceTypeChooseActivity.this,intent3,false);
                 break;
 

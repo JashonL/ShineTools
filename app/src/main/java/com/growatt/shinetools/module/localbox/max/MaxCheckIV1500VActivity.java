@@ -21,13 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
@@ -50,7 +48,6 @@ import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.Mydialog;
-import com.growatt.shinetools.utils.PermissionCodeUtil;
 import com.growatt.shinetools.utils.Position;
 import com.growatt.shinetools.utils.SharedPreferencesUnit;
 
@@ -60,7 +57,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_10_READ;
 import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_SERVER_SET;
@@ -736,18 +732,19 @@ public class MaxCheckIV1500VActivity extends DemoBase implements RadioGroup.OnCh
 
     byte offset= (byte) 0x1B58;
 
-    int[][] funs = {
 
-            {0x14, offset, 0x7d - 1+offset}, {0x14, 0x7d, 0x7d * 2 - 1+offset}, {0x14, 0x7d * 2, 0x7d * 3 - 1+offset}, {0x14, 0x7d * 3, 0x7d * 4 - 1+offset}, {0x14, 0x7d * 4, 0x7d * 5 - 1+offset}, {0x14, 0x7d * 5, 0x7d * 6 - 1+offset}, {0x14, 0x7d * 6, 0x7d * 7 - 1+offset}, {0x14, 0x7d * 7, 0x7d * 8 - 1+offset},
+    private int[][] initFuns(){
+        int [][]funs=new int[32][3];
+        for (int i = 0; i < funs.length; i++) {
+            funs[i][0]=0x14;
+            funs[i][1]=0x7d*i+offset;
+            funs[i][2]=0x7d*(i+1)+offset-1;
+        }
+        return funs;
+    }
 
-            {0x14, 0x7d * 8, 0x7d * 9 - 1+offset}, {0x14, 0x7d * 9, 0x7d * 10 - 1+offset}, {0x14, 0x7d * 10, 0x7d * 11 - 1+offset}, {0x14, 0x7d * 11, 0x7d * 12 - 1+offset}, {0x14, 0x7d * 12, 0x7d * 13 - 1+offset}, {0x14, 0x7d * 13, 0x7d * 14 - 1+offset}, {0x14, 0x7d * 14, 0x7d * 15 - 1+offset}, {0x14, 0x7d * 15, 0x7d * 16 - 1+offset},
 
-            {0x14, 0x7d * 16, 0x7d*17 - 1+offset}, {0x14, 0x7d*17, 0x7d * 18 - 1+offset}, {0x14, 0x7d * 18, 0x7d * 19 - 1+offset}, {0x14, 0x7d * 19, 0x7d * 20 - 1+offset}, {0x14, 0x7d * 20, 0x7d * 21 - 1+offset}, {0x14, 0x7d * 21, 0x7d * 22 - 1+offset}, {0x14, 0x7d * 22, 0x7d * 23 - 1+offset}, {0x14, 0x7d * 23, 0x7d * 24 - 1+offset},
-
-            {0x14, 0x7d * 24, 0x7d*25 - 1+offset}, {0x14, 0x7d*25, 0x7d * 26 - 1+offset}, {0x14, 0x7d * 26, 0x7d * 27 - 1+offset}, {0x14, 0x7d * 27, 0x7d * 28 - 1+offset}, {0x14, 0x7d * 28, 0x7d * 29 - 1+offset}, {0x14, 0x7d * 29, 0x7d * 30 - 1+offset}, {0x14, 0x7d * 30, 0x7d * 31 - 1+offset}, {0x14, 0x7d * 31, 0x7d * 32 - 1+offset}
-
-
-    };
+    int[][] funs ;
 
 
     Handler mHandler = new Handler(Looper.getMainLooper()) {

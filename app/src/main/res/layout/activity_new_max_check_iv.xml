@@ -6,9 +6,7 @@
     android:background="@color/white1"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/headerView"
-        layout="@layout/header_view_title" />
+  <include layout="@layout/toobar_title"/>
 
     <TextView
         android:id="@+id/tvLastTime"

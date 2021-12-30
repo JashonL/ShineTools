@@ -40,12 +40,9 @@ import com.mylhyl.circledialog.BaseCircleDialog;
 import com.mylhyl.circledialog.CircleDialog;
 
 import java.math.BigInteger;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -81,7 +78,6 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
     private String[][] modelToal;
     private int modelPos = -1;//当前model下标
 
-    private int settingIndex = 0;//当前设置项
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private List<ALLSettingBean> settingList;
@@ -93,7 +89,12 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
 
     private int batter_4041 = 0;
     private int batter_4149 = 0;
-
+    //
+    private char[] reverse = new char[]{
+            '0', '0', '0', '0',
+            '0', '0', '0', '0',
+            '0', '0', '0', '0',
+            '0', '0', '0', '0'};
 
     @Override
     protected int getContentView() {
@@ -226,8 +227,8 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                 if (isCheck) {
                     //接收正确，开始解析
                     parseMax(bytes);
-                }else {
-                    if ( uuid == 3198||uuid==4041||uuid==4149){
+                } else {
+                    if (uuid == 3198 || uuid == 4041 || uuid == 4149) {
                         if (startDialog != null) {
                             startDialog.dialogDismiss();
                             startDialog = null;
@@ -247,7 +248,8 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                     case 5:
                         getData(6);
                         break;
-                     case 6: case 7:
+                    case 6:
+                    case 7:
                         Mydialog.Dismiss();
                         break;
                     case 4041:
@@ -257,12 +259,11 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
             } else {//设置
                 //检测内容正确性
                 boolean isCheck = MaxUtil.checkReceiverFull(bytes);
-                if (settingIndex == 2) {
+                if (uuid == 2) {
                     isCheck = MaxUtil.checkReceiverFull10(bytes);
                 }
                 if (isCheck) {
                     Mydialog.Dismiss();
-                    settingIndex = 0;
                     toast(R.string.android_key121);
                 } else {
                     Mydialog.Dismiss();
@@ -273,15 +274,12 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
     };
 
 
-    private void getData(int pos) {
+    private void getData(int id) {
         type = 0;
-        uuid = pos;
-        List<ALLSettingBean> data = usParamsetAdapter.getData();
-        if (data.size() > pos) {
-            ALLSettingBean bean = data.get(pos);
-            int[] funs = bean.getFuns();
-            manager.sendMsg(funs);
-        }
+        uuid = id;
+        ALLSettingBean bean = settingList.get(id);
+        int[] funs = bean.getFuns();
+        manager.sendMsg(funs);
     }
 
 
@@ -391,7 +389,7 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                     sb.append("0");
                 }
                 sb.append(seconds);
-                ALLSettingBean allSettingBean7 = settingList.get(7);
+                ALLSettingBean allSettingBean7 = settingList.get(8);
                 allSettingBean7.setValueStr(sb.toString());
                 break;
 
@@ -400,11 +398,11 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                 //解析int值
                 int value5 = MaxWifiParseUtil.obtainValueOne(bs);
                 //取第bit11
-                String s =  CommenUtils.intToBinary(value5,16);
+                String s = CommenUtils.intToBinary(value5, 16);
                 char[] chars = s.toCharArray();
                 LogUtil.i("反转之前：" + Arrays.toString(chars));
                 int len = chars.length;
-                char[] reverse = CommenUtils.reverse(chars, len);
+                reverse = CommenUtils.reverse(chars, len);
                 String b11 = String.valueOf(reverse[11]);
                 settingList.get(5).setValue(b11);
                 break;
@@ -465,7 +463,7 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                 //解析int值
                 LogUtil.i("解析3198");
                 //解析int值
-                ALLSettingBean allSettingBean1 = settingList.get(6);
+                ALLSettingBean allSettingBean1 = settingList.get(7);
                 String title = allSettingBean1.getTitle();
                 int value3198 = MaxWifiParseUtil.obtainValueOne(bs);
                 if (value3198 == inputNum) {//成功
@@ -481,7 +479,7 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                     String tips2 = "1." + getString(R.string.battery_error_tips1) + "\n" + "2." + getString(R.string.battery_error_tips2);
                     BatteryCheckDialogUtils.showCheckErrorDialog(this, title, tips1, tips2,
                             () -> {
-                                getBdcStatus(6);
+                                getBdcStatus(7);
                             });
                 }
                 break;
@@ -498,18 +496,18 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                     startDialog.dialogDismiss();
                     startDialog = null;
                 }
-                ALLSettingBean allSettingBean4149 = settingList.get(6);
+                ALLSettingBean allSettingBean4149 = settingList.get(7);
                 String title4149 = allSettingBean4149.getTitle();
                 if (batter_4149 == inputNum && inputNum == batter_4041) {//成功
                     BatteryCheckDialogUtils.showCheckSuccessDialog(this, title4149);
                 } else {//失败
-                    String tips1 = getString(R.string.battery_install_error)+"(BDC1:"+batter_4041+"  "
-                            +"BDC2:"+batter_4149+")";
+                    String tips1 = getString(R.string.battery_install_error) + "(BDC1:" + batter_4041 + "  "
+                            + "BDC2:" + batter_4149 + ")";
 
                     String tips2 = "1." + getString(R.string.battery_error_tips1) + "\n" + "2." + getString(R.string.battery_error_tips2);
                     BatteryCheckDialogUtils.showCheckErrorDialog(this, title4149, tips1, tips2,
                             () -> {
-                                getBdcStatus(6);
+                                getBdcStatus(7);
                             });
                 }
 
@@ -592,9 +590,11 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                         .setMaxHeight(0.5f)
                         .setItems(models, (parent, view1, pos, id) -> {
                             modelPos = pos;
-                            usParamsetAdapter.getData().get(2).setValueStr(models.get(pos));
+                            int i2 = uuidIndex(2);
+                            usParamsetAdapter.getData().get(i2).setValueStr(models.get(pos));
                             //设置电压
-                            usParamsetAdapter.getData().get(3).setValueStr(modelToal[pos][3]);
+                            int i3 = uuidIndex(3);
+                            usParamsetAdapter.getData().get(i3).setValueStr(modelToal[pos][3]);
                             usParamsetAdapter.notifyDataSetChanged();
                             setModelRegistValue();
                             return true;
@@ -609,7 +609,7 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                 break;
 
             case 7://电池
-                getBdcStatus(6);
+                getBdcStatus(7);
                 break;
 
             case 8://时间
@@ -619,11 +619,11 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
     }
 
 
-    private void getBdcStatus(int pos) {
+    private void getBdcStatus(int id) {
         type = 0;
-        uuid = pos;
-        if (settingList.size() > pos) {
-            ALLSettingBean bean = settingList.get(pos);
+        uuid = id;
+        if (settingList.size() > id) {
+            ALLSettingBean bean = settingList.get(id);
             int[] funs = bean.getFuns();
             manager.sendMsg(funs);
         }
@@ -635,14 +635,13 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
      */
     private void setModelRegistValue() {
         String[] selectModels = modelToal[modelPos];
-        ALLSettingBean allSettingBean = usParamsetAdapter.getData().get(2);
+        ALLSettingBean allSettingBean = settingList.get(2);
         int[] setValues = allSettingBean.getSetValues();
         int[] ints = Arrays.copyOf(setValues, setValues.length);
         int sModel = Integer.parseInt(selectModels[4], 16) << 8 | (ints[0] & 0x00FF);
         int uModel = Integer.parseInt(selectModels[2]) | ((ints[2] & 0b1111111111111000));
         ints[0] = sModel;
         ints[2] = uModel;
-        settingIndex = 2;
         type = 1;
         int[] funSet = allSettingBean.getFunSet();
         manager.sendMsgToServer10(funSet, ints);
@@ -668,7 +667,6 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                         usParamsetAdapter.getData().get(position).setValueStr(selects.get(pos));
                         usParamsetAdapter.notifyDataSetChanged();
                         type = 1;
-                        settingIndex = position;
                         int[] funs = bean.getFunSet();
                         funs[2] = pos;
                         manager.sendMsg(funs);
@@ -678,74 +676,6 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                     .show(getSupportFragmentManager());
         }
 
-    }
-
-    //设置时间
-    private void setSystemTime() {
-        ALLSettingBean allSettingBean = usParamsetAdapter.getData().get(7);
-        String valueStr = allSettingBean.getValueStr();
-        if (!TextUtils.isEmpty(valueStr)) {
-            //设置时间参数
-            try {
-                Date date = sdf.parse(valueStr);
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH) + 1;
-                int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-                int minute = calendar.get(Calendar.MINUTE);
-                int nowSecond = calendar.get(Calendar.SECOND);
-
-
-                type = 1;
-
-                int[] setValues = allSettingBean.getSetValues();
-                int[] setfuns = Arrays.copyOf(setValues, setValues.length);
-
-                setfuns[0] = year > 2000 ? year - 2000 : year;
-                setfuns[1] = month;
-                ;
-                setfuns[2] = dayOfMonth;
-                setfuns[3] = hourOfDay;
-                setfuns[4] = minute;
-                setfuns[5] = nowSecond;
-
-                //更新ui
-                StringBuilder sb = new StringBuilder()
-                        .append(year).append("-");
-                if (month < 10) {
-                    sb.append("0");
-                }
-                sb.append(month).append("-");
-                if (dayOfMonth < 10) {
-                    sb.append("0");
-                }
-                sb.append(dayOfMonth).append(" ");
-                if (hourOfDay < 10) {
-                    sb.append("0");
-                }
-                sb.append(hourOfDay).append(":");
-                if (minute < 10) {
-                    sb.append("0");
-                }
-                sb.append(minute).append(":");
-                if (nowSecond < 10) {
-                    sb.append("0");
-                }
-                sb.append(nowSecond);
-                usParamsetAdapter.getData().get(7).setValueStr(sb.toString());
-                usParamsetAdapter.notifyDataSetChanged();
-
-                type = 1;
-                int[] funSet = allSettingBean.getFunSet();
-                manager.sendMsgToServer10(funSet, setfuns);
-
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
 
@@ -778,10 +708,19 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
     public void oncheck(boolean check, int position) {
         int value = check ? 1 : 0;
         ALLSettingBean allSettingBean = usParamsetAdapter.getData().get(position);
+        int uuid = allSettingBean.getUuid();
         allSettingBean.setValue(String.valueOf(value));
         allSettingBean.setValueStr(String.valueOf(value));
         type = 1;
         int[] funs = allSettingBean.getFunSet();
+        if (uuid == 5) {
+            reverse[11] = (char) (value + '0');
+            ;
+            //翻转
+            char[] reverse1 = CommenUtils.reverse(this.reverse, reverse.length);
+            String value1 = String.valueOf(reverse1);
+            value = Integer.valueOf(value1, 2);
+        }
         funs[2] = value;
         manager.sendMsg(funs);
     }
@@ -805,6 +744,25 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+
+    /*
+    通过该项查找在列表中的位置
+     */
+    private int uuidIndex(int uuid) {
+        int index = 0;
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
+        for (int i = 0; i < data.size(); i++) {
+            ALLSettingBean allSettingBean = data.get(i);
+            int uuid1 = allSettingBean.getUuid();
+            if (uuid == uuid1) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+
     }
 
 }

@@ -154,7 +154,7 @@ private UsThroughAdapter mAdapter;
                 if (i==0){
                     bean.setItemPos(1);
                 }else {
-                    bean.setItemPos(8);
+                    bean.setItemPos(0);
                 }
                 bean.setShowValue(String.valueOf(bean.getItemPos()));
             }else {
@@ -451,7 +451,7 @@ private UsThroughAdapter mAdapter;
                     bean.setRegistValue(value);
                     if (i == 9){
                         bean.setShowValue(String.valueOf(Arith.div(2000, value, 2)));
-                    }else {
+                    }else if (i!=7){
                         bean.setShowValue(String.valueOf(Arith.mul(value, bean.getMuilt(), 2)));
                     }
                 }
@@ -476,7 +476,7 @@ private UsThroughAdapter mAdapter;
                 if (i==7){
                     int value = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes(bs, 0, 0, 1));
                     bean.setRegistValue(value);
-                    bean.setShowValue(String.valueOf(Arith.mul(value, bean.getMuilt(), 2)));
+                    bean.setShowValue(String.valueOf(value));
                 }
                 newList.add(bean);
             }
@@ -643,7 +643,9 @@ private UsThroughAdapter mAdapter;
         int value = check ? 1 : 0;
         USVThroughBean usvThroughBean = mAdapter.getData().get(position);
         usvThroughBean.setShowValue(String.valueOf(value));
-        usvThroughBean.setRegistValue(value);
+        if (position==0){
+            usvThroughBean.setItemPos(value);
+        }
         mAdapter.notifyDataSetChanged();
     }
 }
