@@ -43,7 +43,7 @@ public class Schedulers extends Handler {
                 break;
 
             case SocketClientUtil.SOCKET_CLOSE://接收线程消息异常,关闭Socket也会抛出异常 可不处理
-
+                connectHandler.socketClose();
                 break;
 
 

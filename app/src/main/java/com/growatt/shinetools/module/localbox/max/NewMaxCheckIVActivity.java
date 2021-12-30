@@ -361,7 +361,7 @@ public class NewMaxCheckIVActivity extends BaseActivity implements RadioGroup.On
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

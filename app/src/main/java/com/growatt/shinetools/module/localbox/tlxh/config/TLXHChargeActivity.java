@@ -151,7 +151,7 @@ public class TLXHChargeActivity extends BaseActivity implements BaseQuickAdapter
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

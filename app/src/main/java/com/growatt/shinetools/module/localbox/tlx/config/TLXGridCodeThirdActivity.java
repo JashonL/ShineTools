@@ -163,7 +163,7 @@ public class TLXGridCodeThirdActivity extends BaseActivity implements BaseQuickA
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

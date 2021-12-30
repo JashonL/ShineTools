@@ -303,7 +303,7 @@ public class TLXHBasicSettingActivity extends BaseActivity implements BaseQuickA
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

@@ -21,7 +21,7 @@ public class UpgradePath {
 
 
     public static  String MIN_TL_XH_PATH =ShineToosApplication.INVERTER_UPDATA_FILE_DIR +
-            "Single Phase On-grid Inverter" + File.separator + "MIN TL-XH" + File.separator;
+            "Single_Phase_On_grid_Inverter" + File.separator + "MIN_TL_XH" + File.separator;
     public static  String MIC_MIN_TL_X_XE_PATH = "MIC MIN TL-X/XE";
     public static  String MIN_TL_XH_US_PATH = ShineToosApplication.INVERTER_UPDATA_FILE_DIR +
             "Single_Phase_On_grid_Inverter" + File.separator + "MIN_TL_XH" + File.separator+"MIN_TL_XH_US";

@@ -199,7 +199,7 @@ public class FileUpdataSend implements ConnectHandler {
     }
 
     @Override
-    public void readTimeOut() {
+    public void socketClose() {
 
     }
 

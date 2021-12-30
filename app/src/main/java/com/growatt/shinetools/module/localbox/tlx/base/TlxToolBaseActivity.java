@@ -261,8 +261,8 @@ public abstract class TlxToolBaseActivity extends BaseActivity implements Toolba
         }
 
         @Override
-        public void readTimeOut() {
-
+        public void socketClose() {
+            isConnect = false;
         }
 
         @Override
@@ -743,7 +743,7 @@ public abstract class TlxToolBaseActivity extends BaseActivity implements Toolba
         tvStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableLeft,null,null,null);
         tvStatus.setCompoundDrawablePadding(4);
 
-        if (currenRead==0){
+        if (!autoFreshSwitch){
             //先断开
             manager.disConnectSocket();
             checkUpdata();

@@ -73,7 +73,7 @@ public class CheckInvertUpdata {
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

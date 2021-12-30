@@ -13,7 +13,7 @@ public interface ConnectHandler {
 
     void sendMsgFail();
 
-    void readTimeOut();
+    void socketClose();
 
     void sendMessage(String msg);
 

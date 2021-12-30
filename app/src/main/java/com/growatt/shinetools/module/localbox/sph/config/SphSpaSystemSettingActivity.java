@@ -152,7 +152,7 @@ public class SphSpaSystemSettingActivity extends BaseActivity implements BaseQui
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

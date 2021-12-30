@@ -211,7 +211,7 @@ public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQ
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

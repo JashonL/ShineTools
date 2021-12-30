@@ -205,7 +205,7 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

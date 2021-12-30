@@ -210,7 +210,7 @@ public class TLXHGridCodeSettingActivity extends BaseActivity implements BaseQui
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

@@ -210,7 +210,7 @@ public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuic
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

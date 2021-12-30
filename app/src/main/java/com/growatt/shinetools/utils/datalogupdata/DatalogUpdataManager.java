@@ -299,7 +299,7 @@ public class DatalogUpdataManager {
     public void dissmissDialog() {
         if (dialogFragment != null) {
             Log.i("隐藏弹框");
-            dialogFragment.dismiss();
+            dialogFragment.dialogDismiss();
             dialogFragment = null;
         }
     }

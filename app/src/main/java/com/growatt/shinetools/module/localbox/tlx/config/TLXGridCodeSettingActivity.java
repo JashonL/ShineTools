@@ -211,7 +211,7 @@ public class TLXGridCodeSettingActivity extends BaseActivity implements BaseQuic
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

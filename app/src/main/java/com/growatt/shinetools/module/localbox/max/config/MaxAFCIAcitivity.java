@@ -139,7 +139,7 @@ public class MaxAFCIAcitivity extends BaseActivity implements BaseQuickAdapter.O
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

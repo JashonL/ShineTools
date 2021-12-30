@@ -295,7 +295,7 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

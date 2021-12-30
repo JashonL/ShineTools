@@ -151,7 +151,7 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

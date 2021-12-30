@@ -202,7 +202,7 @@ public class ChekFirmWareActivity extends BaseActivity implements BaseQuickAdapt
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

@@ -242,7 +242,7 @@ public abstract class BaseMaxToolActivity extends BaseActivity implements Toolba
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

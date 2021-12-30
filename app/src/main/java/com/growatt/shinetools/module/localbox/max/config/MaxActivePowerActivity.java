@@ -188,7 +188,7 @@ public class MaxActivePowerActivity extends BaseActivity implements BaseQuickAda
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 

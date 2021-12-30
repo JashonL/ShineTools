@@ -150,7 +150,7 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
         }
 
         @Override
-        public void readTimeOut() {
+        public void socketClose() {
 
         }
 
