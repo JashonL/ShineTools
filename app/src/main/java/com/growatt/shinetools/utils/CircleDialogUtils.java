@@ -399,7 +399,6 @@ public class CircleDialogUtils {
 
         tvCancel.setOnClickListener(view1 -> {
             show.dialogDismiss();
-            show.dismiss();
         });
 
 

@@ -45,8 +45,9 @@ public class FileUpdataSend implements ConnectHandler {
     private int fileIndex = 0;
     //当前是第几包数据,从1开始，第一包是CRC
     private int curDataIndex = 0;
-    //发送擦除指令的次数
+    //发送指令的次数
     private int step_send_num = 0;
+
 
     //定时刷新的计时器
     private CustomTimer mFreshTimer;
@@ -100,7 +101,7 @@ public class FileUpdataSend implements ConnectHandler {
             try {
                 //断开重连
                 manager.disConnectSocket();
-                connetSocket();
+                reConnetSocket();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -119,30 +120,65 @@ public class FileUpdataSend implements ConnectHandler {
 
 
     private void connetSocket() {
+        step = 0;
         //初始化连接
         manager = new SocketManager(context);
         //设置连接监听
-        if (step==9){
-            manager.onConectNoDialog(this);
-        }else {
-            manager.onConect(this);
-        }
+        manager.onConect(this);
         //开始连接TCP
         //延迟一下避免频繁操作
         new Handler().postDelayed(() -> manager.connectSocket(), 100);
     }
 
 
+    /**
+     * 重连
+     */
+    private void reConnetSocket() {
+        //初始化连接
+        manager = new SocketManager(context);
+        //设置连接监听
+        manager.onConectNoDialog(this);
+        //开始连接TCP
+        //延迟一下避免频繁操作
+        new Handler().postDelayed(() -> manager.connectSocket(), 100);
+    }
 
 
     @Override
     public void connectSuccess() {
-        if (step == 7) {
-            sendData(fileIndex, curDataIndex);
-        } else if (step == 9) {//查进度
-            check();
-        } else {
-            sendSaveComend();
+        //发送没有响应的时候需要重新发
+        switch (step) {
+            case 1:
+                sendSaveComend();
+                break;
+            case 2:
+                setBaudRate();
+                break;
+            case 3:
+                sendFile(fileIndex);
+                break;
+            case 4:
+                sendFileLength(fileIndex);
+                break;
+            case 5:
+                sendFileCRC(fileIndex);
+                break;
+            case 6:
+                sendFlash();
+                break;
+            case 7:
+                sendData(fileIndex, curDataIndex);
+                break;
+            case 8:
+                sendFinish();
+                break;
+            case 9:
+                check();
+                break;
+            default:
+                sendSaveComend();
+                break;
         }
     }
 
@@ -151,6 +187,7 @@ public class FileUpdataSend implements ConnectHandler {
         manager.disConnectSocket();
         MyControl.showJumpWifiSet((FragmentActivity) context);
         String errMsg = context.getString(R.string.错误) + ":" + step;
+        readHandler.removeCallbacksAndMessages(null);
         updataListeners.updataFail(errMsg);
     }
 
@@ -178,10 +215,12 @@ public class FileUpdataSend implements ConnectHandler {
 
     @Override
     public void receveByteMessage(byte[] bytes) {
+        readHandler.removeCallbacksAndMessages(null);
         switch (step) {
             case 1://1.向02号保持寄存器写入0x01，保存波特率
                 boolean isCheck = UpdataUtils.checkReceiver0617(bytes);
                 if (isCheck) {//检测成功，相当于设置成功
+                    step_send_num = 0;
                     setBaudRate();
                 } else {
                     String errMsg = context.getString(R.string.错误) + ":" + step;
@@ -192,6 +231,7 @@ public class FileUpdataSend implements ConnectHandler {
             case 2: //2.送命令设置波特率
                 boolean isCheck2 = UpdataUtils.checkReceiver0617(bytes);
                 if (isCheck2) {//检测成功，相当于设置成功
+                    step_send_num = 0;
                     sendFile(fileIndex);
                 } else {
                     String errMsg = context.getString(R.string.错误) + ":" + step;
@@ -204,6 +244,7 @@ public class FileUpdataSend implements ConnectHandler {
             case 3://3.当前发送文件.bin 01  .hex 00
                 boolean isCheck3 = UpdataUtils.checkReceiver0617(bytes);
                 if (isCheck3) {//检测成功，相当于设置成功
+                    step_send_num = 0;
                     sendFileLength(fileIndex);
                 } else {
                     String errMsg = context.getString(R.string.错误) + ":" + step;
@@ -214,6 +255,7 @@ public class FileUpdataSend implements ConnectHandler {
             case 4://4.发送文件大小
                 boolean isCheck4 = UpdataUtils.checkReceiver0617(bytes);
                 if (isCheck4) {
+                    step_send_num = 0;
                     sendFileCRC(fileIndex);
                 } else {
                     String errMsg = context.getString(R.string.错误) + ":" + step;
@@ -242,10 +284,10 @@ public class FileUpdataSend implements ConnectHandler {
                 //判断是否擦除成功   不成功要隔3秒再次擦除  一直到成功为止
                 boolean isCheck6 = UpdataUtils.checkReceiver0617(bytes);
                 if (isCheck6) {
+                    step_send_num = 0;
                     sendData(fileIndex, curDataIndex);
                 } else {
                     if (step_send_num < 6) {
-                        step_send_num = 0;
                         new Handler().postDelayed(this::sendFlash, 3000);
                     } else {//提示升级失败
                         step_send_num = 0;
@@ -259,7 +301,6 @@ public class FileUpdataSend implements ConnectHandler {
 
                 break;
             case 7://发送烧录数据
-                readHandler.removeCallbacksAndMessages(null);
                 boolean isCheck7 = UpdataUtils.checkReceiver0617(bytes);
                 if (isCheck7) {
                     step_send_num = 0;
@@ -368,7 +409,9 @@ public class FileUpdataSend implements ConnectHandler {
         curBuffer = new ArrayList<>(fileData.get(fileIndex));
         curBuffer.remove(0);//移除第一包 是CRC
         step = 1;
+        step_send_num++;
         LogUtil.i("1.向02号保持寄存器写入0x01");
+        readHandler.postDelayed(new SendDataRunable(), 5000);
         manager.sendMsgNoNum(new int[]{6, 2, 1});
     }
 
@@ -376,6 +419,8 @@ public class FileUpdataSend implements ConnectHandler {
     private void setBaudRate() {
         step = 2;
         LogUtil.i("2.发送命令设置波特率");
+        step_send_num++;
+        readHandler.postDelayed(new SendDataRunable(), 5000);
         manager.sendMsgNoNum(new int[]{6, 22, 1});
 
     }
@@ -383,24 +428,28 @@ public class FileUpdataSend implements ConnectHandler {
     //3.当前发送文件.bin 01  .hex 10
     private void sendFile(int current) {
         step = 3;
+        step_send_num++;
         int data = 0x01;
         File file = updataFile.get(current);
         if (file.getName().endsWith(".hex")) {
             data = 0x10;
         }
-        LogUtil.i("3.当前发送文件"+data);
+        LogUtil.i("3.当前发送文件" + data);
+        readHandler.postDelayed(new SendDataRunable(), 5000);
         manager.sendMsgNoNum(new int[]{6, 0x1f, data});
     }
 
     //4.发送文件大小
     private void sendFileLength(int current) {
         step = 4;
+        step_send_num++;
         int len = (curBuffer.size() - 1) * 256;
         ByteBuffer byteBuffer = curBuffer.get(curBuffer.size() - 1);
         byte[] array = byteBuffer.array();
         len += array.length;
         byte[] bytes = CommenUtils.int4Byte(len);
         LogUtil.i("4.发送文件大小");
+        readHandler.postDelayed(new SendDataRunable(), 5000);
         manager.sendMsg17(0x17, 0x02, bytes);
     }
 
@@ -411,6 +460,7 @@ public class FileUpdataSend implements ConnectHandler {
         List<ByteBuffer> byteBuffers = fileData.get(current);
         byte[] array = byteBuffers.get(0).array();
         LogUtil.i("5.发送烧录文件CRC校验");
+        readHandler.postDelayed(new SendDataRunable(), 5000);
         manager.sendMsg17(0x17, 0x03, array);
     }
 
@@ -420,6 +470,7 @@ public class FileUpdataSend implements ConnectHandler {
         step_send_num++;
         byte[] array = new byte[]{0x00, 0x00};
         LogUtil.i("6.PC发送Flash擦除指令");
+        readHandler.postDelayed(new SendDataRunable(), 5000);
         manager.sendMsg17(0x17, 0x04, array);
     }
 
@@ -433,14 +484,17 @@ public class FileUpdataSend implements ConnectHandler {
         step = 7;
         ByteBuffer byteBuffer = curBuffer.get(index);
         byte[] array = byteBuffer.array();
-        LogUtil.i("7.发送烧录数据"+index);
+        LogUtil.i("7.发送烧录数据" + index);
+        readHandler.postDelayed(new SendDataRunable(), 5000);
         manager.sendMsg1705(0x17, 0x05, index, array);
     }
 
     //8.PC发送结束命令
     private void sendFinish() {
+        step_send_num++;
         step = 8;
         byte[] array = new byte[]{0x00, 0x00};
+        readHandler.postDelayed(new SendDataRunable(), 5000);
         manager.sendMsg17(0x17, 0x06, array);
     }
 
@@ -455,14 +509,18 @@ public class FileUpdataSend implements ConnectHandler {
 
     //10.发送命令保存指令
     private void commendSave() {
+        step_send_num++;
         step = 10;
+        readHandler.postDelayed(new SendDataRunable(), 5000);
         manager.sendMsg(new int[]{6, 2, 1});
     }
 
 
     //11.发送命令恢复波特率
     private void resRate() {
+        step_send_num++;
         step = 11;
+        readHandler.postDelayed(new SendDataRunable(), 5000);
         manager.sendMsg(new int[]{6, 22, 1});
     }
 
@@ -478,8 +536,8 @@ public class FileUpdataSend implements ConnectHandler {
             if (preIndex == curDataIndex && step_send_num < 3) {
                 //断开重连
                 manager.disConnectSocket();
-                connetSocket();
-            }else {
+                reConnetSocket();
+            } else {
                 //提示升级失败
                 manager.disConnectSocket();
                 String errMsg = context.getString(R.string.错误) + ":" + step;
@@ -487,8 +545,6 @@ public class FileUpdataSend implements ConnectHandler {
             }
         }
     }
-
-
 
 
 }

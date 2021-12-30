@@ -11,7 +11,9 @@ public class ShineToolsApi {
 
     public static String BASE_URL = "https://oss.growatt.com";
 
+//    public static String FILE_DOWNLOAD_BASE_URL ="https://server-api.growatt.com";
     public static String FILE_DOWNLOAD_BASE_URL ="https://server-api.growatt.com";
+//    public static String FILE_DOWNLOAD_BASE_URL ="http://20.6.1.114:8081/ShineServer_2016";
 
     public static String DATALOG_DETAIL="/newTwoEicAPI.do?op=getDatalogData";
 

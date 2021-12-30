@@ -61,7 +61,6 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
     RecyclerView rvDevice;
 
 
-
     private InvererManualAdater manualAdater;
     private String version;
     private String path;
@@ -96,7 +95,7 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
         path = getIntent().getStringExtra("path");
 
         String[] items = new String[]{getString(R.string.inverter_upgrade), getString(R.string.choise_package)};
-        String[] values = new String[]{ version, ""};
+        String[] values = new String[]{version, ""};
         List<UpdataBean> updataItems = new ArrayList<>();
         for (int i = 0; i < items.length; i++) {
             UpdataBean bean = new UpdataBean();
@@ -113,7 +112,7 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
         manualAdater.replaceData(updataItems);
 
 
-        InverterUpdataManager.getInstance().checkUpdataByLocal(this,version, path, new InverterCheckUpdataCallback() {
+        InverterUpdataManager.getInstance().checkUpdataByLocal(this, version, path, new InverterCheckUpdataCallback() {
             @Override
             protected void hasNewVersion(String oldVersion, String newVersion) {
                 UpdataBean bean = manualAdater.getData().get(1);
@@ -140,12 +139,12 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
         boolean b = !checked;
         bean.setChecked(b);
         manualAdater.notifyDataSetChanged();
-        if (b){
+        if (b) {
             if (isNewVersion) {
                 toUpdata();
+            } else {
+                toast(R.string.soft_update_no);
             }
-        }else {
-            toast(R.string.soft_update_no);
         }
     }
 
@@ -154,8 +153,6 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
     public boolean onMenuItemClick(MenuItem item) {
         return true;
     }
-
-
 
 
     private void toUpdata() {
@@ -309,8 +306,8 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
                 BufferedOutputStream bufos = new BufferedOutputStream(fos);
                 int len = 0;
                 //写入
-                while((len=bufis.read(buffer))!=-1){
-                    bufos.write(buffer,0,len);
+                while ((len = bufis.read(buffer)) != -1) {
+                    bufos.write(buffer, 0, len);
                     bufos.flush();
                 }
                 bufos.close();
@@ -320,85 +317,80 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
             }
 
             //判断版本是否一样  弹框提示
-            if (!version.equals(name)){
-                String title=getString(R.string.reminder);
-                String text=getString(R.string.use_this_version)+":"+name;
-                String ok=getString(R.string.android_key1935);
-                String cancel=getString(R.string.android_key1806);
-                CircleDialogUtils.showCommentDialog(this, title, text, ok, cancel, Gravity.CENTER, view -> {
 
-                    String replace = name.replace(".zip", "");
-                    String zipTargetPath = copyFile.getParent()+File.separator+replace;
+            String title = getString(R.string.reminder);
+            String text = getString(R.string.use_this_version) + ":" + name;
+            String ok = getString(R.string.android_key1935);
+            String cancel = getString(R.string.android_key1806);
+            CircleDialogUtils.showCommentDialog(this, title, text, ok, cancel, Gravity.CENTER, view -> {
 
-
-                    List<File> unzip = new ArrayList<>();
-                    //1.解压文件
-                    File zipParent = new File(zipTargetPath);
-
-                    if (!zipParent.exists()) {
-                        zipParent.mkdirs();
-                        try {
-                            unzip = FileUtils.unzip(copyFile.getAbsolutePath(), zipTargetPath);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        //先删除再解压
-                        FileUtils.removeDir(zipParent);
-                        try {
-                            unzip = FileUtils.unzip(copyFile.getAbsolutePath(), zipTargetPath);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        if (unzip == null) return;
-                    }
+                String replace = name.replace(".zip", "");
+                String zipTargetPath = copyFile.getParent() + File.separator + replace;
 
 
-                    //2.读取txt文件 获取升级顺序
+                List<File> unzip = new ArrayList<>();
+                //1.解压文件
+                File zipParent = new File(zipTargetPath);
+
+                if (!zipParent.exists()) {
+                    zipParent.mkdirs();
                     try {
-                        List<String> upFileName = new ArrayList<>();
-                        for (File f : unzip) {
-                            String name1 = f.getName();
-                            if (name1.endsWith(".txt")) {
-                                FileInputStream fileInputStream = new FileInputStream(f);
-                                InputStreamReader isr = new InputStreamReader(fileInputStream);
-                                BufferedReader br = new BufferedReader(isr);
-                                String line;
-                                while ((line = br.readLine()) != null) {
-                                    upFileName.add(line.trim());
-                                }
-                                break;
-                            }
-                        }
-                        //3.获取要下发的文件
-                        List<File> files = new ArrayList<>();
-                        for (String s : upFileName) {
-                            for (File f : unzip) {
-                                String name1 = f.getName();
-                                if (s.contains(name1)) {
-                                    files.add(f);
-                                }
-                            }
-                        }
-                        //4.去升级
-                        if (files.size() > 0) {
-                            InverterUpdataManager.getInstance().updata(this,files);
-                        }
-
+                        unzip = FileUtils.unzip(copyFile.getAbsolutePath(), zipTargetPath);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }, view -> {
+                } else {
+                    //先删除再解压
+                    FileUtils.removeDir(zipParent);
+                    try {
+                        unzip = FileUtils.unzip(copyFile.getAbsolutePath(), zipTargetPath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (unzip == null) return;
+                }
 
-                });
 
+                //2.读取txt文件 获取升级顺序
+                try {
+                    List<String> upFileName = new ArrayList<>();
+                    for (File f : unzip) {
+                        String name1 = f.getName();
+                        if (name1.endsWith(".txt")) {
+                            FileInputStream fileInputStream = new FileInputStream(f);
+                            InputStreamReader isr = new InputStreamReader(fileInputStream);
+                            BufferedReader br = new BufferedReader(isr);
+                            String line;
+                            while ((line = br.readLine()) != null) {
+                                upFileName.add(line.trim());
+                            }
+                            break;
+                        }
+                    }
+                    //3.获取要下发的文件
+                    List<File> files = new ArrayList<>();
+                    for (String s : upFileName) {
+                        for (File f : unzip) {
+                            String name1 = f.getName();
+                            if (s.contains(name1)) {
+                                files.add(f);
+                            }
+                        }
+                    }
+                    //4.去升级
+                    if (files.size() > 0) {
+                        InverterUpdataManager.getInstance().updata(this, files);
+                    }
 
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }, view -> {
 
-            }
+            });
+
 
         }
-
-
 
 
     }

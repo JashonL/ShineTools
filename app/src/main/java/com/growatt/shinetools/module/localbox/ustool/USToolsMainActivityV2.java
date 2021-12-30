@@ -648,6 +648,8 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                                     bdcDisChargePower = 0;
                                     LogUtil.i("开始读取bdc功率");
                                     readBdcValue();
+                                }else {
+                                    checkUpdata();
                                 }
 
                             }
@@ -760,7 +762,6 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
                             SocketClientUtil.close(mReadBdcUtil);
                             refreshFinish();
                             checkUpdata();
-
                         }
 
                         LogUtil.i("接收消息:" + SocketClientUtil.bytesToHexString(bytes));
@@ -822,7 +823,6 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
 
     public void checkUpdata() {
         InverterUpdataManager.getInstance().checkUpdata(this, UpgradePath.MIN_TL_XH_US_PATH);
-
     }
 
     /**
