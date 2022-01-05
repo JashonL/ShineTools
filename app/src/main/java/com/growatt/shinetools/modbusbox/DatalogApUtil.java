@@ -1,7 +1,5 @@
 package com.growatt.shinetools.modbusbox;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -10,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-
 
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.bean.DatalogAPSetParam;
@@ -22,10 +19,6 @@ import com.growatt.shinetools.utils.MyToastUtils;
 import com.mylhyl.circledialog.callback.ConfigInput;
 import com.mylhyl.circledialog.view.listener.OnInputClickListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
@@ -33,7 +26,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class DatalogApUtil {
 
@@ -210,8 +202,9 @@ public class DatalogApUtil {
 
     public static byte[] updataDatalog(byte fun, String deviceId, int totalLength, int currNum, byte[] valus) throws Exception {
         DatalogApMsgBean msgBean = new DatalogApMsgBean();
-        //报文头数据长度=设备地址+功能码+数据采集器+数据串长度+数据包(文件数据分包总数量+当前数据包编号+文件数据包数据)
+        //数据串的长度=文件数据分包总数量+当前数据包编号
         int length = 2+2+valus.length;
+        //报文头数据长度=设备地址+功能码+数据采集器+数据串长度+数据包(文件数据分包总数量+当前数据包编号+文件数据包数据)
         int datalen = 1 + 1 + 10 + 2  + length;
         byte[] mBytesBapLen = int2Byte(datalen);
         msgBean.setMbap_len(mBytesBapLen);

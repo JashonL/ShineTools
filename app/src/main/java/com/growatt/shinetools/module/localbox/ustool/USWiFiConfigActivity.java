@@ -7,6 +7,7 @@ import android.os.Message;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -154,6 +155,8 @@ public class USWiFiConfigActivity extends BaseActivity {
     private int currenStep = 1;
     private boolean isReset = false;
 
+    private boolean isConnect = false;
+
     @Override
     protected int getContentView() {
         return R.layout.activity_us_tool_config;
@@ -161,7 +164,19 @@ public class USWiFiConfigActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        initToobar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.icon_return);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mHandler!=null){
+                    //释放handler
+                    SocketClientUtil.close(mClientUtil);
+                    mHandler.removeCallbacksAndMessages(null);
+                    mHandler = null;
+                }
+                finish();
+            }
+        });
         tvTitle.setText(R.string.android_key2930);
         setSeletPowerType(1);
 
@@ -205,7 +220,8 @@ public class USWiFiConfigActivity extends BaseActivity {
                 case SocketClientUtil.SOCKET_OPEN:
                     Mydialog.Dismiss();
                     break;
-                case SocketClientUtil.SOCKET_SEND_MSG:
+                case SocketClientUtil.SOCKET_CLOSE:
+                    isConnect = false;
                     break;
                 case SocketClientUtil.SOCKET_RECEIVE_MSG:
                     break;
@@ -218,8 +234,10 @@ public class USWiFiConfigActivity extends BaseActivity {
                 case SocketClientUtil.SOCKET_CONNECT:
                     break;
                 case SocketClientUtil.SOCKET_SEND:
+                    isConnect = true;
                     break;
                 case SocketClientUtil.SOCKET_SERVER_SET:
+                    isConnect = false;
                     MyControl.showJumpWifiSet(USWiFiConfigActivity.this);
                     break;
                 case SocketClientUtil.SOCKET_EXCETION_CLOSE:
@@ -539,14 +557,20 @@ public class USWiFiConfigActivity extends BaseActivity {
         }
 
 
-        //显示倒计时弹框
-        showDialogFragment();
-        //发送设置指令
-        if (flag == 1) {//wifi配网
-            sendSetComand();
-        } else {//网线
-            send20144(false);
+        if (!isConnect){
+            connectServer();
+        }else {
+            //显示倒计时弹框
+            showDialogFragment();
+            //发送设置指令
+            if (flag == 1) {//wifi配网
+                sendSetComand();
+            } else {//网线
+                send20144(false);
+            }
         }
+
+
     }
 
     private TextView tvTime;
@@ -884,15 +908,24 @@ public class USWiFiConfigActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //释放handler
-        SocketClientUtil.close(mClientUtil);
-        mHandler.removeCallbacksAndMessages(null);
-        mHandler = null;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK){
+            if (mHandler!=null){
+                //释放handler
+                SocketClientUtil.close(mClientUtil);
+                mHandler.removeCallbacksAndMessages(null);
+                mHandler = null;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
