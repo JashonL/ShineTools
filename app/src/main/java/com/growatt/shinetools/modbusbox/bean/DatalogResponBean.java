@@ -11,6 +11,10 @@ public class DatalogResponBean {
     private int paramNum;
     //状态码
     private int statusCode;
+    //参数数据的长度
+    private int len;
+    //数据
+    private int value;
 
    //有效数据
     private List<ParamBean> paramBeanList;
@@ -46,6 +50,22 @@ public class DatalogResponBean {
 
     public void setParamBeanList(List<ParamBean> paramBeanList) {
         this.paramBeanList = paramBeanList;
+    }
+
+    public int getLen() {
+        return len;
+    }
+
+    public void setLen(int len) {
+        this.len = len;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public static class ParamBean{

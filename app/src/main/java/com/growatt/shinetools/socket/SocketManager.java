@@ -80,6 +80,22 @@ public class SocketManager {
 
 
 
+    /**
+     * 根据命令以及起始寄存器发送查询命令
+     *
+     * @param bytes
+     * @return：返回发送的字节数组
+     */
+    public void sendBytes(byte[] bytes) {
+        if (mClientUtil != null) {
+            mClientUtil.sendMsg(bytes);
+        } else {
+            Mydialog.Dismiss();
+            MyToastUtils.toast(R.string.android_key2583);
+        }
+    }
+
+
 
     /**
      * 根据命令以及起始寄存器发送查询命令

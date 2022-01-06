@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentActivity;
 
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.FileUtils;
 import com.growatt.shinetools.utils.LogUtil;
@@ -27,7 +28,7 @@ import java.util.List;
 public class InverterUpdataManager {
 
 
-    private FileUpdataSend fileUpdataSend;
+    private ISendInterface fileUpdataSend;
 
     private static InverterUpdataManager mInstance = null;
 
@@ -262,7 +263,7 @@ public class InverterUpdataManager {
             });*/
 
             //------------------正式使用--------------------
-            fileUpdataSend = new FileUpdataSend(context, updataFile, new IUpdataListeners() {
+            IUpdataListeners listeners = new IUpdataListeners() {
                 @Override
                 public void preparing(int total, int current) {
                     showDialogFragment(context, total, current);
@@ -302,7 +303,12 @@ public class InverterUpdataManager {
                     }
                     showUpdataSuccess(context);
                 }
-            });
+            };
+            if (ModbusUtil.getLocalDebugMode() == ModbusUtil.USB_WIFI) {
+                fileUpdataSend = new FileSendToDataLoger03(context, updataFile, listeners);
+            } else {
+                fileUpdataSend = new FileSendToDataLoger05(context, updataFile, listeners);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -331,7 +337,7 @@ public class InverterUpdataManager {
             tvCancel.setOnClickListener(view12 -> {
                 fileUpdataSend.close();
                 dialogFragment.dialogDismiss();
-                dialogFragment=null;
+                dialogFragment = null;
             });
             dialogFragment = CircleDialogUtils.showCommentBodyView(context, view, "", ((FragmentActivity) context).getSupportFragmentManager(), view1 -> {
             }, Gravity.CENTER, 0.8f, 0.5f, false);

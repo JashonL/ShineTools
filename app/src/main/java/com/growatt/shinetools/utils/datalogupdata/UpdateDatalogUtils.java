@@ -297,22 +297,26 @@ public class UpdateDatalogUtils {
             branchBuf1.flip();
             byteBufferList.add(ByteBuffer.wrap(branchBuf1.array()));
 
+
+            //3.将剩余数据分包
+            byte[] dataByte = Arrays.copyOfRange(fileByte, 20, fileByte.length);
+
             // 5.获取文件分包次数
-            int count = ((fileByte.length % INPUT_LENGTH_256) == 0) ? (fileByte.length / INPUT_LENGTH_256)
-                    : (fileByte.length / INPUT_LENGTH_256 + 1);
+            int count = ((dataByte.length % INPUT_LENGTH_1024) == 0) ? (dataByte.length / INPUT_LENGTH_1024)
+                    : (dataByte.length / INPUT_LENGTH_1024 + 1);
             System.out.println("..........................分包次数:" + count);
             // 4.将分包后数据转为ByteBuffer添加到List中
             for (int i = 0; i < count; i++) {
                 // 定义分包
                 ByteBuffer branchBuf = null;
                 if (i == count - 1) {
-                    int len = fileByte.length - (INPUT_LENGTH_256 * i);
+                    int len = dataByte.length - (INPUT_LENGTH_1024 * i);
                     branchBuf = ByteBuffer.allocate(len);
-                    branchBuf.put(fileByte, INPUT_LENGTH_256 * i, len);
+                    branchBuf.put(dataByte, INPUT_LENGTH_1024 * i, len);
                 } else {
-                    branchBuf = ByteBuffer.allocate(INPUT_LENGTH_256);
-                    branchBuf.put(fileByte, INPUT_LENGTH_256 * i,
-                            INPUT_LENGTH_256);
+                    branchBuf = ByteBuffer.allocate(INPUT_LENGTH_1024);
+                    branchBuf.put(dataByte, INPUT_LENGTH_1024 * i,
+                            INPUT_LENGTH_1024);
                 }
                 branchBuf.flip();
                 // 5.获取分包的crc16并整合分包

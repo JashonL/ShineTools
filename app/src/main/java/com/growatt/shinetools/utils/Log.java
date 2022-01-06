@@ -5,7 +5,7 @@ public class Log {
      * isPrint: print switch, true will print. false not print
      */
     public static boolean isPrint = true;
-    private static String defaultTag = "shinetools";
+    private static String defaultTag = "shinetools_log";
 
     private Log() {}
 

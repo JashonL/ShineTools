@@ -385,6 +385,7 @@ public class DatalogUpdataActivity extends BaseActivity {
                 int statusCode = bean.getStatusCode();
                 if (statusCode == 1) {
                     MyToastUtils.toast(R.string.android_key3129);
+                    return;
                 }
                 List<DatalogResponBean.ParamBean> paramBeanList = bean.getParamBeanList();
                 for (int i = 0; i < paramBeanList.size(); i++) {

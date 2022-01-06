@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.growatt.shinetools.modbusbox.ModbusUtil.AP_MODE;
+
 public class DatalogApUtil {
 
     //获取采集器信息命令
@@ -426,32 +428,44 @@ public class DatalogApUtil {
      * @return
      */
     public static boolean checkData(byte[] bytes) throws Exception {
-        try {
+        if (ModbusUtil.getLocalDebugMode()== AP_MODE){
+            try {
+                if (bytes == null) return false;
+                int len = bytes.length;
+                if (len > 6) {
+                    //返回数据长度
+                    int receiveLen = byte2Int(new byte[]{bytes[4], bytes[5]});
+                    if (receiveLen != len - 8) {
+                        return false;
+                    }
+                    //crc校验
+                    //获取crc效验
+                    byte crcL = bytes[bytes.length - 1];
+                    byte crcH = bytes[bytes.length - 2];
+
+                    //获取CRC之外的数据
+                    byte[] originalByte = Arrays.copyOfRange(bytes, 0, bytes.length - 2);
+                    int crc = CRC16.calcCrc16(originalByte);
+                    byte[] crcBytes = int2Byte(crc);
+                    return crcBytes[0] == crcH && crcBytes[1] == crcL;
+
+                }
+                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }else {//03只验证长度
             if (bytes == null) return false;
             int len = bytes.length;
             if (len > 6) {
                 //返回数据长度
                 int receiveLen = byte2Int(new byte[]{bytes[4], bytes[5]});
-                if (receiveLen != len - 8) {
-                    return false;
-                }
-                //crc校验
-                //获取crc效验
-                byte crcL = bytes[bytes.length - 1];
-                byte crcH = bytes[bytes.length - 2];
-
-                //获取CRC之外的数据
-                byte[] originalByte = Arrays.copyOfRange(bytes, 0, bytes.length - 2);
-                int crc = CRC16.calcCrc16(originalByte);
-                byte[] crcBytes = int2Byte(crc);
-                return crcBytes[0] == crcH && crcBytes[1] == crcL;
-
+                return receiveLen == len - 6;
             }
             return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
         }
+
     }
 
 

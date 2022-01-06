@@ -1,14 +1,14 @@
 package com.growatt.shinetools.modbusbox;
 
 
-
-
 import com.growatt.shinetools.modbusbox.bean.DatalogResponBean;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.growatt.shinetools.modbusbox.ModbusUtil.AP_MODE;
 
 public class DataLogApDataParseUtil {
 
@@ -59,9 +59,16 @@ public class DataLogApDataParseUtil {
             byte[] bs = new byte[len - 8];
             System.arraycopy(bytes, 8, bs, 0, len - 8);
             Log.d(CommenUtils.bytesToHexString(bytes));
-            byte[] noCrc=new byte[bs.length-2];
-            System.arraycopy(bs, 0, noCrc, 0, noCrc.length);
-            return noCrc;
+            if (ModbusUtil.getLocalDebugMode()== AP_MODE){
+                byte[] noCrc=new byte[bs.length-2];
+                System.arraycopy(bs, 0, noCrc, 0, noCrc.length);
+                return noCrc;
+            }else {
+                byte[] noCrc=new byte[bs.length];
+                System.arraycopy(bs, 0, noCrc, 0, noCrc.length);
+                return noCrc;
+            }
+
         }
         return bytes;
     }
@@ -79,7 +86,11 @@ public class DataLogApDataParseUtil {
             bean = parserfun0x18(bytes);
             bean.setFuncode(DatalogApUtil.DATALOG_GETDATA_0X18);
         } else if (type == DatalogApUtil.DATALOG_GETDATA_0X19) {
-            bean = parserfun0x19(bytes);
+            if (ModbusUtil.USB_WIFI==ModbusUtil.getLocalDebugMode()){
+                bean = parserfun0x19_03(bytes);
+            }else {
+                bean = parserfun0x19_05(bytes);
+            }
             bean.setFuncode(DatalogApUtil.DATALOG_GETDATA_0X19);
         } else {
             bean = parserfun0x26(bytes);
@@ -96,7 +107,7 @@ public class DataLogApDataParseUtil {
      * @return
      */
 
-    public static DatalogResponBean parserfun0x19(byte[] bytes) {
+    public static DatalogResponBean parserfun0x19_05(byte[] bytes) {
         if (bytes == null || bytes.length < 13) return null;
         DatalogResponBean bean = new DatalogResponBean();
         //设备序列号10个字节
@@ -104,19 +115,19 @@ public class DataLogApDataParseUtil {
         System.arraycopy(bytes, 0, serialNumByte, 0, serialNumByte.length);
         String dataLogSerial = CommenUtils.ByteToString(serialNumByte);
         bean.setDatalogSerial(dataLogSerial);
-        Log.d("设备序列号：" + dataLogSerial);
+        Log.i("设备序列号：" + dataLogSerial);
         //参数编号个数2个字节
         byte[] paramNumByte = new byte[2];
         System.arraycopy(bytes, serialNumByte.length, paramNumByte, 0, paramNumByte.length);
         int paramNum = bytes2Int(paramNumByte);
         bean.setParamNum(paramNum);
-        Log.d("参数编号个数：" + paramNum);
+        Log.i("参数编号个数：" + paramNum);
         //状态码1个字节
         byte[] statusCodeByte = new byte[1];
         System.arraycopy(bytes, serialNumByte.length + paramNumByte.length, statusCodeByte, 0, statusCodeByte.length);
         int statusCode = statusCodeByte[0];
         bean.setStatusCode(statusCode);
-        Log.d("状态码：" + statusCode);
+        Log.i("状态码：" + statusCode);
         //参数编号对应的数据
         byte[] datas = new byte[bytes.length - 13];
         System.arraycopy(bytes, serialNumByte.length + paramNumByte.length + statusCodeByte.length, datas, 0, datas.length);
@@ -163,6 +174,48 @@ public class DataLogApDataParseUtil {
     }
 
 
+
+    public static DatalogResponBean parserfun0x19_03(byte[] bytes) {
+        if (bytes == null || bytes.length < 13) return null;
+        DatalogResponBean bean = new DatalogResponBean();
+        //设备序列号10个字节
+        byte[] serialNumByte = new byte[10];
+        System.arraycopy(bytes, 0, serialNumByte, 0, serialNumByte.length);
+        String dataLogSerial = CommenUtils.ByteToString(serialNumByte);
+        bean.setDatalogSerial(dataLogSerial);
+        Log.i("设备序列号：" + dataLogSerial);
+        //参数编号2个字节
+        byte[] paramNumByte = new byte[2];
+        System.arraycopy(bytes, serialNumByte.length, paramNumByte, 0, paramNumByte.length);
+        int paramNum = bytes2Int(paramNumByte);
+        bean.setParamNum(paramNum);
+        Log.i("参数编号：" + paramNum);
+
+        //参数数据的长度2个字节
+        byte[] lenByte = new byte[2];
+        System.arraycopy(bytes, serialNumByte.length + paramNumByte.length, lenByte, 0, lenByte.length);
+        int len = bytes2Int(lenByte);
+        bean.setLen(len);
+        Log.i("参数编号：" + len);
+
+
+        //参数有效数据 根据实际计算
+        byte[] datas = new byte[bytes.length - 14];
+        System.arraycopy(bytes, serialNumByte.length + paramNumByte.length+lenByte.length, datas, 0, datas.length);
+        int statusCode =0;
+        if (datas.length==1){
+            statusCode=datas[0];
+        }else if (datas.length==2){
+            statusCode=bytes2Int(datas);
+        }
+
+        bean.setValue(statusCode);
+        Log.i("状态码：" + statusCode);
+        return bean;
+    }
+
+
+
     /**
      * 解析0x18应答
      *
@@ -178,19 +231,19 @@ public class DataLogApDataParseUtil {
         System.arraycopy(bytes, 0, serialNumByte, 0, serialNumByte.length);
         String dataLogSerial = CommenUtils.ByteToString(serialNumByte);
         bean.setDatalogSerial(dataLogSerial);
-        Log.d("设备序列号：" + dataLogSerial);
+        Log.i("设备序列号：" + dataLogSerial);
         //参数编号个数2个字节
         byte[] paramNumByte = new byte[2];
         System.arraycopy(bytes, serialNumByte.length, paramNumByte, 0, paramNumByte.length);
         int paramNum = bytes2Int(paramNumByte);
         bean.setParamNum(paramNum);
-        Log.d("参数编号个数：" + paramNum);
+        Log.i("参数编号或编号个数：" + paramNum);
         //状态码1个字节
         byte[] statusCodeByte = new byte[1];
         System.arraycopy(bytes, serialNumByte.length + paramNumByte.length, statusCodeByte, 0, statusCodeByte.length);
         int statusCode = statusCodeByte[0];
         bean.setStatusCode(statusCode);
-        Log.d("状态码：" + statusCode);
+        Log.i("状态码：" + statusCode);
         return bean;
     }
 
@@ -210,7 +263,7 @@ public class DataLogApDataParseUtil {
         System.arraycopy(bytes, 0, serialNumByte, 0, serialNumByte.length);
         String dataLogSerial = CommenUtils.ByteToString(serialNumByte);
         bean.setDatalogSerial(dataLogSerial);
-        Log.d("设备序列号：" + dataLogSerial);
+        Log.i("设备序列号：" + dataLogSerial);
 
 
         byte[] datas = new byte[bytes.length - 10];
@@ -222,18 +275,18 @@ public class DataLogApDataParseUtil {
         byte[] totalByte = new byte[2];
         System.arraycopy(datas, 0, totalByte, 0, totalByte.length);
         int total = bytes2Int(totalByte);
-        Log.d("文件数据分包总数量：" + total);
+        Log.i("文件数据分包总数量：" + total);
         //当前数据包编号
         byte[] numByte = new byte[2];
         System.arraycopy(datas,  totalByte.length, numByte, 0, numByte.length);
         int num = bytes2Int(numByte);
-        Log.d("当前数据包编号：" + num);
+        Log.i("当前数据包编号：" + num);
         //当前数据包接收状态码
         //状态码1个字节
         byte[] statusCodeByte = new byte[1];
         System.arraycopy(datas,totalByte.length+numByte.length , statusCodeByte, 0, statusCodeByte.length);
         int statusCode = statusCodeByte[0];
-        Log.d("状态码：" + statusCode);
+        Log.i("状态码：" + statusCode);
 
         DatalogResponBean.ParamBean paramBean = new DatalogResponBean.ParamBean();
         paramBean.setTotalLength(total);
@@ -254,5 +307,20 @@ public class DataLogApDataParseUtil {
         return result;
     }
 
+
+
+    public static byte[] getDesBytes(byte[] bytes){
+        if (ModbusUtil.getLocalDebugMode()== AP_MODE){
+            byte[] bytes1 = new byte[bytes.length];
+            try {
+                bytes1 = DatalogApUtil.desCode(bytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return  bytes1;
+        }else {
+            return bytes;
+        }
+    }
 
 }
