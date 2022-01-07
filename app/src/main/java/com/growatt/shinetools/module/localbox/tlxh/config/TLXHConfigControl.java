@@ -744,7 +744,7 @@ public class TLXHConfigControl {
         float[] multiples = new float[]{
                 1, 1, 1, 1, 1, 1, 1
         };
-        String[] units = new String[]{"W", "min", "min", "V", "V", "V", "V"};
+        String[] units = new String[]{"V", "min", "min", "V", "V", "V", "V"};
         String[] hints = new String[]{
                 tips3, tips4, tips4, tips, tips1, tips, tips1
         };
@@ -853,7 +853,7 @@ public class TLXHConfigControl {
                 "", "", "", "", "", "", "", "", "", "", "", ""
         };
         float[] multiples = new float[]{
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+                0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f
         };
         String[] units = new String[]{"", "", "", "", "", "", "", "", "", "", "", "", ""};
         String[] hints = new String[]{
@@ -982,7 +982,7 @@ public class TLXHConfigControl {
                 "", "", "", "", "", "", "", "", "", "", "", ""
         };
         float[] multiples = new float[]{
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+                0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 20, 20, 20, 20, 20, 20
         };
         String[] units = new String[]{"V", "V", "V", "V", "V", "V", "ms", "ms", "ms", "ms", "ms", "ms", "ms"};
         String[] hints = new String[]{
@@ -1269,7 +1269,7 @@ public class TLXHConfigControl {
         };
 
         int[] itemTypes = new int[]{
-                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_SWITCH,
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
@@ -1307,7 +1307,7 @@ public class TLXHConfigControl {
                 {3, 22, 22},//PF限值
         };
         int[][] funset = new int[][]{
-                {6, 89, -1},//运行PF为1
+                {6, 89, 0},//运行PF为1
                 {6, 88, 88},//感性载率
                 {6, 8, 8},//容性载率
                 {6, 8, 8},//容性PF

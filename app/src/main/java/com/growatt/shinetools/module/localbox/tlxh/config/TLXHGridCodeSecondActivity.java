@@ -493,7 +493,7 @@ public class TLXHGridCodeSecondActivity extends BaseActivity implements BaseQuic
         ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
         if (pos == 0) {
-            setSelectItem(pos, title);
+//            setSelectItem(pos, title);
         } else {
             toOhterSetting = true;
             Intent intent = new Intent(this, TLXhGridCodeThirdActivity.class);
@@ -669,7 +669,15 @@ public class TLXHGridCodeSecondActivity extends BaseActivity implements BaseQuic
 
     @Override
     public void oncheck(boolean check, int position) {
-
+        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
+        int value = check ? 1 : 0;
+        usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
+        usParamsetAdapter.notifyDataSetChanged();
+        type = 1;
+        LogUtil.i("-------------------设置"+bean.getTitle()+"----------------");
+        int[] funSet = bean.getFunSet();
+        funSet[2]=value;
+        manager.sendMsg(funSet);
     }
 
 

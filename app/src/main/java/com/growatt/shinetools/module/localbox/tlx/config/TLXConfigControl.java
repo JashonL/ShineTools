@@ -123,7 +123,7 @@ public class TLXConfigControl {
         };
 
         int[] itemTypes = new int[]{
-                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_SWITCH,
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
@@ -161,7 +161,7 @@ public class TLXConfigControl {
                 {3, 22, 22},//PF限值
         };
         int[][] funset = new int[][]{
-                {6, 89, -1},//运行PF为1
+                {6, 89, 0},//运行PF为1
                 {6, 88, 88},//感性载率
                 {6, 8, 8},//容性载率
                 {6, 8, 8},//容性PF
@@ -1446,7 +1446,7 @@ public class TLXConfigControl {
         int[] itemTypes = new int[]{
                 UsSettingConstant.SETTING_TYPE_SELECT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
-                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_INPUT,
@@ -1473,8 +1473,8 @@ public class TLXConfigControl {
                 {3, 22, 22},//选择通信波特率
                 {3, 88, 88},//MODBUS版本
                 {3, 8, 8},//PV电压
-                {3, 8, 8},//逆变器模块
-                {3, 8, 8},//逆变器经纬度
+                {3, 2, 2},//逆变器模块
+                {3, 3, 3},//逆变器经纬度
                 {4, 0, 99},//修改总发电量
                 {3, 22, 22},//设置Model
 

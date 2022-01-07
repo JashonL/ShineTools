@@ -10,9 +10,6 @@ import com.growatt.shinetools.modbusbox.bean.DatalogAPSetParam;
 import com.growatt.shinetools.modbusbox.bean.DatalogResponBean;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
-import com.growatt.shinetools.utils.CommenUtils;
-import com.growatt.shinetools.utils.Log;
-import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.ModBusFunUtils18;
 import com.growatt.shinetools.utils.ModBusFunUtils19;
 import com.growatt.shinetools.utils.ModBusFunUtils26;
@@ -140,7 +137,7 @@ public class FileSendToDataLoger03 implements ConnectHandler, ISendInterface {
         updataListeners.preparing(fileData.size(), fileIndex);
         curBuffer = new ArrayList<>(fileData.get(fileIndex));
         step = 1;
-        LogUtil.i("1.发送0x18命令");
+//        LogUtil.i("1.发送0x18命令");
         //判断文件的类型
         File file = updataFile.get(fileIndex);
         String value = "1#type";
@@ -161,7 +158,7 @@ public class FileSendToDataLoger03 implements ConnectHandler, ISendInterface {
 
     @Override
     public void receveByteMessage(byte[] bytes) {
-        Log.i("服务器返回数据：============" + CommenUtils.bytesToHexString(bytes));
+//        Log.i("服务器返回数据：============" + CommenUtils.bytesToHexString(bytes));
         try {
             boolean isCheck = DatalogApUtil.checkData(bytes);
             if (isCheck) {
@@ -174,10 +171,10 @@ public class FileSendToDataLoger03 implements ConnectHandler, ISendInterface {
                     MyToastUtils.toast(R.string.android_key7);
                     return;
                 }
-                Log.i("去除头部包头" + CommenUtils.bytesToHexString(removePro));
+//                Log.i("去除头部包头" + CommenUtils.bytesToHexString(removePro));
                 //2.解密
                 byte[] desBytes = DataLogApDataParseUtil.getDesBytes(removePro);
-                Log.i("解密" + CommenUtils.bytesToHexString(desBytes));
+//                Log.i("解密" + CommenUtils.bytesToHexString(desBytes));
                 //3.解析数据
                 parserData(type, desBytes);
             }
@@ -265,7 +262,7 @@ public class FileSendToDataLoger03 implements ConnectHandler, ISendInterface {
                 }
                 //升级进度
                 int progress = bean.getValue();
-                Log.i("返回进度");
+//                Log.i("返回进度");
                 if (progress == 100) {//成功
                     step_send_num = 0;
                     //判断文件是否已经下发完成
@@ -308,7 +305,7 @@ public class FileSendToDataLoger03 implements ConnectHandler, ISendInterface {
 
 
     private void senDataToLoger(int total) throws Exception {
-        Log.i("下发文件：" + "总数量：" + total + "当前第几包：" + currNum);
+//        Log.i("下发文件：" + "总数量：" + total + "当前第几包：" + currNum);
         step = 2;
         int progress = (currNum + 1) * 100 / curBuffer.size();
         updataListeners.sendFileProgress(fileData.size(), fileIndex, progress);
@@ -330,7 +327,7 @@ public class FileSendToDataLoger03 implements ConnectHandler, ISendInterface {
 
     //1.发送19指令 参数编号 80-80 查询升级进度
     private void checkProgress(int type) {
-        Log.i("查询进度"+type);
+//        Log.i("查询进度"+type);
         step_send_num++;
         step = 3;
         int[] values = {80, 80};

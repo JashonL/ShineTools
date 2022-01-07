@@ -53,7 +53,7 @@ public class ModBusFunUtils19 {
         int datalen = 1 + 1 + 10 + length;
         byte[] mBytesBapLen = int2Byte(datalen);
         comm.setMbap_len(mBytesBapLen);
-        Log.d("报文头长度：" + datalen + "16进制:" + CommenUtils.bytesToHexString(mBytesBapLen));
+//        Log.d("报文头长度：" + datalen + "16进制:" + CommenUtils.bytesToHexString(mBytesBapLen));
         //4.设备地址 默认01
 
 
@@ -76,7 +76,7 @@ public class ModBusFunUtils19 {
         comm.setData(allDataBytes);
 
         //如果是USBWIFI进入的话  直接返回数据
-        Log.i("发送原始命令：" + CommenUtils.bytesToHexString(comm.getBytes()));
+//        Log.i("发送原始命令：" + CommenUtils.bytesToHexString(comm.getBytes()));
         //获得整体发送数据
         byte[] datas = comm.getBytes();
         return datas;
@@ -126,7 +126,7 @@ public class ModBusFunUtils19 {
         int datalen = 1 + 1 + 10 + 2+ length;
         byte[] mBytesBapLen = int2Byte(datalen);
         comm.setMbap_len(mBytesBapLen);
-        Log.d("报文头长度：" + datalen + "16进制:" + CommenUtils.bytesToHexString(mBytesBapLen));
+//        Log.d("报文头长度：" + datalen + "16进制:" + CommenUtils.bytesToHexString(mBytesBapLen));
         //4.设备地址 默认01
 
 
@@ -151,7 +151,7 @@ public class ModBusFunUtils19 {
         System.arraycopy(funNumByte, 0, allDataBytes, serialBytes.length, funNumByte.length);
         System.arraycopy(modbytes, 0, allDataBytes, serialBytes.length + funNumByte.length, modbytes.length);
         comm.setData(allDataBytes);
-        Log.i("发送原始命令：" + CommenUtils.bytesToHexString(comm.getBytes()));
+//        Log.i("发送原始命令：" + CommenUtils.bytesToHexString(comm.getBytes()));
         //如果是USBWIFI进入的话  直接返回数据
         //对数据加密
         byte[] encryptedData = DatalogApUtil.getEnCode(comm.getBytes());

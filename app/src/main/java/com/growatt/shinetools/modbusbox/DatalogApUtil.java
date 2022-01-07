@@ -83,7 +83,7 @@ public class DatalogApUtil {
         int datalen = 1 + 1 + 10 + 2 + valus.length * 2;
         byte[] mBytesBapLen = int2Byte(datalen);
         msgBean.setMbap_len(mBytesBapLen);
-        Log.d("报文头长度：" + datalen + "16进制:" + CommenUtils.bytesToHexString(mBytesBapLen));
+//        Log.d("报文头长度：" + datalen + "16进制:" + CommenUtils.bytesToHexString(mBytesBapLen));
 
         //功能码
         msgBean.setFun_code(fun);
@@ -109,7 +109,7 @@ public class DatalogApUtil {
         System.arraycopy(funNumByte, 0, allDataBytes, serialBytes.length, funNumByte.length);
         System.arraycopy(dataByte, 0, allDataBytes, serialBytes.length + funNumByte.length, dataByte.length);
         msgBean.setData(allDataBytes);
-        Log.i("发送原始命令：" + CommenUtils.bytesToHexString(msgBean.getBytes()));
+//        Log.i("发送原始命令：" + CommenUtils.bytesToHexString(msgBean.getBytes()));
 
         //对数据加密
         byte[] encryptedData = getEnCode(msgBean.getBytes());
@@ -118,7 +118,7 @@ public class DatalogApUtil {
         int crc = CRC16.calcCrc16(encryptedData);
         byte[] crcBytes = int2Byte(crc);
         msgBean.setCrcData(crcBytes);
-        Log.i("发送获取命令：" + CommenUtils.bytesToHexString(msgBean.getBytesCRC()));
+//        Log.i("发送获取命令：" + CommenUtils.bytesToHexString(msgBean.getBytesCRC()));
         return msgBean.getBytesCRC();
     }
 
@@ -177,7 +177,7 @@ public class DatalogApUtil {
         System.arraycopy(lengthByte, 0, allDataBytes, serialBytes.length + sizeByte.length, lengthByte.length);
         System.arraycopy(bytes, 0, allDataBytes, serialBytes.length + sizeByte.length + lengthByte.length, bytes.length);
         msgBean.setData(allDataBytes);
-        Log.i("发送原始命令：" + CommenUtils.bytesToHexString(msgBean.getBytes()));
+//        Log.i("发送原始命令：" + CommenUtils.bytesToHexString(msgBean.getBytes()));
 
         //对数据加密
         byte[] encryptedData = getEnCode(msgBean.getBytes());
@@ -186,7 +186,7 @@ public class DatalogApUtil {
         int crc = CRC16.calcCrc16(encryptedData);
         byte[] crcBytes = int2Byte(crc);
         msgBean.setCrcData(crcBytes);
-        Log.i("发送获取命令：" + CommenUtils.bytesToHexString(msgBean.getBytesCRC()));
+//        Log.i("发送获取命令：" + CommenUtils.bytesToHexString(msgBean.getBytesCRC()));
 
         return msgBean.getBytesCRC();
     }
@@ -210,7 +210,7 @@ public class DatalogApUtil {
         int datalen = 1 + 1 + 10 + 2  + length;
         byte[] mBytesBapLen = int2Byte(datalen);
         msgBean.setMbap_len(mBytesBapLen);
-        Log.d("报文头长度：" + datalen + "16进制:" + CommenUtils.bytesToHexString(mBytesBapLen));
+//        Log.d("报文头长度：" + datalen + "16进制:" + CommenUtils.bytesToHexString(mBytesBapLen));
         //功能码
         msgBean.setFun_code(fun);
 
@@ -232,7 +232,7 @@ public class DatalogApUtil {
         System.arraycopy(currNumBytes, 0, allDataBytes, serialBytes.length + lengthByte.length+totalBytes.length, currNumBytes.length);
         System.arraycopy(valus, 0, allDataBytes, serialBytes.length + lengthByte.length+totalBytes.length+currNumBytes.length, valus.length);
         msgBean.setData(allDataBytes);
-        Log.i("发送原始命令：" + CommenUtils.bytesToHexString(msgBean.getBytes()));
+//        Log.i("发送原始命令：" + CommenUtils.bytesToHexString(msgBean.getBytes()));
 
         //对数据加密
         byte[] encryptedData = getEnCode(msgBean.getBytes());
@@ -241,7 +241,7 @@ public class DatalogApUtil {
         int crc = CRC16.calcCrc16(encryptedData);
         byte[] crcBytes = int2Byte(crc);
         msgBean.setCrcData(crcBytes);
-        Log.i("发送获取命令：" + CommenUtils.bytesToHexString(msgBean.getBytesCRC()));
+//        Log.i("发送获取命令：" + CommenUtils.bytesToHexString(msgBean.getBytesCRC()));
         return msgBean.getBytesCRC();
     }
 

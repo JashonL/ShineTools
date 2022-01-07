@@ -85,7 +85,7 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
                 setInputValue(position, title, hint, mul);
                 break;
             case 2:
-                setInputValue(position, title, hint, mul);
+//                setInputValue(position, title, hint, mul);
                 break;
             case 3:
                 OssUtils.circlerDialog(TlxBasicSettingActivity.this, note1, -1, false);
