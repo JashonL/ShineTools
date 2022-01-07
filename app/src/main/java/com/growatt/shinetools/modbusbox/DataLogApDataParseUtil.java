@@ -81,9 +81,13 @@ public class DataLogApDataParseUtil {
      */
     public static DatalogResponBean paserData(byte type, byte[] bytes) throws Exception {
         if (bytes == null || bytes.length < 8) return null;
-        DatalogResponBean bean;
+        DatalogResponBean bean=null;
         if (type == DatalogApUtil.DATALOG_GETDATA_0X18) {
-            bean = parserfun0x18(bytes);
+            if (ModbusUtil.USB_WIFI==ModbusUtil.getLocalDebugMode()){
+                bean = parserfun0x18_03(bytes);
+            }else {
+                bean = parserfun0x18_05(bytes);
+            }
             bean.setFuncode(DatalogApUtil.DATALOG_GETDATA_0X18);
         } else if (type == DatalogApUtil.DATALOG_GETDATA_0X19) {
             if (ModbusUtil.USB_WIFI==ModbusUtil.getLocalDebugMode()){
@@ -92,7 +96,7 @@ public class DataLogApDataParseUtil {
                 bean = parserfun0x19_05(bytes);
             }
             bean.setFuncode(DatalogApUtil.DATALOG_GETDATA_0X19);
-        } else {
+        } else if (type == DatalogApUtil.DATALOG_GETDATA_0X26){
             bean = parserfun0x26(bytes);
             bean.setFuncode(DatalogApUtil.DATALOG_GETDATA_0X26);
         }
@@ -141,12 +145,12 @@ public class DataLogApDataParseUtil {
             byte[] numByte = new byte[2];
             System.arraycopy(datas, allLenth, numByte, 0, numByte.length);
             int num = bytes2Int(numByte);
-            Log.d("参数编号：" + num);
+            Log.i("参数编号：" + num);
             //参数长度2个字节
             byte[] lengthByte = new byte[2];
             System.arraycopy(datas, allLenth + numByte.length, lengthByte, 0, lengthByte.length);
             int length = bytes2Int(lengthByte);
-            Log.d("数据长度：" + length);
+            Log.i("数据长度：" + length);
             //数据
             byte[] valueByte = new byte[length];
             System.arraycopy(datas, allLenth + numByte.length + lengthByte.length, valueByte, 0, length);
@@ -157,12 +161,20 @@ public class DataLogApDataParseUtil {
                  value = CommenUtils.ByteToString(valueByte);
             }*/
             value = CommenUtils.ByteToString(valueByte);
-            Log.d("对应数据：" + value);
+
+            int valueI =0;
+            if (valueByte.length==1){
+                valueI=valueByte[0];
+            }else if (valueByte.length==2){
+                valueI=bytes2Int(valueByte);
+            }
+            Log.i("对应数据：" + valueI);
 
             DatalogResponBean.ParamBean paramBean = new DatalogResponBean.ParamBean();
             paramBean.setLength(length);
             paramBean.setNum(num);
             paramBean.setValue(value);
+            paramBean.setValueInter(valueI);
             datalist.add(paramBean);
 
 
@@ -223,7 +235,7 @@ public class DataLogApDataParseUtil {
      * @return
      */
 
-    public static DatalogResponBean parserfun0x18(byte[] bytes) {
+    public static DatalogResponBean parserfun0x18_03(byte[] bytes) {
         if (bytes == null || bytes.length < 13) return null;
         DatalogResponBean bean = new DatalogResponBean();
         //设备序列号10个字节
@@ -238,6 +250,41 @@ public class DataLogApDataParseUtil {
         int paramNum = bytes2Int(paramNumByte);
         bean.setParamNum(paramNum);
         Log.i("参数编号或编号个数：" + paramNum);
+        //状态码1个字节
+        byte[] statusCodeByte = new byte[1];
+        System.arraycopy(bytes, serialNumByte.length + paramNumByte.length, statusCodeByte, 0, statusCodeByte.length);
+        int statusCode = statusCodeByte[0];
+        bean.setStatusCode(statusCode);
+        Log.i("状态码：" + statusCode);
+        return bean;
+    }
+
+
+
+
+
+    /**
+     * 解析0x18应答
+     *
+     * @param bytes
+     * @return
+     */
+
+    public static DatalogResponBean parserfun0x18_05(byte[] bytes) {
+        if (bytes == null || bytes.length < 13) return null;
+        DatalogResponBean bean = new DatalogResponBean();
+        //设备序列号10个字节
+        byte[] serialNumByte = new byte[10];
+        System.arraycopy(bytes, 0, serialNumByte, 0, serialNumByte.length);
+        String dataLogSerial = CommenUtils.ByteToString(serialNumByte);
+        bean.setDatalogSerial(dataLogSerial);
+        Log.i("设备序列号：" + dataLogSerial);
+        //参数编号个数2个字节
+        byte[] paramNumByte = new byte[2];
+        System.arraycopy(bytes, serialNumByte.length, paramNumByte, 0, paramNumByte.length);
+        int paramNum = bytes2Int(paramNumByte);
+        bean.setParamNum(paramNum);
+        Log.i("参数编号：" + paramNum);
         //状态码1个字节
         byte[] statusCodeByte = new byte[1];
         System.arraycopy(bytes, serialNumByte.length + paramNumByte.length, statusCodeByte, 0, statusCodeByte.length);

@@ -75,6 +75,8 @@ public class DatalogResponBean {
         private int length;
         //参数对应数据
         private String value;
+        //整型数据
+        private int valueInter;
 
         //文件数据分包总数量
         private int totalLength;
@@ -131,6 +133,14 @@ public class DatalogResponBean {
 
         public void setDataCode(int dataCode) {
             this.dataCode = dataCode;
+        }
+
+        public int getValueInter() {
+            return valueInter;
+        }
+
+        public void setValueInter(int valueInter) {
+            this.valueInter = valueInter;
         }
     }
 

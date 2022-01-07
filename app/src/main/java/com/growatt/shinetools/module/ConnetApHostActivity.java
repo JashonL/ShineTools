@@ -477,6 +477,7 @@ public class ConnetApHostActivity extends BaseActivity {
         try {
             //1.字节数组成bean
             DatalogResponBean bean = DataLogApDataParseUtil.paserData(type, bytes);
+            if (bean==null)return;
             if (bean.getFuncode() == DatalogApUtil.DATALOG_GETDATA_0X19) {
                 int statusCode = bean.getStatusCode();
                 if (statusCode == 1) {

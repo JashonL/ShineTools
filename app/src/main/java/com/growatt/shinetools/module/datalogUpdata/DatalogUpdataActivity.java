@@ -134,17 +134,17 @@ public class DatalogUpdataActivity extends BaseActivity {
                     break;
                 case SocketClientUtil.SOCKET_OPEN:
                     text = "连接成功";
-                    Log.d("liaojinsha", text);
+                    Log.i("liaojinsha", text);
                     DialogUtils.getInstance().showLoadingDialog(DatalogUpdataActivity.this);
                     break;
                 case SocketClientUtil.SOCKET_SEND_MSG:
                     text = "发送消息";
-                    Log.d("liaojinsha", text);
+                    Log.i("liaojinsha", text);
                     break;
                 case SocketClientUtil.SOCKET_RECEIVE_MSG:
                     text = "回应字符串消息";
                     String receiString = (String) msg.obj;
-                    Log.d("liaojinsha", text + receiString);
+                    Log.i("liaojinsha", text + receiString);
                     break;
 
                 case SocketClientUtil.SOCKET_RECEIVE_BYTES:
@@ -165,10 +165,10 @@ public class DatalogUpdataActivity extends BaseActivity {
                                 MyToastUtils.toast(R.string.android_key7);
                                 return;
                             }
-                            Log.d("去除头部包头" + CommenUtils.bytesToHexString(removePro));
+                            Log.i("去除头部包头" + CommenUtils.bytesToHexString(removePro));
                             //2.解密
                             byte[] bytes = DatalogApUtil.desCode(removePro);
-                            Log.d("解密" + CommenUtils.bytesToHexString(bytes));
+                            Log.i("解密" + CommenUtils.bytesToHexString(bytes));
                             //3.解析数据
                             parserData(type, bytes);
                         }
@@ -177,14 +177,14 @@ public class DatalogUpdataActivity extends BaseActivity {
                         e.printStackTrace();
                     }
 
-                    Log.d("liaojinsha", text);
+                    Log.i("liaojinsha", text);
                     break;
                 case SocketClientUtil.SOCKET_CONNECT:
                     text = "socket已连接";
-                    Log.d("liaojinsha", text);
+                    Log.i("liaojinsha", text);
                     break;
                 case SocketClientUtil.SOCKET_SEND:
-                    Log.d("liaojinsha", "socket已连接发送消息");
+                    Log.i("liaojinsha", "socket已连接发送消息");
 //                    this.postDelayed(() -> sendCmdConnect(), 3500);
                     //获取设备的类型和版本
                     sendCmdConnect();
@@ -290,6 +290,7 @@ public class DatalogUpdataActivity extends BaseActivity {
         try {
             //1.字节数组成bean
             DatalogResponBean bean = DataLogApDataParseUtil.paserData(type, bytes);
+            if (bean==null)return;
             if (bean.getFuncode() == DatalogApUtil.DATALOG_GETDATA_0X26) {
                 List<DatalogResponBean.ParamBean> paramBeanList = bean.getParamBeanList();
                 for (int i = 0; i < paramBeanList.size(); i++) {
@@ -353,7 +354,7 @@ public class DatalogUpdataActivity extends BaseActivity {
                             tvTips.setText(R.string.android_key2934);
                             tvTips2.setText(R.string.android_key2935);
                             int progress = (currNum + 1) * 100 / (file.size());
-                            Log.d("当前进度........当前包/总数" + currNum + "/" + file.size());
+                            Log.i("当前进度........当前包/总数" + currNum + "/" + file.size());
                             bpProgress.setProgress(progress);
                             tvProgress.setText(progress + "%");
                             errornum = 0;
@@ -453,14 +454,14 @@ public class DatalogUpdataActivity extends BaseActivity {
 
 
     private void getFilePath() {
-        Log.d("获取文件类型" + deviceType);
+        Log.i("获取文件类型" + deviceType);
         if (pathBean == null) return;
         //判断采集器类型
         if (String.valueOf(WifiTypeEnum.SHINE_WIFI_X).equals(deviceType)) {
 //            String xVersion = SharedPreferencesUnit.getInstance(this).get(Constant.SHINE_X_VERSION);
             String xVersion = pathBean.getShineX_version();
             int equels = xVersion.compareTo(version);
-            Log.d("当前文件版本" + xVersion + "文件对比结果：" + equels);
+            Log.i("当前文件版本" + xVersion + "文件对比结果：" + equels);
             if (equels > 0) {
                 if ("1".equals(fotaFileType)) {
 //                    path = SharedPreferencesUnit.getInstance(this).get(Constant.SHINE_X_PATH_1);
@@ -491,9 +492,9 @@ public class DatalogUpdataActivity extends BaseActivity {
         }
         //去升级
         try {
-            Log.d("文件包的路径" + path);
+            Log.i("文件包的路径" + path);
             file = UpdateDatalogUtils.getFileByFis(path);
-            Log.d("文件包的数量" + file.size());
+            Log.i("文件包的数量" + file.size());
         } catch (IOException e) {
             e.printStackTrace();
         }

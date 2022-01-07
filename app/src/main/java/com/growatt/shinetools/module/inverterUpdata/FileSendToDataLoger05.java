@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * 使用USB WIFI 升级
- *
+ * <p>
  * 采集器升级流程
  * 1、设置下发文件类型；格式X#typeXX#URL
  * X：标志本次设置升级是否马上起效（预留作用）
@@ -43,7 +43,7 @@ import java.util.List;
  * 2、发送升级文件包：服务器以0x26开始文件传输-->完成后；按原有升级流程采集器.
  */
 
-public class FileSendToDataLoger05 implements ConnectHandler,ISendInterface {
+public class FileSendToDataLoger05 implements ConnectHandler, ISendInterface {
     private SocketManager manager;
     private Context context;
     //需要下发的文件列表
@@ -65,6 +65,7 @@ public class FileSendToDataLoger05 implements ConnectHandler,ISendInterface {
     //发包错误的次数
     private int errornum = 0;
 
+    private boolean isUpdating = false;
 
 
     public FileSendToDataLoger05(Context context, List<File> updataFile, IUpdataListeners updataListeners) {
@@ -117,7 +118,10 @@ public class FileSendToDataLoger05 implements ConnectHandler,ISendInterface {
 
     @Override
     public void socketClose() {
-
+        if (isUpdating){
+            String errMsg = context.getString(R.string.错误) + ":" + step;
+            updataListeners.updataFail(errMsg);
+        }
     }
 
     @Override
@@ -150,15 +154,16 @@ public class FileSendToDataLoger05 implements ConnectHandler,ISendInterface {
         bean.setLength(value.length());
         bean.setValue(value);
         ArrayList<DatalogAPSetParam> values = new ArrayList<>();
+        values.add(bean);
         byte[] bytes = ModBusFunUtils18.sendMsg05(values);
         manager.sendBytes(bytes);
-
+        isUpdating = true;
     }
 
 
     @Override
     public void receveByteMessage(byte[] bytes) {
-
+        Log.i("服务器返回数据：============" + CommenUtils.bytesToHexString(bytes));
         try {
             boolean isCheck = DatalogApUtil.checkData(bytes);
             if (isCheck) {
@@ -171,10 +176,10 @@ public class FileSendToDataLoger05 implements ConnectHandler,ISendInterface {
                     MyToastUtils.toast(R.string.android_key7);
                     return;
                 }
-                Log.d("去除头部包头" + CommenUtils.bytesToHexString(removePro));
+                Log.i("去除头部包头" + CommenUtils.bytesToHexString(removePro));
                 //2.解密
                 byte[] desBytes = DataLogApDataParseUtil.getDesBytes(removePro);
-                Log.d("解密" + CommenUtils.bytesToHexString(desBytes));
+                Log.i("解密" + CommenUtils.bytesToHexString(desBytes));
                 //3.解析数据
                 parserData(type, desBytes);
             }
@@ -206,14 +211,19 @@ public class FileSendToDataLoger05 implements ConnectHandler,ISendInterface {
                     switch (dataCode) {
                         case 0://成功,发送下一包
                             errornum = 0;
-                            if (dataNum != curBuffer.size() - 1) {
+                            if (dataNum < curBuffer.size() - 1) {
                                 currNum = dataNum + 1;
                                 int total = curBuffer.size();
                                 senDataToLoger(total);
 
                             } else {//最后一包
                                 //开始查询升级进度隔5秒钟查一次
-                                new Handler().postDelayed(this::checkProgress, 5000);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        checkProgress(1);
+                                    }
+                                },5000);
                             }
                             break;
                         case 1://接收异常，再次发送当前包
@@ -255,21 +265,21 @@ public class FileSendToDataLoger05 implements ConnectHandler,ISendInterface {
                     MyToastUtils.toast(R.string.android_key3129);
                     return;
                 }
-                List<DatalogResponBean.ParamBean> paramBeanList = bean.getParamBeanList();
-                //直接取第0个
-                DatalogResponBean.ParamBean paramBean = paramBeanList.get(0);
                 //升级进度
-                String value = paramBean.getValue();
-                int progress = Integer.parseInt(value);
+                List<DatalogResponBean.ParamBean> paramBeanList = bean.getParamBeanList();
+                if (paramBeanList==null||paramBeanList.size()<1)return;
+                DatalogResponBean.ParamBean paramBean = paramBeanList.get(0);
+                int progress = paramBean.getValueInter();
+                Log.i("返回进度");
                 if (progress == 100) {//成功
                     step_send_num = 0;
                     //判断文件是否已经下发完成
                     if (fileIndex < fileData.size() - 1) {
                         fileIndex++;
                         currNum = 0;
-                        //等待6秒钟发下一个文件
+                        //等待5秒钟发下一个文件
                         new Handler().postDelayed(this::sendComend, 5000);
-                    } else {//两个文件都发送完成
+                    } else {//发送完成
                         fileIndex = 0;
                         currNum = 0;
                         updataListeners.updataSuccess();
@@ -281,7 +291,12 @@ public class FileSendToDataLoger05 implements ConnectHandler,ISendInterface {
                     updataListeners.updataUpdataProgress(fileData.size(), fileIndex + 1, progress);
                     //隔5秒继续查询
                     //开始查询升级进度隔5秒钟查一次
-                    new Handler().postDelayed(this::checkProgress, 5000);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            checkProgress(2);
+                        }
+                    },5000);
                 } else {//失败
                     if (step_send_num > 10) {//查询10次  都失败的话就显示失败
                         String errMsg = context.getString(R.string.错误) + ":" + step;
@@ -298,7 +313,8 @@ public class FileSendToDataLoger05 implements ConnectHandler,ISendInterface {
 
 
     private void senDataToLoger(int total) throws Exception {
-        step=2;
+        Log.i("下发文件：" + "总数量：" + total + "当前第几包：" + currNum);
+        step = 2;
         int progress = (currNum + 1) * 100 / curBuffer.size();
         updataListeners.sendFileProgress(fileData.size(), fileIndex, progress);
         byte[] bytes = ModBusFunUtils26.sendMsg05(total, currNum, curBuffer.get(currNum).array());
@@ -312,21 +328,24 @@ public class FileSendToDataLoger05 implements ConnectHandler,ISendInterface {
         //初始化界面
         errornum = 0;
         String errMsg = context.getString(R.string.错误) + ":" + step;
+        isUpdating = false;
         updataListeners.updataFail(errMsg);
     }
 
 
-    //1.发送19指令 参数编号 80-80 查询升级进度
-    private void checkProgress() {
+    //1.发送19指令 参数编号 80 查询升级进度
+    private void checkProgress(int type) {
+        Log.i("查询进度"+type);
         step_send_num++;
-        step=3;
-        int[] values = {80, 80};
+        step = 3;
+        int[] values = {80};
         byte[] bytes = ModBusFunUtils19.sendMsg05(values);
         manager.sendBytes(bytes);
 
     }
 
     public void close() {
+        isUpdating = false;
         manager.disConnectSocket();
     }
 

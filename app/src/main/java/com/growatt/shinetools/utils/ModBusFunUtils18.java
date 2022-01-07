@@ -102,7 +102,7 @@ public class ModBusFunUtils18 {
         //数服协议封装
         byte[] numBytes = new byte[0];
         try {
-            numBytes = numberServerPro05(modbytes);
+            numBytes = numberServerPro05(modbytes,valus.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,7 +150,7 @@ public class ModBusFunUtils18 {
 
 
 
-    public static byte[] numberServerPro05(byte[] modbytes) throws Exception {
+    public static byte[] numberServerPro05(byte[] modbytes,int num) throws Exception {
         CommandRequest18 comm = new CommandRequest18();
 
         //1.报文编号 默认00 01
@@ -173,15 +173,22 @@ public class ModBusFunUtils18 {
         //6.数据区=采集器序列号+参数编号+参数长度+参数数据
         //6.1 采集器序列号
         byte[] serialBytes = "0000000000".getBytes();
-        //6.2 参数编号+参数长度+参数数据=serialBytes
+        //参数编号个数
+        int size = num;
+        byte[] sizeByte = int2Byte(size);
+        //设置数据长度
+        byte[] lengthByte = int2Byte(length);
+        //设置数据
 
         //7.数据拼接
-        int alllen = serialBytes.length + length;
+        int alllen = serialBytes.length + sizeByte.length + lengthByte.length + modbytes.length;
         byte[] allDataBytes = new byte[alllen];
         System.arraycopy(serialBytes, 0, allDataBytes, 0, serialBytes.length);
-        System.arraycopy(modbytes, 0, allDataBytes, serialBytes.length , modbytes.length);
-        comm.setData(allDataBytes);
-
+        System.arraycopy(sizeByte, 0, allDataBytes, serialBytes.length, sizeByte.length);
+        System.arraycopy(lengthByte, 0, allDataBytes, serialBytes.length + sizeByte.length, lengthByte.length);
+        System.arraycopy(modbytes, 0, allDataBytes, serialBytes.length + sizeByte.length + lengthByte.length, modbytes.length);
+        comm.setData(allDataBytes);;
+        Log.i("未加密原始命令：" + CommenUtils.bytesToHexString(comm.getBytes()));
         //如果是USBWIFI进入的话  直接返回数据
         //对数据加密
         byte[] encryptedData = DatalogApUtil.getEnCode(comm.getBytes());
@@ -190,6 +197,7 @@ public class ModBusFunUtils18 {
         int crc = CRC16.calcCrc16(encryptedData);
         byte[] crcBytes = DatalogApUtil.int2Byte(crc);
         comm.setCrcData(crcBytes);
+        Log.i("发送原始命令：" + CommenUtils.bytesToHexString(comm.getBytesCRC()));
         return comm.getBytesCRC();
     }
 

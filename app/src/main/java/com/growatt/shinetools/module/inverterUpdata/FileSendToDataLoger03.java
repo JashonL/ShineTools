@@ -216,7 +216,12 @@ public class FileSendToDataLoger03 implements ConnectHandler, ISendInterface {
 
                             } else {//最后一包
                                 //开始查询升级进度隔5秒钟查一次
-                                new Handler().postDelayed(this::checkProgress, 5000);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        checkProgress(1);
+                                    }
+                                },5000);
                             }
                             break;
                         case 1://接收异常，再次发送当前包
@@ -267,7 +272,7 @@ public class FileSendToDataLoger03 implements ConnectHandler, ISendInterface {
                     if (fileIndex < fileData.size() - 1) {
                         fileIndex++;
                         currNum = 0;
-                        //等待6秒钟发下一个文件
+                        //等待5秒钟发下一个文件
                         new Handler().postDelayed(this::sendComend, 5000);
                     } else {//发送完成
                         fileIndex = 0;
@@ -281,7 +286,12 @@ public class FileSendToDataLoger03 implements ConnectHandler, ISendInterface {
                     updataListeners.updataUpdataProgress(fileData.size(), fileIndex + 1, progress);
                     //隔5秒继续查询
                     //开始查询升级进度隔5秒钟查一次
-                    new Handler().postDelayed(this::checkProgress, 5000);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            checkProgress(2);
+                        }
+                    },5000);
                 } else {//失败
                     if (step_send_num > 10) {//查询10次  都失败的话就显示失败
                         String errMsg = context.getString(R.string.错误) + ":" + step;
@@ -319,8 +329,8 @@ public class FileSendToDataLoger03 implements ConnectHandler, ISendInterface {
 
 
     //1.发送19指令 参数编号 80-80 查询升级进度
-    private void checkProgress() {
-        Log.i("查询进度");
+    private void checkProgress(int type) {
+        Log.i("查询进度"+type);
         step_send_num++;
         step = 3;
         int[] values = {80, 80};
