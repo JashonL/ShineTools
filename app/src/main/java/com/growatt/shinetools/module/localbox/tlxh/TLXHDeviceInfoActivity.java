@@ -7,10 +7,13 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.inverterUpdata.DeviceManualUpdataActivity;
 import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
 import com.growatt.shinetools.module.localbox.tlxh.base.BaseTLXHInfoActivity;
+
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 
 public class TLXHDeviceInfoActivity extends BaseTLXHInfoActivity {
     @Override
@@ -157,10 +160,15 @@ public class TLXHDeviceInfoActivity extends BaseTLXHInfoActivity {
         TextView tvhead = upTitle.findViewById(R.id.tvHeadTitle);
         tvhead.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
         upTitle.setOnClickListener(view -> {
-            Intent intent =new Intent(TLXHDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
-            intent.putExtra("path", UpgradePath.MIN_TL_XH_PATH);
-            startActivity(intent);
+            if (END_USER != ShineToosApplication.getContext().getUser_type()) {
+                Intent intent = new Intent(TLXHDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
+                intent.putExtra("path", UpgradePath.MIN_TL_XH_PATH);
+                startActivity(intent);
+            }else {
+                toast(R.string.android_key2099);
+            }
         });
+
     }
 
 

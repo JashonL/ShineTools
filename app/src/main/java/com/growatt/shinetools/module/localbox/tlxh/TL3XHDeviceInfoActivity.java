@@ -7,10 +7,13 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.inverterUpdata.DeviceManualUpdataActivity;
 import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
 import com.growatt.shinetools.module.localbox.tlxh.base.BaseTLXHInfoActivity;
+
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 
 public class TL3XHDeviceInfoActivity extends BaseTLXHInfoActivity {
     @Override
@@ -132,7 +135,7 @@ public class TL3XHDeviceInfoActivity extends BaseTLXHInfoActivity {
                 break;
             case 1:
 //                RegisterParseUtil.parseHold125T249(mMaxData, bytes);
-                RegisterParseUtil.parseTL3XH125T249(mMaxData,bytes);
+                RegisterParseUtil.parseTL3XH125T249(mMaxData, bytes);
                 break;
 //            case 2:
 //                RegisterParseUtil.parseMax2(mMaxData, bytes);
@@ -151,7 +154,6 @@ public class TL3XHDeviceInfoActivity extends BaseTLXHInfoActivity {
     }
 
 
-
     @Override
     public void initUpdata() {
         super.initUpdata();
@@ -161,9 +163,14 @@ public class TL3XHDeviceInfoActivity extends BaseTLXHInfoActivity {
         upTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent =new Intent(TL3XHDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
-                intent.putExtra("path", UpgradePath.MOD_TL3_XH_PATH);
-                startActivity(intent);
+                //判断用户类型
+                if (END_USER != ShineToosApplication.getContext().getUser_type()) {
+                    Intent intent = new Intent(TL3XHDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
+                    intent.putExtra("path", UpgradePath.MOD_TL3_XH_PATH);
+                    startActivity(intent);
+                }else {
+                    toast(R.string.android_key2099);
+                }
             }
         });
     }

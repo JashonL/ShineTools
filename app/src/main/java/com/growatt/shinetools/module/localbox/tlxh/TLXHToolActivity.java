@@ -1,6 +1,7 @@
 package com.growatt.shinetools.module.localbox.tlxh;
 
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.inverterUpdata.InverterUpdataManager;
 import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
@@ -15,6 +16,8 @@ import com.growatt.shinetools.module.localbox.tlxh.config.TLXHQuickSettingActivi
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
+
+import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 
 public class TLXHToolActivity extends TlxToolBaseActivity {
 
@@ -95,8 +98,10 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
 
     @Override
     public void checkUpdata() {
-        InverterUpdataManager.getInstance().checkUpdata(this, UpgradePath.MIN_TL_XH_PATH);
-
+        //判断用户类型
+        if (END_USER != ShineToosApplication.getContext().getUser_type()) {
+            InverterUpdataManager.getInstance().checkUpdata(this, UpgradePath.MIN_TL_XH_PATH);
+        }
     }
 
     @Override

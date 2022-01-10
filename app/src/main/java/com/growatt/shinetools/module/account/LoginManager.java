@@ -92,54 +92,51 @@ public class LoginManager {
         //运维用户用SQLite保存密码
         if (MAINTEAN_USER == userType||KEFU_USER==userType) {
             dataBaseManager.save(new User("1",username,password));
+
+
+            //检测是否要下载文件
+            FileUpdataManager fileUpdataManager = CheckDownloadUtils.checkUpdata((Activity) context);
+            fileUpdataManager.checkNewVersion(new FileCheckUpdataCallback(){
+                @Override
+                protected void onBefore() {
+                    super.onBefore();
+                    DialogUtils.getInstance().showLoadingDialog((Activity) context);
+                }
+
+                @Override
+                protected void hasNewVersion(FileDownBean updateApp, FileUpdataManager updateAppManager) {
+                    super.hasNewVersion(updateApp, updateAppManager);
+                    DialogUtils.getInstance().closeLoadingDialog();
+                    ActivityUtils.gotoActivity((Activity) context, DownloadFileActivity.class, true);
+                }
+
+                @Override
+                protected void noNewVirsion(String error) {
+                    super.noNewVirsion(error);
+                    DialogUtils.getInstance().closeLoadingDialog();
+                    //如果是
+                    boolean firstWelcome = AppSystemUtils.isFirstWelcome();
+                    if (!firstWelcome){
+                        ActivityUtils.gotoActivity((Activity) context, WelcomeActivity.class, true);
+                    }else {
+                        ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
+                    }
+                }
+
+                @Override
+                protected void onServerError() {
+                    super.onServerError();
+                    DialogUtils.getInstance().closeLoadingDialog();
+                    //如果是
+                    boolean firstWelcome = AppSystemUtils.isFirstWelcome();
+                    if (!firstWelcome){
+                        ActivityUtils.gotoActivity((Activity) context, WelcomeActivity.class, true);
+                    }else {
+                        ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
+                    }
+                }
+            });
         }
-
-
-
-        //检测是否要下载文件
-        FileUpdataManager fileUpdataManager = CheckDownloadUtils.checkUpdata((Activity) context);
-        fileUpdataManager.checkNewVersion(new FileCheckUpdataCallback(){
-            @Override
-            protected void onBefore() {
-                super.onBefore();
-                DialogUtils.getInstance().showLoadingDialog((Activity) context);
-            }
-
-            @Override
-            protected void hasNewVersion(FileDownBean updateApp, FileUpdataManager updateAppManager) {
-                super.hasNewVersion(updateApp, updateAppManager);
-                DialogUtils.getInstance().closeLoadingDialog();
-                ActivityUtils.gotoActivity((Activity) context, DownloadFileActivity.class, true);
-            }
-
-            @Override
-            protected void noNewVirsion(String error) {
-                super.noNewVirsion(error);
-                DialogUtils.getInstance().closeLoadingDialog();
-                //如果是
-                boolean firstWelcome = AppSystemUtils.isFirstWelcome();
-                if (!firstWelcome){
-                    ActivityUtils.gotoActivity((Activity) context, WelcomeActivity.class, true);
-                }else {
-                    ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
-                }
-            }
-
-            @Override
-            protected void onServerError() {
-                super.onServerError();
-                DialogUtils.getInstance().closeLoadingDialog();
-                //如果是
-                boolean firstWelcome = AppSystemUtils.isFirstWelcome();
-                if (!firstWelcome){
-                    ActivityUtils.gotoActivity((Activity) context, WelcomeActivity.class, true);
-                }else {
-                    ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
-                }
-            }
-        });
-
-
     }
 
 
