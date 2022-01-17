@@ -685,6 +685,7 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
     @Override
     protected void onPause() {
         super.onPause();
+        toOhterSetting=true;
         manager.disConnectSocket();
     }
 

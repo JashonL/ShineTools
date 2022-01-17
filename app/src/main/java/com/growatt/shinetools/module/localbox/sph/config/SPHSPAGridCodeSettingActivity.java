@@ -335,6 +335,7 @@ public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQ
     @Override
     protected void onPause() {
         super.onPause();
+        toOhterSetting = true;
         manager.disConnectSocket();
     }
 

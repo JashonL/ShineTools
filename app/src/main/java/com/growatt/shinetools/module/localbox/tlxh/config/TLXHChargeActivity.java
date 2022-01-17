@@ -211,7 +211,7 @@ public class TLXHChargeActivity extends BaseActivity implements BaseQuickAdapter
             case 1: case 2: case 3: case 4: case 5: case 6: case 7://CV电压
                 int value1 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("CV电压:"+value1);
-                ALLSettingBean bean2 = usParamsetAdapter.getData().get(1);
+                ALLSettingBean bean2 = usParamsetAdapter.getData().get(currentPos);
                 bean2.setValue(String.valueOf(value1));
                 bean2.setValueStr(getReadValueReal(currentPos,value1));
                 break;

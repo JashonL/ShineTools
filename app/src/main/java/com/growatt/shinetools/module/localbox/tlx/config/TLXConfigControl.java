@@ -1032,7 +1032,7 @@ public class TLXConfigControl {
         };
         String[] units = new String[]{"", "", "", "", "", ""};
         String[] hints = new String[]{
-                tips, "", tips, "", tips, ""
+                "", "", "", "", "", ""
         };
         int[][] funs = new int[][]{
                 {3, 101, 106},//PF校准系数1
@@ -1446,7 +1446,7 @@ public class TLXConfigControl {
         int[] itemTypes = new int[]{
                 UsSettingConstant.SETTING_TYPE_SELECT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
-                UsSettingConstant.SETTING_TYPE_ONLYREAD,
+                UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_INPUT,
@@ -1501,7 +1501,16 @@ public class TLXConfigControl {
                 {},//修改总发电量
                 {},//设置Model
 
-                {},//系统/星期
+                {
+                       context.getString(R.string.m392周日),
+                        context.getString(R.string.m386周一),
+                        context.getString(R.string.m387周二),
+                        context.getString(R.string.m388周三),
+                        context.getString(R.string.m389周四),
+                        context.getString(R.string.m390周五),
+                        context.getString(R.string.m391周六),
+
+                },//系统/星期
         };
         int[][] doubleFunset = new int[][]{
                 {6, 7147, -1}, {6, 7148, -1}

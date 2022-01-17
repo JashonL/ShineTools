@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -30,6 +29,7 @@ import com.growatt.shinetools.constant.GlobalConstant;
 import com.growatt.shinetools.db.realm.RealmUtils;
 import com.growatt.shinetools.modbusbox.DataLogApDataParseUtil;
 import com.growatt.shinetools.modbusbox.DatalogApUtil;
+import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.modbusbox.bean.DatalogResponBean;
 import com.growatt.shinetools.module.datalogUpdata.DatalogUpdataActivity;
@@ -238,10 +238,17 @@ public class ConnetApHostActivity extends BaseActivity {
 
 
     private void toSetWifiParams() {
-        boolean b = nextShowWiFiSetting();
-        if (!b) return;
-        //连接socket判断版本
-        connectSendMsg();
+        if (ModbusUtil.USB_WIFI==ModbusUtil.getLocalDebugMode()){
+            nextShowWiFiSetting();
+            toConfig();
+        }else {
+            boolean b = nextShowWiFiSetting();
+            if (!b) return;
+            //连接socket判断版本
+            connectSendMsg();
+        }
+
+
 
     }
 

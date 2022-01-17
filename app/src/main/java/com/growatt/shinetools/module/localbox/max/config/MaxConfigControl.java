@@ -707,7 +707,7 @@ public class MaxConfigControl {
         };
 
         int[] itemTypes = new int[]{
-                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_SWITCH,
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
@@ -1362,7 +1362,7 @@ public class MaxConfigControl {
         };
         String[] units = new String[]{"", "", "", "", "", ""};
         String[] hints = new String[]{
-                tips, "", tips, "", tips, ""
+                "", "", "", "", "", ""
         };
         int[][] funs = new int[][]{
                 {3, 101, 106},//PF校准系数1
@@ -1952,7 +1952,7 @@ public class MaxConfigControl {
         float[] multiples = new float[]{
                 1, 1, 1, 1, 1, 1, 1
         };
-        String[] units = new String[]{"W", "min", "min", "Vn", "Vn", "Vn", "Vn"};
+        String[] units = new String[]{"V", "min", "min", "Vn", "Vn", "Vn", "Vn"};
         String[] hints = new String[]{
                 tips3, tips4, tips4, tips, tips1, tips, tips1
         };

@@ -738,6 +738,7 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
     @Override
     protected void onPause() {
         super.onPause();
+        toOhterSetting = true;
         manager.disConnectSocket();
     }
 

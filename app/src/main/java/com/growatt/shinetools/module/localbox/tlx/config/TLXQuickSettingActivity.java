@@ -637,6 +637,7 @@ public class TLXQuickSettingActivity extends BaseActivity implements BaseQuickAd
     @Override
     protected void onPause() {
         super.onPause();
+        toOhterSetting = true;
         manager.disConnectSocket();
     }
 

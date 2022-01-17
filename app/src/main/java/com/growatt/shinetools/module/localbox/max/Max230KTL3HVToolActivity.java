@@ -198,7 +198,11 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
 
 
 //        tvTitle.setText(R.string.m240本地调试工具);
-        tvTitle.setText("MAX 230KTL3 HV");
+        tvTitle.setText("MAX TL3-X HV");
+        String title = getIntent().getStringExtra("title");
+        if (!TextUtils.isEmpty(title)) {
+            tvTitle.setText(title);
+        }
         toolbar.inflateMenu(R.menu.comment_right_menu);
         item = toolbar.getMenu().findItem(R.id.right_action);
         item.setTitle(noteStartStr);

@@ -104,11 +104,43 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
                 ActivityUtils.startActivity(this, intent1, false);
                 break;
             case 7:
-                setInputValue(position, title, hint, mul);
+                setSelectItem(position);
                 break;
 
         }
     }
+
+
+    /**
+     *设置选择项
+     */
+    private void setSelectItem(int position) {
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
+        if (data.size() > position) {
+            ALLSettingBean bean = data.get(position);
+            String[] items = bean.getItems();
+            List<String> selects = new ArrayList<>(Arrays.asList(items));
+
+            new CircleDialog.Builder()
+                    .setTitle(getString(R.string.android_key499))
+                    .setWidth(0.7f)
+                    .setGravity(Gravity.CENTER)
+                    .setMaxHeight(0.5f)
+                    .setItems(selects, (parent, view1, pos, id) -> {
+                        usParamsetAdapter.getData().get(position).setValueStr(selects.get(pos));
+                        usParamsetAdapter.notifyDataSetChanged();
+                        type = 1;
+                        int[] funs = bean.getFunSet();
+                        funs[2] = pos;
+                        manager.sendMsg(funs);
+                        return true;
+                    })
+                    .setNegative(getString(R.string.all_no), null)
+                    .show(getSupportFragmentManager());
+        }
+
+    }
+
 
 
     private void setEnergyTotal(int position, String title, String hint, float mul) {
@@ -508,6 +540,7 @@ public class TlxBasicSettingActivity extends BaseActivity implements BaseQuickAd
     @Override
     protected void onPause() {
         super.onPause();
+        toOhterSetting = true;
         manager.disConnectSocket();
     }
 

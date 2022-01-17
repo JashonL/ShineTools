@@ -622,6 +622,7 @@ public class TLXHQuickSettingActivity extends BaseActivity implements BaseQuickA
     @Override
     protected void onPause() {
         super.onPause();
+        toOhterSetting = true;
         manager.disConnectSocket();
     }
 

@@ -1213,9 +1213,9 @@ public class TL3XHMainActivity extends BaseActivity implements View.OnClickListe
         datasParams[0] = deviceBeen.getLastTime();
         datasParams[1] = deviceBeen.getRealOPowerPercent();
         datasParams[2] = String.format("%dkΩ", deviceBeen.getIso());
-        datasParams[3] = deviceBeen.getEnvTemp();
-        datasParams[4] = deviceBeen.getBoostTemp();
-        datasParams[5] = deviceBeen.getDeviceTemp();
+        datasParams[3] = deviceBeen.getEnvTemp();//内部温度
+        datasParams[4] = deviceBeen.getBoostTemp();//boost温度
+        datasParams[5] = deviceBeen.getDeviceTemp();//逆变器温度
         datasParams[6] = deviceBeen.getpBusV();
         datasParams[7] = deviceBeen.getnBusV();
         int deratMode = deviceBeen.getDerateMode2();

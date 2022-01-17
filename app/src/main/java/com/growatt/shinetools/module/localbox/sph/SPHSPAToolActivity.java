@@ -47,7 +47,7 @@ public class SPHSPAToolActivity extends SPHSPABaseActivity {
                 getString(R.string.m用户使用电量)+ "\n(kWh)"
         };
         eleResId = new int[]{
-                -1,R.drawable.tlxh_ele_fadian,R.drawable.tlxh_ele_chongdian,
+                R.drawable.tlxh_ele_fadian,R.drawable.tlxh_ele_chongdian,
                 R.drawable.tlxh_ele_fangdian,R.drawable.mix_export,R.drawable.mix_import,R.drawable.tlxh_ele_yonghushiyong
         };
     }

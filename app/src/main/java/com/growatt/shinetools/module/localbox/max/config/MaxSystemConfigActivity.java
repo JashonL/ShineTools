@@ -493,6 +493,7 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
     @Override
     protected void onPause() {
         super.onPause();
+        toOhterSetting=true;
         manager.disConnectSocket();
     }
 

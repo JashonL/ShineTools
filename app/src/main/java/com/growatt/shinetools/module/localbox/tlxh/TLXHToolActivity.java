@@ -1,5 +1,7 @@
 package com.growatt.shinetools.module.localbox.tlxh;
 
+import android.view.Gravity;
+
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
@@ -16,6 +18,7 @@ import com.growatt.shinetools.module.localbox.tlxh.config.TLXHQuickSettingActivi
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
+import com.mylhyl.circledialog.CircleDialog;
 
 import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 
@@ -85,7 +88,7 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
     @Override
     public void initSetDataArray() {
         title = new String[]{
-                getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
+                getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key365)
                 , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
                 , getString(R.string.m286高级设置), getString(R.string.m291设备信息),getString(R.string.android_key171)
         };
@@ -144,8 +147,22 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
         }
 
 
+
+
         if (clazz != null) {
-            jumpMaxSet(clazz, title);
+            if (position == 8) {
+                Class finalClazz = clazz;
+                new CircleDialog.Builder()
+                        .setWidth(0.7f)
+                        .setGravity(Gravity.CENTER)
+                        .setTitle(getString(R.string.reminder))
+                        .setText(getString(R.string.请确认是否为意大利机型))
+                        .setNegative(getString(R.string.all_no), null)
+                        .setPositive(getString(R.string.all_ok), v -> jumpMaxSet(finalClazz, title))
+                        .show(getSupportFragmentManager());
+            } else {
+                jumpMaxSet(clazz, title);
+            }
         }
     }
 

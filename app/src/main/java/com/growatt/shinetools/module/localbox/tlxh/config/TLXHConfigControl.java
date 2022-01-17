@@ -420,7 +420,7 @@ public class TLXHConfigControl {
         };
         String[] units = new String[]{"", "", "", "", "", ""};
         String[] hints = new String[]{
-                tips, "", tips, "", tips, ""
+                "", "", "", "", "", ""
         };
         int[][] funs = new int[][]{
                 {3, 101, 106},//PF校准系数1
@@ -855,7 +855,7 @@ public class TLXHConfigControl {
         float[] multiples = new float[]{
                 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f
         };
-        String[] units = new String[]{"", "", "", "", "", "", "", "", "", "", "", "", ""};
+        String[] units = new String[]{"Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz"};
         String[] hints = new String[]{
                 tips, tips1, tips, tips1, tips, tips1, tips2, tips2, tips2, tips2, tips2, tips2
         };
@@ -1581,7 +1581,7 @@ public class TLXHConfigControl {
                 context.getString(R.string.m手动离网使能),
                 context.getString(R.string.android_key558),
                 context.getString(R.string.android_key560),
-                context.getString(R.string.android_key1343),
+//                context.getString(R.string.android_key1343),
                 context.getString(R.string.android_key1344),
         };
         String[] hints = new String[]{
@@ -1598,7 +1598,7 @@ public class TLXHConfigControl {
                 "",
                 "",
                 "",
-                "",
+//                "",
                 "",
         };
         int[] itemTypes = new int[]{
@@ -1615,7 +1615,7 @@ public class TLXHConfigControl {
                 UsSettingConstant.SETTING_TYPE_SELECT,//手动离网使能
                 UsSettingConstant.SETTING_TYPE_SELECT,//离网频率
                 UsSettingConstant.SETTING_TYPE_SELECT,//离网电压
-                UsSettingConstant.SETTING_TYPE_SELECT,//CT选择
+//                UsSettingConstant.SETTING_TYPE_SELECT,//CT选择
                 UsSettingConstant.SETTING_TYPE_SELECT,//电池类型选择
         };
         String[] register = new String[]{
@@ -1624,8 +1624,8 @@ public class TLXHConfigControl {
         };
         float[] multiples = new float[]{
                 1, 1, 1, 1, 1, 1, 1,
-                1, 1, 1, 1, 1, 1, 1,
-                1
+                1, 1, 1, 1, 1, 1, 1
+
         };
         String[] units = new String[]{
                 "", "", "", "", "", "", "", "",
@@ -1645,7 +1645,7 @@ public class TLXHConfigControl {
                 {3, 3021, 3021},//手动离网使能
                 {3, 3081, 3081},//离网频率
                 {3, 3080, 3080},//离网电压
-                {3, 3068, 3068},//CT选择
+//                {3, 3068, 3068},//CT选择
                 {3, 3070, 3070},//电池类型选择
         };
         int[][] funset = new int[][]{
@@ -1662,7 +1662,7 @@ public class TLXHConfigControl {
                 {6, 3021, 0},//手动离网使能
                 {6, 3081, 0},//离网频率
                 {6, 3080, 0},//离网电压
-                {6, 3068, 0},//CT选择
+//                {6, 3068, 0},//CT选择
                 {6, 3070, 0},//电池类型选择
         };
 
@@ -1680,7 +1680,7 @@ public class TLXHConfigControl {
                 {6, 47, -1},
                 {6, 48, -1},
                 {6, 49, -1},
-                {6, 50, -1},
+//                {6, 50, -1},
                 {6, 48, -1},
         };
 
@@ -1702,7 +1702,7 @@ public class TLXHConfigControl {
                 },
                 {"50Hz", "60Hz"},
                 {"230V", "208V", "240V"},
-                {context.getString(R.string.android_key161), context.getString(R.string.android_key162)},
+//                {context.getString(R.string.android_key161), context.getString(R.string.android_key162)},
                 {context.getString(R.string.android_key355), context.getString(R.string.android_key356), context.getString(R.string.android_key1567)},
 
         };

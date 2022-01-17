@@ -134,7 +134,15 @@ public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuic
 
     @Override
     public void oncheck(boolean check, int position) {
-
+        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
+        int value = check ? 1 : 0;
+        usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
+        usParamsetAdapter.notifyDataSetChanged();
+        type = 1;
+        LogUtil.i("-------------------设置"+bean.getTitle()+"----------------");
+        int[] funSet = bean.getFunSet();
+        funSet[2]=value;
+        manager.sendMsg(funSet);
     }
 
     @Override
@@ -275,6 +283,12 @@ public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuic
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
         switch (currentPos) {
+            case 0:
+                int value0 = MaxWifiParseUtil.obtainValueOne(bs);
+                ALLSettingBean bean = usParamsetAdapter.getData().get(0);
+                bean.setValue(String.valueOf(value0));
+                break;
+
             case 7://10分钟平均AC电压保护值
                 //解析int值
                 LogUtil.i("10分钟平均AC电压保护值:");
@@ -334,6 +348,7 @@ public class MaxGridCodeSettingActivity extends BaseActivity implements BaseQuic
     @Override
     protected void onPause() {
         super.onPause();
+        toOhterSetting=true;
         manager.disConnectSocket();
     }
 

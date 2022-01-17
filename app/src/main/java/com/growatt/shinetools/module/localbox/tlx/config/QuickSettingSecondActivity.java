@@ -457,6 +457,7 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
     @Override
     protected void onPause() {
         super.onPause();
+        toOhterSetting=true;
         manager.disConnectSocket();
     }
 
