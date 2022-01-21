@@ -113,29 +113,28 @@ public class LoginManager {
                 @Override
                 protected void noNewVirsion(String error) {
                     super.noNewVirsion(error);
-                    DialogUtils.getInstance().closeLoadingDialog();
-                    //如果是
-                    boolean firstWelcome = AppSystemUtils.isFirstWelcome();
-                    if (!firstWelcome){
-                        ActivityUtils.gotoActivity((Activity) context, WelcomeActivity.class, true);
-                    }else {
-                        ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
-                    }
+                    next();
                 }
 
                 @Override
                 protected void onServerError() {
                     super.onServerError();
-                    DialogUtils.getInstance().closeLoadingDialog();
-                    //如果是
-                    boolean firstWelcome = AppSystemUtils.isFirstWelcome();
-                    if (!firstWelcome){
-                        ActivityUtils.gotoActivity((Activity) context, WelcomeActivity.class, true);
-                    }else {
-                        ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
-                    }
+                    next();
                 }
             });
+        }else {
+            next();
+        }
+    }
+
+    private void next() {
+        DialogUtils.getInstance().closeLoadingDialog();
+        //如果是
+        boolean firstWelcome = AppSystemUtils.isFirstWelcome();
+        if (!firstWelcome) {
+            ActivityUtils.gotoActivity((Activity) context, WelcomeActivity.class, true);
+        } else {
+            ActivityUtils.gotoActivity((Activity) context, MainActivity.class, true);
         }
     }
 

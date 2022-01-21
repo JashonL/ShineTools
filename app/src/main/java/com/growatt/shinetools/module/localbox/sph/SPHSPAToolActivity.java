@@ -57,14 +57,15 @@ public class SPHSPAToolActivity extends SPHSPABaseActivity {
 
         powerTitles = new String[]{
                 getString(R.string.android_key1993),
-                getString(R.string.额定功率),
+//                getString(R.string.额定功率),
                 getString(R.string.android_key1807),
                 getString(R.string.android_key1824)
         };
         powerResId = new int[]{
                 R.drawable.tlxh_power_dangqian,
-                R.drawable.tlxh_power_eding,
-                R.drawable.tlxh_power_chongdian,R.drawable.tlxh_power_fangdian
+//                R.drawable.tlxh_power_eding,
+                R.drawable.tlxh_power_chongdian,
+                R.drawable.tlxh_power_fangdian
         };
     }
 

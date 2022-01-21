@@ -348,7 +348,7 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
                     value = Arith.mul(read, mul, 2) + unit;
                 }
                 break;
-            case 7: case 9: case 12: case 13:
+            case 2: case 5:  case 12:
                 if (read<items.length){
                     value = items[read];
                 }

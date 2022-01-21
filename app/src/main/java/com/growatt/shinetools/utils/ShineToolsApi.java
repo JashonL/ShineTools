@@ -18,7 +18,7 @@ public class ShineToolsApi {
     public static String DATALOG_DETAIL="/newTwoEicAPI.do?op=getDatalogData";
 
     public static String getFileDownLoadUrl() {
-        return FILE_DOWNLOAD_BASE_URL + "/newTwoServiceAPI.do?op=getOssFileUploadList";
+        return FILE_DOWNLOAD_BASE_URL + "/api/v3/userCenter?op=getOssFileUploadList";
     }
 
 
