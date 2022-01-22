@@ -7,6 +7,13 @@ import com.growatt.shinetools.module.localbox.third.ThirdBaseInfoActivity;
 
 public class Max230Ktl3HvtMaxInfoActivity extends ThirdBaseInfoActivity {
 
+
+
+
+
+
+
+
     @Override
     public void initVolFreCurString() {
         c1Title1 = new String[]{

@@ -17,8 +17,11 @@ public class ShineToolsApi {
 
     public static String DATALOG_DETAIL="/newTwoEicAPI.do?op=getDatalogData";
 
+
+    public static String INVERT_FILE_DOWNLOAD_BASE_URL ="http://oss1.growatt.com";
+
     public static String getFileDownLoadUrl() {
-        return FILE_DOWNLOAD_BASE_URL + "/api/v3/userCenter?op=getOssFileUploadList";
+        return INVERT_FILE_DOWNLOAD_BASE_URL + "/api/v3/userCenter?op=getOssFileUploadList";
     }
 
 

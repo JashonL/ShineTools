@@ -696,9 +696,16 @@ public abstract class ThirdBaseInfoActivity extends BaseActivity implements View
         }
     }
 
-    private void initListener() {
-        initOnclick(title1Head2, title2Head2, title3Head2, title34Head2, title4Head2,
-                title5Head2, title6Head2,tvTitleLiwang,tvTitleBdc);
+    public void initListener() {
+        if (isOther){
+            initOnclick(title1Head2, title2Head2, title3Head2, title34Head2, title4Head2,
+                    title5Head2, title6Head2,tvTitleLiwang,tvTitleBdc);
+        }else {
+
+            initOnclick(title1Head2, title2Head2, title3Head2, title34Head2, title4Head2,
+                    title5Head2, title6Head2);
+        }
+
     }
 
     private void initOnclick(View... views) {
