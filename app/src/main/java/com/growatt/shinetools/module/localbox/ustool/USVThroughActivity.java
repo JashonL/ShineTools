@@ -109,15 +109,15 @@ public class USVThroughActivity extends DemoBase implements UsThroughAdapter.OnC
 //        };
         titles = new String[]{
                 "AC1 " + getString(R.string.电压限制) + " " + getString(R.string.m372高)
-                ,"AC1 " + getString(R.string.m441电压限制时间) + " " + getString(R.string.m372高)
-                ,"AC2 " + getString(R.string.电压限制) + " " + getString(R.string.m372高)
-                ,"AC2 " + getString(R.string.m441电压限制时间) + " " + getString(R.string.m372高)
-                ,"AC1 " + getString(R.string.电压限制) + " " + getString(R.string.m373低)
-                ,"AC1 " + getString(R.string.m441电压限制时间) + " " + getString(R.string.m373低)
-                ,"AC2 " + getString(R.string.电压限制) + " " + getString(R.string.m373低)
-                ,"AC2 " + getString(R.string.m441电压限制时间) + " " + getString(R.string.m373低)
-                ,"AC3 " + getString(R.string.电压限制) + " " + getString(R.string.m373低)
-                ,"AC3 " + getString(R.string.m441电压限制时间) + " " + getString(R.string.m373低)
+                ,"AC1 " + getString(R.string.m441电压限制时间) + "(" + getString(R.string.m372高)+")"
+                ,"AC2 " + getString(R.string.电压限制) + " " + "("+getString(R.string.m372高)+")"
+                ,"AC2 " + getString(R.string.m441电压限制时间) + "(" + getString(R.string.m372高)+")"
+                ,"AC1 " + getString(R.string.电压限制) + "(" + getString(R.string.m373低)+")"
+                ,"AC1 " + getString(R.string.m441电压限制时间) + "(" + getString(R.string.m373低)+")"
+                ,"AC2 " + getString(R.string.电压限制) + "(" + getString(R.string.m373低)+")"
+                ,"AC2 " + getString(R.string.m441电压限制时间) + "( " + getString(R.string.m373低)+")"
+                ,"AC3 " + getString(R.string.电压限制) + "(" + getString(R.string.m373低)+")"
+                ,"AC3 " + getString(R.string.m441电压限制时间) + "(" + getString(R.string.m373低)+")"
         };
         units = new String[]{
                 "%", "s", "%", "s", "%", "s", "%", "s", "%", "s"

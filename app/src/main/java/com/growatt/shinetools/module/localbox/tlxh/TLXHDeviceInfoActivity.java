@@ -11,14 +11,19 @@ import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.inverterUpdata.DeviceManualUpdataActivity;
 import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
-import com.growatt.shinetools.module.localbox.tlxh.base.BaseTLXHInfoActivity;
+import com.growatt.shinetools.module.localbox.single.SingleBaseInfoActivity;
 
 import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
 
-public class TLXHDeviceInfoActivity extends BaseTLXHInfoActivity {
+public class TLXHDeviceInfoActivity extends SingleBaseInfoActivity {
     @Override
     public int getHeaderView() {
         return R.layout.header_tlxh_device_info;
+    }
+
+    @Override
+    public void setOther() {
+        isOther=true;
     }
 
 

@@ -323,7 +323,7 @@ public class DatalogUpdataManager {
                     pbProgress = view.findViewById(R.id.bp_progress);
                     tvProgress = view.findViewById(R.id.tv_progress);
                 }
-            }, Gravity.CENTER, 0.8f, 0.5f,false);
+            }, Gravity.CENTER, 0.8f, 0.5f,true);
         }
     }
 
@@ -352,7 +352,7 @@ public class DatalogUpdataManager {
      */
     public void dissmissDownDialog() {
         if (progressDialog != null) {
-            progressDialog.dismiss();
+            progressDialog.dialogDismiss();
             progressDialog = null;
         }
     }

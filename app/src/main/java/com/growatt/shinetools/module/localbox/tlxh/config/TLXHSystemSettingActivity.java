@@ -248,31 +248,31 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
                 LogUtil.i("解析安规功能使能:"+value6);
                 parserSafetyEnable(value6);
                 break;
-            case 7://电网N线使能
-                //解析int值
-                int value7 = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析电网N线使能:"+value7);
-                usParamsetAdapter.getData().get(7).setValue(String.valueOf(value7));
-                break;
-            case 8://指定的规格设置使能
+//            case 7://电网N线使能
+//                //解析int值
+//                int value7 = MaxWifiParseUtil.obtainValueOne(bs);
+//                LogUtil.i("解析电网N线使能:"+value7);
+//                usParamsetAdapter.getData().get(7).setValue(String.valueOf(value7));
+//                break;
+            case 7://指定的规格设置使能
                 int value8 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("解析指定规格设置使能:"+value8);
                 usParamsetAdapter.getData().get(8).setValue(String.valueOf(value8));
                 break;
-            case 9://ISLand使能
+            case 8://ISLand使能
                 //解析int值
                 int value9 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("解析ISlland使能:"+value9);
                 usParamsetAdapter.getData().get(9).setValue(String.valueOf(value9));
                 break;
-            case 10://离网功能使能
+            case 9://离网功能使能
                 int value10 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("离网功能使能:"+value10);
                 ALLSettingBean bean10 = usParamsetAdapter.getData().get(10);
                 bean10.setValue(String.valueOf(value10));
                 bean10.setValueStr(getReadValueReal(10,value10));
                 break;
-            case 11://离网频率
+            case 10://离网频率
                 //解析int值
                 int value11 = MaxWifiParseUtil.obtainValueOne(bs);
                 ALLSettingBean allSettingBean = usParamsetAdapter.getData().get(11);
@@ -284,7 +284,7 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
                 }
                 allSettingBean.setValueStr(sValue);
                 break;
-            case 12://离网电压
+            case 11://离网电压
                 //解析int值
                 int value12 = MaxWifiParseUtil.obtainValueOne(bs);
                 ALLSettingBean allSettingBean1 = usParamsetAdapter.getData().get(12);
@@ -296,7 +296,7 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
                 }
                 allSettingBean1.setValueStr(sValue12);
                 break;
-            case 13://CT选择
+            case 12://CT选择
                 //解析int值
                 int value13 = MaxWifiParseUtil.obtainValueOne(bs);
                 ALLSettingBean allSettingBean2 = usParamsetAdapter.getData().get(13);
@@ -309,7 +309,7 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
                 allSettingBean2.setValueStr(sValue13);
                 break;
 
-            case 14://电池选择
+            case 13://电池选择
                 //解析int值
                 int value14 = MaxWifiParseUtil.obtainValueOne(bs);
                 ALLSettingBean allSettingBean3 = usParamsetAdapter.getData().get(14);
@@ -353,7 +353,7 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
 
 
     public void paserPidVoltgeSelect(int read) {
-        ALLSettingBean bean = usParamsetAdapter.getData().get(15);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(14);
         bean.setValueStr(String.valueOf(read));
     }
 
@@ -375,7 +375,7 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
                     value = Arith.mul(read, mul, 2) + unit;
                 }
                 break;
-            case 2: case 5: case 9: case 12: case 13:
+            case 2: case 5: case 8: case 11: case 12:
                 if (read<items.length){
                     value = items[read];
                 }
@@ -439,6 +439,9 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
             case 6://安规功能使能
                 setInputValue(position,title,hint);
                 break;
+            case 9:
+                setSelectItem(position,title);
+                break;
             case 10:
                 setSelectItem(position,title);
                 break;
@@ -449,9 +452,6 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
                 setSelectItem(position,title);
                 break;
             case 13:
-                setSelectItem(position,title);
-                break;
-            case 14:
                 setSelectItem(position,title);
                 break;
 

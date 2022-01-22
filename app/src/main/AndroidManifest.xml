@@ -1083,11 +1083,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".module.localbox.tlx.base.BaseTLXInfoActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+
 
         <activity
             android:name=".module.localbox.sph.SPHSPAToolActivity"

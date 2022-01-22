@@ -1,4 +1,6 @@
-package com.growatt.shinetools.module.localbox.tlx.base;
+package com.growatt.shinetools.module.localbox.third;
+
+import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -51,9 +53,7 @@ import java.util.UUID;
 
 import butterknife.BindView;
 
-import static com.growatt.shinetools.modbusbox.SocketClientUtil.SOCKET_RECEIVE_BYTES;
-
-public abstract class BaseTLXInfoActivity extends BaseActivity implements View.OnClickListener, Toolbar.OnMenuItemClickListener {
+public abstract class ThirdBaseInfoActivity extends BaseActivity implements View.OnClickListener, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
     @BindView(R.id.tv_title)
@@ -106,8 +106,8 @@ public abstract class BaseTLXInfoActivity extends BaseActivity implements View.O
     public abstract void initStringVolCurString();
 
     //头部2：content3
-    private List<MaxChildBean> mC3List;
-    private MaxMainChildAdapter mC3Adapter;
+    private List<MaxContentBean> mC3List;
+    private MaxContentAdapter mC3Adapter;
     private RecyclerView mC3RecyclerView;
     private View content3Head2;
     private View title3Head2;
@@ -182,6 +182,8 @@ public abstract class BaseTLXInfoActivity extends BaseActivity implements View.O
     public abstract void initInternalParamString();
 
 
+
+
     private MenuItem item;
 
 
@@ -208,7 +210,7 @@ public abstract class BaseTLXInfoActivity extends BaseActivity implements View.O
     //表格列表
     private LinearLayoutManager mLayoutManager;
     private List<MaxChildBean> mGridList;
-    private View header;
+    public View header;
     private MaxMainChildAdapter mAdapter;
 
     /**
@@ -221,6 +223,10 @@ public abstract class BaseTLXInfoActivity extends BaseActivity implements View.O
 
     public abstract int getHeaderView();
     private int rvHeaderView;
+
+
+    public boolean isOther=false;
+    public abstract void setOther();
 
     @Override
     protected int getContentView() {
@@ -267,7 +273,17 @@ public abstract class BaseTLXInfoActivity extends BaseActivity implements View.O
         //内部参数
         initContent6();
         //离网参数/BDC/电池参数
-//        initOtherView();
+        setOther();
+        if (isOther){
+            initOtherView();
+        }
+        //升级
+        initUpdata();
+    }
+
+
+    public void initUpdata(){
+
     }
 
 
@@ -321,16 +337,13 @@ public abstract class BaseTLXInfoActivity extends BaseActivity implements View.O
         content3Head2 = header.findViewById(R.id.tvContent3);
         TextView t3h2TvTitle = title3Head2.findViewById(R.id.tvHeadTitle);
         t3h2TvTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
-//        content3Head2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,getResources().getDimensionPixelSize(R.dimen.y130)));
-        t3H2IvStatus = (ImageView) title3Head2.findViewById(R.id.ivStatus);
+        t3H2IvStatus = title3Head2.findViewById(R.id.ivStatus);
         mC3List = new ArrayList<>();
-        mC3RecyclerView = (RecyclerView) content3Head2.findViewById(R.id.recyclerViewC1);
-        int paddingH = getResources().getDimensionPixelOffset(R.dimen.dp_20);
-//        mC3RecyclerView.setPadding(paddingH * 2, paddingH, paddingH * 2, paddingH);
-        mC3RecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mC3Adapter = new MaxMainChildAdapter(R.layout.item_tlx_childrv, mC3List);
+        mC3RecyclerView = content3Head2.findViewById(R.id.recyclerViewC1);
+        mC3RecyclerView.setLayoutManager(new GridLayoutManager(this, c3Title2.length + 1, LinearLayoutManager.HORIZONTAL, false));
+        mC3Adapter = new MaxContentAdapter(R.layout.item_grid_textview_max_big, mC3List);
         mC3RecyclerView.setAdapter(mC3Adapter);
-        initGridDateParam(c3Title2, null, mC3Adapter);
+        initC1Datas3(c3Title1, c3Title2, null, mC3Adapter);
     }
 
 
@@ -642,7 +655,13 @@ public abstract class BaseTLXInfoActivity extends BaseActivity implements View.O
         initC1Datas(c2Title1, c2Title2, mMaxData.getPVCList(), mC2Adapter);
         //ac电压电流
         List<String> nowACList = mMaxData.getACList();
-        initGridDateParam(c3Title2, nowACList.toArray(new String[nowACList.size()]), mC3Adapter);
+        //ac电压电流
+        try {
+            nowACList.set(4,deviceBeen.getIpf());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        initC1Datas3(c3Title1,c3Title2 ,nowACList, mC3Adapter);
         //ac电压电流
         initC1Datas(c4Title1, c4Title2, mMaxData.getPIDList(), mC4Adapter);
         //svg
@@ -679,7 +698,7 @@ public abstract class BaseTLXInfoActivity extends BaseActivity implements View.O
 
     private void initListener() {
         initOnclick(title1Head2, title2Head2, title3Head2, title34Head2, title4Head2,
-                title5Head2, title6Head2);
+                title5Head2, title6Head2,tvTitleLiwang,tvTitleBdc);
     }
 
     private void initOnclick(View... views) {
@@ -778,6 +797,48 @@ public abstract class BaseTLXInfoActivity extends BaseActivity implements View.O
 //            }
         }
     }
+
+
+
+    private void initC1Datas3(String[] title1, String[] title2, List<String> c1List, MaxContentAdapter adapter) {
+        if (title1 == null || title2 == null) return;
+        List<MaxContentBean> newList = new ArrayList<>();
+        int title1Len = title1.length + 1;
+        int title2Len = title2.length + 1;
+        int size = title1Len * title2Len;
+        for (int i = 0; i < size; i++) {
+            MaxContentBean bean = new MaxContentBean();
+            if (i != 0) {
+                if (i < title2Len) {
+                    bean.setText(title2[i - 1]);
+                    bean.setStatus(1);
+                } else {
+                    if (i % title2Len == 0) {
+                        bean.setText(title1[i / title2Len - 1]);
+                        bean.setStatus(0);
+                    } else {
+                        bean.setStatus(2);
+                        if (c1List == null || c1List.size() < (title1Len - 1) * (title2Len - 1)) {
+                            bean.setText("");
+                        } else {
+                            int dataIndex = (i - title2Len - 1) * (title2Len - 1);
+                            if (dataIndex % title2Len == 0) {
+                                dataIndex = dataIndex / title2Len;
+                            } else {
+                                dataIndex = dataIndex / title2Len + 1;
+                            }
+                            bean.setText(c1List.get(dataIndex));
+                        }
+                    }
+                }
+            }
+            newList.add(bean);
+        }
+//        adapter.setNewData(newList);
+        adapter.replaceData(newList);
+    }
+
+
 
 
     @Override
@@ -957,9 +1018,7 @@ public abstract class BaseTLXInfoActivity extends BaseActivity implements View.O
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId()==R.id.right_action){
-            refresh();
-        }
+        refresh();
         return true;
     }
 }

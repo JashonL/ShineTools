@@ -1668,21 +1668,21 @@ public class MaxConfigControl {
         String tips1 = context.getString(R.string.android_key3048) + ":" + "1.05Vn~1.5Vn";
         String tips2 = context.getString(R.string.android_key3048) + ":" + "20ms~1min";
         String[] titls = new String[]{
-                 "AC1 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m373低),
-                "AC1 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m372高)
+                 "AC1 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m373低)+")",
+                "AC1 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m372高)+")"
 
-                , "AC2 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m373低)
-                , "AC2 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m372高)
+                , "AC2 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m373低)+")"
+                , "AC2 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m372高)+")"
 
-                , "AC3 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m373低)
-                , "AC3 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m372高)
+                , "AC3 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m373低)+")"
+                , "AC3 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m372高)+")"
 
-                , "AC" + context.getString(R.string.m441电压限制时间) + "1" + context.getString(R.string.m373低)
-                , "AC" + context.getString(R.string.m441电压限制时间) + "1" + context.getString(R.string.m372高)
-                , "AC" + context.getString(R.string.m441电压限制时间) + "2" + context.getString(R.string.m373低)
-                , "AC" + context.getString(R.string.m441电压限制时间) + "2" + context.getString(R.string.m372高)
-                , "AC" + context.getString(R.string.m441电压限制时间) + "3" + context.getString(R.string.m373低)
-                , "AC" + context.getString(R.string.m441电压限制时间) + "3" + context.getString(R.string.m372高)
+                , "AC" + context.getString(R.string.m441电压限制时间) + "1" +"("+ context.getString(R.string.m373低)+")"
+                , "AC" + context.getString(R.string.m441电压限制时间) + "1" +"("+ context.getString(R.string.m372高)+")"
+                , "AC" + context.getString(R.string.m441电压限制时间) + "2" +"("+ context.getString(R.string.m373低)+")"
+                , "AC" + context.getString(R.string.m441电压限制时间) + "2" +"("+ context.getString(R.string.m372高)+")"
+                , "AC" + context.getString(R.string.m441电压限制时间) + "3" +"("+ context.getString(R.string.m373低)+")"
+                , "AC" + context.getString(R.string.m441电压限制时间) + "3" + "("+context.getString(R.string.m372高)+")"
         };
 
         int[] itemTypes = new int[]{
@@ -1796,20 +1796,20 @@ public class MaxConfigControl {
         String tips1 = context.getString(R.string.android_key3048) + ":" + "50~55Hz";
         String tips2 = context.getString(R.string.android_key3048) + ":" + "20ms~10min";
         String[] titls = new String[]{
-                "AC1 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m373低),
-                "AC1 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m372高)
-                , "AC2 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m373低)
-                , "AC2 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m372高)
-                , "AC3 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m373低)
-                , "AC3 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m372高)
+                "AC1 " + context.getString(R.string.频率限制) + "(" + context.getString(R.string.m373低)+")",
+                "AC1 " + context.getString(R.string.频率限制) + "(" + context.getString(R.string.m372高)+")"
+                , "AC2 " + context.getString(R.string.频率限制) + "(" + context.getString(R.string.m373低)+")"
+                , "AC2 " + context.getString(R.string.频率限制) + "(" + context.getString(R.string.m372高)+")"
+                , "AC3 " + context.getString(R.string.频率限制)+ "("+ context.getString(R.string.m373低)+")"
+                , "AC3 " + context.getString(R.string.频率限制) + "(" + context.getString(R.string.m372高)+")"
 
 
-                , "AC" + context.getString(R.string.m442频率限制时间) + "1" + context.getString(R.string.m373低)
-                , "AC" + context.getString(R.string.m442频率限制时间) + "1" + context.getString(R.string.m372高)
-                , "AC" + context.getString(R.string.m442频率限制时间) + "2" + context.getString(R.string.m373低)
-                , "AC" + context.getString(R.string.m442频率限制时间) + "2" + context.getString(R.string.m372高)
-                , "AC" + context.getString(R.string.m442频率限制时间) + "3" + context.getString(R.string.m373低)
-                , "AC" + context.getString(R.string.m442频率限制时间) + "3" + context.getString(R.string.m372高)
+                , "AC" + context.getString(R.string.m442频率限制时间) + "1" +"(" + context.getString(R.string.m373低)+")"
+                , "AC" + context.getString(R.string.m442频率限制时间) + "1" +"(" + context.getString(R.string.m372高)+")"
+                , "AC" + context.getString(R.string.m442频率限制时间) + "2" +"(" + context.getString(R.string.m373低)+")"
+                , "AC" + context.getString(R.string.m442频率限制时间) + "2" +"(" + context.getString(R.string.m372高)+")"
+                , "AC" + context.getString(R.string.m442频率限制时间) + "3" +"(" + context.getString(R.string.m373低)+")"
+                , "AC" + context.getString(R.string.m442频率限制时间) + "3" +"(" + context.getString(R.string.m372高)+")"
         };
 
         int[] itemTypes = new int[]{
@@ -1929,8 +1929,8 @@ public class MaxConfigControl {
                 context.getString(R.string.m424启动电压),//并网电压
                 context.getString(R.string.m425启动时间),//并网时间
                 context.getString(R.string.android_key990),//重启时间
-                context.getString(R.string.grid_connetced_vol_limit)+" "+context.getString(R.string.m373低),//并网电压限制 低
-                context.getString(R.string.grid_connetced_vol_limit)+" "+context.getString(R.string.m372高),//并网电压限制 高
+                context.getString(R.string.grid_connetced_vol_limit)+"("+context.getString(R.string.m373低)+")",//并网电压限制 低
+                context.getString(R.string.grid_connetced_vol_limit)+"("+context.getString(R.string.m372高)+")",//并网电压限制 高
                 context.getString(R.string.grid_connetced_frency_limit)+" "+context.getString(R.string.m373低),//并网频率限制 低
                 context.getString(R.string.grid_connetced_frency_limit)+" "+context.getString(R.string.m372高),//并网频率限制 高
 

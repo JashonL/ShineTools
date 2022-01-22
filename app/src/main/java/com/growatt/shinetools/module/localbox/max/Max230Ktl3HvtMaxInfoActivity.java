@@ -3,8 +3,9 @@ package com.growatt.shinetools.module.localbox.max;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.max.base.BaseMaxInfoActivity;
+import com.growatt.shinetools.module.localbox.third.ThirdBaseInfoActivity;
 
-public class Max230Ktl3HvtMaxInfoActivity extends BaseMaxInfoActivity {
+public class Max230Ktl3HvtMaxInfoActivity extends ThirdBaseInfoActivity {
 
     @Override
     public void initVolFreCurString() {
@@ -114,6 +115,11 @@ public class Max230Ktl3HvtMaxInfoActivity extends BaseMaxInfoActivity {
     @Override
     public int getHeaderView() {
         return R.layout.header_max_device_info;
+    }
+
+    @Override
+    public void setOther() {
+        isOther=false;
     }
 
     @Override

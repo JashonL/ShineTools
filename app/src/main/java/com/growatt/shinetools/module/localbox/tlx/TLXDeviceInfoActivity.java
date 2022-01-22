@@ -2,9 +2,9 @@ package com.growatt.shinetools.module.localbox.tlx;
 
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.tlx.base.BaseTLXInfoActivity;
+import com.growatt.shinetools.module.localbox.single.SingleBaseInfoActivity;
 
-public class TLXDeviceInfoActivity extends BaseTLXInfoActivity {
+public class TLXDeviceInfoActivity extends SingleBaseInfoActivity {
     @Override
     public void initACVolCurString() {
         c1Title1 = new String[]{
@@ -125,6 +125,11 @@ public class TLXDeviceInfoActivity extends BaseTLXInfoActivity {
     @Override
     public int getHeaderView() {
         return R.layout.header_tlxe_device_info;
+    }
+
+    @Override
+    public void setOther() {
+        isOther=false;
     }
 
     @Override

@@ -106,14 +106,14 @@ public class USFreThroughActivity extends DemoBase implements UsThroughAdapter.O
 //                , "UF2 Frequency", "UF2 Time"
 //        };
         titles = new String[]{
-                "AC1 " + getString(R.string.频率限制) + " " + getString(R.string.m373低)
-                ,"AC1 " + getString(R.string.m442频率限制时间) + " " + getString(R.string.m373低)
-                ,"AC2 " + getString(R.string.频率限制) + " " + getString(R.string.m373低)
-                ,"AC2 " + getString(R.string.m442频率限制时间) + " " + getString(R.string.m373低)
-                ,"AC1 " + getString(R.string.频率限制) + " " + getString(R.string.m372高)
-                ,"AC1 " + getString(R.string.m442频率限制时间) + " " + getString(R.string.m372高)
-                ,"AC2 " + getString(R.string.频率限制) + " " + getString(R.string.m372高)
-                ,"AC2 " + getString(R.string.m442频率限制时间) + " " + getString(R.string.m372高)
+                "AC1 " + getString(R.string.频率限制) + "(" + getString(R.string.m373低)+")"
+                ,"AC1 " + getString(R.string.m442频率限制时间) + "(" + getString(R.string.m373低)+")"
+                ,"AC2 " + getString(R.string.频率限制) + "(" + getString(R.string.m373低)+")"
+                ,"AC2 " + getString(R.string.m442频率限制时间) + "(" + getString(R.string.m373低)+")"
+                ,"AC1 " + getString(R.string.频率限制) + "(" + getString(R.string.m372高)+")"
+                ,"AC1 " + getString(R.string.m442频率限制时间) + "(" + getString(R.string.m372高)+")"
+                ,"AC2 " + getString(R.string.频率限制) + "(" + getString(R.string.m372高)+")"
+                ,"AC2 " + getString(R.string.m442频率限制时间) + "(" + getString(R.string.m372高)+")"
         };
         units = new String[]{
                 "Hz", "s", "Hz", "s", "Hz", "s", "Hz", "s"

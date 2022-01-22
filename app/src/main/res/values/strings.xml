@@ -260,7 +260,7 @@
     <string name="android_key257">C Gun</string>
     <string name="android_key258">PV1/PV2 recharging current</string>
     <string name="android_key259">Clear History Data</string>
-    <string name="android_key260">Enable AC Charging</string>
+    <string name="android_key260">Enable AC Charge</string>
     <string name="android_key261">Can only be set in standby mode</string>
     <string name="android_key262">Detail data</string>
     <string name="android_key263">Name of parameter</string>
@@ -345,7 +345,7 @@
     <string name="android_key342">PV&amp;UTI</string>
     <string name="android_key343">Are you sure you want to delete the authorized user?</string>
     <string name="android_key344">Only PV</string>
-    <string name="android_key345">TOU-Charging</string>
+    <string name="android_key345">Battery First</string>
     <string name="android_key346">UTI First</string>
     <string name="android_key347">Independent</string>
     <string name="android_key348">Please check if your router connecting to Internet correctly.</string>
@@ -462,12 +462,12 @@
     <string name="android_key459">Preset</string>
     <string name="android_key460">Off-Grid Operating</string>
     <string name="android_key461">Please input amount of money</string>
-    <string name="android_key462">Self Consumption</string>
+    <string name="android_key462">Load First</string>
     <string name="android_key463">Please input electricity quantity(kWh)</string>
-    <string name="android_key464">TOU-Charging</string>
+    <string name="android_key464">Battery First</string>
     <string name="android_key465">Incorrect setup time.</string>
     <string name="android_key466">Password can’t be empty</string>
-    <string name="android_key467">TOU-Discharging</string>
+    <string name="android_key467">Grid First</string>
     <string name="android_key468">Start time should not be less than the current time</string>
     <string name="android_key469">Overvoltage</string>
     <string name="android_key470">Load consumption</string>
@@ -480,7 +480,7 @@
     <string name="android_key477">From battery</string>
     <string name="android_key478">Cost</string>
     <string name="android_key479">Current</string>
-    <string name="android_key480"> Self Consumption </string>
+    <string name="android_key480"> Load First</string>
     <string name="android_key481">Voltage</string>
     <string name="android_key482">Export to Grid</string>
     <string name="android_key483">Battery Information</string>
@@ -686,7 +686,7 @@
     <string name="android_key683">Abnormal analysis</string>
     <string name="android_key684"> Manufacturer Information </string>
     <string name="android_key685">Solution</string>
-    <string name="android_key686"> Machine Type </string>
+    <string name="android_key686"> Model Name</string>
     <string name="android_key687">Online service</string>
     <string name="android_key688"> Model Number </string>
     <string name="android_key689">Submit questions</string>
@@ -998,11 +998,11 @@
     <string name="android_key995">The DC input voltage is exceeding the maximum tolerable value.</string>
     <string name="android_key996">System/Week</string>
     <string name="android_key997">Self-scale must be greater than 10% of the total power consumption of the socket</string>
-    <string name="android_key998">Protect Value of 10min Vac Avg</string>
+    <string name="android_key998">Protection Value of 10min Avg Vac</string>
     <string name="android_key999">Incorrect input of the turn-on power percentage.</string>
     <string name="android_key1000">PV Reversed</string>
     <string name="android_key1001">Battery</string>
-    <string name="android_key1002">Limit of PV Over Voltage</string>
+    <string name="android_key1002">Protective Value of PV Over Voltage</string>
     <string name="android_key1003">Incorrect input of the turn-off power percentage.</string>
     <string name="android_key1004">No AC Connection</string>
     <string name="android_key1005">Modbus Version</string>
@@ -1068,7 +1068,7 @@
     <string name="android_key1065">The air conditioner does not support child locks</string>
     <string name="android_key1066">Quickly locate problem remotely via waveform record.</string>
     <string name="android_key1067">Battery temperature out of specified range for charge or discharge</string>
-    <string name="android_key1068">Real time Waveform</string>
+    <string name="android_key1068">Mointoring inverter voltage and current quality, etc.</string>
     <string name="android_key1069">Control success</string>
     <string name="android_key1070">BMS failure and neither charge and discharge is allowe</string>
     <string name="android_key1071">Control failure</string>
@@ -1090,17 +1090,17 @@
     <string name="android_key1087">Reset remote</string>
     <string name="android_key1088">1. Make sure the inverter is running normally 2. the diagnosis time is expected</string>
     <string name="android_key1089">1. Ensure that the inverter is in operation 2 and the inverter will be turned off during the test 3, the diagnosis time is expected</string>
-    <string name="android_key1090"> Control Software Version </string>
+    <string name="android_key1090"> Controlling Software Version </string>
     <string name="android_key1091">Temperature curve</string>
     <string name="android_key1092">minutes</string>
-    <string name="android_key1093"> Communication Software Version </string>
+    <string name="android_key1093"> Communication Software Version</string>
     <string name="android_key1094"> Serial Number </string>
     <string name="android_key1095">Power of Tracker A</string>
     <string name="android_key1096">Check firmware version update</string>
     <string name="android_key1097"> Derating Mode </string>
     <string name="android_key1098">Start</string>
     <string name="android_key1099">Loading</string>
-    <string name="android_key1100"> Communication Software Version </string>
+    <string name="android_key1100"> Communication Software Version</string>
     <string name="android_key1101">Reconfigure</string>
     <string name="android_key1102">I-V/P-V curve</string>
     <string name="android_key1103">PV ISO Check</string>
@@ -1324,9 +1324,9 @@
     <string name="android_key1321">Export limit ation power setting</string>
     <string name="android_key1322">Please select a product type</string>
     <string name="android_key1323">Dry contact</string>
-    <string name="android_key1324">Control software version</string>
+    <string name="android_key1324">Controlling Software Version</string>
     <string name="android_key1325">Phone number format is wrong</string>
-    <string name="android_key1326"> Communication Software Version </string>
+    <string name="android_key1326"> Communication Software Version</string>
     <string name="android_key1327">Derating mode</string>
     <string name="android_key1328">Null</string>
     <string name="android_key1329">panel</string>
@@ -1346,7 +1346,7 @@
     <string name="android_key1343">CT Selection</string>
     <string name="android_key1344">Battery Type Selection</string>
     <string name="android_key1345">Enable Off-Grid Function</string>
-    <string name="android_key1346"> Charging Power Ratio </string>
+    <string name="android_key1346"> Charge Power Ratio %</string>
     <string name="android_key1347">Generation overview</string>
     <string name="android_key1348">Function is not ready</string>
     <string name="android_key1349"> Dischrage Power Ratio </string>
@@ -2419,7 +2419,6 @@
     <string name="android_key2416">weekend</string>
     <string name="android_key2417">Voltage ride through</string>
     <string name="android_key2418">Frequency ride through</string>
-    <string name="android_key2419">Ramp Rate</string>
     <string name="android_key2420">Frequency/Watt</string>
     <string name="android_key2421">Reactive power control</string>
     <string name="android_key2422">Synchornization Range </string>
@@ -3969,9 +3968,9 @@
     <string name="m205Flash模式">Flash</string>
     <string name="m206并网工作中">On-grid</string>
     <string name="m207离网工作中">Off-grid</string>
-    <string name="m208负载优先">Self Consumption</string>
-    <string name="m209电池优先">TOU-Charging</string>
-    <string name="m210电网优先">TOU-Discharging</string>
+    <string name="m208负载优先">Load First</string>
+    <string name="m209电池优先">Battery First</string>
+    <string name="m210电网优先">Grid First</string>
     <string name="m211用电功率">Load consumption</string>
     <string name="m212并网功率">Export to Grid power</string>
     <string name="m213馈回电网">Export to Grid</string>
@@ -4033,7 +4032,7 @@
     <string name="m269WiFi名称为">Name of WiFi module</string>
     <string name="m270是否跳转连接WiFi">Connect WiFi module</string>
     <string name="m271连接">Connect</string>
-    <string name="m272PV电压电流">PV Volt/Current</string>
+    <string name="m272PV电压电流">PV Voltage/Current</string>
     <string name="m273组串电压电流">String Volt/Current</string>
     <string name="m274AC电压频率电流功率">AC Voltage/Frequency/Current/Power</string>
     <string name="m275PID电压电流">PID Volt/Current</string>
@@ -4074,8 +4073,8 @@
     <string name="m310PID故障信息">PID Abnormal code</string>
     <string name="m311PID状态">PID status</string>
     <string name="m312厂商信息">Manufacture Information</string>
-    <string name="m313机器型号">Machine Type</string>
-    <string name="m314Model号">Model code</string>
+    <string name="m313机器型号">Model Name</string>
+    <string name="m314Model号">Model Number</string>
     <string name="m315固件外部版本">FW version (E)</string>
     <string name="m316固件内部版本">FW version (I)</string>
     <string name="m317AC电压电流功率频率">AC Volt/Current/Power/Freq</string>
@@ -4193,8 +4192,8 @@
     <string name="m426故障恢复后重启延迟时间">Restarting Time</string>
     <string name="m427语言">Language</string>
     <string name="m428系统一周">System/Week</string>
-    <string name="m429AC电压10分钟保护值">Protect Value of 10min Vac Avg</string>
-    <string name="m430PV电压高故障">Limit of PV Over Voltage</string>
+    <string name="m429AC电压10分钟保护值">Protection Value of 10min Avg Vac</string>
+    <string name="m430PV电压高故障">Protective Value of PV Over Voltage</string>
     <string name="m431Modbus版本">Modbus Version</string>
     <string name="m432PID工作模式">PID Mode</string>
     <string name="m433PID开关">PID On/Off</string>
@@ -4215,12 +4214,12 @@
     <string name="m448一键诊断">One click diagnosis</string>
     <string name="m449可远程扫描每路MPPT">I-V Scan for each MPPT</string>
     <string name="m450可远程快速精确地进行故障定位">Quickly locate problem remotely via waveform record.</string>
-    <string name="m451可实时观察逆变器电压电流质量等">Real time Waveform</string>
+    <string name="m451可实时观察逆变器电压电流质量等">Mointoring inverter voltage and current quality, etc.</string>
     <string name="m452一键检测电站环境信息包括IV曲线扫描电网侧电压波形THDV以及线路阻抗">Including I-V curve, AC waveform record, THDV and grid cable impedance .</string>
     <string name="m453选择一键诊断模块">Select item(s)</string>
     <string name="m454IVPV曲线">I-V/P-V Curve</string>
     <string name="m455电网电压波形">Grid Voltage Waveform</string>
-    <string name="m456电网电压谐波THDV">THDv</string>
+    <string name="m456电网电压谐波THDV">THDV</string>
     <string name="m457电网线路阻抗">AC Cable Impendance</string>
     <string name="m458确保逆变器在运行状态1">1. Ensure that the inverter is in operation 2 and the inverter will be turned off during the test 3, the diagnosis time is expected</string>
     <string name="m458确保逆变器在运行状态2">1. Make sure the inverter is running normally 2. the diagnosis time is expected</string>
@@ -4971,8 +4970,8 @@
     <string name="m防逆流功率设置值">Export limit ation power setting</string>
     <string name="m请选择产品类型">Please select a product type</string>
     <string name="m干接点">Dry contact</string>
-    <string name="m控制软件版本">Control software version</string>
-    <string name="m通信软件版本">Communication software version</string>
+    <string name="m控制软件版本">Controlling Software Version</string>
+    <string name="m通信软件版本">Communication Software Version</string>
     <string name="m降额模式">Derating mode</string>
     <string name="m无降额">Null</string>
     <string name="m面板">Panel</string>
@@ -4992,7 +4991,7 @@
     <string name="m电池种类">Battery Type Selection</string>
     <string name="m离网功能使能">Enable Off-Grid Function</string>
     <string name="m充电功率百分比">Charge Power %</string>
-    <string name="m放电功率百分比">Discharge Power %</string>
+    <string name="m放电功率百分比">Discharge Power Ratio % </string>
     <string name="m电站类型">Plant type</string>
     <string name="m户用电站">Residential plant</string>
     <string name="m工商业电站">Commercial Plant</string>
@@ -5681,7 +5680,7 @@
     <string name="m1215升级_ios">Update</string>
     <string name="m1216温度_ios">Temperature</string>
     <string name="m1219功率采集器_ios">Dynamometer</string>
-    <string name="m1221AC充电使能_ios">Enable AC Charging</string>
+    <string name="m1221AC充电使能_ios">Enable AC Charge</string>
     <string name="m1226家庭能源总用电量_ios">Total household Load consumption</string>
     <string name="m125负载功率_ios">Load consumption</string>
     <string name="m127空闲_ios">Idle</string>
@@ -5780,7 +5779,7 @@
     <string name="m456输出电压直流分量过高_ios">DC Voltage High Fault</string>
     <string name="m457离网输出电压过低_ios">Off-grid output voltage is too low</string>
     <string name="m459序列号_ios">Serial Number</string>
-    <string name="m461通信软件版本_ios">Communication software version</string>
+    <string name="m461通信软件版本_ios">Communication Software Version</string>
     <string name="m472请输入故障ID号_ios">Please enter the ID number</string>
     <string name="m481PV月充电量_ios">EpvMonth</string>
     <string name="m482AC月充电量_ios">EacChargeMonth</string>
@@ -5817,9 +5816,9 @@
     <string name="m543定位提示跳转_ios">Please go to the【Settings】-&gt;【Privacy】-&gt;【Location Service】turns on the switch and allows ShinePhone to use the location service.</string>
     <string name="m54放电功率_ios">Discharging Power</string>
     <string name="m558充电_ios">Charge</string>
-    <string name="m569控制软件版本_ios">Control software version</string>
+    <string name="m569控制软件版本_ios">Controlling Software Version</string>
     <string name="m56手机号格式错误_ios">Phone number format is wrong</string>
-    <string name="m570通信软件版本_ios">Communication software version</string>
+    <string name="m570通信软件版本_ios">Communication Software Version</string>
     <string name="m571降额模式_ios">Derating mode</string>
     <string name="m572无_ios">Null</string>
     <string name="m573面板_ios">Panel</string>
@@ -6149,7 +6148,7 @@
     <string name="AFCI复位">AFCI Reset</string>
     <string name="电压穿越">Voltage Ride Through</string>
     <string name="频率穿越">Frequency Ride Through</string>
-    <string name="上升斜率">Ramp Rate</string>
+    <string name="上升斜率">Nominal Gradient</string>
     <string name="电压限制">Voltage limit</string>
     <string name="频率限制">Frequency limit</string>
     <string name="欠频加载">Under frequency loading</string>
@@ -6529,8 +6528,8 @@
 
     <string name="ac_voltage_protect">AC voltage protection</string>
     <string name="ac_frency_protect">AC frequency protection</string>
-    <string name="grid_connetced_vol_limit">Grid-connected voltage limit</string>
-    <string name="grid_connetced_frency_limit">Grid-connected frequency limit</string>
+    <string name="grid_connetced_vol_limit">Grid voltage limit</string>
+    <string name="grid_connetced_frency_limit">Grid frequency limit</string>
 
     <string name="battery_diagnosis">Battery diagnosis</string>
     <string name="being_diagnosed">Being diagnosed</string>

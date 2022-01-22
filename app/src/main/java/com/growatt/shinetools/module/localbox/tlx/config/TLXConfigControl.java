@@ -495,21 +495,21 @@ public class TLXConfigControl {
         String tips1 = context.getString(R.string.android_key3048) + ":" + "241.5~345V";
         String tips2 = context.getString(R.string.android_key3048) + ":" + "20ms~1min";
         String[] titls = new String[]{
-                "AC1 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m373低),
-                "AC1 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m372高)
+                "AC1 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m373低)+")",
+                "AC1 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m372高)+")"
 
-                , "AC2 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m373低)
-                , "AC2 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m372高)
+                , "AC2 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m373低)+")"
+                , "AC2 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m372高)+")"
 
-                , "AC3 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m373低)
-                , "AC3 " + context.getString(R.string.电压限制) + " " + context.getString(R.string.m372高)
+                , "AC3 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m373低)+")"
+                , "AC3 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m372高)+")"
 
-                , "AC" + context.getString(R.string.m441电压限制时间) + "1" + context.getString(R.string.m373低)
-                , "AC" + context.getString(R.string.m441电压限制时间) + "1" + context.getString(R.string.m372高)
-                , "AC" + context.getString(R.string.m441电压限制时间) + "2" + context.getString(R.string.m373低)
-                , "AC" + context.getString(R.string.m441电压限制时间) + "2" + context.getString(R.string.m372高)
-                , "AC" + context.getString(R.string.m441电压限制时间) + "3" + context.getString(R.string.m373低)
-                , "AC" + context.getString(R.string.m441电压限制时间) + "3" + context.getString(R.string.m372高)
+                , "AC" + context.getString(R.string.m441电压限制时间) + "1" +"("+ context.getString(R.string.m373低)+")"
+                , "AC" + context.getString(R.string.m441电压限制时间) + "1" +"("+ context.getString(R.string.m372高)+")"
+                , "AC" + context.getString(R.string.m441电压限制时间) + "2" +"("+ context.getString(R.string.m373低)+")"
+                , "AC" + context.getString(R.string.m441电压限制时间) + "2" + "("+context.getString(R.string.m372高)+")"
+                , "AC" + context.getString(R.string.m441电压限制时间) + "3" +"("+ context.getString(R.string.m373低)+")"
+                , "AC" + context.getString(R.string.m441电压限制时间) + "3" +"("+ context.getString(R.string.m372高)+")"
         };
 
         int[] itemTypes = new int[]{
@@ -623,20 +623,20 @@ public class TLXConfigControl {
         String tips1 = context.getString(R.string.android_key3048) + ":" + "50~55Hz";
         String tips2 = context.getString(R.string.android_key3048) + ":" + "20ms~10min";
         String[] titls = new String[]{
-                "AC1 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m373低),
-                "AC1 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m372高)
-                , "AC2 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m373低)
-                , "AC2 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m372高)
-                , "AC3 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m373低)
-                , "AC3 " + context.getString(R.string.频率限制) + " " + context.getString(R.string.m372高)
+                "AC1 " + context.getString(R.string.频率限制) + "("  + context.getString(R.string.m373低)+")",
+                "AC1 " + context.getString(R.string.频率限制) + "(" + context.getString(R.string.m372高)+")"
+                , "AC2 " + context.getString(R.string.频率限制) + "(" + context.getString(R.string.m373低)+")"
+                , "AC2 " + context.getString(R.string.频率限制) + "(" + context.getString(R.string.m372高)+")"
+                , "AC3 " + context.getString(R.string.频率限制) + "(" + context.getString(R.string.m373低)+")"
+                , "AC3 " + context.getString(R.string.频率限制) + "(" + context.getString(R.string.m372高)+")"
 
 
-                , "AC" + context.getString(R.string.m442频率限制时间) + "1" + context.getString(R.string.m373低)
-                , "AC" + context.getString(R.string.m442频率限制时间) + "1" + context.getString(R.string.m372高)
-                , "AC" + context.getString(R.string.m442频率限制时间) + "2" + context.getString(R.string.m373低)
-                , "AC" + context.getString(R.string.m442频率限制时间) + "2" + context.getString(R.string.m372高)
-                , "AC" + context.getString(R.string.m442频率限制时间) + "3" + context.getString(R.string.m373低)
-                , "AC" + context.getString(R.string.m442频率限制时间) + "3" + context.getString(R.string.m372高)
+                , "AC" + context.getString(R.string.m442频率限制时间) + "1" + "("+ context.getString(R.string.m373低)+")"
+                , "AC" + context.getString(R.string.m442频率限制时间) + "1" + "("+ context.getString(R.string.m372高)+")"
+                , "AC" + context.getString(R.string.m442频率限制时间) + "2" + "("+ context.getString(R.string.m373低)+")"
+                , "AC" + context.getString(R.string.m442频率限制时间) + "2" + "("+ context.getString(R.string.m372高)+")"
+                , "AC" + context.getString(R.string.m442频率限制时间) + "3"+ "(" + context.getString(R.string.m373低)+")"
+                , "AC" + context.getString(R.string.m442频率限制时间) + "3" + "("+ context.getString(R.string.m372高)+")"
         };
 
         int[] itemTypes = new int[]{
@@ -755,10 +755,10 @@ public class TLXConfigControl {
                 context.getString(R.string.m424启动电压),//并网电压
                 context.getString(R.string.m425启动时间),//并网时间
                 context.getString(R.string.android_key990),//重启时间
-                context.getString(R.string.grid_connetced_vol_limit)+" "+context.getString(R.string.m373低),//并网电压限制 低
-                context.getString(R.string.grid_connetced_vol_limit)+" "+context.getString(R.string.m372高),//并网电压限制 高
-                context.getString(R.string.grid_connetced_frency_limit)+" "+context.getString(R.string.m373低),//并网频率限制 低
-                context.getString(R.string.grid_connetced_frency_limit)+" "+context.getString(R.string.m372高),//并网频率限制 高
+                context.getString(R.string.grid_connetced_vol_limit)+"("+context.getString(R.string.m373低)+")",//并网电压限制 低
+                context.getString(R.string.grid_connetced_vol_limit)+"("+context.getString(R.string.m372高)+")",//并网电压限制 高
+                context.getString(R.string.grid_connetced_frency_limit)+"("+context.getString(R.string.m373低)+")",//并网频率限制 低
+                context.getString(R.string.grid_connetced_frency_limit)+"("+context.getString(R.string.m372高)+")",//并网频率限制 高
 
         };
 
@@ -1256,7 +1256,7 @@ public class TLXConfigControl {
                 context.getString(R.string.m414N至GND监测功能使能),//N至PE监测功能使能 6
                 context.getString(R.string.m415非标准电网电压范围使能),//宽电网电压范围使能 7
                 context.getString(R.string.android_key898),//安规功能使能 1
-                context.getString(R.string.android_key950),//电网N线使能 5
+//                context.getString(R.string.android_key950),//电网N线使能 5
                 context.getString(R.string.android_key959),//指定的规格设置使能 8
                 context.getString(R.string.m411Island使能),//ISland使能 3
 
@@ -1278,7 +1278,7 @@ public class TLXConfigControl {
                 "",
                 "",
                 "",
-                "",
+//                "",
                 "",
                 "",
                 "",
@@ -1294,7 +1294,7 @@ public class TLXConfigControl {
                 UsSettingConstant.SETTING_TYPE_SWITCH,//N至PE监测功能使能
                 UsSettingConstant.SETTING_TYPE_SELECT,//宽电网电压范围使能
                 UsSettingConstant.SETTING_TYPE_SWITCH,//安规功能使能
-                UsSettingConstant.SETTING_TYPE_SWITCH,//电网N线使能
+//                UsSettingConstant.SETTING_TYPE_SWITCH,//电网N线使能
                 UsSettingConstant.SETTING_TYPE_SWITCH,//指定的规格设置使能
                 UsSettingConstant.SETTING_TYPE_SWITCH,//ISland使能
 
@@ -1310,16 +1310,16 @@ public class TLXConfigControl {
         };
         String[] register = new String[]{
                 "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", ""
+                "", "", "", "", "", ""
         };
         float[] multiples = new float[]{
                 1, 1, 1, 1, 1, 1, 1,
-                1, 1, 1, 1, 1, 1, 1,
-                1
+                1, 1, 1, 1, 1, 1, 1
+
         };
         String[] units = new String[]{
                 "", "%", "", "", "", "", "","",
-                "", "", "", "", "", "", "",
+                "", "", "", "", "", "",
         };
         int[][] funs = new int[][]{
                 {3, 0, 0},//开关逆变器
@@ -1329,7 +1329,7 @@ public class TLXConfigControl {
                 {3, 235, 235},//N至PE检测功能使能
                 {3, 236, 236},//宽电网电压范围使能
                 {3, 1, 1},//安规功能使能
-                {3, 232, 232},//电网N线使能
+//                {3, 232, 232},//电网N线使能
                 {3, 237, 237},//指定的规格设置使能
                 {3, 230, 230},//ISLand使能
 
@@ -1350,7 +1350,7 @@ public class TLXConfigControl {
                 {6, 235, 0},//N至PE检测功能使能
                 {6, 236, 0},//宽电网电压范围使能
                 {6, 1, 0},//安规功能使能
-                {6, 232, 0},//电网N线使能
+//                {6, 232, 0},//电网N线使能
                 {6, 237, 0},//指定的规格设置使能
                 {6, 230, 0},//ISLand使能
 
@@ -1372,7 +1372,7 @@ public class TLXConfigControl {
                 {6, 49, -1},
                 {6, 50, -1},
                 {6, 48, -1},
-                {6, 49, -1},
+//                {6, 49, -1},
                 {6, 45, -1},
                 {6, 46, -1},
                 {6, 47, -1},
@@ -1396,7 +1396,7 @@ public class TLXConfigControl {
                 { "0","1","2"},
                 {},
                 {},
-                {},
+//                {},
                 {},
                 {},
                 {},

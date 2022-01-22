@@ -242,47 +242,47 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
                 LogUtil.i("解析安规功能使能:"+value6);
                 parserSafetyEnable(value6);
                 break;
-            case 7://电网N线使能
+       /*     case 7://电网N线使能
                 //解析int值
                 int value7 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("解析电网N线使能:"+value7);
                 usParamsetAdapter.getData().get(7).setValue(String.valueOf(value7));
-                break;
-            case 8://指定的规格设置使能
+                break;*/
+            case 7://指定的规格设置使能
                 int value8 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("解析指定规格设置使能:"+value8);
                 usParamsetAdapter.getData().get(8).setValue(String.valueOf(value8));
                 break;
-            case 9://ISLand使能
+            case 8://ISLand使能
                 //解析int值
                 int value9 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("解析ISlland使能:"+value9);
                 usParamsetAdapter.getData().get(9).setValue(String.valueOf(value9));
                 break;
 
-            case 10://风扇检查
+            case 9://风扇检查
                 int value10 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("风扇检查:"+value10);
                 usParamsetAdapter.getData().get(10).setValue(String.valueOf(value10));
                 break;
-            case 11://检查固件
+            case 10://检查固件
 
                 break;
-            case 12://PID工作模式
+            case 11://PID工作模式
                 int value12 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("解析PID工作模式:"+value12);
                 ALLSettingBean bean13 = usParamsetAdapter.getData().get(12);
                 bean13.setValue(String.valueOf(bean13));
                 bean13.setValueStr(getReadValueReal(12,value12));
                 break;
-            case 13://PID开关
+            case 12://PID开关
                 //解析int值
                 int value13 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("解析PID开关:"+value13);
                 usParamsetAdapter.getData().get(13).setValue(String.valueOf(value13));
                 break;
 
-            case 14://PID工作电压选择
+            case 13://PID工作电压选择
                 //解析int值
                 int value14 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("解析PID工作电压选择:"+value14);
@@ -326,7 +326,7 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
 
 
     public void paserPidVoltgeSelect(int read) {
-        ALLSettingBean bean = usParamsetAdapter.getData().get(14);
+        ALLSettingBean bean = usParamsetAdapter.getData().get(13);
         bean.setValueStr(String.valueOf(read));
     }
 
@@ -348,7 +348,7 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
                     value = Arith.mul(read, mul, 2) + unit;
                 }
                 break;
-            case 2: case 5:  case 12:
+            case 2: case 5:  case 11:
                 if (read<items.length){
                     value = items[read];
                 }
@@ -413,10 +413,10 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
 //                setInputValue(position,title,hint);
                 break;
 
-            case 10://
+            case 9://
 
                 break;
-            case 11:
+            case 10:
                 toOhterSetting=true;
                 manager.disConnectSocket();
                 Intent intent = new Intent(mContext, ChekFirmWareActivity.class);
@@ -426,12 +426,12 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
                 break;
 
 
-            case 12:
+            case 11:
                 setSelectItem(position,title);
                 break;
-            case 13:
+            case 12:
                 break;
-            case 14:
+            case 13:
                 setInputValue(position,title,hint);
                 break;
 

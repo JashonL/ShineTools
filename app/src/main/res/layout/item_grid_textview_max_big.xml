@@ -2,8 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="@dimen/dp_75"
-    android:layout_height="match_parent">
+    android:layout_width="@dimen/dp_90"
+    android:layout_height="@dimen/dp_60">
 
 
 
@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:padding="@dimen/dp_5"
         app:autoSizeTextType="uniform"
         app:autoSizeMinTextSize="@dimen/size_content_sp_8"
         app:autoSizeMaxTextSize="@dimen/size_content_sp_12"
