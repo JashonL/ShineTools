@@ -257,25 +257,25 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
             case 7://指定的规格设置使能
                 int value8 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("解析指定规格设置使能:"+value8);
-                usParamsetAdapter.getData().get(8).setValue(String.valueOf(value8));
+                usParamsetAdapter.getData().get(7).setValue(String.valueOf(value8));
                 break;
             case 8://ISLand使能
                 //解析int值
                 int value9 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("解析ISlland使能:"+value9);
-                usParamsetAdapter.getData().get(9).setValue(String.valueOf(value9));
+                usParamsetAdapter.getData().get(8).setValue(String.valueOf(value9));
                 break;
             case 9://离网功能使能
                 int value10 = MaxWifiParseUtil.obtainValueOne(bs);
                 LogUtil.i("离网功能使能:"+value10);
-                ALLSettingBean bean10 = usParamsetAdapter.getData().get(10);
+                ALLSettingBean bean10 = usParamsetAdapter.getData().get(9);
                 bean10.setValue(String.valueOf(value10));
-                bean10.setValueStr(getReadValueReal(10,value10));
+                bean10.setValueStr(getReadValueReal(9,value10));
                 break;
             case 10://离网频率
                 //解析int值
                 int value11 = MaxWifiParseUtil.obtainValueOne(bs);
-                ALLSettingBean allSettingBean = usParamsetAdapter.getData().get(11);
+                ALLSettingBean allSettingBean = usParamsetAdapter.getData().get(10);
                 allSettingBean.setValue(String.valueOf(value11));
                 String sValue = String.valueOf(value11);
                 String[] frequency = allSettingBean.getItems();
@@ -287,7 +287,7 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
             case 11://离网电压
                 //解析int值
                 int value12 = MaxWifiParseUtil.obtainValueOne(bs);
-                ALLSettingBean allSettingBean1 = usParamsetAdapter.getData().get(12);
+                ALLSettingBean allSettingBean1 = usParamsetAdapter.getData().get(11);
                 allSettingBean1.setValue(String.valueOf(value12));
                 String[] voltage = allSettingBean1.getItems();
                 String sValue12 = String.valueOf(value12);
@@ -299,7 +299,7 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
             case 12://CT选择
                 //解析int值
                 int value13 = MaxWifiParseUtil.obtainValueOne(bs);
-                ALLSettingBean allSettingBean2 = usParamsetAdapter.getData().get(13);
+                ALLSettingBean allSettingBean2 = usParamsetAdapter.getData().get(12);
                 allSettingBean2.setValue(String.valueOf(value13));
                 String sValue13 = String.valueOf(value13);
                 String[] ctselect = allSettingBean2.getItems();
@@ -312,7 +312,7 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
             case 13://电池选择
                 //解析int值
                 int value14 = MaxWifiParseUtil.obtainValueOne(bs);
-                ALLSettingBean allSettingBean3 = usParamsetAdapter.getData().get(14);
+                ALLSettingBean allSettingBean3 = usParamsetAdapter.getData().get(13);
                 allSettingBean3.setValue(String.valueOf(value14));
                 String sValue14 = String.valueOf(value14);
                 String[] batterySelect = allSettingBean3.getItems();

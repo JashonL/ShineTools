@@ -1704,9 +1704,9 @@ public class MaxConfigControl {
                 "", "", "", "", "", "", "", "", "", "", "", ""
         };
         float[] multiples = new float[]{
-                1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1
+                0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 20, 20,20, 20, 20, 20
         };
-        String[] units = new String[]{"", "", "", "", "", "", "", "", "", "", "", "", ""};
+        String[] units = new String[]{"V", "V", "V", "V", "V", "V", "ms", "ms", "ms", "ms", "ms", "ms", "ms"};
         String[] hints = new String[]{
                 tips, tips1, tips, tips1, tips, tips1, tips2, tips2, tips2, tips2, tips2, tips2
         };

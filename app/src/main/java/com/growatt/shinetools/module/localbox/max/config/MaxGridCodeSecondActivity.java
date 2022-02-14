@@ -416,6 +416,9 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
     }
 
 
+
+
+
     private void getData(int pos) {
         type = 0;
         currentPos = pos;
@@ -514,7 +517,8 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
-        setCommenInputValue(pos, title, hint, mul);
+        String unit = bean.getUnit();
+        setCommenInputValue(pos, title, hint, mul,unit);
     }
 
 
@@ -530,7 +534,8 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
-        setCommenInputValue(pos, title, hint, mul);
+        String unit = bean.getUnit();
+        setCommenInputValue(pos, title, hint, mul,unit);
     }
 
 
@@ -546,7 +551,8 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
-        setCommenInputValue(pos, title, hint, mul);
+        String unit = bean.getUnit();
+        setCommenInputValue(pos, title, hint, mul,unit);
     }
 
 
@@ -561,7 +567,8 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
-        setCommenInputValue(pos, title, hint, mul);
+        String unit = bean.getUnit();
+        setCommenInputValue(pos, title, hint, mul,unit);
     }
 
 
@@ -576,7 +583,8 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
-        setCommenInputValue(pos, title, hint, mul);
+        String unit = bean.getUnit();
+        setCommenInputValue(pos, title, hint, mul,unit);
     }
 
 
@@ -591,7 +599,8 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
         String title = bean.getTitle();
         float mul = bean.getMul();
         String hint = bean.getHint();
-        setCommenInputValue(pos, title, hint, mul);
+        String unit = bean.getUnit();
+        setCommenInputValue(pos, title, hint, mul,unit);
     }
 
 
@@ -604,9 +613,9 @@ public class MaxGridCodeSecondActivity extends BaseActivity implements BaseQuick
      * @param mul
      */
 
-    private void setCommenInputValue(int position, String title, String hint, float mul) {
+    private void setCommenInputValue(int position, String title, String hint, float mul,String unit) {
         CircleDialogUtils.showInputValueDialog(this, title,
-                hint, "", value -> {
+                hint, unit, value -> {
                     double result = Double.parseDouble(value);
                     String pValue = value + "";
                     usParamsetAdapter.getData().get(position).setValueStr(pValue);
