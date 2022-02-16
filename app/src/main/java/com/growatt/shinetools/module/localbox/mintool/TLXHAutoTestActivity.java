@@ -50,6 +50,10 @@ public class TLXHAutoTestActivity extends DemoBase {
     RecyclerView mRecyclerView;
     @BindView(R.id.btnOK)
     Button mBtnOK;
+    @BindView(R.id.tvRight)
+    TextView tvRight;
+
+
     private TLXHToolAutoTestAdapter mAdapter;
     private List<TLXHToolAutoTestBean> mList;
     private String[] titles;
@@ -75,6 +79,7 @@ public class TLXHAutoTestActivity extends DemoBase {
         ButterKnife.bind(this);
         initString();
         mTvTitle.setText(R.string.m自动测试);
+        tvRight.setText(R.string.android_key816);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mList = new ArrayList<>();
         mAdapter = new TLXHToolAutoTestAdapter(R.layout.item_tlxh_tool_autotest, mList);
@@ -136,13 +141,13 @@ public class TLXHAutoTestActivity extends DemoBase {
         nowSet[2] = 1;
     }
 
-    @OnClick({R.id.ivLeft, R.id.ivRight, R.id.btnOK})
+    @OnClick({R.id.ivLeft, R.id.tvRight, R.id.btnOK})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivLeft:
                 finish();
                 break;
-            case R.id.ivRight:
+            case R.id.tvRight:
                 SocketClientUtil.close(mClientUtilRead);
                 readRegisterValue();
                 Mydialog.Dismiss();
@@ -157,6 +162,7 @@ public class TLXHAutoTestActivity extends DemoBase {
                     mReportBean.setStartTime(ChartUtils.getFormatDate("HH:mm:ss",new Date()));
                     writeRegisterValue();
                 });
+
                 break;
         }
     }

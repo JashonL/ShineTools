@@ -1,5 +1,8 @@
 package com.growatt.shinetools.module.localbox.mintool;
 
+import static com.growatt.shinetools.constant.PermissionConstant.RC_LOCATION;
+
+import android.Manifest;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,7 @@ import com.growatt.shinetools.adapter.TLXHAutoTestReportAdapter;
 import com.growatt.shinetools.base.DemoBase;
 import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHAutoTestReportBean;
 import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHToolAutoTestBean;
+import com.growatt.shinetools.utils.ShareUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -26,6 +30,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class TLXHToolAutoTestReportActivity extends DemoBase {
 
@@ -54,7 +60,19 @@ public class TLXHToolAutoTestReportActivity extends DemoBase {
         mList = new ArrayList<>();
         mAdapter = new TLXHAutoTestReportAdapter(R.layout.item_autotest_report_rv,mList);
         mAdapter.addHeaderView(headerView);
+
+    /*    List<TLXHToolAutoTestBean> list=new ArrayList<>();
+        TLXHToolAutoTestBean bean=new TLXHToolAutoTestBean();
+        bean.setContent("123");
+        bean.setTitle("12345");
+        bean.setProcess("4555");
+        bean.setStatus("4555");
+        list.add(bean);
+
+        List<List<TLXHToolAutoTestBean>>newList=new ArrayList<>();
+        newList.add(list);*/
         mRecyclerView.setAdapter(mAdapter);
+//        mAdapter.replaceData(newList);
         if (mReportBean != null){
             headerHolder.mTvFinishTime.setText(mReportBean.getFinishTime() + " " + mReportBean.getTitle());
             headerHolder.mTvContent1.setText(mReportBean.getStartDate());
@@ -84,10 +102,36 @@ public class TLXHToolAutoTestReportActivity extends DemoBase {
                 finish();
                 break;
             case R.id.ivRight:
-
+                share();
                 break;
         }
     }
+
+
+
+    /**
+     * 检测拍摄权限
+     */
+    @AfterPermissionGranted(RC_LOCATION)
+    private void share() {
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+        if (EasyPermissions.hasPermissions(this, perms)) {//有权限
+            //去分享
+           ShareUtils.share(this,
+                   getLocalClassName() + ".png",
+                   headerView,
+                   mRecyclerView,
+                   mAdapter,
+                   true);
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this, getString(R.string.android_key3127),
+                    RC_LOCATION, perms);
+        }
+    }
+
+
+
 
     static class ViewHolder {
         @BindView(R.id.tvFinishTime)
