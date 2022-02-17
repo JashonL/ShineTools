@@ -153,13 +153,13 @@ public class TLXHAutoTestOldInvActivity extends DemoBase {
         nowSet[2] = 1;
     }
 
-    @OnClick({R.id.ivLeft, R.id.ivRight, R.id.btnOK})
+    @OnClick({R.id.ivLeft, R.id.tvRight, R.id.btnOK})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivLeft:
                 finish();
                 break;
-            case R.id.ivRight:
+            case R.id.tvRight:
                 SocketClientUtil.close(mClientUtilRead);
                 readRegisterValue();
                 Mydialog.Dismiss();

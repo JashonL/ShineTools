@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/iphone_background">
-    <include layout="@layout/header_view_v3" android:id="@+id/headerView"/>
+    <include layout="@layout/header_view_title" android:id="@+id/headerView"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
