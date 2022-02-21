@@ -72,15 +72,23 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
 
     @Override
     public void initSetDataArray() {
-      res = new int[]{
-                R.drawable.quickly, R.drawable.system_config,
-                R.drawable.charge_manager, R.drawable.smart_check, R.drawable.param_setting,
-                R.drawable.advan_setting, R.drawable.device_info
+        res = new int[]{
+                R.drawable.quickly,
+                R.drawable.system_config,
+                R.drawable.param_setting,
+                R.drawable.city_code,
+                R.drawable.smart_check,
+                R.drawable.advan_setting,
+                R.drawable.device_info
         };
-     title = new String[]{
-                getString(R.string.快速设置), getString(R.string.android_key3052), getString(R.string.basic_setting)
-                , getString(R.string.m285智能检测), getString(R.string.m284参数设置)
-                , getString(R.string.m286高级设置), getString(R.string.m291设备信息)
+        title = new String[]{
+                getString(R.string.快速设置),
+                getString(R.string.android_key3052),
+                getString(R.string.m284参数设置),
+                getString(R.string.市电码参数设置),
+                getString(R.string.m285智能检测),
+                getString(R.string.m286高级设置),
+                getString(R.string.m291设备信息)
         };
     }
 
@@ -102,10 +110,12 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
                 clazz = MaxBasicSettingActivity.class;
                 break;
             case 3:
-                clazz = MaxCheckActivity.class;
+                clazz = MaxGridCodeSettingActivity.class;
+
                 break;
             case 4:
-                clazz = MaxGridCodeSettingActivity.class;
+                clazz = MaxCheckActivity.class;
+
                 break;
             case 5:
                 clazz = USAdvanceSetActivity.class;

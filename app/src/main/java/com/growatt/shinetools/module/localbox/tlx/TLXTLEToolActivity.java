@@ -69,13 +69,21 @@ public class TLXTLEToolActivity  extends BaseMaxToolActivity {
     public void initSetDataArray() {
         //快速设置   系统设置   基本设置   参数设置   智能检测   高级设置   设备信息
         title = new String[]{
-                getString(R.string.快速设置), getString(R.string.系统设置), getString(R.string.basic_setting)
-                , getString(R.string.android_key352), getString(R.string.android_key625), getString(R.string.android_key626)
-                , getString(R.string.android_key637)
+                getString(R.string.快速设置),
+                getString(R.string.系统设置),
+                getString(R.string.android_key352),
+                getString(R.string.android_key3056),
+                getString(R.string.android_key625),
+                getString(R.string.android_key626),
+                getString(R.string.android_key637)
         };
         res = new int[]{
-                R.drawable.quickly, R.drawable.system_config, R.drawable.charge_manager,
-                R.drawable.param_setting, R.drawable.smart_check, R.drawable.advan_setting,
+                R.drawable.quickly,
+                R.drawable.system_config,
+                R.drawable.param_setting,
+                R.drawable.city_code,
+                R.drawable.smart_check,
+                R.drawable.advan_setting,
                 R.drawable.device_info
         };
     }

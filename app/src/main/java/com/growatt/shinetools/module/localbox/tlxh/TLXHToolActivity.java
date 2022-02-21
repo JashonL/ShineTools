@@ -88,14 +88,28 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
     @Override
     public void initSetDataArray() {
         title = new String[]{
-                getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key365)
-                , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
-                , getString(R.string.m286高级设置), getString(R.string.m291设备信息),getString(R.string.android_key171)
+                getString(R.string.快速设置),
+                getString(R.string.android_key3091),
+                getString(R.string.m284参数设置),
+                getString(R.string.android_key3056),
+                getString(R.string.android_key1308),
+                getString(R.string.m285智能检测),
+                getString(R.string.m286高级设置),
+                getString(R.string.android_key171),
+                getString(R.string.m291设备信息)
+
         };
         res = new int[]{
-                R.drawable.quickly, R.drawable.system_config, R.drawable.city_code,
-                R.drawable.charge_manager, R.drawable.smart_check, R.drawable.param_setting,
-                R.drawable.advan_setting, R.drawable.device_info,R.drawable.tlx_auto_test
+                R.drawable.quickly,
+                R.drawable.system_config,
+                R.drawable.param_setting,
+                R.drawable.city_code,
+                R.drawable.charge_manager,
+                R.drawable.smart_check,
+                R.drawable.advan_setting,
+                R.drawable.tlx_auto_test,
+                R.drawable.device_info
+
         };
     }
 
@@ -120,26 +134,33 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
                 clazz = TLXHSystemSettingActivity.class;
                 break;
             case 2:
-                clazz = TLXHGridCodeSettingActivity.class;
+//                clazz = TLXHGridCodeSettingActivity.class;
+
+                clazz = TLXHBasicSettingActivity.class;
                 break;
             case 3:
-                clazz = TLXHChargeActivity.class;
+//                clazz = TLXHChargeActivity.class;
+                clazz = TLXHGridCodeSettingActivity.class;
                 break;
             case 4://智能检测
-                clazz = MaxCheckActivity.class;
+//                clazz = MaxCheckActivity.class;
+                clazz = TLXHChargeActivity.class;
                 break;
+
             case 5://基本设置
-                clazz = TLXHBasicSettingActivity.class;
+//                clazz = TLXHBasicSettingActivity.class;
+                clazz = MaxCheckActivity.class;
                 break;
 
             case 6://高级设置
                 clazz = USAdvanceSetActivity.class;
                 break;
             case 7://设备信息
-                clazz = TLXHDeviceInfoActivity.class;
+                clazz = TLXHAutoTestActivity.class;
                 break;
             case 8:
-                clazz = TLXHAutoTestActivity.class;
+                clazz = TLXHDeviceInfoActivity.class;
+
                 break;
             default:
                 clazz = null;
