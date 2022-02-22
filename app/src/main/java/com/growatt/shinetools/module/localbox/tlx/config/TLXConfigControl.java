@@ -658,9 +658,9 @@ public class TLXConfigControl {
                 "", "", "", "", "", "", "", "","","","",""
         };
         float[] multiples = new float[]{
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+                0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 20, 20, 20, 20, 20, 20
         };
-        String[] units = new String[]{"", "", "", "", "", "", "", "", "","","","",""};
+        String[] units = new String[]{"Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "ms", "ms", "ms","ms","ms","ms","ms"};
         String[] hints = new String[]{
                 tips, tips1, tips, tips1, tips, tips1, tips2, tips2, tips2, tips2, tips2, tips2
         };

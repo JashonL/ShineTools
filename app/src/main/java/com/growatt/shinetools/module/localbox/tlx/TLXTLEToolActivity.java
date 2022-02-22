@@ -71,7 +71,7 @@ public class TLXTLEToolActivity  extends BaseMaxToolActivity {
         title = new String[]{
                 getString(R.string.快速设置),
                 getString(R.string.系统设置),
-                getString(R.string.android_key352),
+                getString(R.string.android_key622),
                 getString(R.string.android_key3056),
                 getString(R.string.android_key625),
                 getString(R.string.android_key626),

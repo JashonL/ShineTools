@@ -6395,7 +6395,7 @@
     <string name="采集器版本过低">The datalogger version is too low</string>
     <string name="请输入新密码">Please enter a new password</string>
     <string name="设置登录密码">Setting login password</string>
-    <string name="市电码参数设置">EMS</string>
+    <string name="市电码参数设置">Grid Code</string>
     <string name="终端用户">End User</string>
     <string name="运维用户">Operation and Maintenance Users</string>
     <string name="自动登录">Automatic Log-in</string>
