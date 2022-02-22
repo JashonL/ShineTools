@@ -423,7 +423,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
         String[] title = new String[]{
                 getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
                 , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
-                , getString(R.string.android_key3052), getString(R.string.m291设备信息)
+                , getString(R.string.m286高级设置), getString(R.string.m291设备信息)
         };
 
         int[] res = new int[]{

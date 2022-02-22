@@ -171,7 +171,7 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
 
 
         if (clazz != null) {
-            if (position == 8) {
+            if (position == 7) {
                 Class finalClazz = clazz;
                 new CircleDialog.Builder()
                         .setWidth(0.7f)
