@@ -33,6 +33,7 @@ import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.DateUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
+import com.growatt.shinetools.utils.MyToastUtils;
 import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.widget.GridDivider;
 import com.mylhyl.circledialog.CircleDialog;
@@ -449,10 +450,11 @@ public class SphSpaSystemSettingActivity extends BaseActivity implements BaseQui
                 startActivity(intent);
                 break;
             case 13:
-                setSelectItem(position,title);
+                MyToastUtils.toast(R.string.android_key1045);
+//                setSelectItem(position,title);
                 break;
-            case 14:
-                setInputValue(position,title,hint);
+            case 15:
+                MyToastUtils.toast(R.string.android_key1045);
                 break;
 
         }

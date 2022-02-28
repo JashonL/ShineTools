@@ -419,7 +419,7 @@ public class SPHSPABasicSettingActivity extends BaseActivity implements BaseQuic
                 LogUtil.i("清除历史数据:");
                 int value6 = MaxWifiParseUtil.obtainValueOne(bs);
                 ALLSettingBean bean6 = usParamsetAdapter.getData().get(6);
-                bean6.setValue(String.valueOf(bean6));
+                bean6.setValue(String.valueOf(value6));
                 break;
             case 8://恢复出厂设置
                 LogUtil.i("恢复出厂设置:");

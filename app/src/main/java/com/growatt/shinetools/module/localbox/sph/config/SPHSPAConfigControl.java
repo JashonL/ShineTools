@@ -298,11 +298,11 @@ public class SPHSPAConfigControl {
                         context.getString(R.string.Independent), context.getString(R.string.dc_source), context.getString(R.string.Parallel)
                 },
                 {},
-                {context.getString(R.string.android_key1427),context.getString(R.string.m484电表)},
                 {},
                 {},
                 {},
-                {},
+                {"cable CT","SP-CT","ThreePhaseMeter"},
+                {"lead-acod","Lithium"},
                 {},
                 {},
                 {},
@@ -476,10 +476,10 @@ public class SPHSPAConfigControl {
         float[] multiples = new float[]{
                 1, 1, 0.1f, 1, 1, 0.1f, 1,1,1
         };
-        String[] units = new String[]{"", "", "", "", "", "kWh", ""
+        String[] units = new String[]{"", "", "", "", "", "kWh", "","",""
         };
         String[] hints = new String[]{
-                tips, "", tips, "", tips, "", tips
+                tips, "", tips, "", tips, "", tips,"","","",""
         };
         int[][] funs = new int[][]{
                 {3, 22, 22},//选择通信波特率

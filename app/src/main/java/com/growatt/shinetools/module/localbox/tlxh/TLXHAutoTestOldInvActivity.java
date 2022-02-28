@@ -44,6 +44,9 @@ import butterknife.OnClick;
 
 public class TLXHAutoTestOldInvActivity extends DemoBase {
 
+
+    @BindView(R.id.tvRight)
+    TextView tvRight;
     @BindView(R.id.tvTitle)
     TextView mTvTitle;
     @BindView(R.id.recyclerView)
@@ -74,6 +77,7 @@ public class TLXHAutoTestOldInvActivity extends DemoBase {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tlxhauto_test);
         ButterKnife.bind(this);
+        tvRight.setText(R.string.m370读取);
 //        ModbusUtil.setComAddressOldInv();
         initString();
         mTvTitle.setText(R.string.m自动测试);
