@@ -168,7 +168,7 @@ public class USWiFiConfigActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mHandler!=null){
+                if (mHandler != null) {
                     //释放handler
                     SocketClientUtil.close(mClientUtil);
                     mHandler.removeCallbacksAndMessages(null);
@@ -365,7 +365,7 @@ public class USWiFiConfigActivity extends BaseActivity {
                     int status_cable = MaxWifiParseUtil.obtainValueOne(bs);
                     LogUtil.i("返回值：" + status_cable);
 
-                    String s =  CommenUtils.intToBinary(status_cable,16);
+                    String s = CommenUtils.intToBinary(status_cable, 16);
                     char[] chars = s.toCharArray();
                     LogUtil.i("反转之前：" + Arrays.toString(chars));
                     int len = chars.length;
@@ -498,12 +498,8 @@ public class USWiFiConfigActivity extends BaseActivity {
                 return;
             }
         } else {
-            if (TextUtils.isEmpty(ssid)) {
-                ssid = "";
-            }
-            if (TextUtils.isEmpty(pwd)) {
-                ssid = "";
-            }
+            ssid = "Growatt";
+            pwd = "Growatt";
             if (TextUtils.isEmpty(host)) {
                 toast(getString(R.string.请输入Hostname));
                 return;
@@ -557,9 +553,9 @@ public class USWiFiConfigActivity extends BaseActivity {
         }
 
 
-        if (!isConnect){
+        if (!isConnect) {
             connectServer();
-        }else {
+        } else {
             //显示倒计时弹框
             showDialogFragment();
             //发送设置指令
@@ -918,8 +914,8 @@ public class USWiFiConfigActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode==KeyEvent.KEYCODE_BACK){
-            if (mHandler!=null){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (mHandler != null) {
                 //释放handler
                 SocketClientUtil.close(mClientUtil);
                 mHandler.removeCallbacksAndMessages(null);
