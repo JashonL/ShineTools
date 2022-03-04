@@ -135,13 +135,22 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         UpdataBean bean = manualAdater.getData().get(position);
+        String currentVersion = bean.getCurrentVersion();
         boolean checked = bean.isChecked();
         boolean b = !checked;
         bean.setChecked(b);
         manualAdater.notifyDataSetChanged();
         if (b) {
             if (isNewVersion) {
-                toUpdata();
+                //判断版本是否一样  弹框提示
+                String title = getString(R.string.reminder);
+                String text = getString(R.string.use_this_version) + ":" + currentVersion;
+                String ok = getString(R.string.android_key1935);
+                String cancel = getString(R.string.android_key1806);
+                CircleDialogUtils.showCommentDialog(this, title, text, ok, cancel, Gravity.CENTER, view1 -> {
+                    toUpdata();
+                }, view12 -> {});
+
             } else {
                 toast(R.string.soft_update_no);
             }
