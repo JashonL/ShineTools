@@ -117,8 +117,8 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
             protected void hasNewVersion(String oldVersion, String newVersion) {
                 UpdataBean bean = manualAdater.getData().get(1);
                 bean.setCurrentVersion(newVersion);
-                manualAdater.notifyDataSetChanged();
                 isNewVersion = true;
+                manualAdater.notifyDataSetChanged();
             }
 
             @Override
@@ -164,16 +164,19 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
             if (files == null) return;
             for (File f : files) {
                 String name = f.getName();
+
+
                 if (name.endsWith(".zip")) {
                     zipPath = f.getAbsolutePath();
-                    zipTargetPath = versionFile.getAbsolutePath() + name;
+                    String substring = name.substring(name.indexOf("-"));
+                    zipTargetPath = versionFile.getAbsolutePath() +"/"+ substring;
                     break;
                 }
             }
             if (TextUtils.isEmpty(zipPath)) return;
             List<File> unzip = new ArrayList<>();
             //1.解压文件
-            File zipParent = new File(zipPath);
+            File zipParent = new File(zipTargetPath);
             if (!zipParent.exists()) {
                 zipParent.mkdirs();
                 try {
@@ -182,9 +185,14 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
                     e.printStackTrace();
                 }
             } else {
-                File[] files1 = zipParent.listFiles();
-                if (files1 == null) return;
-                unzip = Arrays.asList(files1);
+                //先删除再解压
+                FileUtils.removeDir(zipParent);
+                try {
+                    unzip = FileUtils.unzip(zipPath, zipTargetPath);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
 

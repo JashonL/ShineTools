@@ -62,7 +62,7 @@ public class InverterUpdataManager {
                 if (name.endsWith(".zip")) {
                     version = name.substring(0, name.lastIndexOf("."));
                     zipPath = f.getAbsolutePath();
-                    String dir = name.substring(0, name.lastIndexOf("."));
+                    String dir = name.substring(0, name.lastIndexOf("-"));
                     zipTargetPath = versionFile.getAbsolutePath() + File.separator + dir + File.separator;
                     break;
                 }
