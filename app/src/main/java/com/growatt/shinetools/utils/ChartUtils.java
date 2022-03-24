@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static android.provider.Settings.System.DATE_FORMAT;
 
 public class ChartUtils {
     public static SimpleDateFormat sdf_hm = new SimpleDateFormat("HH:mm");
@@ -38,6 +37,9 @@ public class ChartUtils {
     public static final int animTamp = 1000;//动画时间
 
     public static final int minTamp = 60 * 1000;//一分钟的时间戳
+
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
     /**
      * 曲线图汇总
      */

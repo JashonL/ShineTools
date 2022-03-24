@@ -195,7 +195,9 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
             bean.setTitle(titles[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(registers[i]);
-            bean.setUnit("%");
+            if (i!=titles.length-1){
+                bean.setUnit("%");
+            }
             newlist.add(bean);
         }
         usParamsetAdapter.replaceData(newlist);
