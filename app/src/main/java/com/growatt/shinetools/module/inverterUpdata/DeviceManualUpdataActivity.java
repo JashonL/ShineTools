@@ -85,7 +85,7 @@ public class DeviceManualUpdataActivity extends BaseActivity implements BaseQuic
             for (File f : files) {
                 String name = f.getName();
                 if (name.endsWith(".zip")) {
-                    localVersion = name.substring(0, name.lastIndexOf("."));
+                    localVersion = name.substring(0, name.lastIndexOf("."));//本地最新版本
                     break;
                 }
             }

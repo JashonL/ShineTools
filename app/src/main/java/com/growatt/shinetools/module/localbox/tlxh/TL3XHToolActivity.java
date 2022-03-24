@@ -117,7 +117,11 @@ public class TL3XHToolActivity extends TlxToolBaseActivity {
     public void checkUpdata() {
         //判断用户类型
         if (END_USER != ShineToosApplication.getContext().getUser_type()) {
-            InverterUpdataManager.getInstance().checkUpdata(this, UpgradePath.MOD_TL3_XH_PATH);
+            try {
+                InverterUpdataManager.getInstance().checkUpdata(this, UpgradePath.MOD_TL3_XH_PATH);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

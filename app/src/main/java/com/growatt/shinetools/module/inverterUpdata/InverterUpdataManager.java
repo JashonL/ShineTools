@@ -49,7 +49,7 @@ public class InverterUpdataManager {
 
     //检测升级
 
-    public void checkUpdata(FragmentActivity activity, String filePath) {
+    public void checkUpdata(FragmentActivity activity, String filePath) throws Exception{
         File versionFile = new File(filePath);
         String zipPath = "";
         String zipTargetPath = "";
@@ -62,7 +62,12 @@ public class InverterUpdataManager {
                 if (name.endsWith(".zip")) {
                     version = name.substring(0, name.lastIndexOf("."));
                     zipPath = f.getAbsolutePath();
-                    String dir = name.substring(0, name.lastIndexOf("-"));
+
+                    int i = name.lastIndexOf("-");
+                    if (i==-1){
+                        i=name.lastIndexOf(".");
+                    }
+                    String dir = name.substring(0, i);
                     zipTargetPath = versionFile.getAbsolutePath() + File.separator + dir + File.separator;
                     break;
                 }

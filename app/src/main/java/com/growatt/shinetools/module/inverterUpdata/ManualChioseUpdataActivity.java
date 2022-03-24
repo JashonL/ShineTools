@@ -177,7 +177,16 @@ public class ManualChioseUpdataActivity extends BaseActivity implements BaseQuic
 
                 if (name.endsWith(".zip")) {
                     zipPath = f.getAbsolutePath();
-                    String substring = name.substring(name.indexOf("-"));
+                    int i = name.indexOf("-");
+                    if (i==-1){
+                        i=name.indexOf(".");
+                    }
+                    String substring = name;
+
+                    if (i!=-1){
+                        substring = name.substring(0,i);
+                    }
+
                     zipTargetPath = versionFile.getAbsolutePath() +"/"+ substring;
                     break;
                 }

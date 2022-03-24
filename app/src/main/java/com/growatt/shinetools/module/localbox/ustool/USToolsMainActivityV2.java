@@ -824,7 +824,11 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
     public void checkUpdata() {
         //判断用户类型
         if (END_USER != ShineToosApplication.getContext().getUser_type()) {
-            InverterUpdataManager.getInstance().checkUpdata(this, UpgradePath.MIN_TL_XH_US_PATH);
+            try {
+                InverterUpdataManager.getInstance().checkUpdata(this, UpgradePath.MIN_TL_XH_US_PATH);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

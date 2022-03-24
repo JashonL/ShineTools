@@ -55,7 +55,7 @@ public class ShineToosApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = this;
-        Log.isPrint = false;
+        Log.isPrint = true;
 
         ClearableCookieJar cookieJar1 = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(getApplicationContext()));
 
