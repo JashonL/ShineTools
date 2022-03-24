@@ -1,6 +1,7 @@
 package com.growatt.shinetools.module.localbox.max;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -38,6 +39,7 @@ import com.growatt.shinetools.db.SqliteUtil;
 import com.growatt.shinetools.listeners.OnEmptyListener;
 import com.growatt.shinetools.modbusbox.Arith;
 import com.growatt.shinetools.modbusbox.MaxUtil;
+import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
@@ -101,10 +103,8 @@ public class MaxCheckIVActivity extends DemoBase implements RadioGroup.OnChecked
     //曲线数据集
     private List<ArrayList<Entry>> dataList;
     private List<ArrayList<Entry>> newDataList;
-    int[] colors = {R.color.max_iv_graph_linechart1, R.color.max_iv_graph_linechart2, R.color.max_iv_graph_linechart3, R.color.max_iv_graph_linechart4,
-            R.color.max_iv_graph_linechart5, R.color.max_iv_graph_linechart6, R.color.max_iv_graph_linechart7, R.color.max_iv_graph_linechart8};
-    int[] colors_a = {R.color.max_iv_graph_linechart1, R.color.max_iv_graph_linechart2, R.color.max_iv_graph_linechart3, R.color.max_iv_graph_linechart4,
-            R.color.max_iv_graph_linechart5, R.color.max_iv_graph_linechart6, R.color.max_iv_graph_linechart7, R.color.max_iv_graph_linechart8};
+    String[] colors = { "#60acfc", "#27a1ea", "#39b3ea", "#35c5ea", "#32d3eb", "#4ebecd", "#40cec7", "#63d5b2"};
+    String[] colors_a = { "#60acfc", "#27a1ea", "#39b3ea", "#35c5ea", "#32d3eb", "#4ebecd", "#40cec7", "#63d5b2"};
     //时间属性
     /**
      * 设置后等待时间
@@ -152,6 +152,16 @@ public class MaxCheckIVActivity extends DemoBase implements RadioGroup.OnChecked
     private int mIPType = 0;
     private final int TIME_COUNT = 2;//超时重发次数 + 1
     private int nowTimeCount = 0;
+
+
+
+    //hold183号寄存器识别新旧方案，如果采集器发现183号寄存器是0，
+    // 则仍然按照之前的IV曲线读取寄存器进行获取相关的数据（PV曲线监控），
+    // 否则按照新的寄存器读取（组串曲线监控）。
+    private int hold183 = -1;
+    private int funs183[] = {3, 183, 183};
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,10 +225,12 @@ public class MaxCheckIVActivity extends DemoBase implements RadioGroup.OnChecked
             MaxCheckIVBean item = mAdapter.getItem(position);
             item.setSelect(!item.isSelect());
 
+
+
             if (!item.isSelect()) {
                 item.setImgColorId(R.color.max_main_text_content);
             }else{
-                item.setImgColorId(colors[position]);
+                item.setImgColorId(Color.parseColor(colors[position]));
             }
             mAdapter.notifyDataSetChanged();
 
@@ -273,7 +285,7 @@ public class MaxCheckIVActivity extends DemoBase implements RadioGroup.OnChecked
             List<MaxCheckIVBean> newList = new ArrayList<>();
             for (int i = 0; i < colors.length; i++) {
                 MaxCheckIVBean bean = new MaxCheckIVBean();
-                bean.setImgColorId(colors[i]);
+                bean.setImgColorId(Color.parseColor(colors[i]));
                 bean.setTitle(String.valueOf(i + 1));
                 newList.add(bean);
             }
@@ -366,7 +378,7 @@ public class MaxCheckIVActivity extends DemoBase implements RadioGroup.OnChecked
      * 设置图表
      */
     public void setLineChart() {
-        MaxUtil.setLineChartData(mContext, mLineChart, dataList, colors, colors_a, dataList.size(), R.color.highLightColor);
+        MaxUtil.setLineChartDataSpeColor(mContext, mLineChart, dataList, colors, colors, dataList.size(), R.color.highLightColor,false);
         hideLastData();
     }
 
@@ -534,7 +546,7 @@ public class MaxCheckIVActivity extends DemoBase implements RadioGroup.OnChecked
     public void setIPVData(int type) {
         switch (type) {
             case 0://I-V
-                MaxUtil.setLineChartData(mContext, mLineChart, dataList, colors, colors_a, dataList.size(), R.color.highLightColor);
+                MaxUtil.setLineChartDataSpeColor(mContext, mLineChart, dataList, colors, colors, dataList.size(), R.color.highLightColor,false);
                 break;
             case 1://P-V
                 newLists = new ArrayList<>();
@@ -553,7 +565,7 @@ public class MaxCheckIVActivity extends DemoBase implements RadioGroup.OnChecked
                         newLists.add(newEntries);
                     }
                 }
-                MaxUtil.setLineChartData(mContext, mLineChart, newLists, colors, colors_a, newLists.size(), R.color.highLightColor);
+                MaxUtil.setLineChartDataSpeColor(mContext, mLineChart, newLists, colors, colors, newLists.size(), R.color.highLightColor,false);
                 break;
         }
     }
@@ -564,6 +576,117 @@ public class MaxCheckIVActivity extends DemoBase implements RadioGroup.OnChecked
         posTime = nowTime;
         nextTime = readTimeOne;
         initData();
+        read183();
+    }
+
+
+
+    //读取183
+    private SocketClientUtil mClientUtil183;
+
+    private void read183() {
+        mClientUtil183 = SocketClientUtil.newInstance();
+        if (mClientUtil183 != null) {
+            mClientUtil183.connect(mHandler183);
+        }
+    }
+
+    Handler mHandler183 = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int what = msg.what;
+            switch (what) {
+                //发送信息
+                case SocketClientUtil.SOCKET_SEND:
+                    sendMsg(mClientUtil183, funs183);
+                    break;
+                case SocketClientUtil.SOCKET_SEND_MSG:
+                    break;
+                //接收字节数组
+                case SocketClientUtil.SOCKET_RECEIVE_BYTES:
+                    BtnDelayUtil.receiveMessage(this);
+                    try {
+                        byte[] bytes = (byte[]) msg.obj;
+                        //检测内容正确性
+                        boolean isCheck = ModbusUtil.checkModbus(bytes);
+                        if (isCheck) {
+                            //接收正确，开始解析
+                            //移除外部协议
+                            byte[] bs = RegisterParseUtil.removePro17(bytes);
+                            hold183 = MaxWifiParseUtil.obtainValueOne(bs);
+                            //根据183重新初始化
+                            initDataBy183();
+                            //关闭tcp连接
+                            SocketClientUtil.close(mClientUtil183);
+                            BtnDelayUtil.refreshFinish();
+
+                            //去获取数据
+                            getData();
+                        } else {
+                            //关闭tcp连接
+                            SocketClientUtil.close(mClientUtil183);
+                            BtnDelayUtil.refreshFinish();
+                            getData();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case TIMEOUT_RECEIVE://接收超时
+                case SOCKET_SERVER_SET://跳转到wifi列表
+                    break;
+                case SocketClientUtil.SOCKET_CLOSE:
+                case SocketClientUtil.SOCKET_EXCETION_CLOSE:
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+
+
+    private void initDataBy183() {
+        if (hold183 == 0) {
+            colors = new String[]{
+                    "#60acfc", "#27a1ea", "#39b3ea", "#35c5ea", "#32d3eb", "#4ebecd", "#40cec7", "#63d5b2"};
+
+            funs=new int[][]{
+                    {0x14, 0, 0x7d - 1},
+                    {0x14, 0x7d, 0x7d * 2 - 1},
+                    {0x14, 0x7d * 2, 0x7d * 3 - 1},
+                    {0x14, 0x7d * 3, 0x7d * 4 - 1},
+                    {0x14, 0x7d * 4, 0x7d * 5 - 1},
+                    {0x14, 0x7d * 5, 0x7d * 6 - 1},
+                    {0x14, 0x7d * 6, 0x7d * 7 - 1},
+                    {0x14, 0x7d * 7, 0x7d * 8 - 1}
+            };
+        } else {
+            colors = new String[]{
+                    "#60acfc", "#27a1ea", "#39b3ea", "#35c5ea", "#32d3eb", "#4ebecd", "#40cec7", "#63d5b2"
+                    , "#5bc49f", "#9cdc82", "#d4ec59", "#ffda43", "#feb64d", "#ff9f69", "#fa816d", "#fb6e6c"
+                    , "#ff7b7b", "#e9668e", "#d660a8", "#b55cbd", "#9287e7", "#747be1", "#6370de", "#668ed6"
+                    , "#ff7b7b", "#e9668e", "#d660a8", "#b55cbd", "#9287e7", "#747be1", "#6370de", "#668ed6"
+            };
+
+            funs = new int[32][3];
+            for (int i = 0; i < 32; i++) {
+                int[] fun = funs[i];
+                fun[0] = 0x14;
+                fun[1] =  0x7d * (56 + i);
+                fun[2] =  fun[1] + 124;
+            }
+
+        }
+
+        setLineChart();
+        initRecyclerData(null);
+    }
+
+
+
+    private void getData() {
         if (!isReading) {
             isReading = true;
             if (isFirst) {
@@ -578,6 +701,10 @@ public class MaxCheckIVActivity extends DemoBase implements RadioGroup.OnChecked
             reStartBtn();
         }
     }
+
+
+
+
 
     private void reStartBtn() {
         isReading = false;

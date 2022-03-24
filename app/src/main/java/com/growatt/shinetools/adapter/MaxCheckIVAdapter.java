@@ -44,7 +44,7 @@ public class MaxCheckIVAdapter extends BaseQuickAdapter<MaxCheckIVBean,BaseViewH
 //                TextUtils.isEmpty(item.getyValue())?"--":item.getyValue())
 //        );
         //设置颜色
-        helper.setBackgroundColor(R.id.tvImg, ContextCompat.getColor(mContext,item.getImgColorId()));
+        helper.setBackgroundColor(R.id.tvImg, item.getImgColorId());
         int color = 0;
         if (item.isSelect()){
             color = ContextCompat.getColor(mContext,R.color.content_bg_white);
