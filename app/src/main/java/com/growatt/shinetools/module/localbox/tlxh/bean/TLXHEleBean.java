@@ -22,6 +22,10 @@ public class TLXHEleBean {
     //功率内容
     private String content;
 
+
+    private String todayTitle;
+    private String totalTitle;
+
     public String getContent() {
         return content;
     }
@@ -84,5 +88,22 @@ public class TLXHEleBean {
 
     public void setTotalEle(String totalEle) {
         TotalEle = totalEle;
+    }
+
+
+    public String getTodayTitle() {
+        return todayTitle;
+    }
+
+    public void setTodayTitle(String todayTitle) {
+        this.todayTitle = todayTitle;
+    }
+
+    public String getTotalTitle() {
+        return totalTitle;
+    }
+
+    public void setTotalTitle(String totalTitle) {
+        this.totalTitle = totalTitle;
     }
 }

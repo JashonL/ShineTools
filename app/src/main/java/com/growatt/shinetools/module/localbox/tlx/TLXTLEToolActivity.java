@@ -5,6 +5,7 @@ import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.module.localbox.max.base.BaseMaxToolActivity;
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
+import com.growatt.shinetools.module.localbox.tlx.base.BaseTLXEActivity;
 import com.growatt.shinetools.module.localbox.tlx.config.TLXGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.tlx.config.TLXQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.tlx.config.TLXSystemSettingActivity;
@@ -12,7 +13,7 @@ import com.growatt.shinetools.module.localbox.tlx.config.TlxBasicSettingActivity
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 
-public class TLXTLEToolActivity  extends BaseMaxToolActivity {
+public class TLXTLEToolActivity extends BaseTLXEActivity {
 
     @Override
     public void initStatusRes() {
@@ -46,12 +47,24 @@ public class TLXTLEToolActivity  extends BaseMaxToolActivity {
                 getString(R.string.m320功率) + "\n(W)",
         };
 
+        eleItemTiles=new String[eleTitles.length][2];
+        for (int i = 0; i < eleTitles.length; i++) {
+            if (i==0){
+                eleItemTiles[i][0]=getString(R.string.android_key408);
+                eleItemTiles[i][1]=getString(R.string.android_key1912);
+            }else {
+                eleItemTiles[i][0]=getString(R.string.当前功率);
+                eleItemTiles[i][1]=getString(R.string.m189额定功率);
+            }
+        }
+
+
+
 
         eleResId = new int[]{
                 R.drawable.tlxh_ele_fadian, R.drawable.ele_power,
         };
     }
-
 
 
     @Override
@@ -61,8 +74,8 @@ public class TLXTLEToolActivity  extends BaseMaxToolActivity {
 
     @Override
     public void initGetDataArray() {
-        funs = new int[][]{{3, 0, 124},{3, 125, 249},{4,3000,3124}};
-        autoFun = new int[][]{{4,3000,3124}};
+        funs = new int[][]{{3, 0, 124}, {3, 125, 249}, {4, 3000, 3124}};
+        autoFun = new int[][]{{4, 3000, 3124}};
     }
 
     @Override
