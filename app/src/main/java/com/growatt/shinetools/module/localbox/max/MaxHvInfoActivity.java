@@ -1,36 +1,25 @@
-package com.growatt.shinetools.module.localbox.tlxh;
+package com.growatt.shinetools.module.localbox.max;
 
-import android.content.Intent;
-import android.view.View;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import com.growatt.shinetools.R;
-import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.inverterUpdata.DeviceManualUpdataActivity;
-import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
-import com.growatt.shinetools.module.localbox.single.SingleBaseInfoActivity;
+import com.growatt.shinetools.module.localbox.third.ThirdBaseInfoActivity;
 
-import static com.growatt.shinetools.constant.GlobalConstant.END_USER;
+public class MaxHvInfoActivity extends ThirdBaseInfoActivity {
 
-public class TLXHDeviceInfoActivity extends SingleBaseInfoActivity {
-    @Override
-    public int getHeaderView() {
-        return R.layout.header_tlxh_device_info;
-    }
 
     @Override
-    public void setOther() {
-        isOther=true;
+    public void setContent4(TextView t4h2TvTitle) {
+        String s = getString(R.string.fly_cap_volt) + "/" + getString(R.string.android_key536);
+        t4h2TvTitle.setText(s);
     }
-
 
     @Override
     public void initVolFreCurString() {
         c1Title1 = new String[]{
-                "PV1", "PV2"
+                "PV1", "PV2", "PV3", "PV4", "PV5", "PV6", "PV7", "PV8"
+                , "PV9", "PV10", "PV11", "PV12", "PV13", "PV14", "PV15", "PV16"
         };
 
         c1Title2 = new String[]{
@@ -45,6 +34,8 @@ public class TLXHDeviceInfoActivity extends SingleBaseInfoActivity {
         c2Title1 = new String[]{
                 "Str1", "Str2", "Str3", "Str4", "Str5", "Str6", "Str7", "Str8",
                 "Str9", "Str10", "Str11", "Str12", "Str13", "Str14", "Str15", "Str16"
+                , "Str17", "Str18", "Str19", "Str20", "Str21", "Str22", "Str23", "Str24",
+                "Str25", "Str26", "Str27", "Str28", "Str29", "Str30", "Str31", "Str32"
         };
         c2Title2 = new String[]{
                 String.format("%s(V)", getString(R.string.m318电压)),
@@ -84,8 +75,12 @@ public class TLXHDeviceInfoActivity extends SingleBaseInfoActivity {
 
     @Override
     public void initPIDString() {
+
         c4Title1 = new String[]{
-                "PID1", "PID2", "PID3", "PID4", "PID5", "PID6", "PID7", "PID8"
+                getString(R.string.fly_cap_volt)+"1",  getString(R.string.fly_cap_volt)+"2",  getString(R.string.fly_cap_volt)+"3",  getString(R.string.fly_cap_volt)+"4",
+                getString(R.string.fly_cap_volt)+"5",  getString(R.string.fly_cap_volt)+"6",  getString(R.string.fly_cap_volt)+"7",  getString(R.string.fly_cap_volt)+"8"
+                , getString(R.string.fly_cap_volt)+"9",  getString(R.string.fly_cap_volt)+"10",  getString(R.string.fly_cap_volt)+"11",  getString(R.string.fly_cap_volt)+"12",
+                getString(R.string.fly_cap_volt)+"13",  getString(R.string.fly_cap_volt)+"14",  getString(R.string.fly_cap_volt)+"15",  "PID"
         };
         c4Title2 = new String[]{
                 String.format("%s(V)", getString(R.string.m318电压)),
@@ -102,6 +97,7 @@ public class TLXHDeviceInfoActivity extends SingleBaseInfoActivity {
                 getString(R.string.m控制软件版本), getString(R.string.m通信软件版本)
         };
 
+
     }
 
     @Override
@@ -111,25 +107,31 @@ public class TLXHDeviceInfoActivity extends SingleBaseInfoActivity {
                 "ISO",
                 getString(R.string.m307内部环境温度), getString(R.string.m308Boost温度),
                 getString(R.string.m309INV温度),
-                "+Bus", "-Bus"
-                , getString(R.string.m降额模式)
+                "+Bus", "-Bus",
+                getString(R.string.m310PID故障信息), getString(R.string.m311PID状态)
         };
     }
 
     @Override
     public int[][] initGetDataArray() {
-        return new int[][]{{3, 0, 124}, {3, 125, 249}, {4, 3000, 3124}, {4, 3125, 3249}};
+        return new int[][]{{3, 0, 124}, {4, 0, 99}, {4, 100, 199}, {4, 875, 999}};
     }
 
     @Override
     public String[] deratModes() {
         return new String[]{
-                getString(R.string.m无降额), getString(R.string.PV高压降载), getString(R.string.老化固定功率降载),
-                getString(R.string.电网高压降载), getString(R.string.过频降载), getString(R.string.DC源模式降载),
-                getString(R.string.逆变模块过温降载), getString(R.string.有功设定限载), getString(R.string.m保留), getString(R.string.m保留)
-                , getString(R.string.内部环境过温降载), getString(R.string.外部环境过温降载), getString(R.string.线路阻抗降载)
-                , getString(R.string.并机防逆流降载), getString(R.string.单机防逆流降载), getString(R.string.负载优先模式降载), getString(R.string.检测CT错反接降载)
+                "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
         };
+    }
+
+    @Override
+    public int getHeaderView() {
+        return R.layout.header_max_device_info;
+    }
+
+    @Override
+    public void setOther() {
+        isOther=false;
     }
 
     @Override
@@ -139,42 +141,17 @@ public class TLXHDeviceInfoActivity extends SingleBaseInfoActivity {
                 RegisterParseUtil.parseHold0T124(mMaxData, bytes);
                 break;
             case 1:
-//                RegisterParseUtil.parseHold125T249(mMaxData, bytes);
-                RegisterParseUtil.parseTL3XH125T249(mMaxData, bytes);
+                RegisterParseUtil.parseMax1500V2(mMaxData, bytes);
                 break;
-//            case 2:
-//                RegisterParseUtil.parseMax2(mMaxData, bytes);
-//                break;
-//            case 3:
-//                RegisterParseUtil.parseMax3(mMaxData, bytes);
-//                break;
             case 2:
-                RegisterParseUtil.parseInput3kT3124(mMaxData, bytes);
-                isBDC = true;
+                RegisterParseUtil.parseMax1500V3(mMaxData, bytes);
                 break;
             case 3:
-                RegisterParseUtil.parseInput3125T3249(mMaxData, bytes);
+                RegisterParseUtil.parseMax04T875T999(mMaxData, bytes);
                 break;
         }
     }
 
-    @Override
-    public void initUpdata() {
-        super.initUpdata();
-        View upTitle = header.findViewById(R.id.tvTitle_updata);
-        TextView tvhead = upTitle.findViewById(R.id.tvHeadTitle);
-        tvhead.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
-        upTitle.setOnClickListener(view -> {
-            if (END_USER != ShineToosApplication.getContext().getUser_type()) {
-                Intent intent = new Intent(TLXHDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
-                intent.putExtra("path", UpgradePath.MIN_TL_XH_PATH);
-                startActivity(intent);
-            }else {
-                toast(R.string.android_key2099);
-            }
-        });
-
-    }
 
 
 }

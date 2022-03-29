@@ -411,7 +411,7 @@ public class TLXSystemSettingActivity extends BaseActivity implements BaseQuickA
                 setSelectItem(position,title);
                 break;
             case 6://安规功能使能
-//                setInputValue(position,title,hint);
+                setInputValue(position,title,hint);
                 break;
 
             case 9://

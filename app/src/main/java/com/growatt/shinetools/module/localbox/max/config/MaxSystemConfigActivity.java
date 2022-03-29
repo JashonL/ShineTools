@@ -387,7 +387,7 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
             case 1: case 15:
                 setInputValue(position,title,hint);
                 break;
-            case 7: case 9: case 12: case 13:
+            case 7: case 9:  case 13:
                 setSelectItem(position,title);
                 break;
 

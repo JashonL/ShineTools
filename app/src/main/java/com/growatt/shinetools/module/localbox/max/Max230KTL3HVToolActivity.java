@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.adapter.MaxMainChildAdapter;
+import com.growatt.shinetools.adapter.TLXEEleAdapter;
 import com.growatt.shinetools.adapter.TLXHToolEleAdapter;
 import com.growatt.shinetools.adapter.UsParamsetAdapter;
 import com.growatt.shinetools.base.BaseActivity;
@@ -37,6 +38,7 @@ import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.modbusbox.bean.MaxDataBean;
 import com.growatt.shinetools.modbusbox.bean.MaxDataDeviceBean;
 import com.growatt.shinetools.module.localbox.max.bean.MaxChildBean;
+import com.growatt.shinetools.module.localbox.max.config.MaxHvQuicksettingActivity;
 import com.growatt.shinetools.module.localbox.tlxh.bean.TLXHEleBean;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
@@ -136,8 +138,9 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
      * 发电量recyclerview
      */
     private String[] eleTitles;
+    public String[][] eleItemTiles;
     private int[] eleResId;
-    private TLXHToolEleAdapter mEleAdapter;
+    private TLXEEleAdapter mEleAdapter;
     private List<TLXHEleBean> mEleList;
     private RecyclerView mEleRecycler;
     private ImageView ivDetail;
@@ -299,7 +302,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
 
         switch (position) {
             case 0:
-                clazz = MaxQuicksettingActivity.class;
+                clazz = MaxHvQuicksettingActivity.class;
                 break;
             case 1:
                 clazz = MaxSystemConfigActivity.class;
@@ -321,7 +324,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
                 break;
 
             case 6:
-                clazz = Max230Ktl3HvtMaxInfoActivity.class;
+                clazz = MaxHvInfoActivity.class;
                 break;
 
             case 7:
@@ -382,7 +385,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         mEleRecycler.setLayoutManager(new LinearLayoutManager(this));
         LinearDivider linearDivider = new LinearDivider(this, LinearLayoutManager.VERTICAL,
                 1, ContextCompat.getColor(this, R.color.gray_aaaaaa));
-        mEleAdapter = new TLXHToolEleAdapter(R.layout.item_tlxh_tool_ele_v2, mEleList);
+        mEleAdapter = new TLXEEleAdapter(R.layout.item_tlxh_tool_ele_v2, mEleList);
         mEleRecycler.addItemDecoration(linearDivider);
         mEleRecycler.setAdapter(mEleAdapter);
         initEleDatas(eleTitles, null, null, mEleAdapter);
@@ -444,7 +447,7 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
     }
 
 
-    private void initEleDatas(@NonNull String[] titles, List<String> todays, List<String> totals, TLXHToolEleAdapter adapter) {
+    private void initEleDatas(@NonNull String[] titles, List<String> todays, List<String> totals, TLXEEleAdapter adapter) {
         List<TLXHEleBean> newList = new ArrayList<>();
         for (int i = 0; i < titles.length; i++) {
             TLXHEleBean bean = new TLXHEleBean();
@@ -470,6 +473,8 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
             bean.setTodayEle(todayEle);
             bean.setContentColor(contentColor);
             bean.setTitle(titles[i]);
+            bean.setTodayTitle(eleItemTiles[i][0]);
+            bean.setTotalTitle(eleItemTiles[i][0]);
             bean.setDrawableResId(eleResId[i]);
             bean.setUnit(unit);
             newList.add(bean);
@@ -561,6 +566,18 @@ public class Max230KTL3HVToolActivity extends BaseActivity implements Toolbar.On
         eleResId = new int[]{
                 R.drawable.tlxh_ele_fadian, R.drawable.ele_power,
         };
+
+
+        eleItemTiles=new String[eleTitles.length][2];
+        for (int i = 0; i < eleTitles.length; i++) {
+            if (i==0){
+                eleItemTiles[i][0]=getString(R.string.android_key408);
+                eleItemTiles[i][1]=getString(R.string.android_key1912);
+            }else {
+                eleItemTiles[i][0]=getString(R.string.当前功率);
+                eleItemTiles[i][1]=getString(R.string.m189额定功率);
+            }
+        }
 
     }
 

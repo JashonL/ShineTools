@@ -372,6 +372,7 @@ public abstract class ThirdBaseInfoActivity extends BaseActivity implements View
         t4H2IvStatus = (ImageView) title4Head2.findViewById(R.id.ivStatus);
         TextView t4h2TvTitle = title4Head2.findViewById(R.id.tvHeadTitle);
         t4h2TvTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
+        setContent4(t4h2TvTitle);
         mC4List = new ArrayList<>();
         mC4RecyclerView = (RecyclerView) content4Head2.findViewById(R.id.recyclerViewC1);
         mC4RecyclerView.setLayoutManager(new GridLayoutManager(this, c4Title2.length + 1, LinearLayoutManager.HORIZONTAL, false));
@@ -379,6 +380,12 @@ public abstract class ThirdBaseInfoActivity extends BaseActivity implements View
         mC4RecyclerView.setAdapter(mC4Adapter);
         initC1Datas(c4Title1, c4Title2, null, mC4Adapter);
     }
+
+
+    public void setContent4(TextView t4h2TvTitle){
+    }
+
+
 
 
     private void initContent5() {

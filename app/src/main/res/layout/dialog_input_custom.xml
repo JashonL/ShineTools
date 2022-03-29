@@ -31,7 +31,7 @@
         android:layout_width="@dimen/dp_200"
         android:layout_height="@dimen/dp_45"
         android:paddingStart="@dimen/dp_10"
-        android:inputType="numberDecimal"
+        android:inputType="numberDecimal|numberSigned"
         android:background="@drawable/edittext_bg_stroke"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

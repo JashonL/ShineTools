@@ -17,6 +17,7 @@ import com.growatt.shinetools.module.localbox.tlx.base.TlxToolBaseActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHChargeActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHSystemSettingActivity;
+import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 import com.mylhyl.circledialog.CircleDialog;
 
@@ -156,7 +157,8 @@ public class TL3XHToolActivity extends TlxToolBaseActivity {
                 break;
 
             case 6://高级设置
-                clazz = MaxAdvanceSetActivity.class;
+//                clazz = MaxAdvanceSetActivity.class;
+                clazz = USAdvanceSetActivity.class;
                 break;
             case 7://设备信息
                 clazz = TLXHAutoTestActivity.class;

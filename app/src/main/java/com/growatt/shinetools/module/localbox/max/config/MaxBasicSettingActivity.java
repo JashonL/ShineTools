@@ -82,7 +82,7 @@ public class MaxBasicSettingActivity extends BaseActivity implements BaseQuickAd
                 setComRate();
                 break;
             case 1:
-                setInputValue(position, title, hint, mul);
+//                setInputValue(position, title, hint, mul);
                 break;
             case 2:
 

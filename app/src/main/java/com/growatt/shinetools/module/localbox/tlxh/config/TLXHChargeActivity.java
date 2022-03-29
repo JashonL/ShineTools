@@ -25,6 +25,7 @@ import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.configtype.usconfig.USChargeTimeActivity;
 import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
+import com.growatt.shinetools.module.localbox.mintool.TLXHToolTimerActivity;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
 import com.growatt.shinetools.utils.ActivityUtils;
@@ -281,12 +282,14 @@ public class TLXHChargeActivity extends BaseActivity implements BaseQuickAdapter
         if (position == 0) {//设置充放电
             toOhterSetting = true;
             manager.disConnectSocket();
-//            Intent intent1 = new Intent(this, TLXHToolTimerActivity.class);
-            Intent intent1 = new Intent(this, USChargeTimeActivity.class);
+            Intent intent1 = new Intent(this, TLXHToolTimerActivity.class);
+//            Intent intent1 = new Intent(this, USChargeTimeActivity.class);
             intent1.putExtra("title", bean.getTitle());
             ActivityUtils.startActivity(this, intent1, false);
-        } else {
-            setInputValue(position, title, hint);
+        }else {
+            if (position!=3){
+                setInputValue(position, title, hint);
+            }
         }
     }
 

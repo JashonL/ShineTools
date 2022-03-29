@@ -15,6 +15,9 @@ public class TLXConfigControl {
         TLX_SYSTEM_SETTING,//TLX系统设置
         TLX_BASIC_SETTING,//TLX基本设置
 
+        TLX_QUUICK_SETTING,//TLX快速设置
+
+
         TLX_GRID_CODE_PARAMETERS_SETTING,
         TLX_GRID_SECOND_PF_SETTING,
         TLX_GRID_SECOND_FRENCY_WATT_SETTING,
@@ -41,6 +44,11 @@ public class TLXConfigControl {
     public static List<ALLSettingBean> getSettingList(TLXConfigControl.TlxSettingEnum maxSettingEnum, Context context) {
         List<ALLSettingBean> list = new ArrayList<>();
         switch (maxSettingEnum) {
+
+            case TLX_QUUICK_SETTING:
+                list = getTlxQuickSetList(context);
+                break;
+
             case TLX_SYSTEM_SETTING:
                 list= getTlxSystemSetList(context);
                 break;
@@ -103,6 +111,129 @@ public class TLXConfigControl {
         }
         return list;
     }
+
+
+    private static List<ALLSettingBean> getTlxQuickSetList(Context context) {
+        List<ALLSettingBean> list = new ArrayList<>();
+        String[] titls = new String[]{
+                context.getString(R.string.m国家安规),
+                context.getString(R.string.android_key663),
+                context.getString(R.string.android_key1416),
+                context.getString(R.string.m423通信地址),
+                context.getString(R.string.android_key256),
+                "AFCI",
+                context.getString(R.string.android_key746),
+        };
+        String[] hints = new String[]{
+                "",
+                "",
+                "",
+                "1~99",
+                "",
+                "",
+                "",
+        };
+        int[] itemTypes = new int[]{
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_NEXT
+        };
+        String[] register = new String[]{
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+        };
+        float[] multiples = new float[]{
+                1, 1, 1, 1, 1, 1, 1
+        };
+        String[] units = new String[]{
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+        };
+        int[][] funs = new int[][]{
+                {3, 0, 124},//国家和安规
+                {3, 45, 50},//逆变器时间
+                {3, 15, 15},//语言
+                {3, 30, 30},//通信地址
+                {3, 533, 533},//功率采集器
+                {3, 541, 543},//AFCI使能
+                {3, 30, 30}
+        };
+        int[][] funset = new int[][]{
+                {0x10, 118, 121},
+                {0x10, 118, 121},
+                {6, 15, 0},
+                {6, 30, 0},
+                {6, 533, 533},
+                {6, 15, 0},
+                {6, 30, 0},
+        };
+
+        int[][] doubleFunset = new int[][]{
+                {6, 45, -1},
+                {6, 46, -1},
+                {6, 47, -1},
+                {6, 48, -1},
+                {6, 49, -1},
+                {6, 50, -1},
+                {6, 48, -1},
+                {6, 49, -1},
+        };
+
+        String[][] items = new String[][]{
+                {},
+                {},
+                {
+                        context.getString(R.string.意大利),
+                        context.getString(R.string.英语),
+                        context.getString(R.string.德语),
+                        context.getString(R.string.西班牙语),
+                        context.getString(R.string.法语),
+                        context.getString(R.string.匈牙利语),
+                        context.getString(R.string.土耳其语),
+                        context.getString(R.string.波兰语),
+                        context.getString(R.string.葡萄牙语)
+                },
+                {},
+                {context.getString(R.string.android_key1427),context.getString(R.string.m484电表)},
+                {},
+                {},
+                {}
+
+        };
+
+        for (int i = 0; i < titls.length; i++) {
+            ALLSettingBean bean = new ALLSettingBean();
+            bean.setTitle(titls[i]);
+            bean.setItemType(itemTypes[i]);
+            bean.setRegister(register[i]);
+            bean.setUnit(units[i]);
+            bean.setFuns(funs[i]);
+            bean.setFunSet(funset[i]);
+            bean.setItems(items[i]);
+            bean.setHint(hints[i]);
+            bean.setDoubleFunset(doubleFunset);
+            bean.setMul(multiples[i]);
+            list.add(bean);
+        }
+        return list;
+    }
+
+
+
 
 
     private static List<ALLSettingBean> getMaxGridSecondPfSettingList(Context context) {
@@ -344,8 +475,8 @@ public class TLXConfigControl {
         };
         String[] hints = new String[]{
                 tips, tips, tips,
-                tips, tips1, tips1,
-                tips1, tips2
+                tips, tips1, tips1, tips2,
+                tips1
         };
         int[][] funs = new int[][]{
                 {3, 93, 93},//m381Qv切入高压
@@ -749,8 +880,10 @@ public class TLXConfigControl {
         List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" +"69~207V";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "241.5~345V";
-        String tips3 = context.getString(R.string.android_key3048) + ":" +"70~550W";
+        String tips3 = context.getString(R.string.android_key3048) + ":" +"50~550V";
         String tips4 = context.getString(R.string.android_key3048) + ":" +"10s~15min";
+        String tips5=context.getString(R.string.android_key3048)+":"+"45~50Hz";
+        String tips6=context.getString(R.string.android_key3048)+":"+"50~55Hz";
         String[] titls = new String[]{
                 context.getString(R.string.m424启动电压),//并网电压
                 context.getString(R.string.m425启动时间),//并网时间
@@ -778,9 +911,9 @@ public class TLXConfigControl {
         float[] multiples = new float[]{
                 1, 1, 1, 1, 1, 1, 1
         };
-        String[] units = new String[]{"W", "min", "min", "V", "V", "V", "V"};
+        String[] units = new String[]{"V", "min", "min", "V", "V", "Hz", "Hz"};
         String[] hints = new String[]{
-                tips3, tips4, tips4, tips, tips1, tips, tips1
+                tips3, tips4, tips4, tips, tips1, tips5, tips6
         };
         int[][] funs = new int[][]{
                 {3, 17, 17},//并网电压
@@ -849,7 +982,7 @@ public class TLXConfigControl {
         List<ALLSettingBean> list = new ArrayList<>();
         String tips = "";
         String[] titls = new String[]{
-                context.getString(R.string.m399感性载率),//感性载率
+                context.getString(R.string.m400容性载率),//感性载率
                 context.getString(R.string.m377记忆使能),//记忆使能
         };
 
@@ -1098,7 +1231,7 @@ public class TLXConfigControl {
         String tips = "";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~255";
         String[] titls = new String[]{
-                context.getString(R.string.m401容性PF),//感性载率
+                context.getString(R.string.m402感性PF),//感性载率
                 context.getString(R.string.m377记忆使能),//记忆使能
         };
 
@@ -1293,7 +1426,7 @@ public class TLXConfigControl {
                 UsSettingConstant.SETTING_TYPE_NEXT,//干接点设置
                 UsSettingConstant.SETTING_TYPE_SWITCH,//N至PE监测功能使能
                 UsSettingConstant.SETTING_TYPE_SELECT,//宽电网电压范围使能
-                UsSettingConstant.SETTING_TYPE_SWITCH,//安规功能使能
+                UsSettingConstant.SETTING_TYPE_INPUT,//安规功能使能
 //                UsSettingConstant.SETTING_TYPE_SWITCH,//电网N线使能
                 UsSettingConstant.SETTING_TYPE_SWITCH,//指定的规格设置使能
                 UsSettingConstant.SETTING_TYPE_SWITCH,//ISland使能
@@ -1445,7 +1578,7 @@ public class TLXConfigControl {
 
         int[] itemTypes = new int[]{
                 UsSettingConstant.SETTING_TYPE_SELECT,
-                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,

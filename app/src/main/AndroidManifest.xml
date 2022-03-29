@@ -147,12 +147,6 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".module.ChooseDeviceTypeActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name=".module.ForgotPasswordActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
@@ -945,6 +939,14 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".module.localbox.max.config.MaxHvQuicksettingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+
+
+        <activity
             android:name=".module.localbox.max.config.MaxAFCIAcitivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
@@ -1238,6 +1240,14 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".module.localbox.max.MaxHvInfoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+
 
         <!--==================================模块页面=========================================-->
 

@@ -1,5 +1,9 @@
 package com.growatt.shinetools.module.localbox.tlx;
 
+import android.content.Intent;
+import android.view.Gravity;
+import android.view.View;
+
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
@@ -10,8 +14,11 @@ import com.growatt.shinetools.module.localbox.tlx.config.TLXGridCodeSettingActiv
 import com.growatt.shinetools.module.localbox.tlx.config.TLXQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.tlx.config.TLXSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.tlx.config.TlxBasicSettingActivity;
+import com.growatt.shinetools.module.localbox.tlxh.TLXHAutoTestOldInvActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
+import com.growatt.shinetools.utils.ActivityUtils;
+import com.mylhyl.circledialog.CircleDialog;
 
 public class TLXTLEToolActivity extends BaseTLXEActivity {
 
@@ -88,6 +95,7 @@ public class TLXTLEToolActivity extends BaseTLXEActivity {
                 getString(R.string.android_key3056),
                 getString(R.string.android_key625),
                 getString(R.string.android_key626),
+                getString(R.string.android_key171),
                 getString(R.string.android_key637)
         };
         res = new int[]{
@@ -97,6 +105,7 @@ public class TLXTLEToolActivity extends BaseTLXEActivity {
                 R.drawable.city_code,
                 R.drawable.smart_check,
                 R.drawable.advan_setting,
+                R.drawable.tlx_auto_test,
                 R.drawable.device_info
         };
     }
@@ -127,7 +136,12 @@ public class TLXTLEToolActivity extends BaseTLXEActivity {
             case 5://高级设置
                 clazz = USAdvanceSetActivity.class;
                 break;
-            case 6://设备信息
+
+            case 6:
+                clazz= TLXHAutoTestOldInvActivity.class;
+                break;
+
+            case 7://设备信息
                 clazz = TLXDeviceInfoActivity.class;
                 break;
 
@@ -137,7 +151,25 @@ public class TLXTLEToolActivity extends BaseTLXEActivity {
                 break;
         }
         if (clazz != null) {
-            jumpMaxSet(clazz, title);
+            if (position==6){
+                new CircleDialog.Builder()
+                        .setWidth(0.7f)
+                        .setGravity(Gravity.CENTER)
+                        .setTitle(getString(R.string.reminder))
+                        .setText(getString(R.string.请确认是否为意大利机型))
+                        .setNegative(getString(R.string.all_no), null)
+                        .setPositive(getString(R.string.all_ok), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                jumpMaxSet(clazz, title);
+                            }
+                        })
+                        .show(getSupportFragmentManager());
+            }else {
+                jumpMaxSet(clazz, title);
+
+            }
+
         }
     }
 

@@ -1,8 +1,13 @@
 package com.growatt.shinetools.module.localbox.max;
 
+import android.view.Gravity;
+import android.view.View;
+
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.max.base.BaseMaxToolActivity;
+import com.growatt.shinetools.module.localbox.tlx.base.BaseTLXEActivity;
+import com.growatt.shinetools.module.localbox.tlxh.TLXHAutoTestOldInvActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
@@ -10,8 +15,9 @@ import com.growatt.shinetools.module.localbox.max.config.MaxSystemConfigActivity
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
 import com.growatt.shinetools.module.localbox.tlx.config.TLXQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
+import com.mylhyl.circledialog.CircleDialog;
 
-public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
+public class MaxMacModMidToolActivity extends BaseTLXEActivity {
     @Override
     public void initStatusRes() {
         pidStatusStrs = new String[]{
@@ -51,6 +57,17 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
                 getString(R.string.m320功率) + "\n(W)",
         };
 
+        eleItemTiles=new String[eleTitles.length][2];
+        for (int i = 0; i < eleTitles.length; i++) {
+            if (i==0){
+                eleItemTiles[i][0]=getString(R.string.android_key408);
+                eleItemTiles[i][1]=getString(R.string.android_key1912);
+            }else {
+                eleItemTiles[i][0]=getString(R.string.当前功率);
+                eleItemTiles[i][1]=getString(R.string.m189额定功率);
+            }
+        }
+
 
         eleResId = new int[]{
                 R.drawable.tlxh_ele_fadian, R.drawable.ele_power,
@@ -79,6 +96,8 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
                 R.drawable.city_code,
                 R.drawable.smart_check,
                 R.drawable.advan_setting,
+                R.drawable.tlx_auto_test,
+
                 R.drawable.device_info
         };
         title = new String[]{
@@ -88,6 +107,7 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
                 getString(R.string.市电码参数设置),
                 getString(R.string.m285智能检测),
                 getString(R.string.m286高级设置),
+                getString(R.string.android_key171),
                 getString(R.string.m291设备信息)
         };
     }
@@ -122,7 +142,12 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
                 title1 = getString(R.string.高级设置);
                 break;
 
+
             case 6:
+                clazz= TLXHAutoTestOldInvActivity.class;
+                break;
+
+            case 7:
                 clazz = Max230Ktl3HvtMaxInfoActivity.class;
                 break;
             default:
@@ -137,8 +162,30 @@ public class MaxMacModMidToolActivity extends BaseMaxToolActivity {
             e.printStackTrace();
         }
         final String title = title1;
-        if (clazz == null) return;
-        jumpMaxSet(clazz, title);
+
+        if (clazz != null) {
+            if (position==6){
+                Class finalClazz = clazz;
+                new CircleDialog.Builder()
+                        .setWidth(0.7f)
+                        .setGravity(Gravity.CENTER)
+                        .setTitle(getString(R.string.reminder))
+                        .setText(getString(R.string.请确认是否为意大利机型))
+                        .setNegative(getString(R.string.all_no), null)
+                        .setPositive(getString(R.string.all_ok), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                jumpMaxSet(finalClazz, title);
+                            }
+                        })
+                        .show(getSupportFragmentManager());
+            }else {
+                jumpMaxSet(clazz, title);
+
+
+            }
+
+        }
     }
 
 

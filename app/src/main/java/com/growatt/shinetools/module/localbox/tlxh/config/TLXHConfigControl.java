@@ -98,7 +98,7 @@ public class TLXHConfigControl {
 
             case TLXH_GRID_THIRE_INDUCTIVE_PF:
             case TLXH_GRID_THIRE_CAPACITIVE_PF:
-                list = getCapacitivePf(context);
+                list = getCapacitivePf(context,maxSettingEnum);
                 break;
 
             case TLXH_GRID_THIRE_PF_CURVE_INOUT_VAC:
@@ -551,7 +551,8 @@ public class TLXHConfigControl {
     }
 
 
-    private static List<ALLSettingBean> getCapacitivePf(Context context) {
+    private static List<ALLSettingBean> getCapacitivePf(Context context, TLXHConfigControl.TlxSettingEnum
+            maxSettingEnum) {
 
         List<ALLSettingBean> list = new ArrayList<>();
         String tips = "";
@@ -560,6 +561,13 @@ public class TLXHConfigControl {
                 context.getString(R.string.m401容性PF),//感性载率
                 context.getString(R.string.m377记忆使能),//记忆使能
         };
+
+        if (maxSettingEnum== TlxSettingEnum.TLXH_GRID_THIRE_INDUCTIVE_PF){
+            titls = new String[]{
+                    context.getString(R.string.m402感性PF),//感性载率
+                    context.getString(R.string.m377记忆使能),//记忆使能
+            };
+        }
 
         int[] itemTypes = new int[]{
                 UsSettingConstant.SETTING_TYPE_INPUT,
@@ -631,6 +639,15 @@ public class TLXHConfigControl {
                 context.getString(R.string.m399感性载率),//感性载率
                 context.getString(R.string.m377记忆使能),//记忆使能
         };
+
+        if (maxSettingEnum== TlxSettingEnum.TLXH_GRID_THIRE_CAPACITIVE_REACTIVE_POWER){
+            titls = new String[]{
+                    context.getString(R.string.m400容性载率),//感性载率
+                    context.getString(R.string.m377记忆使能),//记忆使能
+            };
+        }
+
+
 
         int[] itemTypes = new int[]{
                 UsSettingConstant.SETTING_TYPE_INPUT,
@@ -715,8 +732,10 @@ public class TLXHConfigControl {
         List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" + "69~207V";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "241.5~345V";
-        String tips3 = context.getString(R.string.android_key3048) + ":" + "70~550W";
+        String tips3 = context.getString(R.string.android_key3048) + ":" + "50~550V";
         String tips4 = context.getString(R.string.android_key3048) + ":" + "10s~15min";
+        String tips5=context.getString(R.string.android_key3048)+":"+"45~50Hz";
+        String tips6=context.getString(R.string.android_key3048)+":"+"50~55Hz";
         String[] titls = new String[]{
                 context.getString(R.string.m424启动电压),//并网电压
                 context.getString(R.string.m425启动时间),//并网时间
@@ -744,9 +763,9 @@ public class TLXHConfigControl {
         float[] multiples = new float[]{
                 1, 1, 1, 1, 1, 1, 1
         };
-        String[] units = new String[]{"V", "min", "min", "V", "V", "V", "V"};
+        String[] units = new String[]{"V", "min", "min", "V", "V", "Hz", "Hz"};
         String[] hints = new String[]{
-                tips3, tips4, tips4, tips, tips1, tips, tips1
+                tips3, tips4, tips4, tips, tips1, tips5, tips6
         };
         int[][] funs = new int[][]{
                 {3, 17, 17},//并网电压
@@ -855,7 +874,7 @@ public class TLXHConfigControl {
         float[] multiples = new float[]{
                 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f
         };
-        String[] units = new String[]{"Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz"};
+        String[] units = new String[]{"Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "Hz", "ms", "ms", "ms", "ms", "ms", "ms"};
         String[] hints = new String[]{
                 tips, tips1, tips, tips1, tips, tips1, tips2, tips2, tips2, tips2, tips2, tips2
         };
@@ -1182,8 +1201,8 @@ public class TLXHConfigControl {
         };
         String[] hints = new String[]{
                 tips, tips, tips,
-                tips, tips1, tips1,
-                tips1, tips2
+                tips, tips1, tips1, tips2,
+                tips1
         };
         int[][] funs = new int[][]{
                 {3, 93, 93},//m381Qv切入高压
@@ -1608,7 +1627,7 @@ public class TLXHConfigControl {
                 UsSettingConstant.SETTING_TYPE_NEXT,//干接点设置
                 UsSettingConstant.SETTING_TYPE_SWITCH,//N至PE监测功能使能
                 UsSettingConstant.SETTING_TYPE_SELECT,//宽电网电压范围使能
-                UsSettingConstant.SETTING_TYPE_SWITCH,//安规功能使能
+                UsSettingConstant.SETTING_TYPE_INPUT,//安规功能使能
 //                UsSettingConstant.SETTING_TYPE_SWITCH,//电网N线使能
                 UsSettingConstant.SETTING_TYPE_SWITCH,//指定的规格设置使能
                 UsSettingConstant.SETTING_TYPE_SWITCH,//ISland使能
@@ -1815,7 +1834,7 @@ public class TLXHConfigControl {
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
-                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_SWITCH,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_INPUT,
@@ -1911,7 +1930,7 @@ public class TLXHConfigControl {
 
         int[] itemTypes = new int[]{
                 UsSettingConstant.SETTING_TYPE_SELECT,
-                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,

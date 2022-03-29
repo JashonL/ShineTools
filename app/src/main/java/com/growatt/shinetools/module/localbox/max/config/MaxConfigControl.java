@@ -12,7 +12,7 @@ import java.util.List;
 public class MaxConfigControl {
 
     public enum MaxSettingEnum {
-        MAX_TLX_QUUICK_SETTING,//TLX快速设置
+        MAX_HV_QUICK_SETTING,
         MAX_QUICK_SETTING,//快速设置
         MAX_AFCI_FUNCTION,//AFCI设置
         MAX_SYSTEM_SETTING,//系统设置
@@ -42,8 +42,8 @@ public class MaxConfigControl {
     public static List<ALLSettingBean> getSettingList(MaxSettingEnum maxSettingEnum, Context context) {
         List<ALLSettingBean> list = new ArrayList<>();
         switch (maxSettingEnum) {
-            case MAX_TLX_QUUICK_SETTING:
-                list = getTlxQuickSetList(context);
+            case MAX_HV_QUICK_SETTING:
+                list = getMaxHvQuickSetList(context);
                 break;
             case MAX_QUICK_SETTING:
                 list = getQuickSetList(context);
@@ -91,7 +91,7 @@ public class MaxConfigControl {
 
             case MAX_GRID_THIRE_INDUCTIVE_PF:
             case MAX_GRID_THIRE_CAPACITIVE_PF:
-                list = getCapacitivePf(context);
+                list = getCapacitivePf(context,maxSettingEnum);
                 break;
 
             case MAX_GRID_THIRE_PF_CURVE_INOUT_VAC:
@@ -244,6 +244,85 @@ public class MaxConfigControl {
         }
         return list;
     }
+
+
+
+    private static List<ALLSettingBean> getMaxHvQuickSetList(Context context) {
+        List<ALLSettingBean> list = new ArrayList<>();
+        String[] titls = new String[]{
+                context.getString(R.string.m国家安规),
+                context.getString(R.string.android_key663),
+                context.getString(R.string.android_key982),
+                context.getString(R.string.android_key2922),
+        };
+        String[] hints = new String[]{
+                "",
+                "",
+                "",
+                ""
+        };
+        int[] itemTypes = new int[]{
+                UsSettingConstant.SETTING_TYPE_NEXT,
+                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_INPUT
+        };
+        String[] register = new String[]{
+                "",
+                "",
+                "",
+                ""
+        };
+        float[] multiples = new float[]{
+                1, 1, 1, 1
+        };
+        String[] units = new String[]{
+                "",
+                "",
+                "",
+                ""
+        };
+        int[][] funs = new int[][]{
+                {3, 0, 124},
+                {3, 45, 50},
+                {3, 30, 30},
+                {3, 0, 124}
+        };
+        int[][] funset = new int[][]{
+                {0x10, 118, 121},
+                {0x10, 118, 121},
+                {6, 30, 0},
+                {0x10, 118, 121}
+        };
+
+        int[][] doubleFunset = new int[][]{{6, 45, -1}, {6, 46, -1}, {6, 47, -1}, {6, 48, -1}, {6, 49, -1}, {6, 50, -1}};
+
+        String[][] items = new String[][]{
+                {},
+                {},
+                {},
+                {}
+
+        };
+
+        for (int i = 0; i < titls.length; i++) {
+            ALLSettingBean bean = new ALLSettingBean();
+            bean.setTitle(titls[i]);
+            bean.setItemType(itemTypes[i]);
+            bean.setRegister(register[i]);
+            bean.setUnit(units[i]);
+            bean.setFuns(funs[i]);
+            bean.setFunSet(funset[i]);
+            bean.setItems(items[i]);
+            bean.setHint(hints[i]);
+            bean.setDoubleFunset(doubleFunset);
+            bean.setMul(multiples[i]);
+            list.add(bean);
+        }
+        return list;
+    }
+
+
 
 
     private static List<ALLSettingBean> getQuickSetList(Context context) {
@@ -443,7 +522,7 @@ public class MaxConfigControl {
                 UsSettingConstant.SETTING_TYPE_SELECT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,
-                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_SWITCH,
                 UsSettingConstant.SETTING_TYPE_SELECT,
                 UsSettingConstant.SETTING_TYPE_SWITCH,
                 UsSettingConstant.SETTING_TYPE_INPUT
@@ -613,7 +692,7 @@ public class MaxConfigControl {
 
         int[] itemTypes = new int[]{
                 UsSettingConstant.SETTING_TYPE_SELECT,
-                UsSettingConstant.SETTING_TYPE_INPUT,
+                UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,
                 UsSettingConstant.SETTING_TYPE_ONLYREAD,
@@ -707,7 +786,7 @@ public class MaxConfigControl {
         };
 
         int[] itemTypes = new int[]{
-                UsSettingConstant.SETTING_TYPE_SWITCH,
+                UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
@@ -812,7 +891,7 @@ public class MaxConfigControl {
         };
 
         int[] itemTypes = new int[]{
-                UsSettingConstant.SETTING_TYPE_SELECT,
+                UsSettingConstant.SETTING_TYPE_SWITCH,
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
                 UsSettingConstant.SETTING_TYPE_NEXT,
@@ -1034,7 +1113,7 @@ public class MaxConfigControl {
         String[] hints = new String[]{
                 tips, tips, tips,
                 tips, tips1, tips1,
-                tips1, tips2
+                tips2, tips1
         };
         int[][] funs = new int[][]{
                 {3, 93, 93},//m381Qv切入高压
@@ -1111,6 +1190,15 @@ public class MaxConfigControl {
                 context.getString(R.string.m399感性载率),//感性载率
                 context.getString(R.string.m377记忆使能),//记忆使能
         };
+
+
+        if (maxSettingEnum== MaxSettingEnum.MAX_GRID_THIRE_CAPACITIVE_REACTIVE_POWER){
+            titls = new String[]{
+                    context.getString(R.string.m400容性载率),//感性载率
+                    context.getString(R.string.m377记忆使能),//记忆使能
+            };
+        }
+
 
         int[] itemTypes = new int[]{
                 UsSettingConstant.SETTING_TYPE_INPUT,
@@ -1189,7 +1277,8 @@ public class MaxConfigControl {
     }
 
 
-    private static List<ALLSettingBean> getCapacitivePf(Context context) {
+    private static List<ALLSettingBean> getCapacitivePf(Context context,MaxSettingEnum
+            maxSettingEnum) {
 
         List<ALLSettingBean> list = new ArrayList<>();
         String tips = "";
@@ -1198,6 +1287,15 @@ public class MaxConfigControl {
                 context.getString(R.string.m401容性PF),//感性载率
                 context.getString(R.string.m377记忆使能),//记忆使能
         };
+
+        if (maxSettingEnum==MaxSettingEnum.MAX_GRID_THIRE_INDUCTIVE_PF){
+            titls = new String[]{
+                    context.getString(R.string.m402感性PF),//感性载率
+                    context.getString(R.string.m377记忆使能),//记忆使能
+            };
+        }
+
+
 
         int[] itemTypes = new int[]{
                 UsSettingConstant.SETTING_TYPE_INPUT,
@@ -1923,8 +2021,10 @@ public class MaxConfigControl {
         List<ALLSettingBean> list = new ArrayList<>();
         String tips = context.getString(R.string.android_key3048) + ":" +"0.3Vn~0.9Vn";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "1.05Vn~1.5Vn";
-        String tips3 = context.getString(R.string.android_key3048) + ":" +"70~550W";
+        String tips3 = context.getString(R.string.android_key3048) + ":" +"50~550V";
         String tips4 = context.getString(R.string.android_key3048) + ":" +"10s~15min";
+        String tips5=context.getString(R.string.android_key3048)+":"+"45~50Hz";
+        String tips6=context.getString(R.string.android_key3048)+":"+"50~55Hz";
         String[] titls = new String[]{
                 context.getString(R.string.m424启动电压),//并网电压
                 context.getString(R.string.m425启动时间),//并网时间
@@ -1952,9 +2052,9 @@ public class MaxConfigControl {
         float[] multiples = new float[]{
                 1, 1, 1, 1, 1, 1, 1
         };
-        String[] units = new String[]{"V", "min", "min", "Vn", "Vn", "Vn", "Vn"};
+        String[] units = new String[]{"V", "min", "min", "V", "V", "Hz", "Hz"};
         String[] hints = new String[]{
-                tips3, tips4, tips4, tips, tips1, tips, tips1
+                tips3, tips4, tips4, tips, tips1, tips5, tips6
         };
         int[][] funs = new int[][]{
                 {3, 17, 17},//并网电压

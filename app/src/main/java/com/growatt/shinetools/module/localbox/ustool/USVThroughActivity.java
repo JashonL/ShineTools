@@ -120,7 +120,7 @@ public class USVThroughActivity extends DemoBase implements UsThroughAdapter.OnC
                 ,"AC3 " + getString(R.string.m441电压限制时间) + "(" + getString(R.string.m373低)+")"
         };
         units = new String[]{
-                "%", "s", "%", "s", "%", "s", "%", "s", "%", "s"
+                "V", "s", "V", "s", "V", "s", "V", "s", "V", "s"
         };
         regists = new int[]{
                 53, 69, 57, 71, 52, 68, 56, 70, 60, 76
@@ -422,14 +422,14 @@ public class USVThroughActivity extends DemoBase implements UsThroughAdapter.OnC
         String unit = "";
         switch (position){
             case 0://AC1电压限制 高
-                tips=getString(R.string.android_key3048)+":"+"228.8~249.6/264.0~288.0(AC1<AC2)";
+                tips=getString(R.string.android_key3048)+":"+"228.8V~249.6V/264.0V~288.0V(AC1<AC2)";
                 break;
             case 1://AC1电压限制时间 高
                 tips=getString(R.string.android_key3048)+":"+"0.00s~1.5s";
                 break;
 
             case 2://AC2电压限制 高
-                tips=getString(R.string.android_key3048)+":"+"228.8~249.6/264.0~288.0(AC1<AC2)";
+                tips=getString(R.string.android_key3048)+":"+"228.8V~249.6V/264.0V~288.0V(AC1<AC2)";
                 break;
 
             case 3://AC2电压限制时间 高
@@ -437,20 +437,20 @@ public class USVThroughActivity extends DemoBase implements UsThroughAdapter.OnC
                 break;
 
             case 4://AC1电压限制 低
-                tips=getString(R.string.android_key3048)+":"+"104.0~187.2/120.0~216.0(AC1>AC2>AC3)";
+                tips=getString(R.string.android_key3048)+":"+"104.0V~187.2V/120.0~216.0V(AC1>AC2>AC3)";
                 break;
             case 5://AC1电压限制时间 低
                 tips=getString(R.string.android_key3048)+":"+"0.10s~20s";
                 break;
             case 6://AC2电压限制 低
-                tips=getString(R.string.android_key3048)+":"+"104.0~187.2/120.0~216.0(AC1>AC2>AC3)";
+                tips=getString(R.string.android_key3048)+":"+"104.0V~187.2V/120.0V~216.0V(AC1>AC2>AC3)";
                 break;
             case 7://AC2电压限制时间 低
                 tips=getString(R.string.android_key3048)+":"+"0.10s~20s";
                 break;
 
             case 8://AC3电压限制 低
-                tips=getString(R.string.android_key3048)+":"+"104.0~187.2/120.0~216.0(AC1>AC2>AC3)";
+                tips=getString(R.string.android_key3048)+":"+"104.0V~187.2V/120.0V~216.0V(AC1>AC2>AC3)";
                 break;
             case 9://AC3电压限制时间 低
                 tips=getString(R.string.android_key3048)+":"+"0.10s~20s";
