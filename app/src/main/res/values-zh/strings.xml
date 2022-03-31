@@ -6444,7 +6444,7 @@
     <string name="内部信息">内部信息</string>
     <string name="电池信息">电池信息</string>
     <string name="M3版本">M3版本</string>
-    <string name="BMS版本">BMS版本</string>
+    <string name="BMS版本">BMS软件版本</string>
     <string name="CAN通信">CAN通信</string>
     <string name="不充放电">不充放电</string>
     <string name="系统故障">系统故障</string>
@@ -6550,5 +6550,9 @@
     <string name="Continual">持续</string>
     <string name="Overnight">整晚</string>
     <string name="vn_is_rated_vol">Vn为额定电压</string>
+    <string name="bms_hard_ware_version">BMS硬件版本</string>
+    <string name="bat_model">电池型号</string>
+    <string name="bdc_hard_ware_version">BDC硬件版本</string>
+
 
 </resources>

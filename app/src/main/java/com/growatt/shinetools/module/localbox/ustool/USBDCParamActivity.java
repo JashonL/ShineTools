@@ -152,8 +152,12 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
     @Override
     protected void initData() {
         //系统信息
-        String[] systemInfo = {getString(R.string.android_key2043), getString(R.string.android_key2296),
-                getString(R.string.m模式), getString(R.string.M3版本), getString(R.string.BMS版本)
+        String[] systemInfo = {
+                getString(R.string.bat_model),
+                getString(R.string.android_key2043), getString(R.string.android_key2296),
+                getString(R.string.m模式), getString(R.string.M3版本), getString(R.string.BMS版本),
+                getString(R.string.bms_hard_ware_version),
+                getString(R.string.bdc_hard_ware_version)
         };
 
         //状态信息
@@ -565,23 +569,35 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             BDCInfoBean bdcInfoBean = mMaxData.getBdcInfoBean();
             ToolStorageDataBean storageBeen = mMaxData.getStorageBeen();
             MaxDataDeviceBean deviceBeen = mMaxData.getDeviceBeen();
+
+            //电池类型
+            String batModel = bdcInfoBean.getBatModel();
+            sysData.get(0).setValue(batModel);
+
             //固件版本
             String bdcVervison = mMaxData.getBdcVervison();
-            sysData.get(0).setValue(bdcVervison);
+            sysData.get(1).setValue(bdcVervison);
 
             //sn
             String bdc_serialnumber = bdcInfoBean.getBdc_serialnumber();
-            sysData.get(1).setValue(bdc_serialnumber);
+            sysData.get(2).setValue(bdc_serialnumber);
 
             //模式
             String bdcMode = bdcInfoBean.getBdc_mode();
-            sysData.get(2).setValue(bdcMode);
+            sysData.get(3).setValue(bdcMode);
             //M3版本
             String m3_version = bdcInfoBean.getM3_version();
-            sysData.get(3).setValue(m3_version);
+            sysData.get(4).setValue(m3_version);
             //BMS版本
             String bms_version = bdcInfoBean.getBms_version();
-            sysData.get(4).setValue(bms_version);
+            sysData.get(5).setValue(bms_version);
+            //BMS硬件版本
+            String bms_hw_version = bdcInfoBean.getBmsHwVersion();
+            sysData.get(6).setValue(bms_hw_version);
+            //BDC硬件版本
+            String bdc_hw_version = bdcInfoBean.getBdcHwVersion();
+            sysData.get(7).setValue(bdc_hw_version);
+
             mSystemAdapter.notifyDataSetChanged();
 
 

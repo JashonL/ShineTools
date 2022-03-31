@@ -6451,7 +6451,7 @@
     <string name="内部信息">Internal Information</string>
     <string name="电池信息">Battery Information</string>
     <string name="M3版本">M3 Version</string>
-    <string name="BMS版本">BMS Version</string>
+    <string name="BMS版本">Software version of BMS</string>
     <string name="CAN通信">CAN Communication</string>
     <string name="不充放电">Charge and Discharge Function Disable</string>
     <string name="系统故障">System Error</string>
@@ -6555,5 +6555,10 @@
     <string name="use_this_version">Whether to upgrade to this version</string>
     <string name="Continual">Continual</string>
     <string name="Overnight">Overnight</string>
-    <string name="vn_is_rated_vol">Vn为额定电压</string>
+    <string name="vn_is_rated_vol">Vn is the rated voltage</string>
+
+    <string name="bms_hard_ware_version">Hardware version of BMS</string>
+    <string name="bat_model">Battery Model</string>
+    <string name="bdc_hard_ware_version">Hardware version of BDC</string>
+
 </resources>

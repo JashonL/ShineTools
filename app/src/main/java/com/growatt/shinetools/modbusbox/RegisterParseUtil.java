@@ -562,6 +562,10 @@ public class RegisterParseUtil {
                 MaxWifiParseUtil.subBytes(bs, 3105, 0, 1)
         );*/
 
+        //BMS硬件版本
+        String bmsHwVersion = String.valueOf(obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3104, 0, 1)));
+        //BDC硬件版本
+        String bdcHwVersion = String.valueOf(obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3117, 0, 1)));
 
         //厂商信息
         String company = MaxWifiParseUtil.obtainRegistValueAscii(
@@ -599,6 +603,8 @@ public class RegisterParseUtil {
 
         bdcInfoBean.setBattery_company(company);
         bdcInfoBean.setBattery_type(batteryType);
+        bdcInfoBean.setBmsHwVersion(bmsHwVersion);
+        bdcInfoBean.setBdcHwVersion(bdcHwVersion);
     }
 
     /**
@@ -3863,6 +3869,16 @@ public class RegisterParseUtil {
         String bmsVersion = String.valueOf(MaxWifiParseUtil.usBdcObtainValueOne(bs, srcPos));
 
 
+        //BMS硬件版本
+        srcPos = bdc03SrcIndex(resRester, 3104, bdcPosition);
+        String bmsHwversion = String.valueOf(MaxWifiParseUtil.usBdcObtainValueOne(bs, srcPos));
+
+
+        //BDC硬件版本版本
+        srcPos = bdc03SrcIndex(resRester, 3115, bdcPosition);
+        String bdcHwversion = String.valueOf(MaxWifiParseUtil.usBdcObtainValueOne(bs, srcPos));
+
+
         //厂商信息
 
         srcPos = bdc03SrcIndex(resRester, 3106, bdcPosition);
@@ -3894,6 +3910,8 @@ public class RegisterParseUtil {
         bdcInfoBean.setBms_version(bmsVersion);
         bdcInfoBean.setBattery_company(company);
         bdcInfoBean.setBattery_type(batteryType);
+        bdcInfoBean.setBmsHwVersion(bmsHwversion);
+        bdcInfoBean.setBdcHwVersion(bdcHwversion);
     }
 
     /**
@@ -3989,7 +4007,7 @@ public class RegisterParseUtil {
         storageBeen.setaBB02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3197, bdcPosition)));
         storageBeen.setaLLC02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3198, bdcPosition)));
         storageBeen.setTempA02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3199, bdcPosition)));
-        storageBeen.setTempB02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3200, bdcPosition)));
+//        storageBeen.setTempB02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3200, bdcPosition)));
         storageBeen.setErrorStorage02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3190, bdcPosition)));
         storageBeen.setWarmStorage02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3191, bdcPosition)));
         storageBeen.setError2Storage02(usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3210, bdcPosition)) >> 12);
@@ -4014,6 +4032,11 @@ public class RegisterParseUtil {
 
         //新的bdc信息解析
         bdcInfoBean.setStatus(storageBeen.getStatusBDC());
+
+        //电池型号
+        int batModel = usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3200, bdcPosition));
+        bdcInfoBean.setBatModel(String.valueOf(batModel));
+
         //模式
         bdcInfoBean.setWorkMode(storageBeen.getWorkModeBDC());
         //充电功率

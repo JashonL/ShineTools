@@ -1,6 +1,9 @@
 package com.growatt.shinetools.module.localbox.ustool.bean;
 
-public class BDCInfoBean  {
+public class BDCInfoBean {
+
+    //电池类型
+    private String batModel;
     //固件版本
     private String dsp_version;
     //bdc序列号
@@ -12,6 +15,11 @@ public class BDCInfoBean  {
     //bms版本
     private String bms_version;
 
+    //bms硬件版本
+    private String bmsHwVersion;
+
+    //bdc硬件版本
+    private String bdcHwVersion;
 
     //状态
     private int status;
@@ -33,7 +41,6 @@ public class BDCInfoBean  {
     private String errorcode;
     //告警码
     private String warncode;
-
 
 
     //上电感电流
@@ -88,6 +95,15 @@ public class BDCInfoBean  {
 
     //电池故障信息
     private String battery_error;
+
+
+    public String getBdcHwVersion() {
+        return bdcHwVersion;
+    }
+
+    public void setBdcHwVersion(String bdcHwVersion) {
+        this.bdcHwVersion = bdcHwVersion;
+    }
 
     public String getDsp_version() {
         return dsp_version;
@@ -399,5 +415,21 @@ public class BDCInfoBean  {
 
     public void setBattery_error(String battery_error) {
         this.battery_error = battery_error;
+    }
+
+    public String getBatModel() {
+        return batModel;
+    }
+
+    public void setBatModel(String batModel) {
+        this.batModel = batModel;
+    }
+
+    public String getBmsHwVersion() {
+        return bmsHwVersion;
+    }
+
+    public void setBmsHwVersion(String bmsHwVersion) {
+        this.bmsHwVersion = bmsHwVersion;
     }
 }
