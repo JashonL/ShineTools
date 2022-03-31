@@ -1208,13 +1208,12 @@ public class USParamsSettingActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     public void oncheck(boolean check, int position) {
+        currentSetPos = 5;
         int value = check ? 1 : 0;
-        if (position == 5) {//风扇检查
-            //设置
-            curSet = nowSet[5][0];
-            curSet[2] = position;
-            connectServerWrite();
-        }
+        //设置
+        curSet = nowSet[5][0];
+        curSet[2] = value;
+        connectServerWrite();
 
         usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
         usParamsetAdapter.notifyDataSetChanged();

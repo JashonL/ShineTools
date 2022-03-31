@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,10 +36,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TLXHLiwangActivity extends DemoBase {
+public class TLXHLiwangActivity extends DemoBase implements Toolbar.OnMenuItemClickListener{
 
-    @BindView(R.id.tvTitle)
+
+
+    @BindView(R.id.tv_title)
     TextView mTvTitle;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     private List<TLXHLiwangBean> mList;
@@ -49,11 +56,21 @@ public class TLXHLiwangActivity extends DemoBase {
     private MaxDataBean mBean;
     //读取命令功能码（功能码，开始寄存器，结束寄存器）
     private int[][] funs = {{4,3125,3249}};
+
+    private MenuItem item;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tlxhliwang);
         ButterKnife.bind(this);
+        initToobar(toolbar);
+
+        toolbar.inflateMenu(R.menu.comment_right_menu);
+        item = toolbar.getMenu().findItem(R.id.right_action);
+        item.setTitle(R.string.android_key816);
+        toolbar.setOnMenuItemClickListener(this);
+
         initRecyclerView();
         EventBus.getDefault().register(this);
         if (mBean == null) mBean = new MaxDataBean();
@@ -132,10 +149,7 @@ public class TLXHLiwangActivity extends DemoBase {
     }
 
 
-    @OnClick(R.id.ivLeft)
-    public void onViewClicked() {
-        finish();
-    }
+
     /**
      * 读取寄存器handle
      */
@@ -208,5 +222,13 @@ public class TLXHLiwangActivity extends DemoBase {
     private void connectServer() {
         Mydialog.Show(mContext);
         mClientUtil = SocketClientUtil.connectServer(mHandler);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.right_action) {
+            readRegisterValue();
+        }
+        return true;
     }
 }

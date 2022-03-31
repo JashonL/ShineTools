@@ -23,6 +23,7 @@ import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
+import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
 import com.growatt.shinetools.module.localbox.ustool.USWiFiConfigActivity;
 import com.growatt.shinetools.socket.ConnectHandler;
@@ -68,6 +69,7 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
     private DeviceSettingAdapter usParamsetAdapter;
     private SocketManager manager;
     private int uuid = 0;//当前请求项
+    private int setIndex=0;
     private int type = 0;//0：读取  1：设置
     private List<String> models;
 
@@ -259,7 +261,7 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
             } else {//设置
                 //检测内容正确性
                 boolean isCheck = MaxUtil.checkReceiverFull(bytes);
-                if (uuid == 2) {
+                if (setIndex == 2) {
                     isCheck = MaxUtil.checkReceiverFull10(bytes);
                 }
                 if (isCheck) {
@@ -303,7 +305,8 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                 } else {
                     status = getString(R.string.m未配网);
                 }
-                settingList.get(0).setValueStr(status);
+//                settingList.get(0).setValueStr("");
+                settingList.get(0).setValueStr("");
                 break;
             case 1://功率采集器
                 //解析int值
@@ -324,13 +327,14 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
                 //识别model
                 byte[] valueBs = MaxWifiParseUtil.subBytesFull(bs, 118, 0, 4);
                 ALLSettingBean allSettingBean2 = settingList.get(2);
-                int[] setValues2 = allSettingBean2.getSetValues();
-                int[] setValues = Arrays.copyOf(setValues2, setValues2.length);
+//                int[] setValues2 = allSettingBean2.getSetValues();
+                int[] setValues = new int[4];
 
                 setValues[0] = MaxWifiParseUtil.obtainValueOne(bs, 118);
                 setValues[1] = MaxWifiParseUtil.obtainValueOne(bs, 119);
                 setValues[2] = MaxWifiParseUtil.obtainValueOne(bs, 120);
                 setValues[3] = MaxWifiParseUtil.obtainValueOne(bs, 121);
+                allSettingBean2.setSetValues(setValues);
 
 
                 BigInteger big = new BigInteger(1, valueBs);
@@ -574,6 +578,7 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         ALLSettingBean allSettingBean = usParamsetAdapter.getData().get(position);
         int uuid = allSettingBean.getUuid();
+        setIndex=position;
         switch (uuid) {
             case 0://wifi配置
                 toOhterSetting = true;

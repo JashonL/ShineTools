@@ -31,6 +31,7 @@ import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.CircleDialogUtils;
+import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
 import com.mylhyl.circledialog.BaseCircleDialog;
@@ -410,14 +411,14 @@ public class USGridActivity extends DemoBase implements UsThroughAdapter.OnChild
         String unit = "";
         switch (position){
             case 0://并网电压高值
-                tips=getString(R.string.android_key3048)+":"+"218.40~228.80/252.00~264.00";
+                tips=getString(R.string.android_key3048)+":"+"1.05Vn~1.1Vn("+getString(R.string.vn_is_rated_vol)+")";
                 break;
             case 1://并网电压低值
-                tips=getString(R.string.android_key3048)+":"+"164.40~197.60/192.00~228.00";
+                tips=getString(R.string.android_key3048)+":"+"0.8Vn~0.95Vn("+getString(R.string.vn_is_rated_vol)+")";
                 break;
 
             case 2://并网频率高值
-                tips=getString(R.string.android_key3048)+":"+"50.1~50Hz";
+                tips=getString(R.string.android_key3048)+":"+"50.1~51Hz";
                 break;
 
             case 3://并网频率低值
@@ -437,6 +438,31 @@ public class USGridActivity extends DemoBase implements UsThroughAdapter.OnChild
         String title = usvThroughBean.getTitle();
 
         showInputValueDialog(title, tips, unit, value -> {
+            double v = Double.parseDouble(value);
+            switch (position){
+                case 2://并网频率高值
+                    if (CommenUtils.isOuter(50.1,51,v)) {
+                        toast(R.string.m620超出设置范围);
+                        return;
+                    }
+                    break;
+
+                case 3://并网频率低值
+                    if (CommenUtils.isOuter(49,49.9,v)) {
+                        toast(R.string.m620超出设置范围);
+                        return;
+                    }
+                    break;
+
+                case 4: case 5://开机连接时间/并网重连时间
+                    if (CommenUtils.isOuter(0,600,v)) {
+                        toast(R.string.m620超出设置范围);
+                        return;
+                    }
+                    break;
+            }
+
+
 
             //获取用户输入内容
             if (TextUtils.isEmpty(value)) {

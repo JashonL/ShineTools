@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.module.localbox.max.bean.MaxCheckIVBean;
+import com.growatt.shinetools.utils.CommenUtils;
 
 import java.util.List;
 
@@ -32,13 +33,18 @@ public class MaxCheckIVAdapter extends BaseQuickAdapter<MaxCheckIVBean,BaseViewH
         TextView tvRealContent = helper.getView(R.id.tvRealContent);
         //设置文本
         tvTitle.setText(item.getTitle());
+
+
+
         tvMaxContent.setText(String.format("(%s,%s)",
                 TextUtils.isEmpty(item.getxMaxValue())?"--":item.getxMaxValue(),
-                TextUtils.isEmpty(item.getyMaxValue())?"--":item.getyMaxValue())
+                TextUtils.isEmpty(item.getyMaxValue())?"--":CommenUtils.showDouble(Double.parseDouble(item.getyMaxValue())))
         );
+
+
         tvRealContent.setText(String.format("(%s,%s)",
                 TextUtils.isEmpty(item.getxValue())?"--":item.getxValue(),
-                TextUtils.isEmpty(item.getyValue())?"--":item.getyValue())
+                TextUtils.isEmpty(item.getyValue())?"--":CommenUtils.showDouble(Double.parseDouble(item.getyValue())))
         );
 //        tvRealContent.setText(String.format("(%s)",
 //                TextUtils.isEmpty(item.getyValue())?"--":item.getyValue())

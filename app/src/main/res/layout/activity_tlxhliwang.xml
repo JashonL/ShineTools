@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/iphone_background"
     android:orientation="vertical">
-    <include layout="@layout/header_view_v3"/>
+    <include layout="@layout/toobar_title"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_marginTop="@dimen/dp_15"

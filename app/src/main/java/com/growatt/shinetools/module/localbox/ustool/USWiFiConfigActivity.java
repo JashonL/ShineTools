@@ -272,8 +272,9 @@ public class USWiFiConfigActivity extends BaseActivity {
         if (currenStep == 1) {//执行第一步
             try {
                 //检测内容正确性
+                LogUtil.i("设置服务器地址返回数据:"+SocketClientUtil.bytesToHexString(bytes));
                 boolean isCheck = MaxUtil.checkReceiverFull10(bytes);
-                LogUtil.i("=============检测内容正确开始写2000=============");
+                LogUtil.i("=============检测内容正确开始写20000=============");
                 if (isCheck) {
                     //20000写1
                     if (configing) {
@@ -292,7 +293,7 @@ public class USWiFiConfigActivity extends BaseActivity {
                 if (isCheck) {
                     //往2000写1成功，开始读取连接状态
                     if (configing) {
-                        LogUtil.i("=======2000下发成功开始读状态=============");
+                        LogUtil.i("=======20000下发成功开始读状态=============");
                         if (flag == 1) {
                             readStatus();
                         } else {
@@ -356,6 +357,7 @@ public class USWiFiConfigActivity extends BaseActivity {
             try {
                 //检测内容正确性
                 boolean isCheck = ModbusUtil.checkModbus(bytes);
+                LogUtil.i("接收20144：" + SocketClientUtil.bytesToHexString(bytes));
                 if (isCheck) {
                     //移除外部协议
                     byte[] bs = RegisterParseUtil.removePro17(bytes);

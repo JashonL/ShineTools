@@ -72,7 +72,6 @@ public class MaxSystemConfigActivity extends BaseActivity implements BaseQuickAd
     protected void initViews() {
         initToobar(toolbar);
         tvTitle.setText(R.string.android_key3091);
-        toolbar.setOnMenuItemClickListener(this);
         toolbar.inflateMenu(R.menu.comment_right_menu);
         item = toolbar.getMenu().findItem(R.id.right_action);
         item.setTitle(R.string.android_key816);

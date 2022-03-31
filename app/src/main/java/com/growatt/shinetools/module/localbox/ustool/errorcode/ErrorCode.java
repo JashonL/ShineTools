@@ -93,7 +93,7 @@ public class ErrorCode {
             "\"208\":\"直流保险丝断开_1:关机后检查保险丝 \n2:如果故障信息仍存在，联系制造商_DC fuse is broken_1: Check the fuse after shutting down \n2: If the fault information still exists, contact the manufacturer\"," +
             "\"209\":\"面板电压过高_1:立刻断开DC开关并确认电压 \n2:恢复正常电压后，如果故障信息仍存在，联系制造商_Panel voltage is too high_1: Disconnect the DC switch immediately and confirm the voltage \n2: After the normal voltage is restored, if the fault message still exists, contact the manufacturer\"," +
             "\"210\":\"面板反接_1:检查面板输入端 \n2:如果故障信息仍存在，联系制造商_PV is reversed _1:Check PV input terminals \n2:If error message still exists,contact manufacturer.\"," +
-            "\"217\":\"BDC 异常_1:检查ARO电池的接线； \n2:检查ARO电池和逆变之间的接线；_BDC abnormal _1.Check ARO battery terminals \n2.Check the connection between the inverter and the ARO battery\"," +
+            "\"217\":\"电池异常_1:检查电池的接线； \n2:检查电池和逆变之间的接线；_Battery Abnormal _1.Check the wiring of the battery \n2.Check the wiring between the battery and the inverter.\"," +
             "\"218\":\"BDC Bus未连接_1:重启逆变器 \n2:如果故障信息仍存在，联系制造商_BDC Bus is not connected_1:Restart inverter. \n2:If error message still exists,contact manufacturer.\"," +
             "\"300\":\"无市电连接_1.请确认电网是否丢失。 \n2.如果故障信息仍存在，联系制造商_No Utility_1. Please confirm whether the grid is lost. \n2. If the fault message still exists, contact the manufacturer\"," +
             "\"301\":\"市电电压超范围_1.检查交流电压是否在标准电压的规格范围内。 \n2.如果故障信息仍存在，联系制造商_Grid voltage is outrange_1. Check whether the AC voltage is within the specification range of the standard voltage. \n2. If the fault message still exists, contact the manufacturer\"," +

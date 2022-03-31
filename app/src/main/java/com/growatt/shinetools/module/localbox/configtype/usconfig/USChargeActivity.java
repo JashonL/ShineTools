@@ -32,6 +32,7 @@ import com.growatt.shinetools.modbusbox.SocketClientUtil;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.BtnDelayUtil;
 import com.growatt.shinetools.utils.CircleDialogUtils;
+import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.widget.GridDivider;
@@ -71,7 +72,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
     private String[] registers;
     private int[] itemTypes;
 
-    private String [] onkeyBdcStr;
+    private String[] onkeyBdcStr;
 
     //读取数据
     private int[][] funs;
@@ -95,6 +96,8 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
     private String mUnit = "";//当前单位
 
     private int mType = -1;
+    private MenuItem item;
+
 
     @Override
     protected int getContentView() {
@@ -106,10 +109,15 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
         initToobar(toolbar);
         tvTitle.setText(R.string.android_key3091);
         String title = getIntent().getStringExtra("title");
-        if (!TextUtils.isEmpty(title)){
+        if (!TextUtils.isEmpty(title)) {
             tvTitle.setText(title);
         }
         toolbar.setOnMenuItemClickListener(this);
+        toolbar.inflateMenu(R.menu.comment_right_menu);
+        item = toolbar.getMenu().findItem(R.id.right_action);
+        item.setTitle(R.string.android_key816);
+        toolbar.setOnMenuItemClickListener(this);
+
 
         rvSystem.setLayoutManager(new LinearLayoutManager(this));
         usParamsetAdapter = new UsSettingAdapter(new ArrayList<>(), this);
@@ -123,7 +131,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
     @Override
     protected void initData() {
 
-        onkeyBdcStr=new String[]{
+        onkeyBdcStr = new String[]{
                 getString(R.string.android_key480),
                 getString(R.string.android_key345),
                 getString(R.string.android_key467),
@@ -195,7 +203,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
             bean.setTitle(titles[i]);
             bean.setItemType(itemTypes[i]);
             bean.setRegister(registers[i]);
-            if (i!=titles.length-1){
+            if (i != titles.length - 1) {
                 bean.setUnit("%");
             }
             newlist.add(bean);
@@ -212,7 +220,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                     , 1, 1, 1, 1, 1
                     , 1, 1, 1, 1, 1
                     , 1, 1
-                    , 1, 1, 1, 1,1
+                    , 1, 1, 1, 1, 1
             };
         } catch (Exception e) {
             e.printStackTrace();
@@ -226,7 +234,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                     , "", "", "", "", ""
                     , "", "", "", "", ""
                     , "", ""
-                    , "", "", "", "",""
+                    , "", "", "", "", ""
             };
         } catch (Exception e) {
             e.printStackTrace();
@@ -419,6 +427,8 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                 break;
             case 3:
                 int value3 = MaxWifiParseUtil.obtainValueOne(bs);
+                float roundV = value3 * 100 / 255f;
+                value3 =Math.round(roundV);
                 usParamsetAdapter.getData().get(4).setValue(String.valueOf(value3));
                 usParamsetAdapter.getData().get(4).setValueStr(getReadValueReal(value3));
                 break;
@@ -429,9 +439,9 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                 break;
             case 5:
                 int value5 = MaxWifiParseUtil.obtainValueOne(bs);
-                String value=String.valueOf(value5);
-                if (value5<onkeyBdcStr.length){
-                    value=onkeyBdcStr[value5];
+                String value = String.valueOf(value5);
+                if (value5 < onkeyBdcStr.length) {
+                    value = onkeyBdcStr[value5];
                 }
                 usParamsetAdapter.getData().get(6).setValue(String.valueOf(value5));
                 usParamsetAdapter.getData().get(6).setValueStr(value);
@@ -497,7 +507,10 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        return false;
+        if (item.getItemId() == R.id.right_action) {
+            refresh();
+        }
+        return true;
     }
 
     @Override
@@ -506,7 +519,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
         showUnit(position);
         switch (position) {
             case 0:
-                ActivityUtils.gotoActivity(USChargeActivity.this, USChargeTimeActivity.class,false);
+                ActivityUtils.gotoActivity(USChargeActivity.this, USChargeTimeActivity.class, false);
                 break;
             case 1://
 
@@ -525,10 +538,23 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                         toast(R.string.all_blank);
                     } else {
                         try {
+                            double v = Double.parseDouble(value);
+                            if (CommenUtils.isOuter(0, 100, v)) {
+                                toast(R.string.m620超出设置范围);
+                                return;
+                            }
+
                             int pos = position - 1;
                             nowSet = funsSet[pos];
                             int value1 = getWriteValueReal(Double.parseDouble(value));
-                            nowSet[0][2] = value1;
+
+                            int setValue = 0;
+                            if (position == 4) {//放电功率是从0-255，因此发送和读取时需要转换
+                                float v1 = value1 * 255 / 100f;
+                                setValue =Math.round(v1) ;
+                            }
+
+                            nowSet[0][2] = setValue;
                             bean.setValue(String.valueOf(value1));
                             bean.setValueStr(getReadValueReal(value1));
                             usParamsetAdapter.notifyDataSetChanged();
@@ -551,7 +577,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                                 usParamsetAdapter.notifyDataSetChanged();
                                 //去设置
                                 nowSet = funsSet[position];
-                                nowSet[0][2]  = pos;
+                                nowSet[0][2] = pos;
                                 writeRegisterValue();
                             }
                             return true;
@@ -607,10 +633,10 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                         tvUnit.setText(unit);
                         tvTitle.setText(title);
 
-                        tvCancel.setOnClickListener(view1 ->{
+                        tvCancel.setOnClickListener(view1 -> {
                             dialogFragment.dialogDismiss();
                             dialogFragment = null;
-                        } );
+                        });
                         tvConfirm.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -626,7 +652,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                         });
 
                     }
-                }, Gravity.CENTER,false);
+                }, Gravity.CENTER, false);
     }
 
 
@@ -650,6 +676,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
         Mydialog.Show(mContext);
         mClientUtilWriter = SocketClientUtil.connectServer(mHandlerWrite);
     }
+
     private byte[] sendBytes;
     Handler mHandlerWrite = new Handler(Looper.getMainLooper()) {
         @Override

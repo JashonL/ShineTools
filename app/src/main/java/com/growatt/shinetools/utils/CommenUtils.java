@@ -29,6 +29,7 @@ import com.growatt.shinetools.bean.WifiList;
 import com.mylhyl.circledialog.CircleDialog;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -508,6 +509,23 @@ public class CommenUtils {
         return binaryStr.toString();
     }
 
+    /**
+     * 不显示科学计数法
+     */
+    public static String showDouble(double value) {
+        DecimalFormat df = new DecimalFormat("0.#####");
+        return df.format(value);
+    }
+
+
+    public static boolean isOuter(double little,double big,double value){
+        boolean isOuter=false;
+        if (value < little || value > big) {
+            isOuter=true;
+        }
+        return isOuter;
+
+    }
 
 
 }

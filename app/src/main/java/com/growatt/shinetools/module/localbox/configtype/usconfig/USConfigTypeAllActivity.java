@@ -291,7 +291,7 @@ public class USConfigTypeAllActivity extends BaseActivity implements BaseQuickAd
 
         antiReflux = new String[]{getString(R.string.android_key2885), getString(R.string.android_key2886)};
         frequency = new String[]{"50Hz", "60Hz"};
-        voltage = new String[]{"230V", "208V", "240V"};
+        voltage = new String[]{"240V"};
         try {
             mMultiples = new float[]{
                     1, 1, 1, 0.1f, 0.01f

@@ -96,7 +96,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
     private BaseCircleDialog dialogFragment;
 
     private int user_type = KEFU_USER;
-    private   MenuItem item;
+    private MenuItem item;
 
     @Override
     protected int getContentView() {
@@ -124,7 +124,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
 
     @Override
     protected void initData() {
-        user_type= ShineToosApplication.getContext().getUser_type();
+        user_type = ShineToosApplication.getContext().getUser_type();
         //设置项的下标
         mType = getIntent().getIntExtra(KEY_OF_ITEM_SETITEMSINDEX, 0);
 
@@ -204,7 +204,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                     {0.1f, 0.1f},
                     {0.1f, 0.1f},
                     {1, 1},
-                    {1, 1},//pf曲线切入/切出电压
+                    {0.1f, 0.1f},//pf曲线切入/切出电压
                     {1, 1, 1, 1},
                     {1, 1, 1, 1}
 
@@ -247,7 +247,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
             newlist.add(bean);
         }
 
-        if (mType==3||mType==0){
+        if (mType == 3 || mType == 0) {
             newlist.get(1).setValue("1");
         }
 
@@ -513,7 +513,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.right_action:
                 refresh();
                 break;
@@ -539,23 +539,31 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                         return;
                     }
 
-                    usParamsetAdapter.getData().get(position).setValueStr(String.valueOf(value));
-                    usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
-                    usParamsetAdapter.notifyDataSetChanged();
+                    double v = Double.parseDouble(value);
+                    if ((v >= -1 && v <= -0.8) || (v >= 0.8 && v <= 1)) {
 
-                    try {
-                        double result = Double.parseDouble(value);
-                        if (mType==0){
-                            result = Arith.add(10000, Arith.mul(result, 10000));
-                        }else {
-                            result = Arith.sub(10000,Arith.mul(result,10000));
+                        usParamsetAdapter.getData().get(position).setValueStr(String.valueOf(value));
+                        usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
+                        usParamsetAdapter.notifyDataSetChanged();
+
+                        try {
+                            double result = Double.parseDouble(value);
+                            if (mType == 0) {
+                                result = Arith.add(10000, Arith.mul(result, 10000));
+                            } else {
+                                result = Arith.sub(10000, Arith.mul(result, 10000));
+                            }
+                            nowSet[1][2] = (int) result;
+                            writeRegisterValue();
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            toast(getString(R.string.m363设置失败));
                         }
-                        nowSet[1][2] = (int) result;
-                        writeRegisterValue();
-                    } catch (NumberFormatException e) {
-                        e.printStackTrace();
-                        toast(getString(R.string.m363设置失败));
+                    }else {
+                        toast(R.string.m620超出设置范围);
                     }
+
+
                 });
             }
 
@@ -571,6 +579,14 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                         toast(R.string.all_blank);
                         return;
                     }
+
+                    double v = Double.parseDouble(value);
+                    if (v < -1 || v > 60) {
+                        toast(R.string.m620超出设置范围);
+                        return;
+                    }
+
+
                     usParamsetAdapter.getData().get(position).setValueStr(String.valueOf(value));
                     usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
                     usParamsetAdapter.notifyDataSetChanged();
@@ -597,6 +613,14 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                         toast(R.string.all_blank);
                         return;
                     }
+
+                    double v = Double.parseDouble(value);
+                    if (v < 231 || v > 241) {
+                        toast(R.string.m620超出设置范围);
+                        return;
+                    }
+
+
                     try {
                         int result = Integer.parseInt(value);
                         nowSet[position][2] = result;
@@ -623,6 +647,14 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                         toast(R.string.all_blank);
                         return;
                     }
+
+                    double v = Double.parseDouble(value);
+                    if (v < 0 || v > 100) {
+                        toast(R.string.m620超出设置范围);
+                        return;
+                    }
+
+
                     usParamsetAdapter.getData().get(position).setValueStr(String.valueOf(value));
                     usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
                     usParamsetAdapter.notifyDataSetChanged();
@@ -639,7 +671,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
 
 
             if (mType == 6) {
-                if (user_type==END_USER){
+                if (user_type == END_USER) {
                     toast(R.string.android_key2099);
                     return;
                 }
@@ -721,7 +753,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                             });
 
                         }
-                    }, Gravity.CENTER,false);
+                    }, Gravity.CENTER, false);
         }
 
     }
@@ -790,7 +822,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
 //                        }
 //                    }
                     if (nowSet != null) {
-                        if (nowPos >= nowSet.length-1) {
+                        if (nowPos >= nowSet.length - 1) {
                             nowPos = -1;
                             //关闭tcp连接
                             if (mClientUtilWriter != null) {
@@ -801,9 +833,9 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
                             }
                         } else {
                             nowPos = nowPos + 1;
-                            if (nowSet[nowPos][2]==-1){
+                            if (nowSet[nowPos][2] == -1) {
                                 mHandlerWrite.sendEmptyMessage(SocketClientUtil.SOCKET_SEND);
-                            }else {
+                            } else {
                                 sendBytes = SocketClientUtil.sendMsgToServer(mClientUtilWriter, nowSet[nowPos]);
                                 LogUtil.i("发送写入" + (nowPos + 1) + ":" + SocketClientUtil.bytesToHexString(sendBytes));
                             }
@@ -866,7 +898,7 @@ public class USAllSettingItemActivity extends BaseActivity implements BaseQuickA
     protected void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
-        mHandler=null;
+        mHandler = null;
         SocketClientUtil.close(mClientUtilWriter);
     }
 }

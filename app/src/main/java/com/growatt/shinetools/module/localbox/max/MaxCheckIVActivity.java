@@ -517,7 +517,9 @@ public class MaxCheckIVActivity extends DemoBase implements RadioGroup.OnChecked
             axisLeft.setValueFormatter(new ValueFormatter() {
                 @Override
                 public String getFormattedValue(float value) {
-                    return (float) (Math.round(value * 10)) / 10 + "";
+                    double s = (double) (Math.round(value * 10)) / 10;
+                    String s1 = CommenUtils.showDouble(s);
+                    return s1;
                 }
             });
 
