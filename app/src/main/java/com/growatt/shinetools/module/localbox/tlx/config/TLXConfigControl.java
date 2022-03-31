@@ -986,6 +986,14 @@ public class TLXConfigControl {
                 context.getString(R.string.m377记忆使能),//记忆使能
         };
 
+        if (maxSettingEnum== TlxSettingEnum.TLX_GRID_THIRE_INDUCTIVE_REACTIVE_POWER){
+            titls = new String[]{
+                    context.getString(R.string.m399感性载率),//感性载率
+                    context.getString(R.string.m377记忆使能),//记忆使能
+            };
+        }
+
+
         int[] itemTypes = new int[]{
                 UsSettingConstant.SETTING_TYPE_INPUT,
                 UsSettingConstant.SETTING_TYPE_SWITCH,

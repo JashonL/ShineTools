@@ -90,7 +90,7 @@ public class TL3XHToolActivity extends TlxToolBaseActivity {
         title = new String[]{
                 //快速设置、系统配置、认证参数
                 getString(R.string.快速设置),
-                getString(R.string.android_key3091),
+                getString(R.string.android_key3052),
                 getString(R.string.m284参数设置)
                 //充放电管理、智能检测、基本设置
                 , getString(R.string.android_key3056),

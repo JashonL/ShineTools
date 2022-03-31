@@ -1072,7 +1072,7 @@ public class MaxConfigControl {
     private static List<ALLSettingBean> getMaxVoltageSettingList(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0.85Vn~1.2Vn";
+        String tips = context.getString(R.string.android_key3048) + ":" + "0.85Vn~1.2Vn("+context.getString(R.string.vn_is_rated_vol)+")";
         String tips1 = context.getString(R.string.android_key3048) + ":" + "0~100%";
         String tips2 = context.getString(R.string.android_key3048) + ":" + "0~20s";
         String[] titls = new String[]{
@@ -1762,8 +1762,8 @@ public class MaxConfigControl {
 
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" + "0.3Vn~0.9Vn";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "1.05Vn~1.5Vn";
+        String tips = context.getString(R.string.android_key3048) + ":" + "0.3Vn~0.9Vn("+context.getString(R.string.vn_is_rated_vol)+")";
+        String tips1 = context.getString(R.string.android_key3048) + ":" + "1.05Vn~1.5Vn("+context.getString(R.string.vn_is_rated_vol)+")";
         String tips2 = context.getString(R.string.android_key3048) + ":" + "20ms~1min";
         String[] titls = new String[]{
                  "AC1 " + context.getString(R.string.电压限制) + "(" + context.getString(R.string.m373低)+")",
@@ -2019,8 +2019,8 @@ public class MaxConfigControl {
 
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = context.getString(R.string.android_key3048) + ":" +"0.3Vn~0.9Vn";
-        String tips1 = context.getString(R.string.android_key3048) + ":" + "1.05Vn~1.5Vn";
+        String tips = context.getString(R.string.android_key3048) + ":" +"0.3Vn~0.9Vn("+context.getString(R.string.vn_is_rated_vol)+")";
+        String tips1 = context.getString(R.string.android_key3048) + ":" + "1.05Vn~1.5Vn("+context.getString(R.string.vn_is_rated_vol)+")";
         String tips3 = context.getString(R.string.android_key3048) + ":" +"50~550V";
         String tips4 = context.getString(R.string.android_key3048) + ":" +"10s~15min";
         String tips5=context.getString(R.string.android_key3048)+":"+"45~50Hz";

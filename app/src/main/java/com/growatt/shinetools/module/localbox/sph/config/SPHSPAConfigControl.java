@@ -334,7 +334,7 @@ public class SPHSPAConfigControl {
     private static List<ALLSettingBean> getSphSpaGridCodeList(Context context) {
 
         List<ALLSettingBean> list = new ArrayList<>();
-        String tips = "0.9Vn~1.08Vn";
+        String tips = "0.9Vn~1.08Vn("+context.getString(R.string.vn_is_rated_vol)+")";
         String[] titls = new String[]{
                 context.getString(R.string.pf_setting),
                 context.getString(R.string.频率有功),

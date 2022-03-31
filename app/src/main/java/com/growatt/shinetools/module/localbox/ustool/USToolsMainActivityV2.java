@@ -421,7 +421,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
 
         user_type= ShineToosApplication.getContext().getUser_type();
         String[] title = new String[]{
-                getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
+                getString(R.string.快速设置), getString(R.string.系统配置), getString(R.string.android_key3056)
                 , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
                 , getString(R.string.m286高级设置), getString(R.string.m291设备信息)
         };
@@ -434,7 +434,7 @@ public class USToolsMainActivityV2 extends BaseActivity implements Toolbar.OnMen
 
         if (user_type == END_USER||user_type==MAINTEAN_USER) {
             title = new String[]{
-                    getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
+                    getString(R.string.快速设置), getString(R.string.系统配置), getString(R.string.android_key3056)
                     , getString(R.string.android_key1308), getString(R.string.m285智能检测), getString(R.string.m284参数设置)
                     , getString(R.string.m291设备信息)
             };

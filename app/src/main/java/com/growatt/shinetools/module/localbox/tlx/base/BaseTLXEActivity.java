@@ -530,7 +530,7 @@ public abstract class BaseTLXEActivity extends BaseActivity implements Toolbar.O
             bean.setTotalEle(totalEle);
             bean.setTodayTitle(eleItemTiles[i][0]);
             bean.setTodayEle(todayEle);
-            bean.setTotalTitle(eleItemTiles[i][0]);
+            bean.setTotalTitle(eleItemTiles[i][1]);
             bean.setContentColor(contentColor);
             bean.setTitle(titles[i]);
             bean.setDrawableResId(eleResId[i]);

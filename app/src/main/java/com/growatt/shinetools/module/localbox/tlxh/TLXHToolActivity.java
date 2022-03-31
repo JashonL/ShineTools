@@ -89,7 +89,7 @@ public class TLXHToolActivity extends TlxToolBaseActivity {
     public void initSetDataArray() {
         title = new String[]{
                 getString(R.string.快速设置),
-                getString(R.string.android_key3091),
+                getString(R.string.android_key3052),
                 getString(R.string.m284参数设置),
                 getString(R.string.android_key3056),
                 getString(R.string.android_key1308),

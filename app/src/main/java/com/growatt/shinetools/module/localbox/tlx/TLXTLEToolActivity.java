@@ -90,7 +90,7 @@ public class TLXTLEToolActivity extends BaseTLXEActivity {
         //快速设置   系统设置   基本设置   参数设置   智能检测   高级设置   设备信息
         title = new String[]{
                 getString(R.string.快速设置),
-                getString(R.string.系统设置),
+                getString(R.string.android_key3052),
                 getString(R.string.android_key622),
                 getString(R.string.android_key3056),
                 getString(R.string.android_key625),
