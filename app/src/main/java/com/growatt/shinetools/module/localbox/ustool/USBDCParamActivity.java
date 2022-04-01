@@ -113,6 +113,12 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
     private MenuItem item;
     private int batteryNum;
 
+
+    private String[] batArray={"RESU10H Prime","RESU16H Prime"};
+
+
+
+
     @Override
     protected int getContentView() {
         return R.layout.activity_us_bdc_param;
@@ -570,8 +576,23 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             ToolStorageDataBean storageBeen = mMaxData.getStorageBeen();
             MaxDataDeviceBean deviceBeen = mMaxData.getDeviceBeen();
 
+
+
+            String company = bdcInfoBean.getBattery_company();
+
+
+
+
             //电池类型
             String batModel = bdcInfoBean.getBatModel();
+            if ("lg".equalsIgnoreCase(company)){
+                if (batModel.equals("9600")){
+                    batModel=batArray[0];
+                }else if (batModel.equals("16000")){
+                    batModel=batArray[0];
+                }
+            }
+
             sysData.get(0).setValue(batModel);
 
             //固件版本
@@ -685,7 +706,6 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             batteryData.get(0).setValue(battery_type);
 
             //电池厂商
-            String company = bdcInfoBean.getBattery_company();
             batteryData.get(1).setValue(company);
 
        /*     //电池工作模式

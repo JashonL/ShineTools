@@ -1147,7 +1147,7 @@ public class RegisterParseUtil {
         storageBeen.setaBB02(obtainValueOne(bytes, 3197));
         storageBeen.setaLLC02(obtainValueOne(bytes, 3198));
         storageBeen.setTempA02(obtainValueOne(bytes, 3199));
-        storageBeen.setTempB02(obtainValueOne(bytes, 3200));
+//        storageBeen.setTempB02(obtainValueOne(bytes, 3200));
         storageBeen.setErrorStorage02(obtainValueOne(bytes, 3190));
         storageBeen.setWarmStorage02(obtainValueOne(bytes, 3191));
         storageBeen.setError2Storage02(obtainValueOne(bytes, 3210) >> 12);
@@ -1167,6 +1167,12 @@ public class RegisterParseUtil {
         //降额模式
         int deratMode = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3165, 0, 1));
         deviceBean.setDerateMode(deratMode);
+
+
+        //降额模式
+        int batModel = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3200, 0, 1));
+        bdcInfoBean.setBatModel(String.valueOf(batModel));
+
 
         //新的bdc信息解析
         bdcInfoBean.setStatus(storageBeen.getStatusBDC());
