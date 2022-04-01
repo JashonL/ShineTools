@@ -85,7 +85,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
     @BindView(R.id.rlv_battery_system)
     RecyclerView rlvBatterySystem;
 
-   /* @BindView(R.id.tv_error)
+  /*  @BindView(R.id.tv_error)
     TextView tvError;*/
 
 
@@ -468,6 +468,9 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
                     } catch (Exception e) {
                         e.printStackTrace();
                         String stackTraceInfo = getStackTraceInfo(e);
+//                        tvError.setText(stackTraceInfo);
+
+
                         count = 0;
                         //关闭连接
                         SocketClientUtil.close(mReadBdcUtil);
@@ -536,12 +539,6 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             }
 
 
-            //单独解析电池数量
-            byte[] bs = RegisterParseUtil.removePro17(bytes);
-            int batteryNum;
-            int addr = nowPos == 1 ? 4041 : 4149;
-            batteryNum = obtainValueOne(MaxWifiParseUtil.subBytes(bs, addr, 0, 1));
-            mMaxData.setBatteryNumber(batteryNum);
 
         } else {
             switch (count) {
@@ -554,11 +551,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
 
             }
 
-            //单独解析电池数量
-            byte[] bs = RegisterParseUtil.removePro17(bytes);
-            int batteryNum;
-            batteryNum = obtainValueOne(MaxWifiParseUtil.subBytes(bs, 3198, 0, 1));
-            mMaxData.setBatteryNumber(batteryNum);
+
         }
 
 
@@ -589,7 +582,7 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
                 if (batModel.equals("9600")){
                     batModel=batArray[0];
                 }else if (batModel.equals("16000")){
-                    batModel=batArray[0];
+                    batModel=batArray[1];
                 }
             }
 
@@ -785,8 +778,8 @@ public class USBDCParamActivity extends BaseActivity implements Toolbar.OnMenuIt
             String protect = bmsProtect1 + "-" + bmsProtect2 + "-" + bmsProtect3;
             batteryData.get(12).setValue(protect);
 
-            int batteryNumber = mMaxData.getBatteryNumber();
-            batteryData.get(13).setValue(String.valueOf(batteryNumber));
+            String batteryNumber = bdcInfoBean.getBattery_num();
+            batteryData.get(13).setValue(batteryNumber);
             mBatteryAdapter.notifyDataSetChanged();
         }
 

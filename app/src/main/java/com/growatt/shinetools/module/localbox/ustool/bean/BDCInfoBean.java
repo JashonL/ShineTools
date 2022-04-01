@@ -96,6 +96,17 @@ public class BDCInfoBean {
     //电池故障信息
     private String battery_error;
 
+    //电池数量
+    private String battery_num;
+
+
+    public String getBattery_num() {
+        return battery_num;
+    }
+
+    public void setBattery_num(String battery_num) {
+        this.battery_num = battery_num;
+    }
 
     public String getBdcHwVersion() {
         return bdcHwVersion;

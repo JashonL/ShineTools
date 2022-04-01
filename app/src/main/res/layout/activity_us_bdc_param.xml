@@ -37,16 +37,15 @@
     </LinearLayout>
 
 
-  <!--  <TextView
+    <TextView
         android:id="@+id/tv_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:padding="@dimen/dp_5"
-        android:text="@string/system_message"
         android:textColor="@color/color_text_66"
-        android:textSize="@dimen/size_content_sp_14" />-->
+        android:textSize="@dimen/size_content_sp_14" />
 
 
 

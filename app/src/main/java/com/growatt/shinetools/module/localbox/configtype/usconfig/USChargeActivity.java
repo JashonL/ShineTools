@@ -176,6 +176,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
 
 
         funs = new int[][]{
+                {3,3049,3049},
                 {3, 3049, 3049},
                 {3, 3047, 3047},
                 {3, 3048, 3048},
@@ -186,6 +187,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
 
 
         funsSet = new int[][][]{
+                {{6, 3125, 0}},
                 {{6, 3049, 0}},
                 {{6, 3047, -1}},
                 {{6, 3048, -1}},
@@ -410,34 +412,34 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
         switch (count) {
-            case 0://AC充电使能
+            case 1://AC充电使能
                 int value0 = MaxWifiParseUtil.obtainValueOne(bs);
                 usParamsetAdapter.getData().get(1).setValue(String.valueOf(value0));
                 usParamsetAdapter.getData().get(1).setValueStr(getReadValueReal(value0));
                 break;
-            case 1:
+            case 2:
                 int value1 = MaxWifiParseUtil.obtainValueOne(bs);
                 usParamsetAdapter.getData().get(2).setValue(String.valueOf(value1));
                 usParamsetAdapter.getData().get(2).setValueStr(getReadValueReal(value1));
                 break;
-            case 2:
+            case 3:
                 int value2 = MaxWifiParseUtil.obtainValueOne(bs);
                 usParamsetAdapter.getData().get(3).setValue(String.valueOf(value2));
                 usParamsetAdapter.getData().get(3).setValueStr(getReadValueReal(value2));
                 break;
-            case 3:
+            case 4:
                 int value3 = MaxWifiParseUtil.obtainValueOne(bs);
                 float roundV = value3 * 100 / 255f;
                 value3 =Math.round(roundV);
                 usParamsetAdapter.getData().get(4).setValue(String.valueOf(value3));
                 usParamsetAdapter.getData().get(4).setValueStr(getReadValueReal(value3));
                 break;
-            case 4:
+            case 5:
                 int value4 = MaxWifiParseUtil.obtainValueOne(bs);
                 usParamsetAdapter.getData().get(5).setValue(String.valueOf(value4));
                 usParamsetAdapter.getData().get(5).setValueStr(getReadValueReal(value4));
                 break;
-            case 5:
+            case 6:
                 int value5 = MaxWifiParseUtil.obtainValueOne(bs);
                 String value = String.valueOf(value5);
                 if (value5 < onkeyBdcStr.length) {
@@ -544,8 +546,7 @@ public class USChargeActivity extends BaseActivity implements BaseQuickAdapter.O
                                 return;
                             }
 
-                            int pos = position - 1;
-                            nowSet = funsSet[pos];
+                            nowSet = funsSet[position];
                             int value1 = getWriteValueReal(Double.parseDouble(value));
 
                             int setValue = 0;

@@ -1170,6 +1170,10 @@ public class RegisterParseUtil {
 
 
         //降额模式
+
+        int batNum = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3198, 0, 1));
+        bdcInfoBean.setBattery_num(String.valueOf(batNum));
+
         int batModel = obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3200, 0, 1));
         bdcInfoBean.setBatModel(String.valueOf(batModel));
 
@@ -4038,6 +4042,12 @@ public class RegisterParseUtil {
 
         //新的bdc信息解析
         bdcInfoBean.setStatus(storageBeen.getStatusBDC());
+
+
+        //电池数量
+        int batNum = usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3198, bdcPosition));
+        bdcInfoBean.setBattery_num(String.valueOf(batNum));
+
 
         //电池型号
         int batModel = usBdcObtainValueOne(bytes, bdc04SrcIndex(resRester, 3200, bdcPosition));
