@@ -42,8 +42,8 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
-        DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener{
+public class TL3XHSystemSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
+        DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
     @BindView(R.id.tv_title)
@@ -106,7 +106,7 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
         deviceType=getIntent().getIntExtra("deviceType",0);
         //快速设置项
         List<ALLSettingBean> settingList
-                = TLXHConfigControl.getSettingList(TLXHConfigControl.TlxSettingEnum.TLXH_SYSTEM_SETTING, this);
+                = TLXHConfigControl.getSettingList(TLXHConfigControl.TlxSettingEnum.TL3XH_SYSTEM_SETTING, this);
         usParamsetAdapter.replaceData(settingList);
     /*    frequency = new String[]{"50Hz", "60Hz"};
         voltage = new String[]{"230V", "208V", "240V"};
@@ -137,13 +137,13 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
         @Override
         public void connectFail() {
             manager.disConnectSocket();
-            MyControl.showJumpWifiSet(TLXHSystemSettingActivity.this);
+            MyControl.showJumpWifiSet(TL3XHSystemSettingActivity.this);
         }
 
         @Override
         public void sendMsgFail() {
             manager.disConnectSocket();
-            MyControl.showTcpDisConnect(TLXHSystemSettingActivity.this, getString(R.string.disconnet_retry),
+            MyControl.showTcpDisConnect(TL3XHSystemSettingActivity.this, getString(R.string.disconnet_retry),
                     () -> {
                         connetSocket();
                     }
@@ -205,13 +205,12 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
         //移除外部协议
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
-        switch (currentPos) {
-            case 0://开关逆变器
-                //解析int值
-                int value = MaxWifiParseUtil.obtainValueOne(bs);
-                LogUtil.i("解析开关逆变器:"+value);
-                usParamsetAdapter.getData().get(0).setValue(String.valueOf(value));
-                break;
+        switch (currentPos) {   case 0://开关逆变器
+            //解析int值
+            int value = MaxWifiParseUtil.obtainValueOne(bs);
+            LogUtil.i("解析开关逆变器:"+value);
+            usParamsetAdapter.getData().get(0).setValue(String.valueOf(value));
+            break;
             case 1://有功功率百分比
                 //解析int值
                 int content1 = MaxWifiParseUtil.obtainValueOne(MaxWifiParseUtil.subBytes125(bs, 3, 0, 1));
@@ -344,37 +343,9 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
                 allSettingBean3.setValueStr(sValue14);
                 break;
 
-
-            case 15://工作模式
-                //解析int值
-                int value15 = MaxWifiParseUtil.obtainValueOne(bs);
-                ALLSettingBean allSettingBean15 = usParamsetAdapter.getData().get(15);
-                allSettingBean15.setValue(String.valueOf(value15));
-                String sValue15 = String.valueOf(value15);
-                String[] workMode = allSettingBean15.getItems();
-                if (workMode.length > value15) {
-                    sValue15 = workMode[value15];
-                }
-                allSettingBean15.setValueStr(sValue15);
-                break;
-
-
-            case 16://电网类型
-                //解析int值
-                int value16 = MaxWifiParseUtil.obtainValueOne(bs);
-                ALLSettingBean allSettingBean16 = usParamsetAdapter.getData().get(16);
-                allSettingBean16.setValue(String.valueOf(value16));
-                String sValue16 = String.valueOf(value16);
-                String[] gridType = allSettingBean16.getItems();
-                if (gridType.length > value16) {
-                    sValue16 = gridType[value16];
-                }
-                allSettingBean16.setValueStr(sValue16);
-                break;
         }
         usParamsetAdapter.notifyDataSetChanged();
     }
-
 
     /**
      * 请求获取逆变器的时间
@@ -480,6 +451,8 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
 
                 break;
 
+
+
             case 6://安规功能使能
                 setInputValue(position,title,hint);
                 break;
@@ -489,11 +462,9 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
             case 12:
             case 13:
             case 14:
-            case 15:
-            case 16:
-            case 17:
                 setSelectItem(position,title);
                 break;
+
 
         }
     }
@@ -512,7 +483,81 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
     }
 
 
+    /**
+     * 设置逆变器时间
+     */
+    private void setInvTime() {
+        try {
+            DateUtils.showTotalTime(this, new DateUtils.SeletctTimeListeners() {
+                @Override
+                public void seleted(String date) {
 
+                }
+
+                @Override
+                public void ymdHms(int year, int month, int day, int hour, int min, int second) {
+
+                    List<ALLSettingBean> data = usParamsetAdapter.getData();
+                    if (data.size() > 1) {
+                        ALLSettingBean bean = data.get(1);
+                        type = 1;
+                        int[][] doubleFunset = bean.getDoubleFunset();
+                        if (year > 2000) {
+                            doubleFunset[0][2] = year - 2000;
+                        } else {
+                            doubleFunset[0][2] = year;
+                        }
+                        doubleFunset[1][2] = month + 1;
+                        doubleFunset[2][2] = day;
+                        doubleFunset[3][2] = hour;
+                        doubleFunset[4][2] = min;
+                        doubleFunset[5][2] = second;
+                        //更新ui
+                        StringBuilder sb = new StringBuilder()
+                                .append(year).append("-");
+                        if (month + 1 < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(month + 1).append("-");
+                        if (day < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(day).append(" ");
+                        if (hour < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(hour).append(":");
+                        if (min < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(min).append(":");
+                        if (second < 10) {
+                            sb.append("0");
+                        }
+                        sb.append(second);
+                        usParamsetAdapter.getData().get(1).setValueStr(sb.toString());
+                        usParamsetAdapter.notifyDataSetChanged();
+
+
+                        nowSetItem.clear();
+                        for (int[] ints : doubleFunset) {
+                            nowSetItem.add(ints);
+                        }
+                        nowIndex = 0;
+
+
+                        type = 1;
+                        int[] funs = doubleFunset[0];
+                        manager.sendMsg(funs);
+
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 
@@ -602,4 +647,5 @@ public class TLXHSystemSettingActivity extends BaseActivity implements BaseQuick
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }

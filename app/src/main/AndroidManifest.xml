@@ -1059,7 +1059,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".module.localbox.tlxh.config.TLXHSystemSettingActivity"
+            android:name=".module.localbox.tlxh.config.TL3XHSystemSettingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
@@ -1247,6 +1247,13 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+
+
+        <activity
+            android:name=".module.localbox.tlxh.config.TLXHSystemSettingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
 
         <!--==================================模块页面=========================================-->

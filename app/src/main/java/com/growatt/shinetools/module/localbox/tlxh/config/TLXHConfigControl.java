@@ -13,12 +13,12 @@ public class TLXHConfigControl {
 
     public enum TlxSettingEnum {
         TLXH_QUICK_SETTING,//TLX快速设置
-        TLXH_SYSTEM_SETTING,//系统设置
+        TL3XH_SYSTEM_SETTING,//TL3XH系统设置
         TLXH_DRY_CONTACT,//干接点设置
         TLXH_CHARGE_MANAGER,//充放电管理
         TLXH_BASIC_SETTING,//基本设置
 
-
+        TLXH_SYSTEM_SETTING,//TLXH系统设置
         //------------第二层级设置--------------
 
         TLXH_GRID_CODE_PARAMETERS_SETTING,
@@ -52,6 +52,9 @@ public class TLXHConfigControl {
                 break;
             case TLXH_SYSTEM_SETTING:
                 list = getTlxhSystemSetList(context);
+                break;
+            case TL3XH_SYSTEM_SETTING:
+                list = getTl3xhSystemSetList(context);
                 break;
             case TLXH_DRY_CONTACT:
                 list = getTlxhDrySetList(context);
@@ -1584,6 +1587,12 @@ public class TLXHConfigControl {
     }
 
 
+
+
+
+
+
+
     private static List<ALLSettingBean> getTlxhSystemSetList(Context context) {
         List<ALLSettingBean> list = new ArrayList<>();
         String[] titls = new String[]{
@@ -1597,7 +1606,234 @@ public class TLXHConfigControl {
 //                context.getString(R.string.android_key950),
                 context.getString(R.string.android_key959),
                 context.getString(R.string.m411Island使能),
+
+                context.getString(R.string.off_grid_box_enable),
+
                 context.getString(R.string.m手动离网使能),
+
+                context.getString(R.string.m离网使能),
+
+                context.getString(R.string.android_key558),
+                context.getString(R.string.android_key560),
+//                context.getString(R.string.android_key1343),
+                context.getString(R.string.android_key1344),
+                context.getString(R.string.android_key2777),
+                context.getString(R.string.phasewringmethord),
+        };
+        String[] hints = new String[]{
+                "",
+                "",
+                "1~99",
+                "",
+                "",
+                "",
+                "",
+//                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+//                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+        };
+        int[] itemTypes = new int[]{
+                UsSettingConstant.SETTING_TYPE_SWITCH,//开关逆变器
+                UsSettingConstant.SETTING_TYPE_NEXT,//有功功率百分比
+                UsSettingConstant.SETTING_TYPE_SELECT,//PV输入模式
+                UsSettingConstant.SETTING_TYPE_NEXT,//干接点设置
+                UsSettingConstant.SETTING_TYPE_SWITCH,//N至PE监测功能使能
+                UsSettingConstant.SETTING_TYPE_SELECT,//宽电网电压范围使能
+                UsSettingConstant.SETTING_TYPE_INPUT,//安规功能使能
+//                UsSettingConstant.SETTING_TYPE_SWITCH,//电网N线使能
+                UsSettingConstant.SETTING_TYPE_SWITCH,//指定的规格设置使能
+                UsSettingConstant.SETTING_TYPE_SWITCH,//ISland使能
+                UsSettingConstant.SETTING_TYPE_SWITCH,//ISland使能
+                UsSettingConstant.SETTING_TYPE_SELECT,//手动离网使能
+                UsSettingConstant.SETTING_TYPE_SWITCH,//ISland使能
+                UsSettingConstant.SETTING_TYPE_SELECT,//离网频率
+                UsSettingConstant.SETTING_TYPE_SELECT,//离网电压
+//                UsSettingConstant.SETTING_TYPE_SELECT,//CT选择
+                UsSettingConstant.SETTING_TYPE_SELECT,//电池类型选择
+                UsSettingConstant.SETTING_TYPE_SELECT,//电池类型选择
+                UsSettingConstant.SETTING_TYPE_SELECT//电池类型选择
+        };
+        String[] register = new String[]{
+                "", "", "", "", "", "", "", "",
+                "", "", "", "", "", "","","","",""
+        };
+        float[] multiples = new float[]{
+                1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1,1,1,1,1
+
+        };
+        String[] units = new String[]{
+                "", "", "", "", "", "", "", "",
+                "", "", "", "", "", "","","","",""
+        };
+        int[][] funs = new int[][]{
+                {3, 0, 0},//开关逆变器
+                {3, 0, 5},//有功功率百分比
+                {3, 399, 399},//PV输入模式
+                {3, 3016, 3019},//干接点设置
+                {3, 235, 235},//N至PE检测功能使能
+                {3, 236, 236},//宽电网电压范围使能
+                {3, 1, 1},//安规功能使能
+//                {3, 232, 232},//电网N线使能
+                {3, 237, 237},//指定的规格设置使能
+                {3, 230, 230},//ISLand使能
+
+                {3, 3082, 3082},//离网盒子使能
+
+                {3, 3021, 3021},//手动离网使能
+
+                {3, 3079, 3079},//离网使能
+
+                {3, 3081, 3081},//离网频率
+                {3, 3080, 3080},//离网电压
+//                {3, 3068, 3068},//CT选择
+                {3, 3070, 3070},//电池类型选择
+                {3, 612, 612},//工作模式
+                {3, 613, 613},//电网类型
+        };
+        int[][] funset = new int[][]{
+                {6, 0, 0},//开关逆变器
+                {6, 0, 0},//有功功率百分比
+                {6, 399, 0},//PV输入模式
+                {6, 3016, 0},//干接点设置
+                {6, 235, 0},//N至PE检测功能使能
+                {6, 236, 0},//宽电网电压范围使能
+                {6, 1, 0},//安规功能使能
+//                {6, 232, 0},//电网N线使能
+                {6, 237, 0},//指定的规格设置使能
+                {6, 230, 0},//ISLand使能
+
+
+                {6, 3082, 0},//离网盒子使能
+
+                {6, 3021, 0},//手动离网使能
+
+                {6, 3079, 0},//离网使能
+
+
+                {6, 3081, 0},//离网频率
+                {6, 3080, 0},//离网电压
+//                {6, 3068, 0},//CT选择
+                {6, 3070, 0},//电池类型选择
+                {6, 612, 0},//工作模式
+                {6, 613, 0},//工作模式
+        };
+
+        int[][] doubleFunset = new int[][]{
+                {6, 45, -1},
+                {6, 46, -1},
+                {6, 47, -1},
+                {6, 48, -1},
+                {6, 49, -1},
+                {6, 50, -1},
+                {6, 48, -1},
+//                {6, 49, -1},
+                {6, 45, -1},
+                {6, 46, -1},
+
+
+                {6, 612, -1},
+
+
+
+                {6, 47, -1},
+
+                {6, 613, -1},
+
+
+                {6, 48, -1},
+                {6, 49, -1},
+//                {6, 50, -1},
+                {6, 48, -1},
+                {6, 612, -1},
+                {6, 613, -1}
+
+
+        };
+
+        String[][] items = new String[][]{
+                {},
+                {},
+                {
+                        context.getString(R.string.Independent), context.getString(R.string.dc_source), context.getString(R.string.Parallel)
+                },
+                {},
+                {context.getString(R.string.android_key1427), context.getString(R.string.m484电表)},
+                {"0", "1", "2"},
+                {},
+//                {},
+                {},
+                {},
+
+                {},
+                {
+                        context.getString(R.string.m89禁止), context.getString(R.string.m88使能),
+                },
+                {},
+
+                {"50Hz", "60Hz"},
+                {"230V", "208V", "240V"},
+//                {context.getString(R.string.android_key161), context.getString(R.string.android_key162)},
+                {context.getString(R.string.android_key355), context.getString(R.string.android_key356), context.getString(R.string.android_key1567)},
+                {context.getString(R.string.mdefault), context.getString(R.string.system_retrofit), context.getString(R.string.multi_parallel)},
+                {context.getString(R.string.android_key2798), context.getString(R.string.android_key2799), context.getString(R.string.裂相)},
+
+        };
+
+        for (int i = 0; i < titls.length; i++) {
+            ALLSettingBean bean = new ALLSettingBean();
+            bean.setTitle(titls[i]);
+            bean.setItemType(itemTypes[i]);
+            bean.setRegister(register[i]);
+            bean.setUnit(units[i]);
+            bean.setFuns(funs[i]);
+            bean.setFunSet(funset[i]);
+            bean.setItems(items[i]);
+            bean.setHint(hints[i]);
+            bean.setDoubleFunset(doubleFunset);
+            bean.setMul(multiples[i]);
+            list.add(bean);
+        }
+        return list;
+    }
+
+
+
+
+
+
+    private static List<ALLSettingBean> getTl3xhSystemSetList(Context context) {
+        List<ALLSettingBean> list = new ArrayList<>();
+        String[] titls = new String[]{
+                context.getString(R.string.android_key895),
+                context.getString(R.string.android_key903),
+                context.getString(R.string.android_key961),
+                context.getString(R.string.android_key2925),
+                context.getString(R.string.m414N至GND监测功能使能),
+                context.getString(R.string.m415非标准电网电压范围使能),
+                context.getString(R.string.android_key898),
+//                context.getString(R.string.android_key950),
+                context.getString(R.string.android_key959),
+                context.getString(R.string.m411Island使能),
+
+
+                context.getString(R.string.off_grid_box_enable),
+
+                context.getString(R.string.m手动离网使能),
+
+                context.getString(R.string.m离网使能),
+
+
+
                 context.getString(R.string.android_key558),
                 context.getString(R.string.android_key560),
 //                context.getString(R.string.android_key1343),
@@ -1617,6 +1853,8 @@ public class TLXHConfigControl {
                 "",
                 "",
                 "",
+                "",
+                "",
 //                "",
                 "",
         };
@@ -1631,7 +1869,12 @@ public class TLXHConfigControl {
 //                UsSettingConstant.SETTING_TYPE_SWITCH,//电网N线使能
                 UsSettingConstant.SETTING_TYPE_SWITCH,//指定的规格设置使能
                 UsSettingConstant.SETTING_TYPE_SWITCH,//ISland使能
+
+                UsSettingConstant.SETTING_TYPE_SWITCH,//离网盒子使能
                 UsSettingConstant.SETTING_TYPE_SELECT,//手动离网使能
+                UsSettingConstant.SETTING_TYPE_SWITCH,//离网使能
+
+
                 UsSettingConstant.SETTING_TYPE_SELECT,//离网频率
                 UsSettingConstant.SETTING_TYPE_SELECT,//离网电压
 //                UsSettingConstant.SETTING_TYPE_SELECT,//CT选择
@@ -1639,16 +1882,16 @@ public class TLXHConfigControl {
         };
         String[] register = new String[]{
                 "", "", "", "", "", "", "", "",
-                "", "", "", "", "", ""
+                "", "", "", "", "", "","",""
         };
         float[] multiples = new float[]{
                 1, 1, 1, 1, 1, 1, 1,
-                1, 1, 1, 1, 1, 1
+                1, 1, 1, 1, 1, 1,1,1
 
         };
         String[] units = new String[]{
                 "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "",
+                "", "", "", "", "", "","",""
         };
         int[][] funs = new int[][]{
                 {3, 0, 0},//开关逆变器
@@ -1661,7 +1904,15 @@ public class TLXHConfigControl {
 //                {3, 232, 232},//电网N线使能
                 {3, 237, 237},//指定的规格设置使能
                 {3, 230, 230},//ISLand使能
+
+
+                {3, 3082, 3082},//离网盒子使能
+
                 {3, 3021, 3021},//手动离网使能
+
+                {3, 3079, 3079},//离网使能
+
+
                 {3, 3081, 3081},//离网频率
                 {3, 3080, 3080},//离网电压
 //                {3, 3068, 3068},//CT选择
@@ -1678,7 +1929,13 @@ public class TLXHConfigControl {
 //                {6, 232, 0},//电网N线使能
                 {6, 237, 0},//指定的规格设置使能
                 {6, 230, 0},//ISLand使能
+
+                {6, 3082, 0},//离网盒子使能
+
                 {6, 3021, 0},//手动离网使能
+
+                {6, 3079, 0},//离网使能
+
                 {6, 3081, 0},//离网频率
                 {6, 3080, 0},//离网电压
 //                {6, 3068, 0},//CT选择
@@ -1696,7 +1953,9 @@ public class TLXHConfigControl {
 //                {6, 49, -1},
                 {6, 45, -1},
                 {6, 46, -1},
+                {6, 50, -1},
                 {6, 47, -1},
+                {6, 51, -1},
                 {6, 48, -1},
                 {6, 49, -1},
 //                {6, 50, -1},
@@ -1716,9 +1975,12 @@ public class TLXHConfigControl {
 //                {},
                 {},
                 {},
+                {},
                 {
                         context.getString(R.string.m89禁止), context.getString(R.string.m88使能),
                 },
+                {},
+
                 {"50Hz", "60Hz"},
                 {"230V", "208V", "240V"},
 //                {context.getString(R.string.android_key161), context.getString(R.string.android_key162)},

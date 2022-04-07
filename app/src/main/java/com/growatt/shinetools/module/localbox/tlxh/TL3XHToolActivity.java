@@ -7,16 +7,15 @@ import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.inverterUpdata.InverterUpdataManager;
 import com.growatt.shinetools.module.inverterUpdata.UpgradePath;
-import com.growatt.shinetools.module.localbox.max.MaxAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.max.MaxCheckActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxBasicSettingActivity;
 import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
 import com.growatt.shinetools.module.localbox.mintool.TLXHAutoTestActivity;
 import com.growatt.shinetools.module.localbox.tlx.base.TlxToolBaseActivity;
+import com.growatt.shinetools.module.localbox.tlxh.config.TL3XHSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHChargeActivity;
 import com.growatt.shinetools.module.localbox.tlxh.config.TLXHQuickSettingActivity;
-import com.growatt.shinetools.module.localbox.tlxh.config.TLXHSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.USAdvanceSetActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
 import com.mylhyl.circledialog.CircleDialog;
@@ -136,7 +135,7 @@ public class TL3XHToolActivity extends TlxToolBaseActivity {
                 clazz = TLXHQuickSettingActivity.class;
                 break;
             case 1:
-                clazz = TLXHSystemSettingActivity.class;
+                clazz = TL3XHSystemSettingActivity.class;
                 break;
             case 2:
 //                clazz = MaxGridCodeSettingActivity.class;

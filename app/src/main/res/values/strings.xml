@@ -6561,4 +6561,13 @@
     <string name="bat_model">Battery Model</string>
     <string name="bdc_hard_ware_version">Hardware version of BDC</string>
 
+
+    <string name="mdefault">Default</string>
+    <string name="system_retrofit">System Retrofit</string>
+    <string name="multi_parallel">Multi-Parallel</string>
+
+    <string name="phasewringmethord">Grid type</string>
+
+    <string name="off_grid_box_enable">Off-Grid Box Enable</string>
+
 </resources>

@@ -6555,4 +6555,14 @@
     <string name="bdc_hard_ware_version">BDC硬件版本</string>
 
 
+
+    <string name="mdefault">默认模式</string>
+    <string name="system_retrofit">系统改造</string>
+    <string name="multi_parallel">多机并联</string>
+
+    <string name="phasewringmethord">电网类型</string>
+
+
+    <string name="off_grid_box_enable">离网盒子使能</string>
+
 </resources>
