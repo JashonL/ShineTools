@@ -557,7 +557,7 @@ public class USFastConfigAcitivity extends BaseActivity implements BaseQuickAdap
         if (user_type == END_USER) {
             newList.clear();
             for (int i = 0; i < settingList.size(); i++) {
-                if (i != 2) {
+                if (i != 3) {
                     newList.add(settingList.get(i));
                 }
             }

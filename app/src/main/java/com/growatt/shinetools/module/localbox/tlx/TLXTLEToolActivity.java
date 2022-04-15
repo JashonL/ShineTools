@@ -76,7 +76,7 @@ public class TLXTLEToolActivity extends BaseTLXEActivity {
 
     @Override
     public void initDeviceType() {
-        deviceType = DeviceConstant.TLXH_INDEX;
+        deviceType = DeviceConstant.MIC_MIN_TL_X_XE;
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.growatt.shinetools.module.localbox.sph.base.BaseSphInfoActivity;
 public class SPHSPADeviceInfoActivity extends BaseSphInfoActivity {
     @Override
     public int getHeaderView() {
-        return R.layout.header_us_device_info;
+        return R.layout.header_storage_device_info;
     }
 
 

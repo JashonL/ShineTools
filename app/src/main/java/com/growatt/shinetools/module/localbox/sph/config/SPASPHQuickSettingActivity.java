@@ -25,7 +25,6 @@ import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
 import com.growatt.shinetools.module.localbox.mintool.TLXParamCountry2Activity;
-import com.growatt.shinetools.module.localbox.tlx.config.QuickSettingSecondActivity;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
 import com.growatt.shinetools.utils.ActivityUtils;
@@ -176,11 +175,12 @@ public class SPASPHQuickSettingActivity extends BaseActivity implements BaseQuic
                         getLCDLanguge();
                         break;
                     case 2:
-                        getAddress();
-                        break;
-                    case 3:
                         Mydialog.Dismiss();
+//                        getAddress();
                         break;
+//                    case 3:
+//                        Mydialog.Dismiss();
+//                        break;
                 }
             } else {//设置
                 //检测内容正确性
@@ -225,11 +225,11 @@ public class SPASPHQuickSettingActivity extends BaseActivity implements BaseQuic
                 int value0 = MaxWifiParseUtil.obtainValueOne(bs);
                 parserLcdData(value0);
                 break;
-            case 3://通信地址
+   /*         case 3://通信地址
                 LogUtil.i("解析通信地址");
                 int value1 = MaxWifiParseUtil.obtainValueOne(bs);
                 parserAddress(value1);
-                break;
+                break;*/
 
         }
         usParamsetAdapter.notifyDataSetChanged();
@@ -384,15 +384,15 @@ public class SPASPHQuickSettingActivity extends BaseActivity implements BaseQuic
             case 2:
                 setSelectItem(position);
                 break;
-            case 3:
+       /*     case 3:
                 setInputValue(bean.getTitle(), bean.getHint());
-                break;
+                break;*/
 
-            case 4://防逆流设置
+            case 3://防逆流设置
                 //断开连接
                 manager.disConnectSocket();
                 toOhterSetting=true;
-                Intent intent6 = new Intent(mContext, QuickSettingSecondActivity.class);
+                Intent intent6 = new Intent(mContext, SPHSPAQuickSettingSecondActivity.class);
                 intent6.putExtra("type", 0);
                 intent6.putExtra("title", bean.getTitle());
                 intent6.putExtra("deviceType",deviceType);

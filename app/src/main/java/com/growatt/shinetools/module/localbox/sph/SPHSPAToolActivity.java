@@ -9,6 +9,7 @@ import com.growatt.shinetools.module.localbox.mix.MixToolChargeManagerActivity;
 import com.growatt.shinetools.module.localbox.sph.base.SPHSPABaseActivity;
 import com.growatt.shinetools.module.localbox.sph.config.SPASPHQuickSettingActivity;
 import com.growatt.shinetools.module.localbox.sph.config.SPHSPABasicSettingActivity;
+import com.growatt.shinetools.module.localbox.sph.config.SPHSPAChargeActivity;
 import com.growatt.shinetools.module.localbox.sph.config.SPHSPAGridCodeSettingActivity;
 import com.growatt.shinetools.module.localbox.sph.config.SphSpaSystemSettingActivity;
 import com.growatt.shinetools.module.localbox.ustool.bean.UsToolParamBean;
@@ -86,7 +87,7 @@ public class SPHSPAToolActivity extends SPHSPABaseActivity {
 
         title = new String[]{
                 //快速设置、系统配置、市电码设置
-                getString(R.string.快速设置), getString(R.string.android_key3091), getString(R.string.android_key3056)
+                getString(R.string.快速设置), getString(R.string.系统配置), getString(R.string.android_key3056)
                 //充放电管理、基本设置
                 , getString(R.string.android_key1308), getString(R.string.basic_setting)
                 //高级设置、设备信息、自动测试
@@ -116,7 +117,7 @@ public class SPHSPAToolActivity extends SPHSPABaseActivity {
                 clazz = SPHSPAGridCodeSettingActivity.class;
                 break;
             case 3://充放电管理
-                clazz = MixToolChargeManagerActivity.class;
+                clazz = SPHSPAChargeActivity.class;
                 break;
             case 4://基本设置
                 clazz = SPHSPABasicSettingActivity.class;

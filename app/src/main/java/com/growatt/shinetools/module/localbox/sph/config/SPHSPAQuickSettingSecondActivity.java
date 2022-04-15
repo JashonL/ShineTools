@@ -1,6 +1,5 @@
 package com.growatt.shinetools.module.localbox.sph.config;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -22,17 +21,9 @@ import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
-import com.growatt.shinetools.module.localbox.MainsCodeSetting.ACFrecncyProtectActivity;
-import com.growatt.shinetools.module.localbox.MainsCodeSetting.ACVoltageProtectActivity;
-import com.growatt.shinetools.module.localbox.MainsCodeSetting.FrequencyActiveActivity;
-import com.growatt.shinetools.module.localbox.MainsCodeSetting.GridConnectionRangeActivity;
-import com.growatt.shinetools.module.localbox.MainsCodeSetting.RisingSlopeActivity;
-import com.growatt.shinetools.module.localbox.MainsCodeSetting.VoltageReactiveActivity;
 import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
-import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeSecondActivity;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
-import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
@@ -44,7 +35,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
+public class SPHSPAQuickSettingSecondActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
         DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.status_bar_view)
     View statusBarView;
@@ -66,17 +57,10 @@ public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQ
     private boolean toOhterSetting = false;
 
 
+
     private List<int[]> nowSetItem = new ArrayList<>();
     private int nowIndex = 0;
-
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId() == R.id.right_action) {
-            getData(7);
-        }
-        return true;
-    }
+    String rightTitle ;
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -84,42 +68,15 @@ public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQ
         String title = bean.getTitle();
         String hint = bean.getHint();
         float mul = bean.getMul();
-
-        if (position == 7 || position == 8) {//10分钟平均AC电压保护值//PV过压保护点
+        if (position == 1) {
             setInputValue(position, title, hint, mul);
-        } else {
-            toOhterSetting = true;
-            manager.disConnectSocket();
-            Class zz = null;
-            switch (position) {
-                case 0://PF设置
-                    zz = SPHSPApfSettingActivity.class;
-                    break;
-                case 1://频率有功
-                    zz = FrequencyActiveActivity.class;
-                    break;
-                case 2://电压无功
-                    zz = VoltageReactiveActivity.class;
-                    break;
-                case 3://上升斜率
-                    zz = RisingSlopeActivity.class;
-                    break;
-                case 4://AC电压保护
-                    zz= ACVoltageProtectActivity.class;
-                    break;
-                case 5://AC频率保护
-                    zz= ACFrecncyProtectActivity.class;
-                    break;
-                case 6://并网范围
-                    zz= GridConnectionRangeActivity.class;
-                    break;
-            }
-            Intent intent = new Intent(SPHSPAGridCodeSettingActivity.this, zz);
-            intent.putExtra("curpos", position);
-            intent.putExtra("title", title);
-            ActivityUtils.startActivity(SPHSPAGridCodeSettingActivity.this, intent, false);
         }
     }
+
+
+
+
+
 
 
     private void setInputValue(int position, String title, String hint, float mul) {
@@ -153,14 +110,23 @@ public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQ
         }
     }
 
+
     @Override
     public void oncheck(boolean check, int position) {
-
+        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
+        int value = check ? 1 : 0;
+        usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
+        usParamsetAdapter.notifyDataSetChanged();
+        type = 1;
+        LogUtil.i("-------------------设置"+bean.getTitle()+"----------------");
+        int[] funSet = bean.getFunSet();
+        funSet[2]=value;
+        manager.sendMsg(funSet);
     }
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_max_grid_code_setting;
+        return R.layout.activity_basic_max_setting;
     }
 
     @Override
@@ -191,9 +157,10 @@ public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQ
 
     @Override
     protected void initData() {
+        rightTitle = getString(R.string.m370读取);
         //系统设置项
         List<ALLSettingBean> settingList
-                = SPHSPAConfigControl.getSettingList(SPHSPAConfigControl.SphSpaSettingEnum.SPH_SPA_GRID_CODE_SETTING, this);
+                = SPHSPAConfigControl.getSettingList(SPHSPAConfigControl.SphSpaSettingEnum.SPH_SPA_ANTI_BACKFLOW, this);
         usParamsetAdapter.replaceData(settingList);
         connetSocket();
     }
@@ -212,19 +179,19 @@ public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQ
     ConnectHandler connectHandler = new ConnectHandler() {
         @Override
         public void connectSuccess() {
-            getData(7);
+            getData(0);
         }
 
         @Override
         public void connectFail() {
             manager.disConnectSocket();
-            MyControl.showJumpWifiSet(SPHSPAGridCodeSettingActivity.this);
+            MyControl.showJumpWifiSet(SPHSPAQuickSettingSecondActivity.this);
         }
 
         @Override
         public void sendMsgFail() {
             manager.disConnectSocket();
-            MyControl.showTcpDisConnect(SPHSPAGridCodeSettingActivity.this, getString(R.string.disconnet_retry),
+            MyControl.showTcpDisConnect(SPHSPAQuickSettingSecondActivity.this, getString(R.string.disconnet_retry),
                     () -> {
                         connetSocket();
                     }
@@ -257,12 +224,16 @@ public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQ
                 }
 
                 switch (currentPos) {
-                    case 7:
-                        getData(8);
+                    case 0:
+                        getData(1);
                         break;
-                    case 8:
-                        Mydialog.Dismiss();
+                    case 1:
+                        getData(2);
                         break;
+                    case 2:
+                       Mydialog.Dismiss();
+                        break;
+
                 }
 
 
@@ -287,6 +258,7 @@ public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQ
         }
     };
 
+
     /**
      * 根据传进来的mtype解析数据
      *
@@ -297,20 +269,59 @@ public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQ
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
         switch (currentPos) {
-            case 7://10分钟平均AC电压保护值
+            case 0://通信波特率
                 //解析int值
-                LogUtil.i("10分钟平均AC电压保护值:");
-                parser(bs, 7);
+                int value = MaxWifiParseUtil.obtainValueOne(bs);
+                LogUtil.i("通信波特率:" + value);
+                ALLSettingBean bean = usParamsetAdapter.getData().get(0);
+                String[] items = bean.getItems();
+                if (items != null && items.length > value) {
+                    String valueS = items[value];
+                    bean.setValue(String.valueOf(value));
+                    bean.setValueStr(String.valueOf(valueS));
+                } else {
+                    bean.setValue(String.valueOf(value));
+                    bean.setValueStr(String.valueOf(value));
+                }
+
+
                 break;
-            case 8://PV过压保护点
+
+            case 1://modbus版本
                 //解析int值
-                LogUtil.i("10分钟平均AC电压保护值:");
-                parser(bs, 8);
+                LogUtil.i("modbus版本:");
+                parser(bs, 1);
+
+                break;
+
+
+            case 2:
+                LogUtil.i("解析通信地址");
+                int value1 = MaxWifiParseUtil.obtainValueOne(bs);
+                parserAddress(value1);
                 break;
 
         }
         usParamsetAdapter.notifyDataSetChanged();
     }
+
+
+
+    public void parserAddress(int read) {
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
+        if (data.size() > 3) {
+            ALLSettingBean bean = data.get(2);
+            float mMul = bean.getMul();
+            String unit = bean.getUnit();
+            String value = read * ((int) mMul) + unit;
+            usParamsetAdapter.getData().get(2).setValueStr(value);
+        }
+
+    }
+
+
+
+
 
     private void parser(byte[] data, int pos) {
         int value1 = MaxWifiParseUtil.obtainValueOne(data);
@@ -344,6 +355,16 @@ public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQ
         }
     }
 
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.right_action) {
+            getData(0);
+        }
+        return true;
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -364,4 +385,5 @@ public class SPHSPAGridCodeSettingActivity extends BaseActivity implements BaseQ
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }

@@ -131,7 +131,7 @@ public abstract class BaseTLXEActivity extends BaseActivity implements Toolbar.O
     //读机器型号功能码
     public int[] deviceTypeFun = {3, 125, 249};
 
-    public int deviceType = 0;
+    public String deviceType;
 
     //初始化设备类型
     public abstract void initDeviceType();
@@ -720,7 +720,7 @@ public abstract class BaseTLXEActivity extends BaseActivity implements Toolbar.O
         Intent intent = new Intent(mContext, clazz);
         intent.putExtra("title", title);
         intent.putExtra("isTlxhus", true);
-        intent.putExtra("deviceType", 0);
+        intent.putExtra("deviceType", deviceType);
         intent.putExtra(DeviceConstant.KEY_DEVICE_TYPE, deviceType);
         ActivityUtils.startActivity(this, intent, false);
     }

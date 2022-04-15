@@ -83,7 +83,7 @@ public class SphSpaSystemSettingActivity extends BaseActivity implements BaseQui
     @Override
     protected void initViews() {
         initToobar(toolbar);
-        tvTitle.setText(R.string.android_key3091);
+        tvTitle.setText(R.string.系统配置);
         toolbar.setOnMenuItemClickListener(this);
         toolbar.inflateMenu(R.menu.comment_right_menu);
         item = toolbar.getMenu().findItem(R.id.right_action);

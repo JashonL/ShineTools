@@ -418,7 +418,6 @@ public abstract class BaseSphInfoActivity extends BaseActivity implements View.O
         tvTitleBdc = header.findViewById(R.id.tvTitleBdc);
         TextView bdcTitle = tvTitleBdc.findViewById(R.id.tvHeadTitle);
         bdcTitle.setTextColor(ContextCompat.getColor(this, R.color.color_text_33));
-        bdcTitle.setText(R.string.android_key1315);
 
         tvTitleBattry = header.findViewById(R.id.tvTitleBattry);
         TextView battryTitle = tvTitleBattry.findViewById(R.id.tvHeadTitle);
@@ -771,8 +770,8 @@ public abstract class BaseSphInfoActivity extends BaseActivity implements View.O
     }
 
     private void initListener() {
-        initOnclick(title1Head2, title2Head2, title3Head2, title34Head2, title4Head2,
-                title5Head2, title6Head2);
+        initOnclick(title1Head2, title2Head2, title3Head2, title34Head2, title4Head2,tvTitleLiwang,
+                tvTitleBdc,tvTitleBattry, title5Head2, title6Head2);
     }
 
     private void initOnclick(View... views) {

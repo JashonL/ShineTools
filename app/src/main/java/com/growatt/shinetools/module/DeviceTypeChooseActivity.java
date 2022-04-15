@@ -179,15 +179,27 @@ public class DeviceTypeChooseActivity extends BaseActivity implements Toolbar.On
                 ActivityUtils.gotoActivity(DeviceTypeChooseActivity.this, ToolMainOldInvActivity.class,false);
                 break;
             case R.id.ll_type_spa_tl_bl:
+                storageSetting("SPA TL BL");
+                break;
             case R.id.ll_spa_tl3_bh:
+                storageSetting("SPA TL3 BH");
+                break;
             case R.id.ll_type_sph:
+                storageSetting("SPH");
+                break;
             case R.id.ll_type_sph_tl3_bh:
+                storageSetting("SPH TL3 BH");
+                break;
             case R.id.ll_type_sph_tl_bl_us:
                 //                ActivityUtils.gotoActivity(DeviceTypeChooseActivity.this, MixToolMainActivity.class,false);
-                Intent intent8=new Intent(this, SPHSPAToolActivity.class);
-                intent8.putExtra("title","SPH/SPA");
-                ActivityUtils.startActivity(DeviceTypeChooseActivity.this,intent8,false);
+                storageSetting("SPH TL BL-US");
                 break;
         }
+    }
+
+    private void storageSetting(String title) {
+        Intent intent8=new Intent(this, SPHSPAToolActivity.class);
+        intent8.putExtra("title",title);
+        ActivityUtils.startActivity(DeviceTypeChooseActivity.this,intent8,false);
     }
 }

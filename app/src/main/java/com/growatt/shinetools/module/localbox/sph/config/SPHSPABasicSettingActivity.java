@@ -84,19 +84,24 @@ public class SPHSPABasicSettingActivity extends BaseActivity implements BaseQuic
             case 1:
                 setInputValue(position, title, hint, mul);
                 break;
+
             case 2:
+                setInputValue(position, title, hint, mul);
+                break;
+
+            case 3:
 
                 break;
-            case 3:
+            case 4:
                 OssUtils.circlerDialog(SPHSPABasicSettingActivity.this, note1, -1, false);
                 break;
-            case 4:
+            case 5:
                 OssUtils.circlerDialog(SPHSPABasicSettingActivity.this, note2, -1, false);
                 break;
-            case 5:
+            case 6:
                 setEnergyTotal(position, title, hint, mul);
                 break;
-            case 6:
+            case 7:
                 //断开连接
                 //断开连接
                 manager.disConnectSocket();
@@ -105,8 +110,8 @@ public class SPHSPABasicSettingActivity extends BaseActivity implements BaseQuic
                 ActivityUtils.startActivity(this, intent1, false);
                 break;
 
-            case 7:
             case 8:
+            case 9:
                 //设置
                 type = 1;
                 int[] funs = bean.getFunSet();
@@ -335,9 +340,12 @@ public class SPHSPABasicSettingActivity extends BaseActivity implements BaseQuic
                         getData(2);
                         break;
                     case 2:
-                        getData(5);
+                        getData(3);
                         break;
-                    case 5:
+                    case 3:
+                        getData(6);
+                        break;
+                    case 6:
                         Mydialog.Dismiss();
                         break;
                 }
@@ -392,38 +400,53 @@ public class SPHSPABasicSettingActivity extends BaseActivity implements BaseQuic
 
 
                 break;
+
+
+
+
+
+
             case 1://modbus版本
                 //解析int值
                 LogUtil.i("modbus版本:");
                 parser(bs, 1);
 
                 break;
-            case 2://PV电压
-                //解析int值
-                LogUtil.i("PV电压:");
-                parser(bs, 2);
+
+
+            case 2:
+                LogUtil.i("解析通信地址");
+                int value1 = MaxWifiParseUtil.obtainValueOne(bs);
+                parserAddress(value1);
                 break;
 
-            case 5://修改总发电量
+
+            case 3://PV电压
+                //解析int值
+                LogUtil.i("PV电压:");
+                parser(bs, 3);
+                break;
+
+            case 6://修改总发电量
                 //解析int值
                 LogUtil.i("修改总发电量:");
                 int totalE = MaxWifiParseUtil.obtainRegistValueHOrL(1, bs[110], bs[111])
                         + MaxWifiParseUtil.obtainRegistValueHOrL(0, bs[112], bs[113]);
-                ALLSettingBean bean5 = usParamsetAdapter.getData().get(5);
+                ALLSettingBean bean5 = usParamsetAdapter.getData().get(6);
                 float mul = bean5.getMul();
                 String unit = "";
                 bean5.setValue(String.valueOf(totalE));
                 bean5.setValueStr(getReadValueReal(totalE, mul, unit));
                 break;
-            case 7://清除历史数据
+            case 8://清除历史数据
                 LogUtil.i("清除历史数据:");
                 int value6 = MaxWifiParseUtil.obtainValueOne(bs);
-                ALLSettingBean bean6 = usParamsetAdapter.getData().get(6);
+                ALLSettingBean bean6 = usParamsetAdapter.getData().get(8);
                 bean6.setValue(String.valueOf(value6));
                 break;
-            case 8://恢复出厂设置
+            case 9://恢复出厂设置
                 LogUtil.i("恢复出厂设置:");
-                ALLSettingBean bean7 = usParamsetAdapter.getData().get(7);
+                ALLSettingBean bean7 = usParamsetAdapter.getData().get(9);
                 bean7.setValue(String.valueOf(bean7));
                 break;
         }
@@ -431,30 +454,21 @@ public class SPHSPABasicSettingActivity extends BaseActivity implements BaseQuic
     }
 
 
-    public String getReadValueReal(int position,int read) {
-        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
-        String[] items = bean.getItems();
-        String value=String.valueOf(read);
-        float mul=bean.getMul();
-        String unit=bean.getUnit();
-        switch (position){
-            case 1:
-                boolean isNum = ((int) mul) == mul;
-                if (isNum) {
-                    value = read * ((int) mul) + unit;
-                } else {
-                    value = Arith.mul(read, mul, 2) + unit;
-                }
-                break;
-            case 6: case 7:
-                if (read<items.length){
-                    value = items[read];
-                }
-                break;
+
+    public void parserAddress(int read) {
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
+        if (data.size() > 3) {
+            ALLSettingBean bean = data.get(2);
+            float mMul = bean.getMul();
+            String unit = bean.getUnit();
+            String value = read * ((int) mMul) + unit;
+            usParamsetAdapter.getData().get(2).setValueStr(value);
         }
 
-        return value;
     }
+
+
+
 
 
     private void parser(byte[] data, int pos) {

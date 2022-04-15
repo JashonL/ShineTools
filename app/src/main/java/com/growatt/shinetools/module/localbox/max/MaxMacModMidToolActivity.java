@@ -77,7 +77,7 @@ public class MaxMacModMidToolActivity extends BaseTLXEActivity {
 
     @Override
     public void initDeviceType() {
-        deviceType = DeviceConstant.MAX_INDEX;
+        deviceType = DeviceConstant.MOD_MID_MAC;
     }
 
     @Override

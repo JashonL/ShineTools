@@ -510,6 +510,18 @@ public class CommenUtils {
     }
 
     /**
+     * 取int值的bit位
+     */
+    public static int intBitValue(int value, int bitNum){
+        //1.先往右边进行右移指定要获取的位数
+        //2.然后进行与运算
+        return value >> bitNum & 0x01;
+    }
+
+
+
+
+    /**
      * 不显示科学计数法
      */
     public static String showDouble(double value) {

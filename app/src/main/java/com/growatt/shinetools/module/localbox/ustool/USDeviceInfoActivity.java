@@ -27,6 +27,7 @@ import com.growatt.shinetools.adapter.MaxContentAdapter;
 import com.growatt.shinetools.adapter.MaxMainChildAdapter;
 import com.growatt.shinetools.base.BaseActivity;
 import com.growatt.shinetools.modbusbox.MaxUtil;
+import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.modbusbox.SocketClientUtil;
@@ -41,12 +42,14 @@ import com.growatt.shinetools.module.localbox.mintool.TLXHBattryActivity;
 import com.growatt.shinetools.module.localbox.mintool.TLXHLiwangActivity;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.BtnDelayUtil;
+import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.Mydialog;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -154,7 +157,7 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
 
 
     private boolean isReceiveSucc = false;
-    private int[][] funs = {{3, 0, 124}, {3, 125, 249}, {3, 3000, 3124}, {4, 3000, 3124}, {4, 3125, 3249}};
+    private int[][] funs = {{3, 0, 124}, {3, 125, 249}, {3, 3000, 3124}, {4, 3000, 3124}, {4, 3125, 3249}, {4, 197, 197}};
     private int count = 0;
     //所有本地获取数据集合
     private MaxDataBean mMaxData = new MaxDataBean();
@@ -182,6 +185,8 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
      */
     private String[] deratModes;
 
+    //通过input197取高八位的值是否为1判断是否新机型
+    private boolean isNewType = false;
 
     @Override
     protected int getContentView() {
@@ -430,6 +435,13 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
             case 4:
                 RegisterParseUtil.parseInput3125T3249(mMaxData, bytes);
                 break;
+            case 5://读取197区分新旧机器
+                byte[] bs = RegisterParseUtil.removePro17(bytes);
+                //取高八位
+                if (bs.length<1)return;
+                int value = bs[0];
+                isNewType = value == 1;
+                break;
         }
     }
 
@@ -464,7 +476,14 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
         String[] datasAbout = new String[8];
         MaxDataDeviceBean deviceBeen = mMaxData.getDeviceBeen();
         datasAbout[0] = deviceBeen.getCompany();
+
         datasAbout[1] = deviceBeen.getDeviceType();
+        if (isNewType){
+            datasAbout[1]+=" EXP";
+        }
+
+
+
         datasAbout[2] = deviceBeen.getSn();
         if (deviceBeen.getNewModel() == 0) {
             int model = deviceBeen.getModel();
@@ -733,7 +752,7 @@ public class USDeviceInfoActivity extends BaseActivity implements View.OnClickLi
                 Intent intent = new Intent(USDeviceInfoActivity.this, DeviceManualUpdataActivity.class);
                 intent.putExtra("path", UpgradePath.MIN_TL_XH_US_PATH);
                 startActivity(intent);
-            }else {
+            } else {
                 toast(R.string.android_key2099);
             }
         });

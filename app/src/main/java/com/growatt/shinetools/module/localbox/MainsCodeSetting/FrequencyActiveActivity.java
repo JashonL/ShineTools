@@ -1,5 +1,6 @@
-package com.growatt.shinetools.module.localbox.tlx.config;
+package com.growatt.shinetools.module.localbox.MainsCodeSetting;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -17,31 +18,34 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.adapter.DeviceSettingAdapter;
 import com.growatt.shinetools.base.BaseActivity;
-import com.growatt.shinetools.bean.UsSettingConstant;
 import com.growatt.shinetools.modbusbox.Arith;
 import com.growatt.shinetools.modbusbox.MaxUtil;
 import com.growatt.shinetools.modbusbox.MaxWifiParseUtil;
 import com.growatt.shinetools.modbusbox.ModbusUtil;
 import com.growatt.shinetools.modbusbox.RegisterParseUtil;
 import com.growatt.shinetools.module.localbox.max.bean.ALLSettingBean;
-import com.growatt.shinetools.module.localbox.max.type.DeviceConstant;
+import com.growatt.shinetools.module.localbox.max.config.MaxConfigControl;
+import com.growatt.shinetools.module.localbox.max.config.MaxGridCodeThirdActivity;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
+import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.CircleDialogUtils;
 import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.MyControl;
 import com.growatt.shinetools.utils.Mydialog;
 import com.growatt.shinetools.widget.GridDivider;
-import com.mylhyl.circledialog.CircleDialog;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 
-public class QuickSettingSecondActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
+public class FrequencyActiveActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
         DeviceSettingAdapter.OnChildCheckLiseners, Toolbar.OnMenuItemClickListener {
+
+
+
+
     @BindView(R.id.status_bar_view)
     View statusBarView;
     @BindView(R.id.tv_title)
@@ -62,14 +66,16 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
     //跳转到其他页面
     private boolean toOhterSetting = false;
 
-    private String deviceType;
+
 
     private List<int[]> nowSetItem = new ArrayList<>();
     private int nowIndex = 0;
 
+    private MaxConfigControl.MaxSettingEnum enum_item;
+
     @Override
     protected int getContentView() {
-        return R.layout.activity_tlx_quick_setting;
+        return R.layout.activity_max_grid_code_second;
     }
 
     @Override
@@ -100,100 +106,16 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
 
     @Override
     protected void initData() {
-        deviceType=getIntent().getStringExtra(DeviceConstant.KEY_DEVICE_TYPE);
-
-
-        List<ALLSettingBean> list = new ArrayList<>();
-
-        String[] titls = new String[]{getString(R.string.防逆流使能),
-                getString(R.string.m防逆流功率百分比),
-                getString(R.string.android_key748)};
-        String[] registers = new String[]{"(122)", "(123)", "(3000)"};
-
-        int[] itemTypes = new int[]{
-                UsSettingConstant.SETTING_TYPE_SELECT,
-                UsSettingConstant.SETTING_TYPE_INPUT,
-                UsSettingConstant.SETTING_TYPE_INPUT,
-        };
-        String[] hints = new String[]{
-                "",
-                "",
-                ""
-        };
-        String[] register = new String[]{
-                "",
-                "",
-                ""
-        };
-
-        float[] multiples = new float[]{
-                1, 1, 1
-        };
-
-        String[] units = new String[]{
-                "",
-                "",
-                ""
-        };
-
-
-        //设置功能码集合（功能码，寄存器，数据）
-        int powerLimitReg=3000;
-        if (DeviceConstant.MOD_MID_MAC.equals(deviceType)){
-            powerLimitReg=304;
-        }
-        int[][] funs = new int[][]{
-                {3, 122, 122},//防逆流使能
-                {3, 123, 123},//防逆流功率百分比
-                {3, powerLimitReg, powerLimitReg}//防逆流失效后默认功率百分比
-        };
-
-
-        int[][] funset = new int[][]{
-                {6, 122, 0},
-                {6, 123, 0},
-                {6, powerLimitReg, 0}
-        };
-
-
-
-
-        String[][] items = new String[][]{
-                {getString(R.string.不使能防逆流), getString(R.string.使能485接口防逆流),getString(R.string.使能CT防逆流)},
-                {},
-                {}
-
-        };
-        if(DeviceConstant.MIC_MIN_TL_X_XE.equals(deviceType)){
-            items = new String[][]{
-                    {getString(R.string.不使能防逆流), getString(R.string.使能485接口防逆流),getString(R.string.使能CT防逆流)},
-                    {},
-                    {}
-
-            };
-        }
-        int[][] doubleFunset = new int[][]{
-                {6, 45, -1},
-                {6, 46, -1},
-                {6, 47, -1}
-        };
-        for (int i = 0; i < titls.length; i++) {
-            ALLSettingBean bean = new ALLSettingBean();
-            bean.setTitle(titls[i]);
-            bean.setItemType(itemTypes[i]);
-            bean.setRegister(register[i]);
-            bean.setUnit(units[i]);
-            bean.setFuns(funs[i]);
-            bean.setFunSet(funset[i]);
-            bean.setItems(items[i]);
-            bean.setHint(hints[i]);
-            bean.setDoubleFunset(doubleFunset);
-            bean.setMul(multiples[i]);
-            list.add(bean);
-        }
-        usParamsetAdapter.replaceData(list);
+        int curpos = getIntent().getIntExtra("curpos", 0);
+        enum_item=MaxConfigControl.MaxSettingEnum.MAX_GRID_SECOND_FRENCY_WATT_SETTING;
+        //系统设置项
+        List<ALLSettingBean> settingList
+                = MaxConfigControl.getSettingList(enum_item, this);
+        usParamsetAdapter.replaceData(settingList);
         connetSocket();
     }
+
+
 
     private void connetSocket() {
         //初始化连接
@@ -205,6 +127,8 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
         new Handler().postDelayed(() -> manager.connectSocket(), 100);
     }
 
+
+
     ConnectHandler connectHandler = new ConnectHandler() {
         @Override
         public void connectSuccess() {
@@ -214,13 +138,13 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
         @Override
         public void connectFail() {
             manager.disConnectSocket();
-            MyControl.showJumpWifiSet(QuickSettingSecondActivity.this);
+            MyControl.showJumpWifiSet(FrequencyActiveActivity.this);
         }
 
         @Override
         public void sendMsgFail() {
             manager.disConnectSocket();
-            MyControl.showTcpDisConnect(QuickSettingSecondActivity.this, getString(R.string.disconnet_retry),
+            MyControl.showTcpDisConnect(FrequencyActiveActivity.this, getString(R.string.disconnet_retry),
                     () -> {
                         connetSocket();
                     }
@@ -251,7 +175,9 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
                     //接收正确，开始解析
                     parseMax(bytes);
                 }
+
                 getNextData();
+
             } else {//设置
                 //检测内容正确性
                 boolean isCheck = MaxUtil.checkReceiverFull(bytes);
@@ -284,19 +210,6 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
         }
     }
 
-    private void getData(int pos) {
-        type = 0;
-        currentPos = pos;
-        List<ALLSettingBean> data = usParamsetAdapter.getData();
-        if (data.size() > pos) {
-            ALLSettingBean bean = data.get(pos);
-            LogUtil.i("-------------------请求获取:" + bean.getTitle() + "----------------");
-            int[] funs = bean.getFuns();
-            manager.sendMsg(funs);
-        }
-    }
-
-
 
     /**
      * 根据传进来的mtype解析数据
@@ -307,29 +220,20 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
         //移除外部协议
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
-        switch (currentPos){
-            case 0:
-                ALLSettingBean bean = usParamsetAdapter.getData().get(0);
-                String[] items = bean.getItems();
-                int value1 = MaxWifiParseUtil.obtainValueOne(bs);
-                bean.setValueStr(String.valueOf(value1));
-                if (value1<items.length){
-                    bean.setValueStr(items[value1]);
-                }
-                if (value1==3){
-                    bean.setValueStr(items[2]);
-                }
-
-                break;
-            case 1:
-                parser(bs,1);
-                break;
-            case 2:
-                parser(bs,2);
-                break;
-        }
-
+        parserFrencyWatt(bs);
         usParamsetAdapter.notifyDataSetChanged();
+    }
+
+
+
+    /**
+     * 频率有功
+     */
+    private void parserFrencyWatt(byte[] bytes) {
+        ALLSettingBean bean = usParamsetAdapter.getData().get(currentPos);
+        //解析int值
+        LogUtil.i("--------------解析:"+bean.getTitle()+"------------------");
+        parser(bytes, currentPos);
     }
 
 
@@ -355,64 +259,82 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
 
 
 
+
+
+    private void getData(int pos) {
+        type = 0;
+        currentPos = pos;
+        List<ALLSettingBean> data = usParamsetAdapter.getData();
+        if (data.size() > pos) {
+            ALLSettingBean bean = data.get(pos);
+            LogUtil.i("-------------------请求获取:" + bean.getTitle() + "----------------");
+            int[] funs = bean.getFuns();
+            manager.sendMsg(funs);
+        }
+    }
+
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        getData(0);
+        if (item.getItemId() == R.id.right_action) {
+            getData(0);
+        }
         return true;
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
+        setFrencyWatt(position);
+    }
+
+    /**
+     * PF设置
+     * @param pos
+     */
+
+    private void pfSetting(int pos){
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
         String title = bean.getTitle();
-        String hint = bean.getHint();
+
+        if (pos != 0) {
+            toOhterSetting = true;
+            Intent intent = new Intent(this, MaxGridCodeThirdActivity.class);
+            intent.putExtra("title", title);
+            intent.putExtra("curpos", pos);
+            ActivityUtils.startActivity(this, intent, false);
+        }
+    }
+
+
+    /**
+     * 频率有功
+     * @param pos
+     */
+
+    private void setFrencyWatt(int pos) {
+        ALLSettingBean bean = usParamsetAdapter.getData().get(pos);
+        String title = bean.getTitle();
         float mul = bean.getMul();
-        switch (position){
-            case 0:
-                setSelectItem(position,title);
-                break;
-            case 1:
-            case 2:
-                setInputValue(position, title, hint, mul);
-                break;
-        }
+        String hint = bean.getHint();
+        String unit = bean.getUnit();
+        setCommenInputValue(pos, title, hint, mul,unit);
     }
 
 
-    private void setSelectItem(int pos,String title) {
-        List<ALLSettingBean> data = usParamsetAdapter.getData();
-        if (data.size() > pos) {
-            ALLSettingBean bean = data.get(pos);
-            String[] items = bean.getItems();
-            List<String> selects = new ArrayList<>(Arrays.asList(items));
-
-            new CircleDialog.Builder()
-                    .setTitle(title)
-                    .setWidth(0.7f)
-                    .setGravity(Gravity.CENTER)
-                    .setMaxHeight(0.5f)
-                    .setItems(selects, (parent, view1, position, id) -> {
-                        usParamsetAdapter.getData().get(pos).setValueStr(selects.get(position));
-                        usParamsetAdapter.notifyDataSetChanged();
-                        type = 1;
-
-                        int value=position;
-                        if (position==2)value=position+1;
-                        int[] funs = bean.getFunSet();
-                        funs[2] = value;
-                        manager.sendMsg(funs);
-                        return true;
-                    })
-                    .setNegative(getString(R.string.all_no), null)
-                    .show(getSupportFragmentManager());
-        }
-
-    }
 
 
-    private void setInputValue(int position, String title, String hint, float mul) {
+
+    /**
+     *
+     * @param position
+     * @param title
+     * @param hint
+     * @param mul
+     */
+
+    private void setCommenInputValue(int position, String title, String hint, float mul,String unit) {
         CircleDialogUtils.showInputValueDialog(this, title,
-                hint, "", value -> {
+                hint, unit, value -> {
                     double result = Double.parseDouble(value);
                     String pValue = value + "";
                     usParamsetAdapter.getData().get(position).setValueStr(pValue);
@@ -425,11 +347,12 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
                         //设置
                         type = 1;
                         int[] funs = bean.getFunSet();
-                        funs[2] = Integer.parseInt(value);
+                        funs[2] = getWriteValueReal(Double.parseDouble(value), mul);
                         manager.sendMsg(funs);
                     }
                 });
     }
+
 
     public int getWriteValueReal(double write, float mul) {
         try {
@@ -440,10 +363,25 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
         }
     }
 
+
+
+
+
+
+
     @Override
     public void oncheck(boolean check, int position) {
-
+        ALLSettingBean bean = usParamsetAdapter.getData().get(position);
+        int value = check ? 1 : 0;
+        usParamsetAdapter.getData().get(position).setValue(String.valueOf(value));
+        usParamsetAdapter.notifyDataSetChanged();
+        type = 1;
+        LogUtil.i("-------------------设置"+bean.getTitle()+"----------------");
+        int[] funSet = bean.getFunSet();
+        funSet[2]=value;
+        manager.sendMsg(funSet);
     }
+
 
     @Override
     protected void onResume() {
@@ -453,7 +391,6 @@ public class QuickSettingSecondActivity extends BaseActivity implements BaseQuic
             connetSocket();
         }
     }
-
 
     @Override
     protected void onPause() {
