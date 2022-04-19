@@ -55,6 +55,12 @@ public abstract class BaseActivity extends SwipeBackActivity {
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        CommenUtils.isWiFi(this);
+    }
+
     /**
      * 初始化沉浸式
      * Init immersion bar.
