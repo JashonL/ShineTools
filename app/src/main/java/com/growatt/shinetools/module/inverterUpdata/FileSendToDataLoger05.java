@@ -10,6 +10,8 @@ import com.growatt.shinetools.modbusbox.bean.DatalogAPSetParam;
 import com.growatt.shinetools.modbusbox.bean.DatalogResponBean;
 import com.growatt.shinetools.socket.ConnectHandler;
 import com.growatt.shinetools.socket.SocketManager;
+import com.growatt.shinetools.utils.Log;
+import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.ModBusFunUtils18;
 import com.growatt.shinetools.utils.ModBusFunUtils19;
 import com.growatt.shinetools.utils.ModBusFunUtils26;
@@ -137,7 +139,7 @@ public class FileSendToDataLoger05 implements ConnectHandler, ISendInterface {
         updataListeners.preparing(fileData.size(), fileIndex);
         curBuffer = new ArrayList<>(fileData.get(fileIndex));
         step = 1;
-//        LogUtil.i("1.发送0x18命令");
+        LogUtil.i("1.发送0x18命令");
         //判断文件的类型
         File file = updataFile.get(fileIndex);
         String value = "1#type";
@@ -301,7 +303,7 @@ public class FileSendToDataLoger05 implements ConnectHandler, ISendInterface {
 
 
     private void senDataToLoger(int total) throws Exception {
-//        Log.i("下发文件：" + "总数量：" + total + "当前第几包：" + currNum);
+        Log.i("下发文件：" + "总数量：" + total + "当前第几包：" + currNum);
         step = 2;
         int progress = (currNum + 1) * 100 / curBuffer.size();
         updataListeners.sendFileProgress(fileData.size(), fileIndex, progress);

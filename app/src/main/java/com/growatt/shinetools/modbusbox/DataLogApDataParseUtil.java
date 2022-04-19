@@ -303,6 +303,7 @@ public class DataLogApDataParseUtil {
      */
 
     public static DatalogResponBean parserfun0x26(byte[] bytes) {
+        Log.i("26命令返回字节：" + CommenUtils.ByteToString(bytes));
         if (bytes == null || bytes.length < 10) return null;
         DatalogResponBean bean = new DatalogResponBean();
         //设备序列号10个字节

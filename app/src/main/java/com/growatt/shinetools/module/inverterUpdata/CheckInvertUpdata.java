@@ -113,13 +113,20 @@ public class CheckInvertUpdata {
         byte[] bs = RegisterParseUtil.removePro17(bytes);
         //解析int值
         String value = MaxWifiParseUtil.obtainRegistValueAsciiYesNull(MaxWifiParseUtil.subBytes125(bs, 0, 0, 8));
-        String substring = newVersion.replace(".zip","");
-        if (!value.equals(substring)) {
+        String sEques = newVersion.replace(".zip","");
+
+        int i = sEques.lastIndexOf("-");
+        if (i!=-1){
+            sEques=sEques.substring(0,i);
+        }
+
+
+        if (!value.equals(sEques)) {
             callback.hasNewVersion(value,newVersion);
         }else {
             callback.noNewVirsion(context.getString(R.string.soft_update_no));
         }
-        LogUtil.i("当前版本:" + value + "最新版本:" + substring);
+        LogUtil.i("当前版本:" + value + "最新版本:" + sEques);
         manager.disConnectSocket();
     }
 

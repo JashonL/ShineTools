@@ -146,7 +146,7 @@ public class ModBusFunUtils26 {
 
         //6.数据区
         comm.setData(modbytes);
-
+        Log.i("发送26命令：" + CommenUtils.ByteToString(comm.getBytes()));
         //对数据加密
         byte[] encryptedData = DatalogApUtil.getEnCode(comm.getBytes());
         comm.setEncryptedData(encryptedData);
