@@ -228,5 +228,40 @@
         app:layout_constraintVertical_bias="0.2" />
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/dp_5"
+            android:maxWidth="@dimen/dp_275"
+            android:padding="@dimen/dp_10"
+            android:text="@string/all_terms"
+            android:textColor="@color/title_1"
+            android:textSize="@dimen/size_content_sp_14" />
+
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@+id/tv_agreement"
+            android:textSize="@dimen/size_title_sp_12"
+            android:theme="@style/MyCheckBox" />
+
+
+
+    </RelativeLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

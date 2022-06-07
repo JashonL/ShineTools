@@ -1,7 +1,9 @@
 package com.growatt.shinetools.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import com.growatt.shinetools.db.SqliteUtil;
 import com.growatt.shinetools.okhttp.callback.StringCallback;
 
 import java.util.HashMap;
@@ -10,6 +12,7 @@ import java.util.Map;
 public class ShineToolsApi {
 
     public static String BASE_URL = "https://oss.growatt.com";
+    public static String SERVER_BASE_URL = "https://server-cn-api.growatt.com";
 
 //    public static String FILE_DOWNLOAD_BASE_URL ="https://server-api.growatt.com";
     public static String FILE_DOWNLOAD_BASE_URL ="https://server-api.growatt.com";
@@ -25,6 +28,22 @@ public class ShineToolsApi {
     }
 
 
+
+
+
+    public static String getUrl() {
+        String u = SqliteUtil.inquiryOssurl();
+        if (!TextUtils.isEmpty(u)) {
+            return "https://" + u;
+        } else {
+            return BASE_URL;
+        }
+    }
+
+
+
+
+
     /**
      * 请求登录
      * @param context    上下文
@@ -33,7 +52,7 @@ public class ShineToolsApi {
      * @param callback   回调处理
      */
     public static void login(Context context, String userName, String password,RequestCallback callback) {
-        String url = BASE_URL + "/api/v2/login";
+        String url = getUrl() + "/api/v2/login";
         Map<String, String> params = new HashMap<>();
         params.put("userName",userName);
         params.put("password",MD5andKL.encryptPassword(password));
@@ -75,6 +94,16 @@ public class ShineToolsApi {
         InternetUtils.asynPost(context, url, params,callback);
     }
 
+    public static void getPrivacyPolicyUrlShinetools(Context context,
+                                            String appType,String language,
+                                            StringCallback callback) {
 
+        String url = SERVER_BASE_URL + "/newLoginAPI.do?op=getPrivacyPolicyUrlShinetools";
+        Map<String, String> params = new HashMap<>();
+        params.put("appType", appType);
+        params.put("language", language);
+        Log.i(params.toString());
+        InternetUtils.asynPost(context, url, params,callback);
+    }
 
 }

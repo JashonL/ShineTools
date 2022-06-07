@@ -3700,7 +3700,7 @@
     <string name="userdata_dialog_title">Only Chinese and English are available in the service system</string>
     <string name="password_prompt">Please enter the correct password for setting</string>
     <string name="all_terms">User terms and privacy policy</string>
-    <string name="all_terms_message">Please tick user Agreement</string>
+    <string name="all_terms_message">Please tick user Agreement And privacy policy</string>
     <string name="dataloggers_dialog_connectwifi">Connect your phone to the router to which the WiFi module is to be connected</string>
     <string name="all_success_reminder">Please drop down  to refresh device list to get device information after 5 mimutes</string>
     <string name="dataloggers_add_success">Configuration successful</string>
@@ -4641,7 +4641,7 @@
     <string name="m防逆流功率">ExportLimit power</string>
     <string name="m地板温度">Floor temperature</string>
     <string name="m频率">Frequency (Hz)</string>
-    <string name="m故障">Abnormal</string>
+    <string name="m故障">Fault</string>
     <string name="mSVG工作状态">Status</string>
     <string name="mCT侧电流">CT_I</string>
     <string name="mCT侧无功">CT_Q</string>
@@ -6569,5 +6569,33 @@
     <string name="phasewringmethord">Grid type</string>
 
     <string name="off_grid_box_enable">Off-Grid Box Enable</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <string name="disagree">Disagree, quit use</string>
+    <string name="agree">Read and agree</string>
+
+    <string name="shinetools_agreement">ShineTools User Agreement</string>
+    <string name="shinetools_pricy">ShineTools Privacy Policy</string>
+    <string name="read_agree">I have read and agree</string>
+    <string name="and">and</string>
+    <string name="choose_state">Please select the corresponding region to log in</string>
+    <string name="choose_tips">Tip: It is detected that the account contains multiple sites, please select the corresponding site to log in</string>
+
+
+
+
 
 </resources>

@@ -427,4 +427,35 @@ public class CircleDialogUtils {
     }
 
 
+    /**
+     * 公共复选框2
+     *
+     * @param activity
+     * @return
+     */
+    public static DialogFragment showCommentItemDialog2(FragmentActivity activity, String title,String subtitle,
+                                                        List<String> items, int gravity, String negative,
+                                                        OnLvItemClickListener listener, View.OnClickListener negativeListener) {
+        CircleDialog.Builder builder = new CircleDialog.Builder();
+        if (!TextUtils.isEmpty(title)) {
+            builder.setTitle(title);
+        }
+
+        if (!TextUtils.isEmpty(subtitle)) {
+            builder.setSubTitle(subtitle);
+        }
+
+        if (listener != null) {
+            builder.setItems(items, listener);
+        }
+
+        if (negativeListener != null) {
+            builder.setNegative(negative, negativeListener);
+        }
+
+        builder.setGravity(gravity);
+        builder.setWidth(0.75f);
+        return builder.show(activity.getSupportFragmentManager());
+    }
+
 }

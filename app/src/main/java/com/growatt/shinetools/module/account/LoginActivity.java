@@ -1,6 +1,13 @@
 package com.growatt.shinetools.module.account;
 
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -11,17 +18,24 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 
 import com.growatt.shinetools.R;
+import com.growatt.shinetools.agreement.Agreement;
 import com.growatt.shinetools.base.BaseNetWorkActivity;
 import com.growatt.shinetools.bean.User;
+import com.growatt.shinetools.constant.Cons;
+import com.growatt.shinetools.db.SqliteUtil;
+import com.growatt.shinetools.login.OssLoginUtils;
 import com.growatt.shinetools.module.ForgotPasswordActivity;
 import com.growatt.shinetools.utils.ActivityUtils;
 import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.DialogUtils;
 import com.growatt.shinetools.utils.Log;
 import com.growatt.shinetools.utils.MyToastUtils;
+import com.growatt.shinetools.utils.OssUtils;
 import com.growatt.shinetools.utils.SharedPreferencesUnit;
 import com.growatt.shinetools.widget.EditTextWithDel;
 
@@ -38,6 +52,10 @@ import static com.growatt.shinetools.constant.GlobalConstant.KEY_END_USER_PWD;
 import static com.growatt.shinetools.constant.GlobalConstant.KEY_USER_TYPE;
 import static com.growatt.shinetools.constant.GlobalConstant.MAINTEAN_USER;
 import static com.growatt.shinetools.utils.UIWigetUtils.clickPasswordSwitch;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class LoginActivity extends BaseNetWorkActivity implements RadioGroup.OnCheckedChangeListener {
     @BindView(R.id.tv_title)
@@ -73,6 +91,12 @@ public class LoginActivity extends BaseNetWorkActivity implements RadioGroup.OnC
     @BindView(R.id.ll_end_pwd)
     LinearLayout llEndPwd;
 
+    @BindView(R.id.tv_agreement)
+    TextView tvAgreement;
+
+    @BindView(R.id.cb_agreement)
+    CheckBox cbAgreement;
+
 
     private boolean passwordOn;
     private boolean passwordEndOn;
@@ -90,7 +114,100 @@ public class LoginActivity extends BaseNetWorkActivity implements RadioGroup.OnC
         tvTitle.setVisibility(View.GONE);
         rgRole.setOnCheckedChangeListener(this);
         rgRole.check(R.id.radio_end);
+
+
+
+        String pricy_and_agree = getString(R.string.read_agree) + "《" + getString(R.string.shinetools_agreement) + "》"
+                + getString(R.string.and) + "《" + getString(R.string.shinetools_pricy) + "》";
+
+
+        int language = CommenUtils.getLanguageNew1();
+        SpannableStringBuilder spannableStringBuilder;
+        if (language == 0) {
+            spannableStringBuilder = updateTextStyle(pricy_and_agree, true);
+        } else {
+            spannableStringBuilder = updateTextStyle(pricy_and_agree, false);
+        }
+        tvAgreement.setMovementMethod(LinkMovementMethod.getInstance());
+        tvAgreement.setText(spannableStringBuilder);
+
+
+
     }
+
+
+
+    private SpannableStringBuilder updateTextStyle(String content, boolean chinese) {
+        SpannableStringBuilder spannableString = new SpannableStringBuilder();
+        spannableString.append(content);
+
+        //使用ForegroundColorSpan添加点击事件会出现冲突
+        UnderlineSpan colorSpan = new UnderlineSpan() {
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                ds.setColor(Color.parseColor("#009cff"));//设置颜色
+            }
+        };
+
+
+        //使用UnderlineSpan很好的兼容这个问题
+        UnderlineSpan colorSpan1 = new UnderlineSpan() {
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                ds.setColor(Color.parseColor("#009cff"));//设置颜色
+                //   ds.setUnderlineText(false); //去掉下划线
+            }
+        };
+
+
+        //用户协议
+        int userIndex_start = content.indexOf("《");
+        int userIndex_end = content.indexOf("》") + 1;
+
+        //隐私政策
+        int privacyBeginIndex = content.lastIndexOf("《");
+        int privacyEndIndex = content.lastIndexOf("》") + 1;
+
+        tvAgreement.setHighlightColor(ContextCompat.getColor(LoginActivity.this,R.color.nocolor));
+
+        ClickableSpan privacyClickableSpan = new ClickableSpan() {
+
+            @Override
+            public void onClick(@NonNull View widget) {
+
+                Agreement.getPrivacy(LoginActivity.this, 2);
+
+
+            }
+
+
+        };
+
+        ClickableSpan protocolClickableSpan = new ClickableSpan() {
+
+            @Override
+            public void onClick(@NonNull View widget) {
+                Agreement.getPrivacy(LoginActivity.this, 1);
+
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+            }
+        };
+
+        spannableString.setSpan(protocolClickableSpan, userIndex_start, userIndex_end, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        spannableString.setSpan(privacyClickableSpan, privacyBeginIndex, privacyEndIndex, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        //字体颜色一定要放在点击事件后面，不然部分手机不会修改颜色
+        spannableString.setSpan(colorSpan, userIndex_start, userIndex_end, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        spannableString.setSpan(colorSpan1, privacyBeginIndex, privacyEndIndex, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+
+        return spannableString;
+    }
+
 
     @Override
     protected void initData() {
@@ -184,6 +301,10 @@ public class LoginActivity extends BaseNetWorkActivity implements RadioGroup.OnC
                 break;
 
             case R.id.btn_login:
+                if (!cbAgreement.isChecked()){
+                    toast(R.string.all_terms_message);
+                    return;
+                }
 
                 if (radioEnd.isChecked()) {
                     String pwd = etEndPassword.getText().toString();
@@ -228,8 +349,8 @@ public class LoginActivity extends BaseNetWorkActivity implements RadioGroup.OnC
         try {
             JSONObject jsonObject = new JSONObject(json);
             int result = jsonObject.getInt("result");
+            JSONObject obj = jsonObject.optJSONObject("obj");
             if (result == 1) {
-                JSONObject obj = jsonObject.getJSONObject("obj");
                 //用户类型
                 int userType = obj.getInt("userType");
                 if (userType != 0) {

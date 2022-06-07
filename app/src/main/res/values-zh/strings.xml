@@ -3695,7 +3695,7 @@
     <string name="userdata_dialog_title">客服系统目前只支持中文和英文两种语言</string>
     <string name="password_prompt">请输入正确的控制密码</string>
     <string name="all_terms">用户条款与隐私政策</string>
-    <string name="all_terms_message">请勾选用户协议</string>
+    <string name="all_terms_message">请勾选用户协议和隐私政策</string>
     <string name="dataloggers_dialog_connectwifi">请先将手机连接到路由器</string>
     <string name="all_success_reminder">请五分钟后下拉刷新设备列表,以便获取采集器下面的设备信息.</string>
     <string name="dataloggers_add_success">配置成功</string>
@@ -6564,5 +6564,15 @@
 
 
     <string name="off_grid_box_enable">离网盒子使能</string>
+
+    <string name="disagree">不同意，退出使用</string>
+    <string name="agree">已阅读，并同意</string>
+
+    <string name="shinetools_agreement">ShineTools用户协议</string>
+    <string name="shinetools_pricy">ShineTools隐私政策</string>
+    <string name="read_agree">我已阅读并同意</string>
+    <string name="and">和</string>
+    <string name="choose_state">请选择对应地区登录</string>
+    <string name="choose_tips">提示:检测到账号包含多个站点,请选择对应站点登录</string>
 
 </resources>

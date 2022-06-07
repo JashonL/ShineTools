@@ -10,6 +10,7 @@ import android.util.Log;
 import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.constant.GlobalConstant;
 
+import com.growatt.shinetools.db.realm.RealmUtils;
 import com.growatt.shinetools.utils.LogUtil;
 
 
@@ -321,6 +322,14 @@ public class SqliteUtil {
         LogUtil.i("上次数据："+ value);
 		return value;
 	}
+
+	public static void addUrl(String url){
+		RealmUtils.addOssUrl(url);
+	}
+	public static String inquiryOssurl(){
+		return RealmUtils.queryOssUrl();
+	}
+
 }
 
 

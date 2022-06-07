@@ -10,6 +10,8 @@ import com.growatt.shinetools.ShineToosApplication;
 import com.growatt.shinetools.bean.User;
 import com.growatt.shinetools.constant.GlobalConstant;
 import com.growatt.shinetools.db.DataBaseManager;
+import com.growatt.shinetools.login.LoginListener;
+import com.growatt.shinetools.login.OssLoginUtils;
 import com.growatt.shinetools.module.WelcomeActivity;
 import com.growatt.shinetools.module.inverterUpdata.CheckDownloadUtils;
 import com.growatt.shinetools.module.inverterUpdata.DownloadFileActivity;
@@ -22,6 +24,7 @@ import com.growatt.shinetools.utils.CommenUtils;
 import com.growatt.shinetools.utils.DialogUtils;
 import com.growatt.shinetools.utils.Log;
 import com.growatt.shinetools.utils.MyToastUtils;
+import com.growatt.shinetools.utils.OssUtils;
 import com.growatt.shinetools.utils.RequestCallback;
 import com.growatt.shinetools.utils.SharedPreferencesUnit;
 import com.growatt.shinetools.utils.ShineToolsApi;
@@ -72,7 +75,8 @@ public class LoginManager {
      * 运维人员登录
      */
     public void maintainUserLogin(String username, String password) {
-        ShineToolsApi.login(context, username, password, new RequestCallback((LoginActivity) context));
+//        ShineToolsApi.login(context, username, password, new RequestCallback((LoginActivity) context));
+        OssLoginUtils.userLogin(0, context, username, password, String.valueOf(0),(LoginActivity) context);
     }
 
 

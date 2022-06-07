@@ -98,4 +98,18 @@ public class GlobalConstant {
     public static final String PERIOD_JSON = "PERIOD_JSON";
     public static final String BYTE_SOCKET_RESPON="BYTE_SOCKET_RESPON";
 
+
+    public final static String MAINACTIVITY_ALIVE = "main_live";
+
+
+
+    public static final String AGREEMENT_CN="file:///android_asset/UserAgreementShinePhone_cn.html";
+    public static final String PRIVACY_CN="file:///android_asset/PrivacyPolicyShinePhone_cn.html";
+    public static final String DESCRIPTION_CN="file:///android_asset/RemoteServiceAgreement_cn.html";
+
+
+    public static final String AGREEMENT_EN="file:///android_asset/NewUserAgreement_en.html";
+    public static final String PRIVACY_EN="file:///android_asset/NewPrivacyAgreement_en.html";
+    public static final String DESCRIPTION_EN="";
+
 }

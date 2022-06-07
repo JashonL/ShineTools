@@ -37,7 +37,7 @@ public class UpdateDatalogUtils {
     public static List<ByteBuffer> UPDATE_FILE = new ArrayList<ByteBuffer>();
     // 采集器下发文件(升级)进度
     public static String DOWN_FILE_PROCESS = "0%";
-    // 将文件分包，每笔1024KB
+    // 将文件分包，每笔1024B，这里红米K40手机系统原因可能接收不了1kb那么大的数据 如果有反馈可能要改成跟小的数据比如512
     public static final int INPUT_LENGTH_1024 = 1024;
     //将文件分包，每笔256B
     public static final int INPUT_LENGTH_256 = 256;

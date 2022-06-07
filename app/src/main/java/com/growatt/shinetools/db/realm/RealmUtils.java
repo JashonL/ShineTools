@@ -5,7 +5,10 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 
+import com.growatt.shinetools.bean.OssUrlBean;
+import com.growatt.shinetools.constant.Cons;
 import com.growatt.shinetools.utils.Log;
+import com.growatt.shinetools.utils.LogUtil;
 import com.growatt.shinetools.utils.datalogupdata.FilePathBean;
 
 
@@ -42,6 +45,53 @@ public class RealmUtils {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+
+
+    /**
+     * 存储用户服务器地址
+     */
+    public static void addOssUrl(String url) {
+        try {
+            Realm mRealm = Realm.getDefaultInstance();
+            mRealm.executeTransaction(realm -> {
+                OssUrlBean bean = new OssUrlBean();
+                bean.setUrl(url);
+                realm.insertOrUpdate(bean);
+            });
+            Cons.setOssRealUrl(url);
+       /*     if (url.contains("-cn")) Cons.setCountryCode(Cons.CHINA_AREA_CODE);
+            else Cons.setCountryCode(Cons.EUROPE_AREA_CODE);*/
+            LogUtil.i("addUrl:" + url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    /**
+     * 查询：获取OSS url
+     */
+    public static String queryOssUrl() {
+        if (!TextUtils.isEmpty(Cons.getOssRealUrl())) {
+            LogUtil.i("queryUrl缓存:" + Cons.getOssRealUrl());
+            return Cons.getOssRealUrl();
+        }
+        try {
+            Realm mRealm = Realm.getDefaultInstance();
+            OssUrlBean urlBean = mRealm.where(OssUrlBean.class).equalTo("primaryKey", 0).findFirst();
+            if (urlBean==null){
+                return "";
+            }else {
+                LogUtil.i("queryUrl数据库:" + urlBean.toString());
+                return urlBean.getUrl();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
         }
     }
 
