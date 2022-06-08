@@ -3,6 +3,7 @@ package com.growatt.shinetools;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,8 +14,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
 
 import com.growatt.shinetools.base.BaseActivity;
+import com.growatt.shinetools.bean.HtmlJumpBean;
 
 import butterknife.BindView;
 
@@ -24,7 +29,11 @@ public class WebViewActivity extends BaseActivity {
 
     @BindView(R.id.webview)
     WebView webview;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
 
     private boolean isDownload = true;
     private String url;
@@ -38,6 +47,8 @@ public class WebViewActivity extends BaseActivity {
     @SuppressLint("JavascriptInterface")
     @Override
     protected void initViews() {
+        initToobar(toolbar);
+        tvTitle.setText("");
         url= getIntent().getStringExtra(WEB_URL);
         webview.addJavascriptInterface(this,"android");//添加js监听 这样html就能调用客户端
         webview.setWebChromeClient(webChromeClient);
@@ -55,7 +66,7 @@ public class WebViewActivity extends BaseActivity {
          * LOAD_NO_CACHE: 不使用缓存，只从网络获取数据.
          * LOAD_CACHE_ELSE_NETWORK，只要本地有，无论是否过期，或者no-cache，都使用缓存中的数据。
          */
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);//不使用缓存，只从网络获取数据.
+//        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);//不使用缓存，只从网络获取数据.
 
         //支持屏幕缩放
         webSettings.setSupportZoom(true);
@@ -173,8 +184,21 @@ public class WebViewActivity extends BaseActivity {
         super.onDestroy();
 
         //释放资源
-        webview.destroy();
-        webview=null;
+        if(webview!= null) {
+            webview.stopLoading();
+            webview.removeAllViews();
+            webview.clearCache(true);
+            webview.clearHistory();
+            webview.clearFormData();
+            webview.clearMatches();
+            webview.destroy();
+            webview=null;
+        }
+
+
     }
+
+
+
 
 }

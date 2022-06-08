@@ -4,6 +4,8 @@
     android:layout_height="match_parent">
 
 
+    <include layout="@layout/toobar_title"/>
+
 
     <WebView
         android:id="@+id/webview"

@@ -5,6 +5,7 @@ import static com.growatt.shinetools.constant.GlobalConstant.MAINACTIVITY_ALIVE;
 import static com.growatt.shinetools.utils.AppSystemUtils.KEY_APP_FIRST_INSTALL;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -25,6 +26,7 @@ import androidx.fragment.app.FragmentManager;
 import com.growatt.shinetools.Html5Activity;
 import com.growatt.shinetools.R;
 import com.growatt.shinetools.ShineToosApplication;
+import com.growatt.shinetools.WebViewActivity;
 import com.growatt.shinetools.bean.HtmlJumpBean;
 import com.growatt.shinetools.constant.GlobalConstant;
 import com.growatt.shinetools.okhttp.callback.StringCallback;
@@ -224,10 +226,14 @@ public class Agreement {
                     break;
             }
             if (!TextUtils.isEmpty(url)){
-                HtmlJumpBean bean = new HtmlJumpBean();
+/*                HtmlJumpBean bean = new HtmlJumpBean();
                 bean.setTitle("");
                 bean.setUrl(url);
-                Html5Activity.jumpAction(context, bean);
+                Html5Activity.jumpAction(context, bean);*/
+
+                Intent intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra(WebViewActivity.WEB_URL, url);
+                context.startActivity(intent);
             }
         } else {
             String url="";
@@ -243,10 +249,15 @@ public class Agreement {
                     break;
             }
             if (!TextUtils.isEmpty(url)){
-                HtmlJumpBean bean = new HtmlJumpBean();
+            /*    HtmlJumpBean bean = new HtmlJumpBean();
                 bean.setTitle("");
                 bean.setUrl(url);
-                Html5Activity.jumpAction(context, bean);
+                Html5Activity.jumpAction(context, bean);*/
+
+
+                Intent intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra(WebViewActivity.WEB_URL, url);
+                context.startActivity(intent);
             }
 
         }
@@ -314,10 +325,16 @@ public class Agreement {
     }
 
     private static void toWebView(String url, Context context) {
-        HtmlJumpBean bean = new HtmlJumpBean();
+/*        HtmlJumpBean bean = new HtmlJumpBean();
         bean.setTitle("");
         bean.setUrl(url);
-        Html5Activity.jumpAction(context, bean);
+        Html5Activity.jumpAction(context, bean);*/
+
+
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra(WebViewActivity.WEB_URL, url);
+        context.startActivity(intent);
+
     }
 
 
